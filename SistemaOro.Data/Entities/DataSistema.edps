@@ -2,14 +2,53 @@
 <EntityDeveloper Version="7.1.177.0">
   <ModelSettings xmlns:ed="http://devart.com/schemas/EntityDeveloper/1.0" ConnectionStringInAppConfig="False" TargetFramework="Net60" DetectTPTInheritance="True" EntityFrameworkCoreVersion="Version7" DetectFunctionBasedColumnDefault="True">
     <Connection Storage="EntityDeveloper" StorageId="27ffcdc9-2b51-4eb4-be26-1d5457cee768" Provider="System.Data.SqlClient" />
-    <Generation />
+    <Generation>
+      <GeneratedFiles>
+        <File Name="DataSistema.DataContext.cs" />
+        <File Name="DataSistema.Adelanto.cs" />
+        <File Name="DataSistema.Agencia.cs" />
+        <File Name="DataSistema.Caja.cs" />
+        <File Name="DataSistema.CierrePrecio.cs" />
+        <File Name="DataSistema.Cliente.cs" />
+        <File Name="DataSistema.Compra.cs" />
+        <File Name="DataSistema.ComprasAdelanto.cs" />
+        <File Name="DataSistema.Descargue.cs" />
+        <File Name="DataSistema.DetCompra.cs" />
+        <File Name="DataSistema.Detacaja.cs" />
+        <File Name="DataSistema.Detacierre.cs" />
+        <File Name="DataSistema.Estado.cs" />
+        <File Name="DataSistema.Id.cs" />
+        <File Name="DataSistema.Liquidacion2015.cs" />
+        <File Name="DataSistema.Listado.cs" />
+        <File Name="DataSistema.Mcaja.cs" />
+        <File Name="DataSistema.Moneda.cs" />
+        <File Name="DataSistema.Movcaja.cs" />
+        <File Name="DataSistema.PagosAdelantado.cs" />
+        <File Name="DataSistema.Pica.cs" />
+        <File Name="DataSistema.PrecioKilate.cs" />
+        <File Name="DataSistema.Precio.cs" />
+        <File Name="DataSistema.ReporteCaja.cs" />
+        <File Name="DataSistema.Rubro.cs" />
+        <File Name="DataSistema.TipoCambio.cs" />
+        <File Name="DataSistema.TipoPreciosPagado.cs" />
+        <File Name="DataSistema.Tmpprecio.cs" />
+        <File Name="DataSistema.Usuario.cs" />
+        <File Name="DataSistema.ComprasOperador.cs" />
+        <File Name="DataSistema.DescargueByCompra.cs" />
+        <File Name="DataSistema.MovimientosCajaSelect.cs" />
+        <File Name="DataSistema.RptMovimientosCaja.cs" />
+        <File Name="DataSistema.TransaccionEfectivo.cs" />
+        <File Name="DataSistema.Vdetacaja.cs" />
+        <File Name="DataSistema.VVariacionesCliente.cs" />
+      </GeneratedFiles>
+    </Generation>
     <DatabaseFirstNamingRules>
       <EntitySet PluralizationName="Pluralize" />
       <Class UseSchemaAsPrefix="False" PluralizeCollectionNavigationPropertyName="True" AddConstraintColumnsToNavigationPropertyName="False" RemoveUnderscores="True" AddUnderscores="False" RemoveInvalidCharacters="True" CodeCase="FirstLetterUppercase" AddPrefix="" AddSuffix="" RemovePrefixes="" RemoveSuffixes="" PluralizationName="Singularize" />
       <Property RemoveUnderscores="True" AddUnderscores="False" RemoveInvalidCharacters="True" CodeCase="FirstLetterUppercase" AddPrefix="" AddSuffix="" RemovePrefixes="" RemoveSuffixes="" PluralizationName="Unchanged" />
     </DatabaseFirstNamingRules>
-    <ModelFirst StorageSynchronizationEnabled="False" TargetSchema="dbo" TargetProviderName="System.Data.SqlClient">
-      <TargetServer Server="SQL Server" />
+    <ModelFirst StorageSynchronizationEnabled="False" TargetSchema="efectioro" TargetProviderName="System.Data.SqlClient">
+      <TargetServer Server="SQL Server" ServerVersion="2019" />
       <ModelFirstNamingRules>
         <Table RemoveUnderscores="False" AddUnderscores="False" RemoveInvalidCharacters="True" CodeCase="Unchanged" AddPrefix="" AddSuffix="" RemovePrefixes="" RemoveSuffixes="" PluralizationName="Pluralize" />
         <Column RemoveUnderscores="False" AddUnderscores="False" RemoveInvalidCharacters="True" CodeCase="Unchanged" AddPrefix="" AddSuffix="" RemovePrefixes="" RemoveSuffixes="" PluralizationName="Unchanged" />
