@@ -2,12 +2,18 @@
 using SistemaOro.Data.Entities;
 using SistemaOro.Data.Exceptions;
 using SistemaOro.Data.Libraries;
-using Unity;
 
 namespace SistemaOro.Data.Repositories;
 
-public class RepositoryAdelantos : IRepositoryAdelantos
+public class RepositoryAdelantos(
+    IRepositoryParameters repositoryParameters,
+    IRepositoryMaestroCaja repositoryMaestroCaja) : IRepositoryAdelantos
 {
+    private readonly IRepositoryParameters _repositoryParameters = repositoryParameters;
+    private readonly IRepositoryMaestroCaja _repositoryMaestroCaja = repositoryMaestroCaja;
+
+    public string? ErrorSms { get; private set; }
+
     public async Task<int> Add(Adelanto adelanto)
     {
         await using var context = new DataContext();
@@ -26,7 +32,7 @@ public class RepositoryAdelantos : IRepositoryAdelantos
                 Sinicial = decimal.Zero,
                 Sfinal = adelanto.Monto!.Value,
                 Usuario = VariablesGlobales.Instance.Usuario!.Codoperador,
-                Codagencia = VariablesGlobales.Instance.ConfiguracionGeneral().Agencia,
+                Codagencia = VariablesGlobales.Instance.ConfiguracionGeneral.Agencia,
                 Codmoneda = adelanto.Codmoneda,
             };
             context.Add(comprasAdelantos);
@@ -34,18 +40,20 @@ public class RepositoryAdelantos : IRepositoryAdelantos
         }
         catch (Exception e)
         {
-            throw new EntityValidationException(e.Message);
+            ErrorSms = $"No se pudo ingresar el adelanto: {e.Message}";
+            return 0;
         }
     }
 
     public async Task<int> Update(decimal adelanto, string idSalida, string numCompra)
     {
-        var config = VariablesGlobales.Instance.ConfiguracionGeneral();
+        var config = VariablesGlobales.Instance.ConfiguracionGeneral;
         await using var context = new DataContext();
         var find = await context.Adelantos.FindAsync(idSalida);
         if (find is null)
         {
-            throw new EntityValidationException("No existe la entidad con esos datos");
+            ErrorSms = "No existe la entidad con esos datos";
+            return 0;
         }
 
         find.Saldo = adelanto;
@@ -68,16 +76,13 @@ public class RepositoryAdelantos : IRepositoryAdelantos
         return await context.SaveChangesAsync();
     }
 
-    public async Task<Adelanto> FindByCodigoCliente(string codigoCliente)
+    public async Task<Adelanto?> FindByCodigoCliente(string codigoCliente)
     {
         await using var context = new DataContext();
-        var find = await context.Adelantos.SingleOrDefaultAsync(adelanto => adelanto.Codcliente == codigoCliente);
-        if (find is null)
-        {
-            throw new EntityValidationException("No existe el adelanto con el codigo del cliente especificado");
-        }
-
-        return find;
+        var find = await context.Adelantos.FirstOrDefaultAsync(adelanto => adelanto.Codcliente == codigoCliente);
+        if (find is not null) return find;
+        ErrorSms = $"No existe el adelanto con el codigo del cliente especificado {codigoCliente}";
+        return null;
     }
 
     public async Task<Adelanto?> FindByCodigoAdelanto(string codigoAdelanto)
@@ -105,35 +110,154 @@ public class RepositoryAdelantos : IRepositoryAdelantos
         return await context.Adelantos.Where(adelanto => adelanto.Codcliente == codigo).ToListAsync();
     }
 
-    public async Task<bool> anularAdelanto(string codigo)
+    public async Task<bool> AnularAdelanto(string codigo)
     {
         await using var context = new DataContext();
-        var repositoryParameters = VariablesGlobales.Instance.UnityContainer.Resolve<IRepositoryParameters>();
-        throw new Exception();
+        var param = await _repositoryParameters.RecuperarParametros();
+        var find = await context.Adelantos.FirstOrDefaultAsync(adelanto =>
+            adelanto.Idsalida == codigo && adelanto.Monto == adelanto.Saldo);
+        if (find is null)
+        {
+            ErrorSms =
+                $"No se pudo encontrar el adelanto con el codigo especificado {codigo} o ya se ha aplicado en distintas compras";
+            return false;
+        }
+
+        find.Saldo = decimal.Zero;
+        return await context.SaveChangesAsync() > 0;
     }
 
-    public bool AplicarAdelantoEfectivo(List<Adelanto> listaAdelantos, decimal monto, string codCliente = "")
+    public async Task<bool> AplicarAdelantoEfectivo(List<Adelanto> listaAdelantos, decimal monto,
+        string codCliente = "")
     {
-        throw new NotImplementedException();
+        await using var context = new DataContext();
+        var dSaldo = decimal.Zero;
+        var param = await _repositoryParameters.RecuperarParametros();
+        var config = VariablesGlobales.Instance.ConfiguracionGeneral;
+        var mcaja = await _repositoryMaestroCaja.RecuperarSaldoCaja(config.Caja, config.Agencia);
+        if (mcaja is null)
+        {
+            ErrorSms = _repositoryMaestroCaja.ErrorSms;
+            return false;
+        }
+
+        var tipoCambio = await context.TipoCambios.SingleOrDefaultAsync(cambio => cambio.Fecha == DateTime.Now) ??
+                         new TipoCambio
+                         {
+                             Tipocambio = decimal.Zero
+                         };
+        mcaja.Entrada = decimal.Add(mcaja.Entrada!.Value, monto);
+        mcaja.Sfinal = decimal.Add(mcaja.Sfinal!.Value, monto);
+        var detaCaja = new Detacaja
+        {
+            Idcaja = mcaja.Idcaja,
+            Idmov = param.PagoAdelanto!.Value,
+            Codcaja = config.Caja,
+            Concepto = "***EFECTIVO A ADELANTO(S): ",
+            Transferencia = decimal.Zero,
+            Efectivo = monto,
+            Cheque = decimal.Zero,
+            Fecha = DateTime.Now,
+            Hora = DateTime.Now.ToLongTimeString(),
+            Referencia = "Pago en efectivo a adelanto",
+            Tipocambio = tipoCambio.Tipocambio
+        };
+        foreach (var adelanto in listaAdelantos)
+        {
+            if (decimal.Compare(monto, decimal.Zero) <= 0) continue;
+            detaCaja.Concepto += $"{adelanto.Idsalida}; ";
+            var saldo = adelanto.Saldo;
+            var comprasAdelantos = new ComprasAdelanto
+            {
+                Codcaja = detaCaja.Codcaja,
+                Codcliente = adelanto.Codcliente,
+                Fecha = DateTime.Now,
+                Hora = DateTime.Now.TimeOfDay,
+                Idadelanto = adelanto.Idsalida,
+                Numcompra = adelanto.Idsalida,
+                Usuario = VariablesGlobales.Instance.Usuario!.Usuario1,
+                Codmoneda = adelanto.Codmoneda,
+                Codagencia = config.Agencia,
+                Sinicial = saldo
+            };
+            if (decimal.Compare(saldo, monto) >= 0)
+            {
+                comprasAdelantos.Monto = monto;
+                saldo = decimal.Subtract(saldo, monto);
+                monto = decimal.Zero;
+            }
+            else
+            {
+                comprasAdelantos.Monto = saldo;
+                monto = decimal.Subtract(monto, saldo); //monto - saldo;
+                saldo = decimal.Zero;
+            }
+
+            comprasAdelantos.Sfinal = saldo;
+        }
+
+        context.Add(detaCaja);
+        return false;
     }
 
     public void Imprimir(string codigo, string nombre)
     {
-        throw new NotImplementedException();
     }
 
-    public List<Adelanto> ListarAdelantosPorFecha(DateTime desde, DateTime hasta, string codCliente)
+    public async Task<List<Adelanto>> ListarAdelantosPorFecha(DateTime desde, DateTime hasta, string codCliente)
     {
-        throw new NotImplementedException();
+        await using var context = new DataContext();
+        try
+        {
+            return await context.Adelantos
+                .Where(adelanto => adelanto.Fecha >= desde
+                                   && adelanto.Fecha <= hasta
+                                   && adelanto.Codcliente == codCliente)
+                .ToListAsync();
+        }
+        catch (Exception e)
+        {
+            ErrorSms =
+                $"No se recuperaron datos según las fechas indicadas {desde.ToShortDateString()} y {hasta.ToShortDateString()} con el codigo del cliente {codCliente}";
+            return [];
+        }
     }
 
-    public List<ComprasAdelanto> ListarAdelantosComrpas(string idAdelanto)
+    public async Task<List<ComprasAdelanto>> ListarAdelantosCompras(string idAdelanto)
     {
-        throw new NotImplementedException();
+        await using var context = new DataContext();
+        try
+        {
+            return await context.ComprasAdelantos
+                .Where(adelanto => adelanto.Idadelanto == idAdelanto)
+                .OrderByDescending(adelanto => adelanto.Idadelanto)
+                .ThenBy(adelanto => adelanto.Fecha)
+                .ToListAsync();
+        }
+        catch (Exception e)
+        {
+            ErrorSms =
+                $"No se encontraron datos para el codigo de adelanto especificado {idAdelanto}, Error: {e.Message}";
+            return [];
+        }
     }
 
-    public List<ComprasAdelanto> ListarAdelantosComrpasCliente(string codCliente)
+    public async Task<List<ComprasAdelanto>> ListarAdelantosComrpasCliente(string codCliente)
     {
-        throw new NotImplementedException();
+        await using var context = new DataContext();
+        try
+        {
+            return await context.ComprasAdelantos
+                .Where(adelanto => adelanto.Codcliente == codCliente)
+                .OrderByDescending(adelanto => adelanto.Idadelanto)
+                .ThenBy(adelanto => adelanto.Fecha)
+                .ToListAsync();
+        }
+        catch (Exception e)
+        {
+            ErrorSms =
+                $"No se encontraron datos para el codigo de cliente especificado {codCliente}, Error: {e.Message}";
+            return [];
+        }
     }
 }

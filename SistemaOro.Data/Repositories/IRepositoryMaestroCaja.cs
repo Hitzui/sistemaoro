@@ -6,7 +6,7 @@ public interface IRepositoryMaestroCaja
 {
     Task<bool> ValidarCajaAbierta(string caja);
 
-    Task<Mcaja> RecuperarSaldoCaja(string caja, string agencia);
+    Task<Mcaja?> RecuperarSaldoCaja(string caja, string agencia);
 
     Task<bool> EstadoCaja(string caja, string agencia);
 

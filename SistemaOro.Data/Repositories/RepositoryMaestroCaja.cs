@@ -35,17 +35,15 @@ public class RepositoryMaestroCaja(IRepositoryParameters repositoryParameters) :
                             && mcaja.Codagencia == agencia);
     }
 
-    public async Task<Mcaja> RecuperarSaldoCaja(string caja, string agencia)
+    public async Task<Mcaja?> RecuperarSaldoCaja(string caja, string agencia)
     {
         await using var context = new DataContext();
         var findQuery = await Find(caja, agencia);
         var find = await findQuery.Where(mcaja => mcaja.Estado == 1).FirstOrDefaultAsync();
-        if (find is null)
-        {
-            throw new EntityValidationException($"No existe la caja o apertura de caja con el codigo {caja}");
-        }
+        if (find is not null) return find;
+        ErrorSms=$"No existe la caja o apertura de caja con el codigo {caja}";
+        return null;
 
-        return find;
     }
 
     public async Task<bool> EstadoCaja(string caja, string agencia)

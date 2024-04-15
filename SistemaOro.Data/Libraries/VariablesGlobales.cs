@@ -12,10 +12,13 @@ public class VariablesGlobales
 
     private VariablesGlobales()
     {
+        ConfiguracionGeneral = new ConfiguracionGeneral();
         UnityContainer = new UnityContainer();
+        UnityContainer.RegisterSingleton<IRepositoryMaestroCaja, RepositoryMaestroCaja>();
         UnityContainer.RegisterSingleton<IRepositoryParameters, RepositoryParameters>();
         UnityContainer.RegisterSingleton<IRepositoryAdelantos, RepositoryAdelantos>();
     }
+
     public static VariablesGlobales Instance
     {
         get
@@ -25,6 +28,7 @@ public class VariablesGlobales
             {
                 _instance ??= new VariablesGlobales();
             }
+
             return _instance;
         }
     }
@@ -33,8 +37,5 @@ public class VariablesGlobales
 
     public UnityContainer UnityContainer { get; }
 
-    public ConfiguracionGeneral ConfiguracionGeneral()
-    {
-        return new ConfiguracionGeneral();
-    }
+    public ConfiguracionGeneral ConfiguracionGeneral { get; private set; }
 }
