@@ -11,7 +11,7 @@ public class AgenciaRepository : IAgenciaRepository
         var find = await context.Id.FirstOrDefaultAsync();
         if (find is not null)
         {
-            return find.Codagencia > 9 ? $"A{find.Codagencia.ToString()!.PadLeft(2, '0')}" : $"A{find.Codagencia.ToString()!.PadLeft(3, '0')}";
+            return $"A{find.Codagencia.ToString()!.PadLeft(3, '0')}";
         }
 
         ErrorSms = "No hay parametros para el codigo de agencia";
