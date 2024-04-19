@@ -2,7 +2,7 @@
 
 namespace SistemaOro.Data.Repositories;
 
-public interface IRepositoryMaestroCaja
+public interface IMaestroCajaRepository
 {
     Task<bool> ValidarCajaAbierta(string caja);
 

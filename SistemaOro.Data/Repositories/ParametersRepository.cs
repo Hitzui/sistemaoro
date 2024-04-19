@@ -4,7 +4,7 @@
 
     namespace SistemaOro.Data.Repositories;
 
-public class RepositoryParameters : IRepositoryParameters
+public class ParametersRepository : IParametersRepository
 {
     public async Task<Id> RecuperarParametros()
     {

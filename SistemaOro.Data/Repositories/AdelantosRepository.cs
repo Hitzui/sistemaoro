@@ -5,12 +5,12 @@ using SistemaOro.Data.Libraries;
 
 namespace SistemaOro.Data.Repositories;
 
-public class RepositoryAdelantos(
-    IRepositoryParameters repositoryParameters,
-    IRepositoryMaestroCaja repositoryMaestroCaja) : IRepositoryAdelantos
+public class AdelantosRepository(
+    IParametersRepository parametersRepository,
+    IMaestroCajaRepository maestroCajaRepository) : IAdelantosRepository
 {
-    private readonly IRepositoryParameters _repositoryParameters = repositoryParameters;
-    private readonly IRepositoryMaestroCaja _repositoryMaestroCaja = repositoryMaestroCaja;
+    private readonly IParametersRepository _parametersRepository = parametersRepository;
+    private readonly IMaestroCajaRepository _maestroCajaRepository = maestroCajaRepository;
 
     public string? ErrorSms { get; private set; }
 
@@ -113,7 +113,7 @@ public class RepositoryAdelantos(
     public async Task<bool> AnularAdelanto(string codigo)
     {
         await using var context = new DataContext();
-        var param = await _repositoryParameters.RecuperarParametros();
+        var param = await _parametersRepository.RecuperarParametros();
         var find = await context.Adelantos.FirstOrDefaultAsync(adelanto =>
             adelanto.Idsalida == codigo && adelanto.Monto == adelanto.Saldo);
         if (find is null)
@@ -132,12 +132,12 @@ public class RepositoryAdelantos(
     {
         await using var context = new DataContext();
         var dSaldo = decimal.Zero;
-        var param = await _repositoryParameters.RecuperarParametros();
+        var param = await _parametersRepository.RecuperarParametros();
         var config = VariablesGlobales.Instance.ConfiguracionGeneral;
-        var mcaja = await _repositoryMaestroCaja.RecuperarSaldoCaja(config.Caja, config.Agencia);
+        var mcaja = await _maestroCajaRepository.RecuperarSaldoCaja(config.Caja, config.Agencia);
         if (mcaja is null)
         {
-            ErrorSms = _repositoryMaestroCaja.ErrorSms;
+            ErrorSms = _maestroCajaRepository.ErrorSms;
             return false;
         }
 

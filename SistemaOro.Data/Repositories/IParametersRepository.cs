@@ -2,7 +2,7 @@
 
 namespace SistemaOro.Data.Repositories;
 
-public interface IRepositoryParameters
+public interface IParametersRepository
 {
     Task<Id> RecuperarParametros();
     Task<int> ActualizarParametros(Id param);

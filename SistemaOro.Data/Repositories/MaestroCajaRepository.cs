@@ -4,7 +4,7 @@ using SistemaOro.Data.Exceptions;
 
 namespace SistemaOro.Data.Repositories;
 
-public class RepositoryMaestroCaja(IRepositoryParameters repositoryParameters) : IRepositoryMaestroCaja
+public class MaestroCajaRepository(IParametersRepository parametersRepository) : IMaestroCajaRepository
 {
     public async Task<bool> ValidarCajaAbierta(string caja)
     {
@@ -88,7 +88,7 @@ public class RepositoryMaestroCaja(IRepositoryParameters repositoryParameters) :
                 return false;
             }
 
-            var parametros = await repositoryParameters.RecuperarParametros();
+            var parametros = await parametersRepository.RecuperarParametros();
             var crearM = new Mcaja
             {
                 Codcaja = xestado.Codcaja,
@@ -138,7 +138,7 @@ public class RepositoryMaestroCaja(IRepositoryParameters repositoryParameters) :
                 return false;
             }
 
-            var parametros = await repositoryParameters.RecuperarParametros();
+            var parametros = await parametersRepository.RecuperarParametros();
             var query = await Find(caja, agencia);
             var crearM = await query.FirstOrDefaultAsync(mcaja => mcaja.Estado == 1);
             if (crearM is null)
@@ -241,7 +241,7 @@ public class RepositoryMaestroCaja(IRepositoryParameters repositoryParameters) :
     public async Task<decimal> ValidarPrestamosPuentes()
     {
         await using var context = new DataContext();
-        var param = await repositoryParameters.RecuperarParametros();
+        var param = await parametersRepository.RecuperarParametros();
         try
         {
             var prestamoEgresoQueryable = from dc in context.Detacajas

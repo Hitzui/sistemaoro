@@ -14,9 +14,9 @@ public class VariablesGlobales
     {
         ConfiguracionGeneral = new ConfiguracionGeneral();
         UnityContainer = new UnityContainer();
-        UnityContainer.RegisterSingleton<IRepositoryMaestroCaja, RepositoryMaestroCaja>();
-        UnityContainer.RegisterSingleton<IRepositoryParameters, RepositoryParameters>();
-        UnityContainer.RegisterSingleton<IRepositoryAdelantos, RepositoryAdelantos>();
+        UnityContainer.RegisterSingleton<IMaestroCajaRepository, MaestroCajaRepository>();
+        UnityContainer.RegisterSingleton<IParametersRepository, ParametersRepository>();
+        UnityContainer.RegisterSingleton<IAdelantosRepository, AdelantosRepository>();
     }
 
     public static VariablesGlobales Instance

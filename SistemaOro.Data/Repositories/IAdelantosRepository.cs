@@ -2,7 +2,7 @@
 
 namespace SistemaOro.Data.Repositories;
 
-public interface IRepositoryAdelantos
+public interface IAdelantosRepository
 {
     string? ErrorSms { get; }
     Task<int> Add(Adelanto adelanto);
