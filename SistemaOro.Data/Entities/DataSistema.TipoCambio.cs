@@ -14,6 +14,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
@@ -28,6 +29,7 @@ namespace SistemaOro.Data.Entities
             OnCreated();
         }
 
+        [Key]
         public DateTime Fecha { get; set; }
 
         public decimal Tipocambio { get; set; }

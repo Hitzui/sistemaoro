@@ -1169,7 +1169,7 @@
       </end2>
     </association>
     <association name="Cliente_Pica" cardinality="OneToOne" p1:Guid="c748a9bb-63f2-4391-b14f-900760a7bc28">
-      <end1 multiplicity="ZeroOrOne" name="Cliente" class="Pica" relation-class="Cliente" constrained="True" lazy="False" p1:Guid="844c702c-c297-4cca-8001-2825096bfc52">
+      <end1 multiplicity="One" name="Cliente" class="Pica" relation-class="Cliente" constrained="True" lazy="False" p1:Guid="844c702c-c297-4cca-8001-2825096bfc52">
         <property name="Codcliente" />
       </end1>
       <end2 multiplicity="One" name="Pica1" class="Cliente" relation-class="Pica" constrained="False" lazy="False" p1:Guid="2e72ce40-fd68-4997-82af-d0803491b4ca">

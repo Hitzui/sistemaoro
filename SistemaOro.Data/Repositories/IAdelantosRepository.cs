@@ -5,7 +5,7 @@ namespace SistemaOro.Data.Repositories;
 public interface IAdelantosRepository
 {
     string? ErrorSms { get; }
-    Task<int> Add(Adelanto adelanto);
+    Task<bool> Add(Adelanto adelanto);
 
     Task<int> Update(decimal adelanto, string idSalida, string numCompra);
 
@@ -55,4 +55,6 @@ public interface IAdelantosRepository
     /// <param name="codCliente">Codigo del cliente</param>
     /// <returns>Lista de compras-adelantos</returns>
     Task<List<ComprasAdelanto>> ListarAdelantosComrpasCliente(string codCliente);
+
+    Task<List<ComprasAdelanto>> FindByNumcompraComprasAdelantos(string numeroCompra);
 }

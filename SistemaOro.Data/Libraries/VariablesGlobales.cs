@@ -17,6 +17,8 @@ public class VariablesGlobales
         UnityContainer.RegisterSingleton<IMaestroCajaRepository, MaestroCajaRepository>();
         UnityContainer.RegisterSingleton<IParametersRepository, ParametersRepository>();
         UnityContainer.RegisterSingleton<IAdelantosRepository, AdelantosRepository>();
+        UnityContainer.RegisterSingleton<ICierrePrecioRepository, CierrePrecioRepository>();
+        UnityContainer.RegisterSingleton<IMonedaRepository, MonedaRepository>();
     }
 
     public static VariablesGlobales Instance

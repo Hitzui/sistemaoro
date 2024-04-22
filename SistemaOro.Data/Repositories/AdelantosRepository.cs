@@ -14,7 +14,7 @@ public class AdelantosRepository(
 
     public string? ErrorSms { get; private set; }
 
-    public async Task<int> Add(Adelanto adelanto)
+    public async Task<bool> Add(Adelanto adelanto)
     {
         await using var context = new DataContext();
         try
@@ -36,12 +36,19 @@ public class AdelantosRepository(
                 Codmoneda = adelanto.Codmoneda,
             };
             context.Add(comprasAdelantos);
-            return await context.SaveChangesAsync();
+            var result =await context.SaveChangesAsync()>0;
+            if (result)
+            {
+                return true;
+            }
+
+            ErrorSms = $"No se pudo ingresar el adelanto con el codigo {adelanto.Idsalida}, revisar los parametros";
+            return false;
         }
         catch (Exception e)
         {
             ErrorSms = $"No se pudo ingresar el adelanto: {e.Message}";
-            return 0;
+            return false;
         }
     }
 
@@ -134,7 +141,7 @@ public class AdelantosRepository(
         var dSaldo = decimal.Zero;
         var param = await _parametersRepository.RecuperarParametros();
         var config = VariablesGlobales.Instance.ConfiguracionGeneral;
-        var mcaja = await _maestroCajaRepository.RecuperarSaldoCaja(config.Caja, config.Agencia);
+        var mcaja = await _maestroCajaRepository.FindByCajaAndAgencia(config.Caja, config.Agencia);
         if (mcaja is null)
         {
             ErrorSms = _maestroCajaRepository.ErrorSms;
@@ -259,5 +266,11 @@ public class AdelantosRepository(
                 $"No se encontraron datos para el codigo de cliente especificado {codCliente}, Error: {e.Message}";
             return [];
         }
+    }
+
+    public async Task<List<ComprasAdelanto>> FindByNumcompraComprasAdelantos(string numeroCompra)
+    {
+        await using var context = new DataContext();
+        return await context.ComprasAdelantos.Where(adelanto => adelanto.Numcompra == numeroCompra).ToListAsync();
     }
 }

@@ -35,7 +35,7 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository) :
                             && mcaja.Codagencia == agencia);
     }
 
-    public async Task<Mcaja?> RecuperarSaldoCaja(string caja, string agencia)
+    public async Task<Mcaja?> FindByCajaAndAgencia(string caja, string agencia)
     {
         await using var context = new DataContext();
         var findQuery = await Find(caja, agencia);
