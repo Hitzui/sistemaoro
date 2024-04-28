@@ -5,6 +5,8 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaOro.Data", "SistemaOro.Data\SistemaOro.Data.csproj", "{AEB63C56-9158-4097-870F-D049022CC974}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaOro.Test", "SistemaOro.Test\SistemaOro.Test.csproj", "{CE7EB1B4-63B4-454A-85B7-724FC454341B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,26 @@ Global
 		{AEB63C56-9158-4097-870F-D049022CC974}.Release|x64.Build.0 = Release|Any CPU
 		{AEB63C56-9158-4097-870F-D049022CC974}.Release|x86.ActiveCfg = Release|Any CPU
 		{AEB63C56-9158-4097-870F-D049022CC974}.Release|x86.Build.0 = Release|Any CPU
+		{CE7EB1B4-63B4-454A-85B7-724FC454341B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE7EB1B4-63B4-454A-85B7-724FC454341B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE7EB1B4-63B4-454A-85B7-724FC454341B}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{CE7EB1B4-63B4-454A-85B7-724FC454341B}.Debug|ARM.Build.0 = Debug|Any CPU
+		{CE7EB1B4-63B4-454A-85B7-724FC454341B}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{CE7EB1B4-63B4-454A-85B7-724FC454341B}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{CE7EB1B4-63B4-454A-85B7-724FC454341B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CE7EB1B4-63B4-454A-85B7-724FC454341B}.Debug|x64.Build.0 = Debug|Any CPU
+		{CE7EB1B4-63B4-454A-85B7-724FC454341B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CE7EB1B4-63B4-454A-85B7-724FC454341B}.Debug|x86.Build.0 = Debug|Any CPU
+		{CE7EB1B4-63B4-454A-85B7-724FC454341B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE7EB1B4-63B4-454A-85B7-724FC454341B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE7EB1B4-63B4-454A-85B7-724FC454341B}.Release|ARM.ActiveCfg = Release|Any CPU
+		{CE7EB1B4-63B4-454A-85B7-724FC454341B}.Release|ARM.Build.0 = Release|Any CPU
+		{CE7EB1B4-63B4-454A-85B7-724FC454341B}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{CE7EB1B4-63B4-454A-85B7-724FC454341B}.Release|ARM64.Build.0 = Release|Any CPU
+		{CE7EB1B4-63B4-454A-85B7-724FC454341B}.Release|x64.ActiveCfg = Release|Any CPU
+		{CE7EB1B4-63B4-454A-85B7-724FC454341B}.Release|x64.Build.0 = Release|Any CPU
+		{CE7EB1B4-63B4-454A-85B7-724FC454341B}.Release|x86.ActiveCfg = Release|Any CPU
+		{CE7EB1B4-63B4-454A-85B7-724FC454341B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

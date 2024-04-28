@@ -2,18 +2,19 @@
 using Microsoft.EntityFrameworkCore;
 using SistemaOro.Data.Configuration;
 using SistemaOro.Data.Entities;
+using SistemaOro.Data.Libraries;
 
 namespace SistemaOro.Data.Repositories;
 
 public class ClienteRepository : IClienteRepository
 {
-    private ConfiguracionGeneral _configuracionGeneral = new ConfiguracionGeneral();
+    private readonly ConfiguracionGeneral _configuracionGeneral = new ConfiguracionGeneral();
 
     public async Task<string> CodCliente()
     {
         await using var context = new DataContext();
-        var codcaja = _configuracionGeneral.Caja;
-        var codagencia = _configuracionGeneral.Agencia;
+        var codcaja = VariablesGlobales.Instance.ConfiguracionGeneral.Caja;
+        var codagencia = VariablesGlobales.Instance.ConfiguracionGeneral.Agencia;
         var findParameters = await context.Id.FirstOrDefaultAsync();
         if (findParameters is null)
         {
@@ -37,11 +38,12 @@ public class ClienteRepository : IClienteRepository
         }
 
         findParameters.Codcliente += 1;
-        var result = await context.SaveChangesAsync()>0;
+        var result = await context.SaveChangesAsync() > 0;
         if (result)
         {
             return true;
         }
+
         ErrorSms = "No fue posible crear los datos del cliente en el sistema.";
         return false;
     }
@@ -57,11 +59,12 @@ public class ClienteRepository : IClienteRepository
         }
 
         context.Entry(findCliente).CurrentValues.SetValues(cliente);
-        var result = await context.SaveChangesAsync()>0;
+        var result = await context.SaveChangesAsync() > 0;
         if (result)
         {
             return true;
         }
+
         ErrorSms = $"No fue posible guardar los datos del cliente con el codigo {cliente.Codcliente} en la base de datos";
         return false;
     }
@@ -77,11 +80,12 @@ public class ClienteRepository : IClienteRepository
         }
 
         context.Clientes.Remove(cliente);
-        var result = await context.SaveChangesAsync()>0;
+        var result = await context.SaveChangesAsync() > 0;
         if (result)
         {
             return true;
         }
+
         ErrorSms = $"No fue posible eliminar los datos del cliente con el codigo {cliente.Codcliente} en la base de datos";
         return false;
     }
@@ -95,7 +99,7 @@ public class ClienteRepository : IClienteRepository
     public async Task<List<Cliente>> FindAll()
     {
         await using var context = new DataContext();
-        return await context.Clientes.OrderBy(cliente=>cliente.Nombres).ToListAsync();
+        return await context.Clientes.OrderBy(cliente => cliente.Nombres).ToListAsync();
     }
 
     public async Task<Cliente?> FindByNombre(string nombre)
@@ -126,8 +130,8 @@ public class ClienteRepository : IClienteRepository
     {
         await using var context = new DataContext();
         return await new GenericRepo<Cliente>(context).Get(
-            filter: f=> f.Nombres.Contains(nombre),
-            orderBy: o => o.OrderBy(p=> p.Nombres),
+            filter: f => f.Nombres.Contains(nombre),
+            orderBy: o => o.OrderBy(p => p.Nombres),
             pageNumber: page, pageSize: 10
         ).ToListAsync();
     }
@@ -174,6 +178,7 @@ public class ClienteRepository : IClienteRepository
             {
                 row[property.Name] = property.GetValue(item);
             }
+
             dataTable.Rows.Add(row);
         }
 

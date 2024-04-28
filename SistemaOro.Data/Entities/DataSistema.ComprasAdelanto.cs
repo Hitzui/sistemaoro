@@ -44,7 +44,7 @@ namespace SistemaOro.Data.Entities
 
         public DateTime Fecha { get; set; }
 
-        public string Codcaja { get; set; }
+        public string? Codcaja { get; set; }
 
         public string Usuario { get; set; }
 

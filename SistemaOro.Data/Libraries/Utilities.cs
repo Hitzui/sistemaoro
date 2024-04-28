@@ -1,7 +1,26 @@
-﻿namespace SistemaOro.Data.Libraries;
+﻿using Newtonsoft.Json;
 
-public class Utilities
+namespace SistemaOro.Data.Libraries;
+
+public static class Utilities
 {
+    private const string? AppSettingsPath = "appsettings.json";
+
+    /// <summary>
+    /// Esto escribe valores en el appsettings.json, en la sección de globals, donde se guardan las variables globales del sistema
+    /// </summary>
+    /// <param name="key">Clave del parametro</param>
+    /// <param name="value">Valor a guardar</param>
+    /// <exception cref="InvalidOperationException">No existe o no se puede leer el archivo</exception>
+    public static void UpdateAppSetting(string key, string? value)
+    {
+        var json = File.ReadAllText($"{Directory.GetCurrentDirectory()}/{AppSettingsPath}");
+        dynamic jsonObj = JsonConvert.DeserializeObject(json) ?? throw new InvalidOperationException("No se puede leer el archivo de configuración");
+        jsonObj["globals"][key] = value;
+        string output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
+        File.WriteAllText("appsettings.json", output);
+    }
+
     public static string NumeroALetras(decimal numero)
     {
         // Separar parte entera y parte decimal
@@ -12,6 +31,7 @@ public class Utilities
 
         return palabras;
     }
+
     public static string NumeroALetras(int numero)
     {
         if (numero == 0)
@@ -57,5 +77,4 @@ public class Utilities
 
         return palabras;
     }
-
 }

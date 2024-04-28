@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SistemaOro.Data.Configuration;
 using SistemaOro.Data.Entities;
 using SistemaOro.Data.Exceptions;
 using SistemaOro.Data.Libraries;
@@ -65,8 +66,8 @@ public class AdelantosRepository(
 
         find.Saldo = adelanto;
         find.Numcompra = string.IsNullOrEmpty(find.Numcompra)
-            ? $@"{config.Agencia}.{numCompra}"
-            : $@"{find.Numcompra};{config.Agencia}.{numCompra}";
+            ? $@"{VariablesGlobales.Instance.ConfiguracionGeneral.Agencia}.{numCompra}"
+            : $@"{find.Numcompra};{VariablesGlobales.Instance.ConfiguracionGeneral.Agencia}.{numCompra}";
 
         return await context.SaveChangesAsync();
     }
@@ -141,7 +142,7 @@ public class AdelantosRepository(
         var dSaldo = decimal.Zero;
         var param = await _parametersRepository.RecuperarParametros();
         var config = VariablesGlobales.Instance.ConfiguracionGeneral;
-        var mcaja = await _maestroCajaRepository.FindByCajaAndAgencia(config.Caja, config.Agencia);
+        var mcaja = await _maestroCajaRepository.FindByCajaAndAgencia(VariablesGlobales.Instance.ConfiguracionGeneral.Caja, VariablesGlobales.Instance.ConfiguracionGeneral.Agencia);
         if (mcaja is null)
         {
             ErrorSms = _maestroCajaRepository.ErrorSms;
@@ -159,7 +160,7 @@ public class AdelantosRepository(
         {
             Idcaja = mcaja.Idcaja,
             Idmov = param.PagoAdelanto!.Value,
-            Codcaja = config.Caja,
+            Codcaja = VariablesGlobales.Instance.ConfiguracionGeneral.Caja,
             Concepto = "***EFECTIVO A ADELANTO(S): ",
             Transferencia = decimal.Zero,
             Efectivo = monto,
@@ -184,7 +185,7 @@ public class AdelantosRepository(
                 Numcompra = adelanto.Idsalida,
                 Usuario = VariablesGlobales.Instance.Usuario!.Usuario1,
                 Codmoneda = adelanto.Codmoneda,
-                Codagencia = config.Agencia,
+                Codagencia = VariablesGlobales.Instance.ConfiguracionGeneral.Agencia,
                 Sinicial = saldo
             };
             if (decimal.Compare(saldo, monto) >= 0)

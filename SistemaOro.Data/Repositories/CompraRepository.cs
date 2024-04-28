@@ -9,8 +9,8 @@ namespace SistemaOro.Data.Repositories;
 
 public class CompraRepository : ICompraRepository
 {
-    private string _caja;
-    private string _agencia;
+    private string? _caja;
+    private string? _agencia;
     private readonly IAdelantosRepository _adelantoRepository;
     private readonly IParametersRepository _parametersRepository;
     private readonly IMaestroCajaRepository _maestroCajaRepository;
@@ -29,8 +29,8 @@ public class CompraRepository : ICompraRepository
         _monedaRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IMonedaRepository>();
         _usuario = VariablesGlobales.Instance.Usuario;
         var configuracionGeneral = new ConfiguracionGeneral();
-        _agencia = configuracionGeneral.Agencia;
-        _caja = configuracionGeneral.Caja;
+        _agencia = VariablesGlobales.Instance.ConfiguracionGeneral.Agencia;
+        _caja = VariablesGlobales.Instance.ConfiguracionGeneral.Caja;
     }
 
     public void ImprimirCompra(string numeroCompra)
@@ -69,7 +69,7 @@ public class CompraRepository : ICompraRepository
         var param = await _parametersRepository.RecuperarParametros();
         var tbTipoCambio = await _tipoCambioRepository.FindByDateNow();
         var tipoCambioDia = decimal.One;
-        var moneda = await _monedaRepository.FindById(compra.Codmoneda);
+        var moneda = await _monedaRepository.GetByIdAsync(compra.Codmoneda);
         if (moneda is null)
         {
             ErrorSms = "No existe la moneda en el sistema actual, intente nuevamente";

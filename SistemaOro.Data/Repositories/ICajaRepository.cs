@@ -4,10 +4,11 @@ namespace SistemaOro.Data.Repositories;
 
 public interface ICajaRepository
 {
-    string? ErrorSms { get; }
-    Task<bool> Create(Caja caja);
-    Task<bool> Update(Caja caja);
-    Task<bool> Delete(Caja caja);
+    Task<Caja?> GetByIdAsync(int id);
+    Task<bool> AddAsync(Caja? entity);
+    Task<bool> UpdateAsync(Caja? entity);
+    Task<bool> DeleteAsync(int id);
+
     Task<List<Caja>> FindAll();
     Task<Caja?> FindByCod(string codigo);
     string CodigoCaja();

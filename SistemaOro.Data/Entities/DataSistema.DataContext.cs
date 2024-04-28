@@ -23,254 +23,112 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Metadata;
+using SistemaOro.Data.Libraries;
 
 namespace SistemaOro.Data.Entities
 {
-
     public partial class DataContext : DbContext
     {
-
-        public DataContext() :
-            base()
+        public DataContext()
         {
-            OnCreated();
+            //OnCreated();
         }
 
         public DataContext(DbContextOptions<DataContext> options) :
             base(options)
         {
-            OnCreated();
+            //OnCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured ||
                 (!optionsBuilder.Options.Extensions.OfType<RelationalOptionsExtension>().Any(ext => !string.IsNullOrEmpty(ext.ConnectionString) || ext.Connection != null) &&
-                 !optionsBuilder.Options.Extensions.Any(ext => !(ext is RelationalOptionsExtension) && !(ext is CoreOptionsExtension))))
+                 !optionsBuilder.Options.Extensions.Any(ext => ext is not RelationalOptionsExtension && ext is not CoreOptionsExtension)))
             {
-                optionsBuilder.UseSqlServer(@"Data Source=INFORMATICA\SQLEXPRESS;Initial Catalog=EfectiOro;Integrated Security=True;Persist Security Info=True");
+                optionsBuilder.UseSqlServer(VariablesGlobales.ConnectionString);
             }
+
             CustomizeConfiguration(ref optionsBuilder);
             base.OnConfiguring(optionsBuilder);
         }
 
         partial void CustomizeConfiguration(ref DbContextOptionsBuilder optionsBuilder);
 
-        public virtual DbSet<Adelanto> Adelantos
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<Adelanto> Adelantos { get; set; }
 
-        public virtual DbSet<Agencia> Agencias
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<Agencia> Agencias { get; set; }
 
-        public virtual DbSet<Caja> Cajas
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<Caja> Cajas { get; set; }
 
-        public virtual DbSet<CierrePrecio> CierrePrecios
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<CierrePrecio> CierrePrecios { get; set; }
 
-        public virtual DbSet<Cliente> Clientes
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<Cliente> Clientes { get; set; }
 
-        public virtual DbSet<Compra> Compras
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<Compra> Compras { get; set; }
 
-        public virtual DbSet<ComprasAdelanto> ComprasAdelantos
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<ComprasAdelanto> ComprasAdelantos { get; set; }
 
-        public virtual DbSet<Descargue> Descargues
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<Descargue> Descargues { get; set; }
 
-        public virtual DbSet<DetCompra> DetCompras
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<DetCompra> DetCompras { get; set; }
 
-        public virtual DbSet<Detacaja> Detacajas
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<Detacaja> Detacajas { get; set; }
 
-        public virtual DbSet<Detacierre> Detacierres
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<Detacierre> Detacierres { get; set; }
 
-        public virtual DbSet<Estado> Estados
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<Estado> Estados { get; set; }
 
-        public virtual DbSet<Id> Id
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<Id> Id { get; set; }
 
-        public virtual DbSet<Liquidacion2015> Liquidacion2015s
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<Liquidacion2015> Liquidacion2015s { get; set; }
 
-        public virtual DbSet<Listado> Listados
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<Listado> Listados { get; set; }
 
-        public virtual DbSet<Mcaja> Mcajas
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<Mcaja> Mcajas { get; set; }
 
-        public virtual DbSet<Moneda> Monedas
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<Moneda> Monedas { get; set; }
 
-        public virtual DbSet<Movcaja> Movcajas
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<Movcaja> Movcajas { get; set; }
 
-        public virtual DbSet<PagosAdelantado> PagosAdelantados
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<PagosAdelantado> PagosAdelantados { get; set; }
 
-        public virtual DbSet<Pica> Picas
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<Pica> Picas { get; set; }
 
-        public virtual DbSet<PrecioKilate> PrecioKilates
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<PrecioKilate> PrecioKilates { get; set; }
 
-        public virtual DbSet<Precio> Precios
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<Precio> Precios { get; set; }
 
-        public virtual DbSet<ReporteCaja> ReporteCajas
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<ReporteCaja> ReporteCajas { get; set; }
 
-        public virtual DbSet<Rubro> Rubros
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<Rubro> Rubros { get; set; }
 
-        public virtual DbSet<TipoCambio> TipoCambios
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<TipoCambio> TipoCambios { get; set; }
 
-        public virtual DbSet<TipoPreciosPagado> TipoPreciosPagados
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<TipoPreciosPagado> TipoPreciosPagados { get; set; }
 
-        public virtual DbSet<Tmpprecio> Tmpprecios
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<Tmpprecio> Tmpprecios { get; set; }
 
-        public virtual DbSet<Usuario> Usuarios
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<Usuario> Usuarios { get; set; }
 
-        public virtual DbSet<ComprasOperador> ComprasOperadors
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<ComprasOperador> ComprasOperadors { get; set; }
 
-        public virtual DbSet<DescargueByCompra> DescargueByCompras
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<DescargueByCompra> DescargueByCompras { get; set; }
 
-        public virtual DbSet<MovimientosCajaSelect> MovimientosCajaSelects
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<MovimientosCajaSelect> MovimientosCajaSelects { get; set; }
 
-        public virtual DbSet<RptMovimientosCaja> RptMovimientosCajas
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<RptMovimientosCaja> RptMovimientosCajas { get; set; }
 
-        public virtual DbSet<TransaccionEfectivo> TransaccionEfectivos
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<TransaccionEfectivo> TransaccionEfectivos { get; set; }
 
-        public virtual DbSet<Vdetacaja> Vdetacajas
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<Vdetacaja> Vdetacajas { get; set; }
 
-        public virtual DbSet<VVariacionesCliente> VVariacionesClientes
-        {
-            get;
-            set;
-        }
+        public virtual DbSet<VVariacionesCliente> VVariacionesClientes { get; set; }
 
         #region Methods
 
-        public void AnularCompra (string numeroCompra, string agencia)
+        public void AnularCompra(string numeroCompra, string agencia)
         {
-
             DbConnection connection = this.Database.GetDbConnection();
             bool needClose = false;
             if (connection.State != ConnectionState.Open)
@@ -301,6 +159,7 @@ namespace SistemaOro.Data.Entities
                     {
                         numeroCompraParameter.Value = DBNull.Value;
                     }
+
                     cmd.Parameters.Add(numeroCompraParameter);
 
                     DbParameter agenciaParameter = cmd.CreateParameter();
@@ -316,6 +175,7 @@ namespace SistemaOro.Data.Entities
                     {
                         agenciaParameter.Value = DBNull.Value;
                     }
+
                     cmd.Parameters.Add(agenciaParameter);
                     cmd.ExecuteNonQuery();
                 }
@@ -327,9 +187,8 @@ namespace SistemaOro.Data.Entities
             }
         }
 
-        public async Task AnularCompraAsync (string numeroCompra, string agencia)
+        public async Task AnularCompraAsync(string numeroCompra, string agencia)
         {
-
             DbConnection connection = this.Database.GetDbConnection();
             bool needClose = false;
             if (connection.State != ConnectionState.Open)
@@ -360,6 +219,7 @@ namespace SistemaOro.Data.Entities
                     {
                         numeroCompraParameter.Value = DBNull.Value;
                     }
+
                     cmd.Parameters.Add(numeroCompraParameter);
 
                     DbParameter agenciaParameter = cmd.CreateParameter();
@@ -375,6 +235,7 @@ namespace SistemaOro.Data.Entities
                     {
                         agenciaParameter.Value = DBNull.Value;
                     }
+
                     cmd.Parameters.Add(agenciaParameter);
                     await cmd.ExecuteNonQueryAsync();
                 }

@@ -9,8 +9,8 @@ public interface IClienteRepository
     Task<bool> Create(Cliente cliente);
     Task<bool> Update(Cliente cliente);
     Task<bool> Delete(Cliente cliente);
-    Task<Cliente?> FindById(string codcliente);
     Task<List<Cliente>> FindAll();
+    Task<Cliente?> FindById(string codcliente);
 
     Task<Cliente?> FindByNombre(string nombre);
     Task<Cliente?> FindByApellido(string apellido);

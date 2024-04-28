@@ -1,4 +1,5 @@
 ﻿using System.Xml.Linq;
+using SistemaOro.Data.Libraries;
 
 namespace SistemaOro.Data.Configuration;
 
@@ -62,44 +63,16 @@ public class ConfiguracionGeneral
 
     #region Archivo XML de configuracion
 
-    public string Agencia
+    public string? Caja
     {
-        get
-        {
-            var val = _xdoc.Descendants("Agencia").Select(x => x).Single().Value;
-            return val;
-        }
-        set
-        {
-            var xVElemental = _xdoc.Elements("Configuracion").SingleOrDefault(element => element.Name == "Agencia");
-            if (xVElemental is null)
-            {
-                return;
-            }
-
-            xVElemental.Value = value;
-            xVElemental.Save(Ruta);
-        }
+        get=>VariablesGlobales.Instance.ConfigurationSection["CAJA"];
+        set => Utilities.UpdateAppSetting("CAJA", value);
     }
 
-    public string Caja
+    public string? Agencia
     {
-        get
-        {
-            var element = _xdoc.Element("Configuracion")!.Element("Caja");
-            return element is null ? "" : element.Value;
-        }
-        set
-        {
-            var element = _xdoc.Element("Configuracion")!.Element("Caja");
-            if (element is null)
-            {
-                return;
-            }
-
-            element.Value = value;
-            element.Save(Ruta);
-        }
+        get=> VariablesGlobales.Instance.ConfigurationSection["AGENCIA"];
+        set => Utilities.UpdateAppSetting("AGENCIA", value);
     }
 
     public string Instance
@@ -134,20 +107,10 @@ public class ConfiguracionGeneral
         }
     }
 
-    public string Usuario
+    public string? Usuario
     {
-        get => _xdoc.Element("Configuracion")!.Element("Usuario")!.Value;
-        set
-        {
-            var element = _xdoc.Element("Configuracion")!.Element("Usuario");
-            if (element is null)
-            {
-                return;
-            }
-
-            element.Value = value;
-            element.Save(Ruta);
-        }
+        get => VariablesGlobales.Instance.ConfigurationSection["USUARIO"];
+        set => VariablesGlobales.Instance.ConfigurationSection["USUARIO"] = value;
     }
 
     public string Password

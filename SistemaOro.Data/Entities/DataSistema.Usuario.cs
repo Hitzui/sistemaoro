@@ -14,6 +14,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
@@ -28,6 +29,7 @@ namespace SistemaOro.Data.Entities
             OnCreated();
         }
 
+        [Key]
         public string Codoperador { get; set; }
 
         public string Usuario1 { get; set; }
@@ -44,7 +46,7 @@ namespace SistemaOro.Data.Entities
 
         public int Nivel { get; set; }
 
-        public string? Estado { get; set; }
+        public bool Estado { get; set; }
 
         #region Extensibility Method Definitions
 

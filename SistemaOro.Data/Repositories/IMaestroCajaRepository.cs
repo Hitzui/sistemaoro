@@ -6,13 +6,13 @@ public interface IMaestroCajaRepository
 {
     Task<bool> ValidarCajaAbierta(string caja);
 
-    Task<Mcaja?> FindByCajaAndAgencia(string caja, string agencia);
+    Task<Mcaja?> FindByCajaAndAgencia(string? caja, string? agencia);
 
-    Task<bool> EstadoCaja(string caja, string agencia);
+    Task<bool> EstadoCaja(string? caja, string? agencia);
 
-    Task<bool> AbrirCaja(string caja, string agencia);
+    Task<bool> AbrirCaja(string? caja, string? agencia);
 
-    Task<bool> CerrarCaja(string caja, string agencia);
+    Task<bool> CerrarCaja(string? caja, string? agencia);
 
     Task<bool> ActualizarDatosMaestroCaja(Mcaja mocaja);
 

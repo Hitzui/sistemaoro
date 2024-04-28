@@ -40,7 +40,7 @@ namespace SistemaOro.Data.Entities
 
         public decimal Cantidad { get; set; }
 
-        public string Codagencia { get; set; }
+        public string? Codagencia { get; set; }
 
         public virtual Agencia Agencia { get; set; }
 

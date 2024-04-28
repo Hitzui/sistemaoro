@@ -1,11 +1,11 @@
 ﻿using Azure.Core;
+using Microsoft.EntityFrameworkCore;
 using SistemaOro.Data.Entities;
 
 namespace SistemaOro.Data.Repositories;
 
-public class TipoCambioRepository : ITipoCambioRepository
+public class TipoCambioRepository(DataContext context) : FacadeEntity<TipoCambio>(context),ITipoCambioRepository
 {
-    public string ErrorSms { get; private set; } = "";
 
     public async Task<TipoCambio?> FindByDateNow()
     {

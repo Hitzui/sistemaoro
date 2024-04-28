@@ -31,7 +31,7 @@ namespace SistemaOro.Data.Entities
 
         public int Idcaja { get; set; }
 
-        public string Codcaja { get; set; }
+        public string? Codcaja { get; set; }
 
         public string? Codagencia { get; set; }
 

@@ -26,7 +26,7 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository) :
         }
     }
 
-    private static async Task<IQueryable<Mcaja>> Find(string caja, string agencia)
+    private static async Task<IQueryable<Mcaja>> Find(string? caja, string? agencia)
     {
         await using var context = new DataContext();
         return context.Mcajas
@@ -35,7 +35,7 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository) :
                             && mcaja.Codagencia == agencia);
     }
 
-    public async Task<Mcaja?> FindByCajaAndAgencia(string caja, string agencia)
+    public async Task<Mcaja?> FindByCajaAndAgencia(string? caja, string? agencia)
     {
         await using var context = new DataContext();
         var findQuery = await Find(caja, agencia);
@@ -46,7 +46,7 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository) :
 
     }
 
-    public async Task<bool> EstadoCaja(string caja, string agencia)
+    public async Task<bool> EstadoCaja(string? caja, string? agencia)
     {
         await using var context = new DataContext();
         try
@@ -64,7 +64,7 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository) :
         }
     }
 
-    public async Task<bool> AbrirCaja(string caja, string agencia)
+    public async Task<bool> AbrirCaja(string? caja, string? agencia)
     {
         await using var context = new DataContext();
         try
@@ -125,7 +125,7 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository) :
         }
     }
 
-    public async Task<bool> CerrarCaja(string caja, string agencia)
+    public async Task<bool> CerrarCaja(string? caja, string? agencia)
     {
         await using var ctx = new DataContext();
         try
