@@ -19,7 +19,7 @@ public interface IAdelantosRepository
     Task<string?> RecpuerarCodigoAdelanto();
 
     Task<List<Adelanto>> ListarAdelantosPorClientes(string codigo);
-    Task<bool> AnularAdelanto(string codigo);
+    Task<bool> AnularAdelanto(string codigo, bool debitar);
 
     /// <summary>
     /// Esta funcion permite aplicar efectivo a un adelanto sin necesidad de pasar por compra

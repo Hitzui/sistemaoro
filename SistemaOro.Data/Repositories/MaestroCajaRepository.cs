@@ -173,10 +173,9 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository,Da
         {
             await query.Where(mcaja => mcaja.Estado == 1)
                 .ExecuteUpdateAsync(calls =>
-                    calls.SetProperty(mcaja => mcaja.Entrada, mcaja => mcaja.Entrada!.Value + mocaja.Entrada)
-                        .SetProperty(mcaja => mcaja.Salida, mcaja => mcaja.Salida!.Value + mocaja.Salida)
-                        .SetProperty(mcaja => mcaja.Sfinal,
-                            mcaja => mcaja.Entrada!.Value + mocaja.Entrada - mocaja.Salida)
+                    calls.SetProperty(mcaja => mcaja.Entrada, mcaja => mcaja.Entrada!.Value + mocaja.Entrada!.Value)
+                        .SetProperty(mcaja => mcaja.Salida, mcaja => mcaja.Salida!.Value + mocaja.Salida!.Value)
+                        .SetProperty(mcaja => mcaja.Sfinal, mcaja => mcaja.Entrada!.Value + mocaja.Entrada!.Value - mocaja.Salida!.Value)
                 );
             return true;
         }
@@ -197,7 +196,7 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository,Da
         var save = await context.SaveChangesAsync() > 0;
         if (!save)
         {
-            ErrorSms = "No se pudo guardar los datos del detalle de caja";
+            ErrorSms = "No se guardaron los datos del detalle de caja";
         }
 
         return save;

@@ -15,7 +15,7 @@ public class AdelantosRepository(IParametersRepository parametersRepository, IMa
         try
         {
             adelanto = context.Add(adelanto).Entity;
-            var comprasAdelantos = new ComprasAdelanto()
+            var comprasAdelantos = new ComprasAdelanto
             {
                 Numcompra = string.Empty,
                 Codcliente = adelanto.Codcliente,
@@ -86,7 +86,7 @@ public class AdelantosRepository(IParametersRepository parametersRepository, IMa
 
     public async Task<Adelanto?> FindByCodigoAdelanto(string codigoAdelanto)
     {
-        return await context.Adelantos.FindAsync(codigoAdelanto);
+        return await context.Adelantos.SingleOrDefaultAsync(adelanto => adelanto.Idsalida == codigoAdelanto && adelanto.Activa!.Value);
     }
 
     public async Task<List<Adelanto>> FindAll()
@@ -96,7 +96,7 @@ public class AdelantosRepository(IParametersRepository parametersRepository, IMa
 
     public async Task<string?> RecpuerarCodigoAdelanto()
     {
-        var ids = await context.Id.FirstOrDefaultAsync();
+        var ids = await parametersRepository.RecuperarParametros();
         return ids is null ? null : ids.Idadelanto.ToString()?.PadLeft(10, '0');
     }
 
@@ -105,28 +105,55 @@ public class AdelantosRepository(IParametersRepository parametersRepository, IMa
         return await context.Adelantos.Where(adelanto => adelanto.Codcliente == codigo).ToListAsync();
     }
 
-    public async Task<bool> AnularAdelanto(string codigo)
+    public async Task<bool> AnularAdelanto(string codigo, bool debitar)
     {
         var param = await parametersRepository.RecuperarParametros();
         if (param is null)
         {
             throw new Exception(VariablesGlobales.Instance.ConfigurationSection["ERROR_PARAM"]);
         }
-        var find = await context.Adelantos.FirstOrDefaultAsync(adelanto =>
-            adelanto.Idsalida == codigo && adelanto.Monto == adelanto.Saldo);
+
+        var find = await FindByCodigoAdelanto(codigo);
         if (find is null)
         {
             ErrorSms =
-                $"No se pudo encontrar el adelanto con el codigo especificado {codigo} o ya se ha aplicado en distintas compras";
+                $"No se pudo encontrar el adelanto con el codigo especificado {codigo}";
             return false;
         }
 
-        find.Saldo = decimal.Zero;
-        return await context.SaveChangesAsync() > 0;
+        if (find.Saldo.CompareTo(find.Monto!.Value) == 0)
+        {
+            ErrorSms =
+                $"No se puede anular el adelanto con el codigo especificado {codigo} ya que se ha aplicado en compras";
+            return false;
+        }
+
+        find.Activa = false;
+        if (!debitar) return await context.SaveChangesAsync() > 0;
+        var findMcaja = await maestroCajaRepository.FindByCajaAndAgencia(ConfiguracionGeneral.Caja, ConfiguracionGeneral.Agencia);
+        if (findMcaja is null) return await context.SaveChangesAsync() > 0;
+        findMcaja.Entrada = find.Monto.Value;
+        findMcaja.Salida = decimal.Zero;
+        var nuevoDetaCaja = new Detacaja
+        {
+            Codcaja = find.Codcaja,
+            Idcaja = findMcaja.Idcaja,
+            Efectivo = find.Efectivo,
+            Cheque = find.Cheque,
+            Transferencia = find.Transferencia,
+            Idmov = param.AnularAdelanto!.Value,
+            Referencia = $"Revertir adelanto con codigo N°: {codigo}",
+            Hora = DateTime.Now.ToLongTimeString(),
+            Concepto = $"***REVERTIR ADELANTO: {codigo}***",
+            Fecha = DateTime.Now
+        };
+        var insertValueDetaCaja = await maestroCajaRepository.GuardarDatosDetaCaja(nuevoDetaCaja, findMcaja);
+        if (insertValueDetaCaja) return await context.SaveChangesAsync() > 0;
+        ErrorSms = maestroCajaRepository.ErrorSms;
+        return false;
     }
 
-    public async Task<bool> AplicarAdelantoEfectivo(List<Adelanto> listaAdelantos, decimal monto,
-        string codCliente = "")
+    public async Task<bool> AplicarAdelantoEfectivo(List<Adelanto> listaAdelantos, decimal monto, string codCliente = "")
     {
         //var dSaldo = decimal.Zero;
         var param = await parametersRepository.RecuperarParametros();
@@ -134,6 +161,7 @@ public class AdelantosRepository(IParametersRepository parametersRepository, IMa
         {
             throw new Exception(VariablesGlobales.Instance.ConfigurationSection["ERROR_PARAM"]);
         }
+
         var mcaja = await maestroCajaRepository.FindByCajaAndAgencia(ConfiguracionGeneral.Caja, ConfiguracionGeneral.Agencia);
         if (mcaja is null)
         {
