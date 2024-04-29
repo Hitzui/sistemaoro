@@ -1,3 +1,4 @@
+using SistemaOro.Data.Configuration;
 using SistemaOro.Data.Libraries;
 using SistemaOro.Data.Repositories;
 using Unity;
@@ -25,8 +26,16 @@ public class Tests
     [Test]
     public void TestConfiguracionGeneral()
     {
-        VariablesGlobales.Instance.ConfiguracionGeneral.Caja = "C001";
-        VariablesGlobales.Instance.ConfiguracionGeneral.Agencia = "A001";
-        Console.WriteLine($@"Configuración: {VariablesGlobales.Instance.ConfiguracionGeneral.Caja} y {VariablesGlobales.Instance.ConfiguracionGeneral.Agencia}");
+        ConfiguracionGeneral.Caja = "C001";
+        ConfiguracionGeneral.Agencia = "A001";
+        Console.WriteLine($@"Configuración: {ConfiguracionGeneral.Caja} y {ConfiguracionGeneral.Agencia}");
+    }
+
+    [Test]
+    public async Task TestAdelantos()
+    {
+        var adelantosRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IAdelantosRepository>();
+        var findAll = await adelantosRepository.FindAll();
+        Console.WriteLine(findAll.Count);
     }
 }

@@ -6,16 +6,13 @@ using SistemaOro.Data.Libraries;
 
 namespace SistemaOro.Data.Repositories;
 
-public class ClienteRepository : IClienteRepository
+public class ClienteRepository(IParametersRepository parametersRepository,DataContext context) : IClienteRepository
 {
-    private readonly ConfiguracionGeneral _configuracionGeneral = new ConfiguracionGeneral();
-
     public async Task<string> CodCliente()
     {
-        await using var context = new DataContext();
-        var codcaja = VariablesGlobales.Instance.ConfiguracionGeneral.Caja;
-        var codagencia = VariablesGlobales.Instance.ConfiguracionGeneral.Agencia;
-        var findParameters = await context.Id.FirstOrDefaultAsync();
+        var codcaja = ConfiguracionGeneral.Caja;
+        var codagencia = ConfiguracionGeneral.Agencia;
+        var findParameters = await parametersRepository.RecuperarParametros();
         if (findParameters is null)
         {
             ErrorSms = "No existen los parametros en la base de datos";
@@ -28,9 +25,8 @@ public class ClienteRepository : IClienteRepository
 
     public async Task<bool> Create(Cliente cliente)
     {
-        await using var context = new DataContext();
         context.Add(cliente);
-        var findParameters = await context.Id.FirstOrDefaultAsync();
+        var findParameters = await parametersRepository.RecuperarParametros();
         if (findParameters is null)
         {
             ErrorSms = "No existen los parametros en la base de datos";
@@ -50,7 +46,6 @@ public class ClienteRepository : IClienteRepository
 
     public async Task<bool> Update(Cliente cliente)
     {
-        await using var context = new DataContext();
         var findCliente = await FindById(cliente.Codcliente);
         if (findCliente is null)
         {
@@ -71,7 +66,6 @@ public class ClienteRepository : IClienteRepository
 
     public async Task<bool> Delete(Cliente cliente)
     {
-        await using var context = new DataContext();
         var find = await FindById(cliente.Codcliente);
         if (find is null)
         {
@@ -92,43 +86,36 @@ public class ClienteRepository : IClienteRepository
 
     public async Task<Cliente?> FindById(string codcliente)
     {
-        await using var context = new DataContext();
         return await context.Clientes.SingleOrDefaultAsync(cliente => cliente.Codcliente == codcliente);
     }
 
     public async Task<List<Cliente>> FindAll()
     {
-        await using var context = new DataContext();
         return await context.Clientes.OrderBy(cliente => cliente.Nombres).ToListAsync();
     }
 
     public async Task<Cliente?> FindByNombre(string nombre)
     {
-        await using var context = new DataContext();
         return await context.Clientes.FirstOrDefaultAsync(cliente => cliente.Nombres == nombre);
     }
 
     public async Task<Cliente?> FindByApellido(string apellido)
     {
-        await using var context = new DataContext();
         return await context.Clientes.FirstOrDefaultAsync(cliente => cliente.Apellidos == apellido);
     }
 
     public async Task<Cliente?> FindByCedula(string cedula)
     {
-        await using var context = new DataContext();
         return await context.Clientes.FirstOrDefaultAsync(cliente => cliente.Numcedula == cedula);
     }
 
     public async Task<List<Cliente>> FilterByName(string nombre)
     {
-        await using var context = new DataContext();
         return await context.Clientes.Where(cliente => cliente.Nombres.Contains(nombre)).ToListAsync();
     }
 
     public async Task<List<Cliente>> FilterByNameAndPagination(string nombre, int page = 0)
     {
-        await using var context = new DataContext();
         return await new GenericRepo<Cliente>(context).Get(
             filter: f => f.Nombres.Contains(nombre),
             orderBy: o => o.OrderBy(p => p.Nombres),
@@ -138,13 +125,11 @@ public class ClienteRepository : IClienteRepository
 
     public async Task<List<Cliente>> FilterByCodigo(string codigo)
     {
-        await using var context = new DataContext();
         return await context.Clientes.Where(cliente => cliente.Codcliente.Contains(codigo)).ToListAsync();
     }
 
     public async Task<List<Cliente>> FilterByApellido(string apellido)
     {
-        await using var context = new DataContext();
         return await context.Clientes.Where(cliente => cliente.Apellidos!.Contains(apellido)).ToListAsync();
     }
 
@@ -187,7 +172,6 @@ public class ClienteRepository : IClienteRepository
 
     public async Task<List<Cliente>> FilterByNameAndApellido(string filtro)
     {
-        await using var context = new DataContext();
         return await context.Clientes.Where(cliente => cliente.Nombres.Contains(filtro) || cliente.Apellidos!.Contains(filtro)).ToListAsync();
     }
 }

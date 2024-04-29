@@ -2,13 +2,12 @@
 
 namespace SistemaOro.Data.Repositories;
 
-public class CierrePrecioRepository : ICierrePrecioRepository
+public class CierrePrecioRepository(DataContext context) : ICierrePrecioRepository
 {
     public string ErrorSms { get; private set; } = "";
 
     public async Task<CierrePrecio?> FindById(int idcierre)
     {
-        await using var context = new DataContext();
         var find = await context.CierrePrecios.FindAsync(idcierre);
         if (find is not null)
         {

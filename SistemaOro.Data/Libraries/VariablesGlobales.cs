@@ -20,12 +20,17 @@ public class VariablesGlobales
         var dataContext = new DataContext();
         ConfiguracionGeneral = new ConfiguracionGeneral();
         UnityContainer = new UnityContainer();
-        UnityContainer.RegisterSingleton<IMaestroCajaRepository, MaestroCajaRepository>();
-        UnityContainer.RegisterSingleton<IParametersRepository, ParametersRepository>();
         UnityContainer.RegisterSingleton<IAdelantosRepository, AdelantosRepository>();
+        UnityContainer.RegisterSingleton<IAgenciaRepository, AgenciaRepository>();
+        UnityContainer.RegisterSingleton<ICajaRepository, CajaRepository>();
         UnityContainer.RegisterSingleton<ICierrePrecioRepository, CierrePrecioRepository>();
+        UnityContainer.RegisterSingleton<ICompraRepository, CompraRepository>();
+        UnityContainer.RegisterSingleton<IClienteRepository, ClienteRepository>();
+        UnityContainer.RegisterSingleton<IMaestroCajaRepository, MaestroCajaRepository>();
         UnityContainer.RegisterSingleton<IMonedaRepository, MonedaRepository>();
-        UnityContainer.RegisterSingleton<IUsuarioRepository, UsuarioRepository>(new InjectionConstructor(dataContext));
+        UnityContainer.RegisterSingleton<IParametersRepository, ParametersRepository>();
+        UnityContainer.RegisterSingleton<ITipoCambioRepository, TipoCambioRepository>();
+        UnityContainer.RegisterSingleton<IUsuarioRepository, UsuarioRepository>();
     }
 
     public static VariablesGlobales Instance

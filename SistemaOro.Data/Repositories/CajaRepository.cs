@@ -7,7 +7,6 @@ public class CajaRepository(DataContext context) : FacadeEntity<Caja>(context),I
 {
     public async Task<Caja?> FindByCod(string codigo)
     {
-        await using var context = new DataContext();
         return await context.Cajas.SingleOrDefaultAsync(caja => caja.Codcaja == codigo);
     }
 

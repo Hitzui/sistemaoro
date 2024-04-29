@@ -18,7 +18,7 @@ public class ConfiguracionGeneral
         {
             _xdoc = XDocument.Load(Ruta);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
            CrearArchivo();
         }
@@ -63,87 +63,17 @@ public class ConfiguracionGeneral
 
     #region Archivo XML de configuracion
 
-    public string? Caja
+    public static string? Caja
     {
         get=>VariablesGlobales.Instance.ConfigurationSection["CAJA"];
         set => Utilities.UpdateAppSetting("CAJA", value);
     }
 
-    public string? Agencia
+    public static string? Agencia
     {
         get=> VariablesGlobales.Instance.ConfigurationSection["AGENCIA"];
         set => Utilities.UpdateAppSetting("AGENCIA", value);
     }
-
-    public string Instance
-    {
-        get => (from x in _xdoc.Descendants("Instancia") select x).Single().Value;
-        set
-        {
-            var element = _xdoc.Element("Configuracion")!.Element("Instancia");
-            if (element is null)
-            {
-                return;
-            }
-
-            element.Value = value;
-            element.Save(Ruta);
-        }
-    }
-
-    public string Catalogo
-    {
-        get => _xdoc.Element("Configuracion")!.Element("Catalogo")!.Value;
-        set
-        {
-            var element = _xdoc.Element("Configuracion")!.Element("Catalogo");
-            if (element is null)
-            {
-                return;
-            }
-
-            element.Value = value;
-            element.Save(Ruta);
-        }
-    }
-
-    public string? Usuario
-    {
-        get => VariablesGlobales.Instance.ConfigurationSection["USUARIO"];
-        set => VariablesGlobales.Instance.ConfigurationSection["USUARIO"] = value;
-    }
-
-    public string Password
-    {
-        get => _xdoc.Element("Configuracion")!.Element("Password")!.Value;
-        set
-        {
-            var element = _xdoc.Element("Configuracion")!.Element("Password");
-            if (element is null)
-            {
-                return;
-            }
-
-            element.Value = value;
-            element.Save(Ruta);
-        }
-    }
-
-    public string Security
-    {
-        get => _xdoc.Element("Configuracion")!.Element("Security")!.Value;
-        set
-        {
-            var element = _xdoc.Element("Configuracion")!.Element("Security");
-            if (element is null)
-            {
-                return;
-            }
-
-            element.Value = value;
-            element.Save(Ruta);
-        }
-    }
-
+    
     #endregion
 }

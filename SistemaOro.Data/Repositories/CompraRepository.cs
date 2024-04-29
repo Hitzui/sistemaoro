@@ -7,31 +7,13 @@ using Unity;
 
 namespace SistemaOro.Data.Repositories;
 
-public class CompraRepository : ICompraRepository
+public class CompraRepository(IAdelantosRepository adelantoRepository, IParametersRepository parametersRepository, IMaestroCajaRepository maestroCajaRepository, ICierrePrecioRepository cierrePrecioRepository, ITipoCambioRepository tipoCambioRepository, IMonedaRepository monedaRepository, DataContext context)
+    : ICompraRepository
 {
-    private string? _caja;
-    private string? _agencia;
-    private readonly IAdelantosRepository _adelantoRepository;
-    private readonly IParametersRepository _parametersRepository;
-    private readonly IMaestroCajaRepository _maestroCajaRepository;
-    private readonly ICierrePrecioRepository _cierrePrecioRepository;
-    private readonly ITipoCambioRepository _tipoCambioRepository;
-    private readonly IMonedaRepository _monedaRepository;
-    private readonly Usuario? _usuario;
-
-    public CompraRepository()
-    {
-        _adelantoRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IAdelantosRepository>();
-        _parametersRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IParametersRepository>();
-        _maestroCajaRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IMaestroCajaRepository>();
-        _cierrePrecioRepository = VariablesGlobales.Instance.UnityContainer.Resolve<ICierrePrecioRepository>();
-        _tipoCambioRepository = VariablesGlobales.Instance.UnityContainer.Resolve<ITipoCambioRepository>();
-        _monedaRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IMonedaRepository>();
-        _usuario = VariablesGlobales.Instance.Usuario;
-        var configuracionGeneral = new ConfiguracionGeneral();
-        _agencia = VariablesGlobales.Instance.ConfiguracionGeneral.Agencia;
-        _caja = VariablesGlobales.Instance.ConfiguracionGeneral.Caja;
-    }
+    private string? _caja = ConfiguracionGeneral.Caja;
+    private string? _agencia = ConfiguracionGeneral.Agencia;
+    private readonly DataContext _context = context;
+    private readonly Usuario? _usuario = VariablesGlobales.Instance.Usuario;
 
     public void ImprimirCompra(string numeroCompra)
     {
@@ -61,18 +43,21 @@ public class CompraRepository : ICompraRepository
             ErrorSms = $"No hay saldo disponible en caja para realizar la compra, Saldo: {modCaja.Sfinal}";
             return false;
         }
-
-        await using var context = new DataContext();
+        
         var numeroCompra = await CodigoCompra();
         var saldoDolares = decimal.Zero;
         var saldoCordobas = decimal.Zero;
-        var param = await _parametersRepository.RecuperarParametros();
-        var tbTipoCambio = await _tipoCambioRepository.FindByDateNow();
+        var param = await parametersRepository.RecuperarParametros();
+        if (param is null)
+        {
+            throw new Exception(VariablesGlobales.Instance.ConfigurationSection["ERROR_PARAM"]);
+        }
+        var tbTipoCambio = await tipoCambioRepository.FindByDateNow();
         var tipoCambioDia = decimal.One;
-        var moneda = await _monedaRepository.GetByIdAsync(compra.Codmoneda);
+        var moneda = await monedaRepository.GetByIdAsync(compra.Codmoneda);
         if (moneda is null)
         {
-            ErrorSms = "No existe la moneda en el sistema actual, intente nuevamente";
+            ErrorSms = VariablesGlobales.Instance.ConfigurationSection["ERROR_MONEDA"];
             return false;
         }
 
@@ -88,7 +73,7 @@ public class CompraRepository : ICompraRepository
         }
 
         dcaja.Tipocambio = tipoCambioDia;
-        var adelantosPorClientes = await _adelantoRepository.ListarAdelantosPorClientes(compra.Codcliente);
+        var adelantosPorClientes = await adelantoRepository.ListarAdelantosPorClientes(compra.Codcliente);
         if (adelantosPorClientes.Count > 0)
         {
             saldoCordobas = adelantosPorClientes.Where(adelanto => adelanto.Saldo > 0 && adelanto.Codmoneda == param.Cordobas).Select(adelanto => adelanto.Saldo).Sum();
@@ -104,7 +89,7 @@ public class CompraRepository : ICompraRepository
             var listDetacierre = new List<Detacierre>();
             foreach (var tmpprecio in listTmpPrecios)
             {
-                var findByIdCierrePrecio = await _cierrePrecioRepository.FindById(tmpprecio.Codcierre);
+                var findByIdCierrePrecio = await cierrePrecioRepository.FindById(tmpprecio.Codcierre);
                 if (findByIdCierrePrecio is not null)
                 {
                     var xSaldo = decimal.Subtract(findByIdCierrePrecio.SaldoOnzas, tmpprecio.Cantidad);
@@ -180,7 +165,7 @@ public class CompraRepository : ICompraRepository
                     }
 
                     comprasAdelantos.Sfinal = decimal.Subtract(adelanto.Saldo, comprasAdelantos.Monto);
-                    var findAdelanto = await _adelantoRepository.FindByCodigoAdelanto(adelanto.Idsalida);
+                    var findAdelanto = await adelantoRepository.FindByCodigoAdelanto(adelanto.Idsalida);
                     if (findAdelanto is not null)
                     {
                         findAdelanto.Saldo = auxSaldo;
@@ -222,7 +207,6 @@ public class CompraRepository : ICompraRepository
 
     public async Task<bool> UpdateDescargue(Compra compra)
     {
-        await using var context = new DataContext();
         var listDeta = await FindDetaCompra(compra.Numcompra);
         if (listDeta.Count <= 0)
         {
@@ -248,22 +232,19 @@ public class CompraRepository : ICompraRepository
 
     public async Task<string?> CodigoCompra()
     {
-        await using var context = new DataContext();
         var numCompra = await context.Agencias.Where(agencia => agencia.Codagencia == _agencia).Select(agencia => agencia.Numcompra).SingleAsync();
         return numCompra is null ? "" : numCompra.Value.ToString();
     }
 
-    public string ErrorSms { get; private set; } = string.Empty;
+    public string? ErrorSms { get; private set; } = string.Empty;
 
     public async Task<List<DetCompra>> FindDetaCompra(string numcompra)
     {
-        await using var context = new DataContext();
         return await context.DetCompras.Where(compra => compra.Numcompra == numcompra && compra.Codagencia == _agencia).OrderBy(compra => compra.Linea).ToListAsync();
     }
 
     public async Task<Compra?> FindById(string numerocompra)
     {
-        await using var context = new DataContext();
         var find = await context.Compras.Where(compra => compra.Numcompra == numerocompra && compra.Codagencia == _agencia).SingleOrDefaultAsync();
         if (find is not null) return find;
         ErrorSms = $"No existe la compra con codigo {numerocompra} en la sucursal {_agencia}";
@@ -272,7 +253,6 @@ public class CompraRepository : ICompraRepository
 
     public async Task<bool> UpdateByDetaCompra(Compra compra, List<DetCompra> detaCompra)
     {
-        await using var context = new DataContext();
         context.Update(compra);
         foreach (var detCompra in detaCompra)
         {
@@ -304,7 +284,7 @@ public class CompraRepository : ICompraRepository
             throw new EntityValidationException("No existe el usuario en el sistema o no se ha iniciado adecuadamente la sesion");
         }
 
-        await using var context = new DataContext();
+        
         var findCompra = await FindById(numeroCompra);
         if (findCompra is null)
         {
@@ -312,8 +292,8 @@ public class CompraRepository : ICompraRepository
             return false;
         }
 
-        var mcaja = await _maestroCajaRepository.FindByCajaAndAgencia(_caja, _agencia);
-        var param = await _parametersRepository.RecuperarParametros();
+        var mcaja = await maestroCajaRepository.FindByCajaAndAgencia(_caja, _agencia);
+        var param = await parametersRepository.RecuperarParametros();
         if (mcaja is null)
         {
             ErrorSms = "No existe el maestro de caja o este no esta aperturado";
@@ -361,7 +341,7 @@ public class CompraRepository : ICompraRepository
         {
             foreach (var detacierre in detalleCierres)
             {
-                var cierre = await _cierrePrecioRepository.FindById(detacierre.Codcierre);
+                var cierre = await cierrePrecioRepository.FindById(detacierre.Codcierre);
                 if (cierre is null) continue;
                 cierre.SaldoOnzas = decimal.Add(cierre.SaldoOnzas, detacierre.Cantidad);
                 if (decimal.Compare(cierre.SaldoOnzas, decimal.Zero) > 0)
@@ -375,7 +355,7 @@ public class CompraRepository : ICompraRepository
 
         if (decimal.Compare(findCompra.Adelantos, decimal.Zero) > 0)
         {
-            var comprasAdelantos = await _adelantoRepository.FindByNumcompraComprasAdelantos(numeroCompra);
+            var comprasAdelantos = await adelantoRepository.FindByNumcompraComprasAdelantos(numeroCompra);
             var sumCordobas = decimal.Zero;
             var sumDolares = decimal.Zero;
             foreach (var comprasAdelanto in comprasAdelantos)
@@ -391,7 +371,7 @@ public class CompraRepository : ICompraRepository
                 }
             }
 
-            var recpuerarCodigoAdelanto = await _adelantoRepository.RecpuerarCodigoAdelanto();
+            var recpuerarCodigoAdelanto = await adelantoRepository.RecpuerarCodigoAdelanto();
             var adelanto = new Adelanto
             {
                 Codmoneda = param.Cordobas,
@@ -421,11 +401,11 @@ public class CompraRepository : ICompraRepository
             }
 
             context.ComprasAdelantos.RemoveRange(comprasAdelantos);
-            await _adelantoRepository.Add(adelanto);
+            await adelantoRepository.Add(adelanto);
         }
 
         await context.AnularCompraAsync(numeroCompra, _agencia);
-        await _maestroCajaRepository.GuardarDatosDetaCaja(nuevoDetaCaja, mcaja);
+        await maestroCajaRepository.GuardarDatosDetaCaja(nuevoDetaCaja, mcaja);
         var result = await context.SaveChangesAsync() > 0;
         if (result)
         {
@@ -438,13 +418,12 @@ public class CompraRepository : ICompraRepository
 
     public async Task<List<Compra>> FindByCodigoCliente(string codCliente)
     {
-        await using var context = new DataContext();
+        
         return await context.Compras.Where(compra => compra.Codcliente == codCliente).ToListAsync();
     }
 
     public async Task<bool> UpdateValues(Compra compra)
     {
-        await using var context = new DataContext();
         var find = await FindById(compra.Numcompra);
         if (find is null)
         {

@@ -6,18 +6,12 @@ using SistemaOro.Data.Libraries;
 
 namespace SistemaOro.Data.Repositories;
 
-public class AdelantosRepository(
-    IParametersRepository parametersRepository,
-    IMaestroCajaRepository maestroCajaRepository) : IAdelantosRepository
+public class AdelantosRepository(IParametersRepository parametersRepository, IMaestroCajaRepository maestroCajaRepository, DataContext context) : IAdelantosRepository
 {
-    private readonly IParametersRepository _parametersRepository = parametersRepository;
-    private readonly IMaestroCajaRepository _maestroCajaRepository = maestroCajaRepository;
-
     public string? ErrorSms { get; private set; }
 
     public async Task<bool> Add(Adelanto adelanto)
     {
-        await using var context = new DataContext();
         try
         {
             adelanto = context.Add(adelanto).Entity;
@@ -33,11 +27,11 @@ public class AdelantosRepository(
                 Sinicial = decimal.Zero,
                 Sfinal = adelanto.Monto!.Value,
                 Usuario = VariablesGlobales.Instance.Usuario!.Codoperador,
-                Codagencia = VariablesGlobales.Instance.ConfiguracionGeneral.Agencia,
+                Codagencia = ConfiguracionGeneral.Agencia,
                 Codmoneda = adelanto.Codmoneda,
             };
             context.Add(comprasAdelantos);
-            var result =await context.SaveChangesAsync()>0;
+            var result = await context.SaveChangesAsync() > 0;
             if (result)
             {
                 return true;
@@ -56,7 +50,6 @@ public class AdelantosRepository(
     public async Task<int> Update(decimal adelanto, string idSalida, string numCompra)
     {
         var config = VariablesGlobales.Instance.ConfiguracionGeneral;
-        await using var context = new DataContext();
         var find = await context.Adelantos.FindAsync(idSalida);
         if (find is null)
         {
@@ -66,15 +59,14 @@ public class AdelantosRepository(
 
         find.Saldo = adelanto;
         find.Numcompra = string.IsNullOrEmpty(find.Numcompra)
-            ? $@"{VariablesGlobales.Instance.ConfiguracionGeneral.Agencia}.{numCompra}"
-            : $@"{find.Numcompra};{VariablesGlobales.Instance.ConfiguracionGeneral.Agencia}.{numCompra}";
+            ? $@"{ConfiguracionGeneral.Agencia}.{numCompra}"
+            : $@"{find.Numcompra};{ConfiguracionGeneral.Agencia}.{numCompra}";
 
         return await context.SaveChangesAsync();
     }
 
     public async Task<int> ActualizarCodigoAdelanto()
     {
-        await using var context = new DataContext();
         var findIds = await context.Id.FirstOrDefaultAsync();
         if (findIds is not null)
         {
@@ -86,7 +78,6 @@ public class AdelantosRepository(
 
     public async Task<Adelanto?> FindByCodigoCliente(string codigoCliente)
     {
-        await using var context = new DataContext();
         var find = await context.Adelantos.FirstOrDefaultAsync(adelanto => adelanto.Codcliente == codigoCliente);
         if (find is not null) return find;
         ErrorSms = $"No existe el adelanto con el codigo del cliente especificado {codigoCliente}";
@@ -95,33 +86,32 @@ public class AdelantosRepository(
 
     public async Task<Adelanto?> FindByCodigoAdelanto(string codigoAdelanto)
     {
-        await using var context = new DataContext();
         return await context.Adelantos.FindAsync(codigoAdelanto);
     }
 
     public async Task<List<Adelanto>> FindAll()
     {
-        await using var context = new DataContext();
         return await context.Adelantos.ToListAsync();
     }
 
     public async Task<string?> RecpuerarCodigoAdelanto()
     {
-        await using var context = new DataContext();
         var ids = await context.Id.FirstOrDefaultAsync();
         return ids is null ? null : ids.Idadelanto.ToString()?.PadLeft(10, '0');
     }
 
     public async Task<List<Adelanto>> ListarAdelantosPorClientes(string codigo)
     {
-        await using var context = new DataContext();
         return await context.Adelantos.Where(adelanto => adelanto.Codcliente == codigo).ToListAsync();
     }
 
     public async Task<bool> AnularAdelanto(string codigo)
     {
-        await using var context = new DataContext();
-        var param = await _parametersRepository.RecuperarParametros();
+        var param = await parametersRepository.RecuperarParametros();
+        if (param is null)
+        {
+            throw new Exception(VariablesGlobales.Instance.ConfigurationSection["ERROR_PARAM"]);
+        }
         var find = await context.Adelantos.FirstOrDefaultAsync(adelanto =>
             adelanto.Idsalida == codigo && adelanto.Monto == adelanto.Saldo);
         if (find is null)
@@ -138,14 +128,16 @@ public class AdelantosRepository(
     public async Task<bool> AplicarAdelantoEfectivo(List<Adelanto> listaAdelantos, decimal monto,
         string codCliente = "")
     {
-        await using var context = new DataContext();
-        var dSaldo = decimal.Zero;
-        var param = await _parametersRepository.RecuperarParametros();
-        var config = VariablesGlobales.Instance.ConfiguracionGeneral;
-        var mcaja = await _maestroCajaRepository.FindByCajaAndAgencia(VariablesGlobales.Instance.ConfiguracionGeneral.Caja, VariablesGlobales.Instance.ConfiguracionGeneral.Agencia);
+        //var dSaldo = decimal.Zero;
+        var param = await parametersRepository.RecuperarParametros();
+        if (param is null)
+        {
+            throw new Exception(VariablesGlobales.Instance.ConfigurationSection["ERROR_PARAM"]);
+        }
+        var mcaja = await maestroCajaRepository.FindByCajaAndAgencia(ConfiguracionGeneral.Caja, ConfiguracionGeneral.Agencia);
         if (mcaja is null)
         {
-            ErrorSms = _maestroCajaRepository.ErrorSms;
+            ErrorSms = maestroCajaRepository.ErrorSms;
             return false;
         }
 
@@ -160,7 +152,7 @@ public class AdelantosRepository(
         {
             Idcaja = mcaja.Idcaja,
             Idmov = param.PagoAdelanto!.Value,
-            Codcaja = VariablesGlobales.Instance.ConfiguracionGeneral.Caja,
+            Codcaja = ConfiguracionGeneral.Caja,
             Concepto = "***EFECTIVO A ADELANTO(S): ",
             Transferencia = decimal.Zero,
             Efectivo = monto,
@@ -170,9 +162,8 @@ public class AdelantosRepository(
             Referencia = "Pago en efectivo a adelanto",
             Tipocambio = tipoCambio.Tipocambio
         };
-        foreach (var adelanto in listaAdelantos)
+        foreach (var adelanto in listaAdelantos.Where(_ => decimal.Compare(monto, decimal.Zero) > 0))
         {
-            if (decimal.Compare(monto, decimal.Zero) <= 0) continue;
             detaCaja.Concepto += $"{adelanto.Idsalida}; ";
             var saldo = adelanto.Saldo;
             var comprasAdelantos = new ComprasAdelanto
@@ -185,7 +176,7 @@ public class AdelantosRepository(
                 Numcompra = adelanto.Idsalida,
                 Usuario = VariablesGlobales.Instance.Usuario!.Usuario1,
                 Codmoneda = adelanto.Codmoneda,
-                Codagencia = VariablesGlobales.Instance.ConfiguracionGeneral.Agencia,
+                Codagencia = ConfiguracionGeneral.Agencia,
                 Sinicial = saldo
             };
             if (decimal.Compare(saldo, monto) >= 0)
@@ -214,7 +205,6 @@ public class AdelantosRepository(
 
     public async Task<List<Adelanto>> ListarAdelantosPorFecha(DateTime desde, DateTime hasta, string codCliente)
     {
-        await using var context = new DataContext();
         try
         {
             return await context.Adelantos
@@ -227,13 +217,12 @@ public class AdelantosRepository(
         {
             ErrorSms =
                 $"No se recuperaron datos según las fechas indicadas {desde.ToShortDateString()} y {hasta.ToShortDateString()} con el codigo del cliente {codCliente}";
-            return [];
+            return new List<Adelanto>();
         }
     }
 
     public async Task<List<ComprasAdelanto>> ListarAdelantosCompras(string idAdelanto)
     {
-        await using var context = new DataContext();
         try
         {
             return await context.ComprasAdelantos
@@ -252,7 +241,6 @@ public class AdelantosRepository(
 
     public async Task<List<ComprasAdelanto>> ListarAdelantosComrpasCliente(string codCliente)
     {
-        await using var context = new DataContext();
         try
         {
             return await context.ComprasAdelantos
@@ -271,7 +259,6 @@ public class AdelantosRepository(
 
     public async Task<List<ComprasAdelanto>> FindByNumcompraComprasAdelantos(string numeroCompra)
     {
-        await using var context = new DataContext();
         return await context.ComprasAdelantos.Where(adelanto => adelanto.Numcompra == numeroCompra).ToListAsync();
     }
 }

@@ -1,20 +1,19 @@
 ﻿    using Microsoft.EntityFrameworkCore;
     using SistemaOro.Data.Entities;
     using SistemaOro.Data.Exceptions;
+    using SistemaOro.Data.Libraries;
 
     namespace SistemaOro.Data.Repositories;
 
-public class ParametersRepository : IParametersRepository
+public class ParametersRepository(DataContext context) : IParametersRepository
 {
-    public async Task<Id> RecuperarParametros()
+    public async Task<Id?> RecuperarParametros()
     {
-        await using var context = new DataContext();
-        return await context.Id.FirstAsync();
+        return await context.Id.FirstOrDefaultAsync();
     }
 
     public async Task<int> ActualizarParametros(Id param)
     {
-        await using var context = new DataContext();
         var find = await context.Id.FirstOrDefaultAsync();
         if (find is null)
         {
@@ -27,17 +26,19 @@ public class ParametersRepository : IParametersRepository
 
     public async Task<int> CrearParametros(Id parametros)
     {
-        await using var context = new DataContext();
         context.Add(parametros);
         return await context.SaveChangesAsync();
     }
 
     public async Task<bool> HabilitarVariasCompras(bool opcion)
     {
-        await using var context = new DataContext();
         try
         {
             var param =await RecuperarParametros();
+            if (param is null)
+            {
+                throw new Exception(VariablesGlobales.Instance.ConfigurationSection["ERROR_PARAM"]);
+            }
             param.VariasCompras = opcion;
             await context.SaveChangesAsync();
             return true;

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace SistemaOro.Data.Libraries;
 
@@ -15,9 +16,9 @@ public static class Utilities
     public static void UpdateAppSetting(string key, string? value)
     {
         var json = File.ReadAllText($"{Directory.GetCurrentDirectory()}/{AppSettingsPath}");
-        dynamic jsonObj = JsonConvert.DeserializeObject(json) ?? throw new InvalidOperationException("No se puede leer el archivo de configuración");
-        jsonObj["globals"][key] = value;
-        string output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
+        var jsonObj = (JObject)JsonConvert.DeserializeObject(json)!;
+        jsonObj["globals"]![key] = value;
+        var output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
         File.WriteAllText("appsettings.json", output);
     }
 

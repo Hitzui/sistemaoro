@@ -3,12 +3,11 @@ using SistemaOro.Data.Entities;
 
 namespace SistemaOro.Data.Repositories;
 
-public class AgenciaRepository : IAgenciaRepository
+public class AgenciaRepository(IParametersRepository parametersRepository,DataContext context) : IAgenciaRepository
 {
     public async Task<string> CodigoAgencia()
     {
-        await using var context = new DataContext();
-        var find = await context.Id.FirstOrDefaultAsync();
+        var find = await parametersRepository.RecuperarParametros();
         if (find is not null)
         {
             return $"A{find.Codagencia.ToString()!.PadLeft(3, '0')}";
@@ -20,11 +19,10 @@ public class AgenciaRepository : IAgenciaRepository
 
     public async Task<bool> Create(Agencia agencia)
     {
-        await using var context = new DataContext();
         try
         {
             context.Add(agencia);
-            var find = await context.Id.FirstOrDefaultAsync();
+            var find = await parametersRepository.RecuperarParametros();
             if (find is not null)
             {
                 find.Codagencia += 1;
@@ -48,7 +46,6 @@ public class AgenciaRepository : IAgenciaRepository
 
     public async Task<bool> Update(Agencia agencia)
     {
-        await using var context = new DataContext();
         var find =await FindById(agencia.Codagencia);
         if (find is null)
         {
@@ -68,7 +65,6 @@ public class AgenciaRepository : IAgenciaRepository
 
     public async Task<bool> Delete(Agencia agencia)
     {
-        await using var context = new DataContext();
         var find = await FindById(agencia.Codagencia);
         if (find is null)
         {
@@ -87,19 +83,16 @@ public class AgenciaRepository : IAgenciaRepository
 
     public async Task<List<Agencia>> FindAll()
     {
-        await using var context = new DataContext();
         return await context.Agencias.ToListAsync();
     }
 
     public async Task<Agencia?> FindById(string codagencia)
     {
-        await using var context = new DataContext();
         return await context.Agencias.SingleOrDefaultAsync(agencia => agencia.Codagencia == codagencia);
     }
 
     public async Task<List<Agencia>> FindByName(string nomagencia)
     {
-        await using var context = new DataContext();
         return await context.Agencias.Where(agencia => agencia.Nomagencia.Contains(nomagencia)).ToListAsync();
     }
 

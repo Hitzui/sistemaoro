@@ -4,11 +4,10 @@ using SistemaOro.Data.Exceptions;
 
 namespace SistemaOro.Data.Repositories;
 
-public class MaestroCajaRepository(IParametersRepository parametersRepository) : IMaestroCajaRepository
+public class MaestroCajaRepository(IParametersRepository parametersRepository,DataContext context) : IMaestroCajaRepository
 {
     public async Task<bool> ValidarCajaAbierta(string caja)
     {
-        await using var context = new DataContext();
         try
         {
             var mcaja = await context.Mcajas
@@ -26,9 +25,8 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository) :
         }
     }
 
-    private static async Task<IQueryable<Mcaja>> Find(string? caja, string? agencia)
+    private IQueryable<Mcaja> Find(string? caja, string? agencia)
     {
-        await using var context = new DataContext();
         return context.Mcajas
             .OrderByDescending(mcaja => mcaja.Idcaja)
             .Where(mcaja => mcaja.Codcaja == caja
@@ -37,8 +35,7 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository) :
 
     public async Task<Mcaja?> FindByCajaAndAgencia(string? caja, string? agencia)
     {
-        await using var context = new DataContext();
-        var findQuery = await Find(caja, agencia);
+        var findQuery = Find(caja, agencia);
         var find = await findQuery.Where(mcaja => mcaja.Estado == 1).FirstOrDefaultAsync();
         if (find is not null) return find;
         ErrorSms=$"No existe la caja o apertura de caja con el codigo {caja}";
@@ -48,10 +45,9 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository) :
 
     public async Task<bool> EstadoCaja(string? caja, string? agencia)
     {
-        await using var context = new DataContext();
         try
         {
-            var findQuery = await Find(caja, agencia);
+            var findQuery = Find(caja, agencia);
             var mcaja = await findQuery.FirstOrDefaultAsync();
             if (mcaja is not null) return mcaja.Estado == 1;
             ErrorSms = $"No existe el maestro de caja con el codigo de caja {caja}";
@@ -66,10 +62,9 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository) :
 
     public async Task<bool> AbrirCaja(string? caja, string? agencia)
     {
-        await using var context = new DataContext();
         try
         {
-            var query = await Find(caja, agencia);
+            var query = Find(caja, agencia);
             var xestado = query.FirstOrDefault() ?? new Mcaja
             {
                 Sfinal = 0,
@@ -127,7 +122,6 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository) :
 
     public async Task<bool> CerrarCaja(string? caja, string? agencia)
     {
-        await using var ctx = new DataContext();
         try
         {
             var prestamos = await ValidarPrestamosPuentes();
@@ -139,7 +133,7 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository) :
             }
 
             var parametros = await parametersRepository.RecuperarParametros();
-            var query = await Find(caja, agencia);
+            var query =  Find(caja, agencia);
             var crearM = await query.FirstOrDefaultAsync(mcaja => mcaja.Estado == 1);
             if (crearM is null)
             {
@@ -160,9 +154,9 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository) :
                 Referencia = $"Cierre de caja: {caja} {DateTime.Now.ToShortDateString()}",
                 Codcaja = caja
             };
-            ctx.Add(detaCaja);
+            context.Add(detaCaja);
             crearM.Estado = 0;
-            await ctx.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return true;
         }
         catch (Exception ex)
@@ -174,8 +168,7 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository) :
 
     public async Task<bool> ActualizarDatosMaestroCaja(Mcaja mocaja)
     {
-        await using var context = new DataContext();
-        var query = await Find(mocaja.Codcaja, mocaja.Codagencia!);
+        var query = Find(mocaja.Codcaja, mocaja.Codagencia!);
         try
         {
             await query.Where(mcaja => mcaja.Estado == 1)
@@ -196,7 +189,6 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository) :
 
     public async Task<bool> GuardarDatosDetaCaja(Detacaja dcaja, Mcaja mocaja)
     {
-        await using var context = new DataContext();
         var actualizarMcaja = await ActualizarDatosMaestroCaja(mocaja);
         if (!actualizarMcaja) return false;
         var tipoCambio = context.TipoCambios.Single(cambio => cambio.Fecha == DateTime.Now);
@@ -213,7 +205,6 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository) :
 
     public async Task<bool> ValidarMovimiento(int idmov)
     {
-        await using var context = new DataContext();
         var nat = await context.Movcajas
             .Join(context.Rubros, movcaja => movcaja.Codrubro, rubro => rubro.Codrubro,
                 (movcaja, rubro) => new { movcaja, rubro })
@@ -231,7 +222,6 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository) :
 
     public async Task<List<Detacaja>> ListarDetaCaja(string caja)
     {
-        await using var context = new DataContext();
         return await context.Detacajas
             .Where(detacaja => detacaja.Codcaja == caja)
             .OrderByDescending(detacaja => detacaja.Idcaja)
@@ -240,7 +230,6 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository) :
 
     public async Task<decimal> ValidarPrestamosPuentes()
     {
-        await using var context = new DataContext();
         var param = await parametersRepository.RecuperarParametros();
         try
         {
@@ -270,12 +259,11 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository) :
 
     public async Task<List<Detacaja>?> RecuperarDetaCajaValores(Mcaja mcaja)
     {
-        await using var ctx = new DataContext();
         try
         {
-            var verDetaCaja = from dc in ctx.Detacajas
-                join mov in ctx.Movcajas on dc.Idmov equals mov.Idmov
-                join ru in ctx.Rubros on mov.Codrubro equals ru.Codrubro
+            var verDetaCaja = from dc in context.Detacajas
+                join mov in context.Movcajas on dc.Idmov equals mov.Idmov
+                join ru in context.Rubros on mov.Codrubro equals ru.Codrubro
                 where dc.Idcaja == mcaja.Idcaja
                 select new Detacaja
                 {
