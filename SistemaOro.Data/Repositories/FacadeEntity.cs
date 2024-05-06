@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using SistemaOro.Data.Entities;
+using SistemaOro.Data.Exceptions;
 
 namespace SistemaOro.Data.Repositories;
 
@@ -10,9 +11,9 @@ public abstract class FacadeEntity<TEntity>(DbContext context) : ICrudRepository
     private readonly DbContext _context = context ?? throw new ArgumentNullException(nameof(context));
     private readonly DbSet<TEntity> _set = context.Set<TEntity>();
     
-    public string ErrorSms { get; set; } = "";
+    public string ErrorSms { get; protected set; } = "";
 
-    public virtual async Task<TEntity?> GetByIdAsync(int id)
+    public virtual async Task<TEntity?> GetByIdAsync(object id)
     {
         var find= await _set.FindAsync(id);
         if (find is not null) return find;
@@ -29,30 +30,35 @@ public abstract class FacadeEntity<TEntity>(DbContext context) : ICrudRepository
             return false;
         }
         await _set.AddAsync(entity);
-        var result = await _context.SaveChangesAsync()>0;
-        if (result)
+        try
         {
+            await _context.BulkSaveChangesAsync();
             return true;
         }
-        ErrorSms = "No existe en el cotexto actual la entidad";
-        return false;
+        catch (Exception e)
+        {
+            ErrorSms = $"No existe en el cotexto actual la entidad. Error: {e.Message} {e.Source}";
+            return false;
+        }
     }
 
     public virtual async Task<bool> UpdateAsync(TEntity? entity)
     {
         if (entity is null)
         {
-            ErrorSms = "No existe en el cotexto actual la entidad";
-            return false;
+            throw new EntityValidationException("Debe especificar la entidad a actualizar");
         }
         _set.Update(entity);
-        var result = await _context.SaveChangesAsync()>0;
-        if (result)
+        try
         {
+            await _context.BulkSaveChangesAsync();
             return true;
         }
-        ErrorSms = "No existe en el cotexto actual la entidad";
-        return false;
+        catch (Exception e)
+        {
+            ErrorSms = $"No existe en el cotexto actual la entidad. Error: {e.Message} {e.Source}";
+            return false;
+        }
     }
 
     public virtual async Task<bool> DeleteAsync(int id)
@@ -60,13 +66,16 @@ public abstract class FacadeEntity<TEntity>(DbContext context) : ICrudRepository
         var entity = await _set.FindAsync(id);
         if (entity == null) return false;
         _set.Remove(entity);
-        var result = await _context.SaveChangesAsync()>0;
-        if (result)
+        try
         {
+            await _context.BulkSaveChangesAsync();
             return true;
         }
-        ErrorSms = "No existe en el cotexto actual la entidad";
-        return false;
+        catch (Exception e)
+        {
+            ErrorSms = $"No existe en el cotexto actual la entidad. Error: {e.Message} {e.Source}";
+            return false;
+        }
 
     }
 

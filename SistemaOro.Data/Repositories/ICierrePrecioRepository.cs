@@ -2,8 +2,6 @@
 
 namespace SistemaOro.Data.Repositories;
 
-public interface ICierrePrecioRepository
+public interface ICierrePrecioRepository : ICrudRepository<CierrePrecio>
 {
-    string ErrorSms { get; }
-    Task<CierrePrecio?> FindById(int idcierre);
 }

@@ -89,7 +89,7 @@ public class CompraRepository(IAdelantosRepository adelantoRepository, IParamete
             var listDetacierre = new List<Detacierre>();
             foreach (var tmpprecio in listTmpPrecios)
             {
-                var findByIdCierrePrecio = await cierrePrecioRepository.FindById(tmpprecio.Codcierre);
+                var findByIdCierrePrecio = await cierrePrecioRepository.GetByIdAsync(tmpprecio.Codcierre);
                 if (findByIdCierrePrecio is not null)
                 {
                     var xSaldo = decimal.Subtract(findByIdCierrePrecio.SaldoOnzas, tmpprecio.Cantidad);
@@ -341,7 +341,7 @@ public class CompraRepository(IAdelantosRepository adelantoRepository, IParamete
         {
             foreach (var detacierre in detalleCierres)
             {
-                var cierre = await cierrePrecioRepository.FindById(detacierre.Codcierre);
+                var cierre = await cierrePrecioRepository.GetByIdAsync(detacierre.Codcierre);
                 if (cierre is null) continue;
                 cierre.SaldoOnzas = decimal.Add(cierre.SaldoOnzas, detacierre.Cantidad);
                 if (decimal.Compare(cierre.SaldoOnzas, decimal.Zero) > 0)

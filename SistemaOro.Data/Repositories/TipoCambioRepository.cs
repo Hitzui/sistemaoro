@@ -9,7 +9,7 @@ public class TipoCambioRepository(DataContext context) : FacadeEntity<TipoCambio
 
     public async Task<TipoCambio?> FindByDateNow()
     {
-        var find =await context.TipoCambios.FindAsync(DateTime.Now);
+        var find =await GetByIdAsync(DateTime.Now);
         if (find is not null) return find;
         ErrorSms = $"No existe el tipo de cambio para el dia de hoy {DateTime.Now.ToShortDateString()}";
         return null;

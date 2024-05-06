@@ -7,9 +7,9 @@ public interface IAdelantosRepository
     string? ErrorSms { get; }
     Task<bool> Add(Adelanto adelanto);
 
-    Task<int> Update(decimal adelanto, string idSalida, string numCompra);
+    Task<bool> Update(decimal adelanto, string idSalida, string numCompra);
 
-    Task<int> ActualizarCodigoAdelanto();
+    Task<bool> ActualizarCodigoAdelanto();
     Task<Adelanto?> FindByCodigoCliente(string codigoCliente);
 
     Task<Adelanto?> FindByCodigoAdelanto(string codigoAdelanto);

@@ -21,40 +21,14 @@ using System.Linq.Expressions;
 
 namespace SistemaOro.Data.Entities
 {
-    public partial class CierrePrecio {
-
-        public CierrePrecio()
-        {
-            OnCreated();
-        }
-
-        public int Codcierre { get; set; }
-
-        public string Codcliente { get; set; }
-
-        public bool Status { get; set; }
-
-        public decimal OnzasFinas { get; set; }
-
-        public decimal GramosFinos { get; set; }
-
-        public decimal PrecioOro { get; set; }
-
-        public decimal PrecioBase { get; set; }
-
-        public decimal SaldoOnzas { get; set; }
-
-        public DateTime Fecha { get; set; }
-
-        public decimal Margen { get; set; }
-
-        public virtual Cliente Cliente { get; set; }
-
-        #region Extensibility Method Definitions
-
-        partial void OnCreated();
-
-        #endregion
+    /// <summary>
+    /// Estado de la compra
+    /// </summary>
+    public enum EstadoCompra : int
+    {
+        Anulada = 0,
+        Vigente = 1,
+        Cerrada = 2,
+        Descargada = 3
     }
-
 }

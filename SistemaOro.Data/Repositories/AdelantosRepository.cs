@@ -31,14 +31,16 @@ public class AdelantosRepository(IParametersRepository parametersRepository, IMa
                 Codmoneda = adelanto.Codmoneda,
             };
             context.Add(comprasAdelantos);
-            var result = await context.SaveChangesAsync() > 0;
-            if (result)
+            try
             {
+                await context.BulkSaveChangesAsync();
                 return true;
             }
-
-            ErrorSms = $"No se pudo ingresar el adelanto con el codigo {adelanto.Idsalida}, revisar los parametros";
-            return false;
+            catch (Exception e)
+            {
+                ErrorSms = $"No se pudo ingresar el adelanto con el codigo {adelanto.Idsalida}, revisar los parametros. Error: {e.Message} {e.Source}";
+                return false;
+            }
         }
         catch (Exception e)
         {
@@ -47,25 +49,31 @@ public class AdelantosRepository(IParametersRepository parametersRepository, IMa
         }
     }
 
-    public async Task<int> Update(decimal adelanto, string idSalida, string numCompra)
+    public async Task<bool> Update(decimal adelanto, string idSalida, string numCompra)
     {
         var config = VariablesGlobales.Instance.ConfiguracionGeneral;
         var find = await context.Adelantos.FindAsync(idSalida);
         if (find is null)
         {
-            ErrorSms = "No existe la entidad con esos datos";
-            return 0;
+            throw new EntityValidationException("No existe la entidad con esos datos");
         }
 
         find.Saldo = adelanto;
-        find.Numcompra = string.IsNullOrEmpty(find.Numcompra)
-            ? $@"{ConfiguracionGeneral.Agencia}.{numCompra}"
-            : $@"{find.Numcompra};{ConfiguracionGeneral.Agencia}.{numCompra}";
+        find.Numcompra = string.IsNullOrEmpty(find.Numcompra) ? $@"{ConfiguracionGeneral.Agencia}.{numCompra}" : $@"{find.Numcompra};{ConfiguracionGeneral.Agencia}.{numCompra}";
 
-        return await context.SaveChangesAsync();
+        try
+        {
+            await context.BulkSaveChangesAsync();
+            return true;
+        }
+        catch (Exception e)
+        {
+            ErrorSms = $"No existe en el cotexto actual la entidad. Error: {e.Message} {e.Source}";
+            return false;
+        }
     }
 
-    public async Task<int> ActualizarCodigoAdelanto()
+    public async Task<bool> ActualizarCodigoAdelanto()
     {
         var findIds = await context.Id.FirstOrDefaultAsync();
         if (findIds is not null)
@@ -73,7 +81,16 @@ public class AdelantosRepository(IParametersRepository parametersRepository, IMa
             findIds.Idadelanto += 1;
         }
 
-        return await context.SaveChangesAsync();
+        try
+        {
+            await context.BulkSaveChangesAsync();
+            return true;
+        }
+        catch (Exception e)
+        {
+            ErrorSms = $"No fue posible actualizar el codigo del adelanto. Error: {e.Message} {e.Source}";
+            return false;
+        }
     }
 
     public async Task<Adelanto?> FindByCodigoCliente(string codigoCliente)

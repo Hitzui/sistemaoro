@@ -135,9 +135,9 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository,Da
             var parametros = await parametersRepository.RecuperarParametros();
             var query =  Find(caja, agencia);
             var crearM = await query.FirstOrDefaultAsync(mcaja => mcaja.Estado == 1);
-            if (crearM is null)
+            if (crearM is null || parametros is null)
             {
-                ErrorSms = $"No hay caja aperturada para {caja} {agencia}, intente nuevamente";
+                ErrorSms = $"No hay caja aperturada para {caja} {agencia}, intente nuevamente o parametros nulos";
                 return false;
             }
 
@@ -156,7 +156,7 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository,Da
             };
             context.Add(detaCaja);
             crearM.Estado = 0;
-            await context.SaveChangesAsync();
+            await context.BulkSaveChangesAsync();
             return true;
         }
         catch (Exception ex)
@@ -193,13 +193,16 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository,Da
         var tipoCambio = context.TipoCambios.Single(cambio => cambio.Fecha == DateTime.Now);
         dcaja.Tipocambio = tipoCambio.Tipocambio;
         context.Add(dcaja);
-        var save = await context.SaveChangesAsync() > 0;
-        if (!save)
+        try
         {
-            ErrorSms = "No se guardaron los datos del detalle de caja";
+            await context.BulkSaveChangesAsync();
+            return true;
         }
-
-        return save;
+        catch (Exception e)
+        {
+            ErrorSms = $"No existe en el cotexto actual la entidad. Error: {e.Message} {e.Source}";
+            return false;
+        }
     }
 
     public async Task<bool> ValidarMovimiento(int idmov)

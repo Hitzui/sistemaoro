@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <efcore context-namespace="SistemaOro.Data.Entities" namespace="SistemaOro.Data.Entities" p1:name="DataContext" p1:Guid="27ffcdc9-2b51-4eb4-be26-1d5457cee768" xmlns:p1="http://devart.com/schemas/EntityDeveloper/1.0">
+  <class name="$EnumTypes">
+    <EnumType Name="EstadoCompra" class="EstadoCompra" p1:Guid="985a5d38-a0d3-42cd-ade0-500237fbc50c">
+      <Documentation>
+        <Summary>Estado de la compra</Summary>
+      </Documentation>
+      <Member Name="Anulada" Value="0" p1:Guid="e0413683-10ec-49cc-b46d-fee8f1dbcbe0" />
+      <Member Name="Vigente" Value="1" p1:Guid="cad239db-1290-478d-92f7-2d6879d489da" />
+      <Member Name="Cerrada" Value="2" p1:Guid="f287003a-362f-454e-b936-49832731b9a6" />
+      <Member Name="Descargada" Value="3" p1:Guid="d47c60a5-4dc9-4c7e-b5d4-08c0bb58aecf" />
+    </EnumType>
+  </class>
   <class name="Adelanto" entity-set="Adelantos" table="adelantos" schema="dbo" p1:Guid="402f934b-0ec3-4bd0-9137-b2a3262b25cd">
     <id name="Idsalida" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="5f4817a6-c2f1-404a-b9cc-7bf4cf0fe68c">
       <column name="idsalida" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
@@ -224,7 +235,7 @@
     <property name="Fecha" type="DateTime" p1:ValidateRequired="true" p1:Guid="db0d399a-31f6-432a-bb8f-9fa7f5b7d283">
       <column name="fecha" not-null="True" sql-type="date" p1:unicode="False" />
     </property>
-    <property name="Codestado" type="Int32" p1:ValidateRequired="true" p1:Guid="2f31fbb7-0360-4a71-b8fc-dcb91d8912e7">
+    <property name="Codestado" type="SistemaOro.Data.Entities.EstadoCompra" p1:ValidateRequired="true" p1:Guid="2f31fbb7-0360-4a71-b8fc-dcb91d8912e7">
       <column name="codestado" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
     </property>
     <property name="Usuario" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="335fad02-6b00-4c03-8f56-150a8c6818da">
@@ -1172,7 +1183,7 @@
       </end2>
     </association>
     <association name="Cliente_Pica" cardinality="OneToOne" p1:Guid="cbcfee3e-109b-41ce-ba98-6366534b119e">
-      <end1 multiplicity="ZeroOrOne" name="Cliente" class="Pica" relation-class="Cliente" constrained="True" lazy="False" p1:Guid="0df6710e-7e0c-4916-a555-08c58790c22f">
+      <end1 multiplicity="One" name="Cliente" class="Pica" relation-class="Cliente" constrained="True" lazy="False" p1:Guid="0df6710e-7e0c-4916-a555-08c58790c22f">
         <property name="Codcliente" />
       </end1>
       <end2 multiplicity="One" name="Pica1" class="Cliente" relation-class="Pica" constrained="False" lazy="False" p1:Guid="25fab1b3-d3dc-4576-b26d-90fb5929405d">

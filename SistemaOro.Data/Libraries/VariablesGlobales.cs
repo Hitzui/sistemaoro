@@ -17,7 +17,6 @@ public class VariablesGlobales
 
     private VariablesGlobales()
     {
-        var dataContext = new DataContext();
         ConfiguracionGeneral = new ConfiguracionGeneral();
         UnityContainer = new UnityContainer();
         UnityContainer.RegisterSingleton<IAdelantosRepository, AdelantosRepository>();
@@ -26,6 +25,7 @@ public class VariablesGlobales
         UnityContainer.RegisterSingleton<ICierrePrecioRepository, CierrePrecioRepository>();
         UnityContainer.RegisterSingleton<ICompraRepository, CompraRepository>();
         UnityContainer.RegisterSingleton<IClienteRepository, ClienteRepository>();
+        UnityContainer.RegisterSingleton<IDescarguesRepository, DescarguesRepository>();
         UnityContainer.RegisterSingleton<IMaestroCajaRepository, MaestroCajaRepository>();
         UnityContainer.RegisterSingleton<IMonedaRepository, MonedaRepository>();
         UnityContainer.RegisterSingleton<IParametersRepository, ParametersRepository>();
