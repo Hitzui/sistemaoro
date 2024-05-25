@@ -1,4 +1,5 @@
-﻿using SistemaOro.Data.Entities;
+﻿using SistemaOro.Data.Dto;
+using SistemaOro.Data.Entities;
 
 namespace SistemaOro.Data.Repositories;
 
@@ -18,5 +19,11 @@ public interface IDescarguesRepository : ICrudRepository<Descargue>
     Task<List<Compra>> GetComprasByNumdes(int numdes);
 
     Task<List<Compra>> GetComprasByFecha(DateTime desde, DateTime hasta);
+
+    Task<List<GeneralDescargueCompra>> FindGeneralDescargueCompra(int dgnumdes);
+    
+    Task<List<DetalleDescarguePorCompra>> FindDetalleDescargueCompra(int dgnumdes);
+
+    Task<List<SaldoCompra>> SaldoCompraDescargueAnio(DateTime fecha);
 
 }

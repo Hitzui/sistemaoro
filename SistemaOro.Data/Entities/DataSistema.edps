@@ -40,6 +40,9 @@
         <File Name="DataSistema.TransaccionEfectivo.cs" />
         <File Name="DataSistema.Vdetacaja.cs" />
         <File Name="DataSistema.VVariacionesCliente.cs" />
+        <File Name="DataSistema.ReservaOro.cs" />
+        <File Name="DataSistema.DetaReserva.cs" />
+        <File Name="DataSistema.EstadoCompra.cs" />
       </GeneratedFiles>
     </Generation>
     <DatabaseFirstNamingRules>
@@ -50,8 +53,8 @@
     <ModelFirst StorageSynchronizationEnabled="False" TargetSchema="efectioro" TargetProviderName="System.Data.SqlClient">
       <TargetServer Server="SQL Server" ServerVersion="2019" />
       <ModelFirstNamingRules>
-        <Table RemoveUnderscores="False" AddUnderscores="False" RemoveInvalidCharacters="True" CodeCase="Unchanged" AddPrefix="" AddSuffix="" RemovePrefixes="" RemoveSuffixes="" PluralizationName="Pluralize" />
-        <Column RemoveUnderscores="False" AddUnderscores="False" RemoveInvalidCharacters="True" CodeCase="Unchanged" AddPrefix="" AddSuffix="" RemovePrefixes="" RemoveSuffixes="" PluralizationName="Unchanged" />
+        <Table RemoveUnderscores="False" AddUnderscores="False" RemoveInvalidCharacters="True" CodeCase="Capitalized" AddPrefix="" AddSuffix="" RemovePrefixes="" RemoveSuffixes="" PluralizationName="Pluralize" />
+        <Column RemoveUnderscores="False" AddUnderscores="False" RemoveInvalidCharacters="True" CodeCase="Capitalized" AddPrefix="" AddSuffix="" RemovePrefixes="" RemoveSuffixes="" PluralizationName="Unchanged" />
       </ModelFirstNamingRules>
     </ModelFirst>
     <Diagrams>

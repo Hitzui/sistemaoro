@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SistemaOro.Data.Dto;
 using SistemaOro.Data.Entities;
 
 namespace SistemaOro.Data.Repositories;
@@ -61,28 +62,31 @@ public class DescarguesRepository(DataContext context, ICompraRepository compraR
                 return false;
             }
 
-            if (findCompra.Codestado==EstadoCompra.Anulada)
+            if (findCompra.Codestado == EstadoCompra.Anulada)
             {
                 ErrorSms = $"La compra actual se encuntra anulada, {numcompra}";
                 return false;
             }
+
             var findDetaCompra = await compraRepository.FindDetaCompra(numcompra);
             foreach (var detCompra in findDetaCompra.Where(compra => values.ContainsValue(compra.Linea)))
             {
                 detCompra.Numdescargue = numeroDescargue;
                 listDetaCompra.Add(detCompra);
             }
+
             var lista = findDetaCompra.Count;
             var count = findDetaCompra.Count(compra => compra.Numdescargue > 0);
             var estado = EstadoCompra.Vigente;
-            if (lista>count)
+            if (lista > count)
             {
                 estado = EstadoCompra.Cerrada;
-            }else if (lista==count)
+            }
+            else if (lista == count)
             {
                 estado = EstadoCompra.Descargada;
             }
-            
+
             findCompra.Codestado = estado;
             listCompra.Add(findCompra);
         }
@@ -121,5 +125,64 @@ public class DescarguesRepository(DataContext context, ICompraRepository compraR
             .Where(arg => arg.compra.Dgnumdes > 0 && arg.descargue.Dgfecdes >= desde && arg.descargue.Dgfecdes <= hasta)
             .Select(arg => arg.compra)
             .ToListAsync();
+    }
+
+    public async Task<List<GeneralDescargueCompra>> FindGeneralDescargueCompra(int dgnumdes)
+    {
+        var result = from descargue in context.Descargues
+            join compra in context.Compras on descargue.Dgnumdes equals compra.Dgnumdes
+            join cliente in context.Clientes on compra.Codcliente equals cliente.Codcliente
+            where descargue.Dgnumdes == dgnumdes
+            select new GeneralDescargueCompra
+            (
+                descargue.Dgnumdes,
+                cliente.Codcliente,
+                descargue.Dgfecdes,
+                compra.Numcompra,
+                compra.Fecha,
+                cliente.Codcliente,
+                cliente.Nombres,
+                cliente.Apellidos,
+                compra.Peso,
+                compra.Total,
+                descargue.Dgcancom
+            );
+        return await result.ToListAsync();
+    }
+
+    public async Task<List<DetalleDescarguePorCompra>> FindDetalleDescargueCompra(int dgnumdes)
+    {
+        var result = from descargue in context.Descargues
+            join compra in context.Compras on descargue.Dgnumdes equals compra.Dgnumdes
+            join detcompra in context.DetCompras on compra.Numcompra equals detcompra.Numcompra
+            join cliente in context.Clientes on compra.Codcliente equals cliente.Codcliente
+            where descargue.Dgnumdes == dgnumdes
+            orderby compra.Numcompra
+            select new DetalleDescarguePorCompra(descargue.Dgnumdes, compra.Codcliente, 
+                descargue.Dgfecdes, compra.Numcompra, compra.Fecha, cliente.Codcliente, cliente.Nombres,
+                cliente.Apellidos, compra.Peso, compra.Total, descargue.Dgcancom,
+                detcompra.Kilshowdoc, detcompra.Peso, detcompra.Importe.Value);
+        return await result.ToListAsync();
+    }
+
+    public async Task<List<SaldoCompra>> SaldoCompraDescargueAnio(DateTime fecha)
+    {
+        var result = from c in context.Compras
+            join d in context.Descargues on c.Dgnumdes equals d.Dgnumdes into cd
+            from d in cd.DefaultIfEmpty()
+            where d.Dgfecdes.Year == fecha.Year
+            group new { c, d } by d.Dgfecgen.Month
+            into g
+            select new SaldoCompra
+            (
+                Mes: g.Key,
+                PesoC: g.Sum(x => x.c.Peso),
+                ValorC: g.Sum(x => x.c.Total),
+                PesoD: g.Sum(x => x.d.Dgpesntt),
+                ValorD: g.Sum(x => x.d.Dgimptcom),
+                Pesos: g.Sum(x => x.d.Dgpesntt - x.c.Peso),
+                Valores: g.Sum(x => x.d.Dgimptcom - x.c.Total)
+            );
+        return await result.ToListAsync();
     }
 }

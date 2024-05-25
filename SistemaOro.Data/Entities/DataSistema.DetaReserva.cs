@@ -21,22 +21,28 @@ using System.Linq.Expressions;
 
 namespace SistemaOro.Data.Entities
 {
-    public partial class Precio {
+    public partial class DetaReserva {
 
-        public Precio()
+        public DetaReserva()
         {
             OnCreated();
         }
 
-        public string Codcliente { get; set; }
+        public int IdReserva { get; set; }
 
-        public decimal Kilate { get; set; }
+        public int linea { get; set; }
 
-        public decimal Precio1 { get; set; }
+        public DateOnly Fecha { get; set; }
 
-        public decimal Gramos { get; set; }
+        public decimal Entregadas { get; set; }
 
-        public decimal PrecioOro { get; set; }
+        public decimal Diferencias { get; set; }
+
+        public string Usuario { get; set; }
+
+        public string Hora { get; set; }
+
+        public virtual ReservaOro ReservaOro { get; set; }
 
         #region Extensibility Method Definitions
 
@@ -44,15 +50,15 @@ namespace SistemaOro.Data.Entities
 
         public override bool Equals(object obj)
         {
-          Precio toCompare = obj as Precio;
+          DetaReserva toCompare = obj as DetaReserva;
           if (toCompare == null)
           {
             return false;
           }
 
-          if (!Object.Equals(this.Codcliente, toCompare.Codcliente))
+          if (!Object.Equals(this.IdReserva, toCompare.IdReserva))
             return false;
-          if (!Object.Equals(this.Kilate, toCompare.Kilate))
+          if (!Object.Equals(this.linea, toCompare.linea))
             return false;
 
           return true;
@@ -61,8 +67,8 @@ namespace SistemaOro.Data.Entities
         public override int GetHashCode()
         {
           int hashCode = 13;
-          hashCode = (hashCode * 7) + Codcliente.GetHashCode();
-          hashCode = (hashCode * 7) + Kilate.GetHashCode();
+          hashCode = (hashCode * 7) + IdReserva.GetHashCode();
+          hashCode = (hashCode * 7) + linea.GetHashCode();
           return hashCode;
         }
 

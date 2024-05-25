@@ -27,8 +27,12 @@ public class VariablesGlobales
         UnityContainer.RegisterSingleton<IClienteRepository, ClienteRepository>();
         UnityContainer.RegisterSingleton<IDescarguesRepository, DescarguesRepository>();
         UnityContainer.RegisterSingleton<IMaestroCajaRepository, MaestroCajaRepository>();
+        UnityContainer.RegisterSingleton<IMovimientosRepository, MovimientosCajaRepository>();
         UnityContainer.RegisterSingleton<IMonedaRepository, MonedaRepository>();
         UnityContainer.RegisterSingleton<IParametersRepository, ParametersRepository>();
+        UnityContainer.RegisterSingleton<IPicaRepository, PicaRepository>();
+        UnityContainer.RegisterSingleton<IPreciosKilatesRepository, PreciosKilatesRepository>();
+        UnityContainer.RegisterSingleton<IRubroRepository, RubroRepository>();
         UnityContainer.RegisterSingleton<ITipoCambioRepository, TipoCambioRepository>();
         UnityContainer.RegisterSingleton<IUsuarioRepository, UsuarioRepository>();
     }

@@ -21,39 +21,35 @@ using System.Linq.Expressions;
 
 namespace SistemaOro.Data.Entities
 {
-    public partial class Agencia {
+    public partial class ReservaOro {
 
-        public Agencia()
+        public ReservaOro()
         {
-            this.Compras = new List<Compra>();
-            this.ComprasAdelantos = new List<ComprasAdelanto>();
-            this.DetCompras = new List<DetCompra>();
-            this.Detacierres = new List<Detacierre>();
-            this.Mcajas = new List<Mcaja>();
+            this.DetaReservas = new List<DetaReserva>();
             OnCreated();
         }
 
-        public string Codagencia { get; set; }
+        public int IdReserva { get; set; }
 
-        public string Nomagencia { get; set; }
+        public string CodCliente { get; set; }
 
-        public string Diragencia { get; set; }
+        public DateOnly FechaReserva { get; set; }
 
-        public string Disagencia { get; set; }
+        public decimal PrecioReserva { get; set; }
 
-        public string Telagencia { get; set; }
+        public decimal Gramos { get; set; }
 
-        public int? Numcompra { get; set; }
+        public decimal Onzas { get; set; }
 
-        public virtual IList<Compra> Compras { get; set; }
+        public string PrecioKiate { get; set; }
 
-        public virtual IList<ComprasAdelanto> ComprasAdelantos { get; set; }
+        public bool Estado { get; set; }
 
-        public virtual IList<DetCompra> DetCompras { get; set; }
+        public decimal KilateProm { get; set; }
 
-        public virtual IList<Detacierre> Detacierres { get; set; }
+        public decimal Saldo { get; set; }
 
-        public virtual IList<Mcaja> Mcajas { get; set; }
+        public virtual IList<DetaReserva> DetaReservas { get; set; }
 
         #region Extensibility Method Definitions
 

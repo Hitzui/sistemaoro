@@ -11,1006 +11,1063 @@
       <Member Name="Descargada" Value="3" p1:Guid="d47c60a5-4dc9-4c7e-b5d4-08c0bb58aecf" />
     </EnumType>
   </class>
-  <class name="Adelanto" entity-set="Adelantos" table="adelantos" schema="dbo" p1:Guid="402f934b-0ec3-4bd0-9137-b2a3262b25cd">
+  <class name="Adelanto" entity-set="Adelantos" p1:Guid="402f934b-0ec3-4bd0-9137-b2a3262b25cd">
     <id name="Idsalida" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="5f4817a6-c2f1-404a-b9cc-7bf4cf0fe68c">
-      <column name="idsalida" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </id>
     <property name="Codcliente" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="ff673859-4cff-49ef-9f7b-c2c782ce4aaa">
-      <column name="codcliente" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Numcompra" type="String" p1:ValidateMaxLength="50" p1:ValidateRequired="true" p1:Guid="3fca93a0-187c-44da-96e3-b0677a8e55c6">
-      <column name="numcompra" not-null="True" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="Fecha" type="DateTime" p1:ValidateRequired="true" p1:Guid="ea8a8b77-b76e-47c6-b9e7-dbe027b9164b">
-      <column name="fecha" not-null="True" sql-type="date" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="Monto" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="429a9795-ccd8-40f5-9384-6bfd045f3402">
-      <column name="monto" not-null="False" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Saldo" type="Decimal" p1:ValidateRequired="true" p1:Guid="bf213809-713d-4ecc-b04e-dc49f3983f06">
-      <column name="saldo" not-null="True" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Efectivo" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="2c89756f-b993-4b56-9837-e6604dc21e3a">
-      <column name="efectivo" not-null="False" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Cheque" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="aefe5227-6d79-4c43-a5b6-9e0b63f1b83f">
-      <column name="cheque" not-null="False" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Transferencia" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="b9ed9c87-a230-418c-9877-e3a2a0bcc91e">
-      <column name="transferencia" not-null="False" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Codcaja" type="String" p1:nullable="True" p1:ValidateMaxLength="10" p1:ValidateRequired="false" p1:Guid="bef7dd5d-5114-4bc0-ac36-f6898f573e25">
-      <column name="codcaja" not-null="False" length="10" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="10" p1:unicode="False" />
     </property>
     <property name="Usuario" type="String" p1:nullable="True" p1:ValidateMaxLength="50" p1:ValidateRequired="false" p1:Guid="f978991d-586a-46b3-a3a4-c778fe9e5e4c">
-      <column name="usuario" not-null="False" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="MontoLetras" type="String" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="ed7fad50-8a6c-48e8-8f28-8a441d1a51d4">
-      <column name="monto_letras" not-null="False" sql-type="varchar(max)" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="Hora" type="String" p1:nullable="True" p1:ValidateMaxLength="50" p1:ValidateRequired="false" p1:Guid="fd082416-80f7-43b9-af2e-f6afb68d507a">
-      <column name="hora" not-null="False" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="Codmoneda" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="f242ee97-8dc0-4f2c-aa1c-1ec18f759f6c">
-      <column name="codmoneda" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="Activa" type="Boolean" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="db66ce14-ad14-46a4-8f28-e5572dac4ca5">
-      <column name="activa" default="1" not-null="False" sql-type="bit" p1:unicode="False" />
+      <column name="" default="1" p1:unicode="False" />
     </property>
   </class>
-  <class name="Agencia" entity-set="Agencias" table="Agencia" schema="dbo" p1:Guid="096ae2d4-f22e-4208-ae95-dc3d8ee02bd1">
+  <class name="Agencia" entity-set="Agencias" p1:Guid="096ae2d4-f22e-4208-ae95-dc3d8ee02bd1">
     <id name="Codagencia" type="String" p1:ValidateMaxLength="10" p1:ValidateRequired="true" p1:Guid="87ba796e-a222-4369-a565-54f7800505be">
-      <column name="codagencia" not-null="True" length="10" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="10" p1:unicode="False" />
     </id>
     <property name="Nomagencia" type="String" p1:ValidateMaxLength="150" p1:ValidateRequired="true" p1:Guid="561eb20d-5a38-40dd-b989-5d540e191572">
-      <column name="nomagencia" not-null="True" length="150" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="150" p1:unicode="False" />
     </property>
     <property name="Diragencia" type="String" p1:ValidateRequired="true" p1:Guid="92244269-18ae-4fda-bb87-18ca0f1b67f5">
-      <column name="diragencia" not-null="True" sql-type="varchar(max)" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="Disagencia" type="String" p1:ValidateMaxLength="100" p1:ValidateRequired="true" p1:Guid="320150a7-960b-4c82-a527-d33f41252542">
-      <column name="disagencia" not-null="True" length="100" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="100" p1:unicode="False" />
     </property>
     <property name="Telagencia" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="120dc560-4fd5-4dea-bf78-29d5201d81ee">
-      <column name="telagencia" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Numcompra" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="f8711151-9d43-4624-a46d-237ddcfddcf1">
-      <column name="numcompra" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
   </class>
-  <class name="Caja" entity-set="Cajas" table="caja" schema="dbo" p1:Guid="67f9f889-f34f-4528-ade9-e87f5cf7f9ca">
+  <class name="Caja" entity-set="Cajas" p1:Guid="67f9f889-f34f-4528-ade9-e87f5cf7f9ca">
     <id name="Codcaja" type="String" p1:ValidateMaxLength="10" p1:ValidateRequired="true" p1:Guid="dc44b8e1-6936-45ea-8c5b-44448aea7d96">
-      <column name="codcaja" not-null="True" length="10" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="10" p1:unicode="False" />
     </id>
     <property name="Descripcion" type="String" p1:ValidateMaxLength="50" p1:ValidateRequired="true" p1:Guid="d179740e-95cd-4010-a71e-ce3590cc41ce">
-      <column name="descripcion" not-null="True" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
   </class>
-  <class name="CierrePrecio" entity-set="CierrePrecios" table="cierre_precios" schema="dbo" p1:Guid="e6124e6f-1b8d-46fe-99dc-0559a380abe9">
+  <class name="CierrePrecio" entity-set="CierrePrecios" p1:Guid="e6124e6f-1b8d-46fe-99dc-0559a380abe9">
     <id name="Codcierre" type="Int32" value-generated="OnAdd" p1:ValidateRequired="true" p1:Guid="49ce67db-fd3f-4ba0-92a0-34e074a0a96a">
-      <column name="codcierre" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </id>
     <property name="Codcliente" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="2463acb4-94b5-4909-8924-fd1c0683b844">
-      <column name="codcliente" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Status" type="Boolean" p1:ValidateRequired="true" p1:Guid="c3e220e9-c34c-4ef4-a574-8cb762b17f9f">
-      <column name="status" not-null="True" sql-type="bit" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="OnzasFinas" type="Decimal" p1:ValidateRequired="true" p1:Guid="d2115717-840e-4d65-b65c-f7a26df3709f">
-      <column name="onzas_finas" not-null="True" precision="12" scale="3" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="12" scale="3" p1:unicode="False" />
     </property>
     <property name="GramosFinos" type="Decimal" p1:ValidateRequired="true" p1:Guid="8ec7d153-75d0-45a9-ab18-4d9cc1517ccb">
-      <column name="gramos_finos" not-null="True" precision="12" scale="2" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="12" scale="2" p1:unicode="False" />
     </property>
     <property name="PrecioOro" type="Decimal" p1:ValidateRequired="true" p1:Guid="f62f73f3-91ff-4269-bbb0-0295bc9e0c6d">
-      <column name="precio_oro" not-null="True" precision="12" scale="2" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="12" scale="2" p1:unicode="False" />
     </property>
     <property name="PrecioBase" type="Decimal" p1:ValidateRequired="true" p1:Guid="825c3550-de57-478b-8993-ff60fdaac340">
-      <column name="precio_base" not-null="True" precision="12" scale="2" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="12" scale="2" p1:unicode="False" />
     </property>
     <property name="SaldoOnzas" type="Decimal" p1:ValidateRequired="true" p1:Guid="1b540079-88e6-440a-a70c-07a09a621796">
-      <column name="saldo_onzas" not-null="True" precision="12" scale="3" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="12" scale="3" p1:unicode="False" />
     </property>
     <property name="Fecha" type="DateTime" p1:ValidateRequired="true" p1:Guid="b7c95817-b495-4f31-be27-29a5b52122a5">
-      <column name="fecha" not-null="True" sql-type="datetime" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="Margen" type="Decimal" p1:ValidateRequired="true" p1:Guid="a7cb2fe1-2f8f-47c4-8e79-f553a8644413">
-      <column name="margen" not-null="True" precision="12" scale="2" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="12" scale="2" p1:unicode="False" />
     </property>
   </class>
-  <class name="Cliente" entity-set="Clientes" table="Cliente" schema="dbo" p1:Guid="f6fe52e9-294f-4652-a83d-20a1ffcc47e0">
+  <class name="Cliente" entity-set="Clientes" p1:Guid="f6fe52e9-294f-4652-a83d-20a1ffcc47e0">
     <id name="Codcliente" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="5ff275eb-1ba8-46b2-ba86-c566bdb8e58f">
-      <column name="codcliente" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </id>
     <property name="Nombres" type="String" p1:ValidateMaxLength="35" p1:ValidateRequired="true" p1:Guid="580b1ed7-ef75-453f-beb4-876b24c2e97e">
-      <column name="nombres" not-null="True" length="35" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="35" p1:unicode="False" />
     </property>
     <property name="Apellidos" type="String" p1:nullable="True" p1:ValidateMaxLength="50" p1:ValidateRequired="false" p1:Guid="c5a2d138-8250-40ef-80b9-946d5cd36931">
-      <column name="apellidos" not-null="False" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="Numcedula" type="String" p1:ValidateMaxLength="50" p1:ValidateRequired="true" p1:Guid="15ddd698-25e8-40ec-9045-543b006a2de9">
-      <column name="numcedula" not-null="True" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="FEmision" type="DateTime" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="126b8088-d445-4c6e-964c-da373fcdd67f">
-      <column name="f_emision" not-null="False" sql-type="date" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="FVencimiento" type="DateTime" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="a1493c3e-b3da-4905-860b-4c6b18b9fafa">
-      <column name="f_vencimiento" not-null="False" sql-type="date" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="Direccion" type="Clob" p1:ValidateMaxLength="2147483647" p1:ValidateRequired="true" p1:Guid="7e4581c2-3245-4ad0-a3b5-9c703c1277d4">
-      <column name="direccion" not-null="True" length="2147483647" sql-type="text" p1:unicode="False" />
+      <column name="" length="2147483647" p1:unicode="False" />
     </property>
     <property name="FNacimiento" type="DateTime" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="962b146f-501a-46e0-899d-82bb4472636f">
-      <column name="f_nacimiento" not-null="False" sql-type="date" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="Estadocivil" type="String" p1:nullable="True" p1:ValidateMaxLength="20" p1:ValidateRequired="false" p1:Guid="fa326664-0e16-4143-af95-5ee837d2f51a">
-      <column name="estadocivil" not-null="False" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Ciudad" type="String" p1:nullable="True" p1:ValidateMaxLength="50" p1:ValidateRequired="false" p1:Guid="a7ce6e0b-296c-4c64-9421-343c579012f6">
-      <column name="ciudad" not-null="False" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="Telefono" type="String" p1:ValidateMaxLength="50" p1:ValidateRequired="true" p1:Guid="9699bf02-9edf-4564-997b-4185bb22790b">
-      <column name="telefono" not-null="True" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="Celular" type="String" p1:nullable="True" p1:ValidateMaxLength="50" p1:ValidateRequired="false" p1:Guid="2df72ae4-0ef1-4563-98ba-f6fc4ef22502">
-      <column name="celular" not-null="False" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="Email" type="String" p1:nullable="True" p1:ValidateMaxLength="50" p1:ValidateRequired="false" p1:Guid="f2d2e187-7782-4fd1-b87c-fe45f65fb5c1">
-      <column name="email" not-null="False" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="FIngreso" type="DateTime" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="122e2e50-560a-4eff-86e6-8eb19b69cca5">
-      <column name="f_ingreso" not-null="False" sql-type="date" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="Ocupacion" type="String" p1:nullable="True" p1:ValidateMaxLength="50" p1:ValidateRequired="false" p1:Guid="b5067820-bc2f-4e5e-ac23-b9206d28b8d5">
-      <column name="ocupacion" not-null="False" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="DireccionNegocio" type="Clob" p1:nullable="True" p1:ValidateMaxLength="2147483647" p1:ValidateRequired="false" p1:Guid="04cbce4e-64b4-41b3-a35b-1e3b0db3f590">
-      <column name="direccion_negocio" not-null="False" length="2147483647" sql-type="text" p1:unicode="False" />
+      <column name="" length="2147483647" p1:unicode="False" />
     </property>
     <property name="TiempoNeg" type="String" p1:nullable="True" p1:ValidateMaxLength="50" p1:ValidateRequired="false" p1:Guid="02843905-e47d-490a-a5bc-0bcd39069e74">
-      <column name="tiempo_neg" not-null="False" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="OtraAe" type="String" p1:nullable="True" p1:ValidateMaxLength="50" p1:ValidateRequired="false" p1:Guid="36db64d7-7fed-4745-9f99-f339f9565ef6">
-      <column name="otra_ae" not-null="False" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="DescOtra" type="Clob" p1:nullable="True" p1:ValidateMaxLength="2147483647" p1:ValidateRequired="false" p1:Guid="ddcc18ed-47d5-40d4-a7b4-21345f5afc2c">
-      <column name="desc_otra" not-null="False" length="2147483647" sql-type="text" p1:unicode="False" />
+      <column name="" length="2147483647" p1:unicode="False" />
     </property>
     <property name="NomCuenta" type="String" p1:nullable="True" p1:ValidateMaxLength="50" p1:ValidateRequired="false" p1:Guid="8146785b-749b-408e-a861-83dede47641f">
-      <column name="nom_cuenta" not-null="False" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="NumCuenta" type="String" p1:nullable="True" p1:ValidateMaxLength="50" p1:ValidateRequired="false" p1:Guid="9ac0db4d-ca93-4748-bf32-09c914b4d758">
-      <column name="num_cuenta" not-null="False" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="NomBanco" type="String" p1:nullable="True" p1:ValidateMaxLength="50" p1:ValidateRequired="false" p1:Guid="b8542a00-9b1b-47f9-8974-9a78133a1425">
-      <column name="nom_banco" not-null="False" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="MontoMensual" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="426d59c6-c936-4159-ae26-13225eb82dc0">
-      <column name="monto_mensual" not-null="False" precision="19" scale="4" sql-type="money" p1:unicode="False" />
+      <column name="" precision="19" scale="4" p1:unicode="False" />
     </property>
     <property name="TotalOperaciones" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="a66dc40f-d8f4-4053-99f5-98890e3b4078">
-      <column name="total_operaciones" not-null="False" precision="12" scale="3" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="12" scale="3" p1:unicode="False" />
     </property>
     <property name="ActuaPor" type="String" p1:nullable="True" p1:ValidateMaxLength="50" p1:ValidateRequired="false" p1:Guid="6920d7df-7985-42be-8ac3-2b73af4d1a46">
-      <column name="actua_por" not-null="False" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="NombreTercero" type="String" p1:nullable="True" p1:ValidateMaxLength="100" p1:ValidateRequired="false" p1:Guid="6a62e548-984d-4c8e-98a4-40cfa3a8d50c">
-      <column name="nombre_tercero" not-null="False" length="100" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="100" p1:unicode="False" />
     </property>
     <property name="DireccionTercero" type="Clob" p1:nullable="True" p1:ValidateMaxLength="2147483647" p1:ValidateRequired="false" p1:Guid="eef0b097-ed9c-40d7-98e8-0bd5c056fc56">
-      <column name="direccion_tercero" not-null="False" length="2147483647" sql-type="text" p1:unicode="False" />
+      <column name="" length="2147483647" p1:unicode="False" />
     </property>
     <property name="Pica" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="bc349a77-16df-445a-9475-32f35dfdd33b">
-      <column name="pica" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="Ocupacion2" type="String" p1:nullable="True" p1:ValidateMaxLength="50" p1:ValidateRequired="false" p1:Guid="a4d94e91-2f46-44ca-a648-c08876b6e973">
-      <column name="ocupacion2" default="'Vendedor'" not-null="False" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" default="'Vendedor'" length="50" p1:unicode="False" />
     </property>
     <property name="Numcompra" type="String" p1:nullable="True" p1:ValidateMaxLength="20" p1:ValidateRequired="false" p1:Guid="71a035b3-7d2c-477c-acf8-2557c34136c3">
-      <column name="Numcompra" not-null="False" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
   </class>
-  <class name="Compra" entity-set="Compras" table="compras" schema="dbo" p1:Guid="16196dd8-f16f-42a8-b4ae-6dcd3261c69c">
+  <class name="Compra" entity-set="Compras" p1:Guid="16196dd8-f16f-42a8-b4ae-6dcd3261c69c">
     <id name="Numcompra" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="be68b3cd-dea1-408a-b7e7-605cf59c9833">
-      <column name="numcompra" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </id>
     <property name="Codagencia" type="String" p1:ValidateMaxLength="10" p1:ValidateRequired="true" p1:Guid="f3957051-56be-4c45-85ab-909bb9bce8a1">
-      <column name="codagencia" not-null="True" length="10" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="10" p1:unicode="False" />
     </property>
     <property name="Codcliente" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="c26c828e-3f7e-48fb-b8e5-a52804ffc151">
-      <column name="codcliente" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Codcaja" type="String" p1:ValidateMaxLength="10" p1:ValidateRequired="true" p1:Guid="4547d46e-6019-4fdc-a0ef-7b303a6b85bd">
-      <column name="codcaja" not-null="True" length="10" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="10" p1:unicode="False" />
     </property>
     <property name="Peso" type="Decimal" p1:ValidateRequired="true" p1:Guid="9f978c5c-e317-4f18-99ed-3309ccc8254c">
-      <column name="peso" not-null="True" precision="11" scale="2" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="11" scale="2" p1:unicode="False" />
     </property>
     <property name="Codmoneda" type="Int32" p1:ValidateRequired="true" p1:Guid="051a3c04-4fec-4928-a33d-e1c45c7dc833">
-      <column name="codmoneda" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="Total" type="Decimal" p1:ValidateRequired="true" p1:Guid="f8fb569d-c3ed-484e-a7f4-e54ee458022d">
-      <column name="total" not-null="True" precision="15" scale="2" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="15" scale="2" p1:unicode="False" />
     </property>
     <property name="Fecha" type="DateTime" p1:ValidateRequired="true" p1:Guid="db0d399a-31f6-432a-bb8f-9fa7f5b7d283">
-      <column name="fecha" not-null="True" sql-type="date" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="Codestado" type="SistemaOro.Data.Entities.EstadoCompra" p1:ValidateRequired="true" p1:Guid="2f31fbb7-0360-4a71-b8fc-dcb91d8912e7">
-      <column name="codestado" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="Usuario" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="335fad02-6b00-4c03-8f56-150a8c6818da">
-      <column name="usuario" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Hora" type="String" p1:ValidateMaxLength="50" p1:ValidateRequired="true" p1:Guid="b6a20652-fe74-4820-bdd5-de6e983322cc">
-      <column name="hora" not-null="True" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="FormaPago" type="String" p1:ValidateMaxLength="50" p1:ValidateRequired="true" p1:Guid="1c320d71-f4e3-43c4-9787-87c1d769c1a4">
-      <column name="forma_pago" not-null="True" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="Dgnumdes" type="Int32" p1:ValidateRequired="true" p1:Guid="a200c51e-2a7a-4776-9df7-98bcc9e340ae">
-      <column name="dgnumdes" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="Efectivo" type="Decimal" p1:ValidateRequired="true" p1:Guid="9224e1f2-447d-4965-a1bb-9691f682e242">
-      <column name="efectivo" not-null="True" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Cheque" type="Decimal" p1:ValidateRequired="true" p1:Guid="13eb9b6a-afe5-476b-9faf-1a8b65daa0d7">
-      <column name="cheque" not-null="True" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Transferencia" type="Decimal" p1:ValidateRequired="true" p1:Guid="e582d5d1-9b14-4751-8a11-bc846a35bc29">
-      <column name="transferencia" not-null="True" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="PorCobrar" type="Decimal" p1:ValidateRequired="true" p1:Guid="220b7bbf-6ee4-437f-b208-0bdedbeb353e">
-      <column name="por_cobrar" not-null="True" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="PorPagar" type="Decimal" p1:ValidateRequired="true" p1:Guid="c554a1d4-2c02-46e1-bfbc-df0a92b306f3">
-      <column name="por_pagar" not-null="True" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Adelantos" type="Decimal" p1:ValidateRequired="true" p1:Guid="d3722f20-3ed8-451e-ba33-e083f280d1d9">
-      <column name="adelantos" not-null="True" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="SaldoPorPagar" type="Decimal" p1:ValidateRequired="true" p1:Guid="6531a2a8-ef87-4fe0-a6ad-2121739ee389">
-      <column name="saldo_por_pagar" not-null="True" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="SaldoAdelanto" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="b1d502df-f245-4ccf-8599-163a07bfbc6d">
-      <column name="saldo_adelanto" default="0" not-null="False" precision="12" scale="3" sql-type="numeric" p1:unicode="False" />
+      <column name="" default="0" precision="12" scale="3" p1:unicode="False" />
     </property>
     <property name="SaldoAdelantoDolares" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="407aca14-5821-4c69-8947-e2d77dc3a060">
-      <column name="saldo_adelanto_dolares" not-null="False" precision="12" scale="3" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="12" scale="3" p1:unicode="False" />
     </property>
   </class>
-  <class name="ComprasAdelanto" entity-set="ComprasAdelantos" table="compras_adelantos" schema="dbo" p1:Guid="b6d97285-d8e8-444f-bf62-eb7261ba321e">
+  <class name="ComprasAdelanto" entity-set="ComprasAdelantos" p1:Guid="b6d97285-d8e8-444f-bf62-eb7261ba321e">
     <id name="IdcomprasAdelantos" type="Int32" value-generated="OnAdd" p1:ValidateRequired="true" p1:Guid="038e5368-2645-43b4-9b5d-98486733cee2">
-      <column name="idcompras_adelantos" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </id>
     <property name="Numcompra" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="9fa0fe03-4ef8-4c02-86af-442ea0b13e8b">
-      <column name="numcompra" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Idadelanto" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="06d83327-ed99-4208-8b6d-eefa90e2c197">
-      <column name="idadelanto" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Codcliente" type="String" p1:nullable="True" p1:ValidateMaxLength="20" p1:ValidateRequired="false" p1:Guid="67dcb361-45a9-4b05-a1fb-62ac510e6440">
-      <column name="codcliente" not-null="False" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Sinicial" type="Decimal" p1:ValidateRequired="true" p1:Guid="564b4636-ba14-4028-9147-7819e5c1ffa3">
-      <column name="sinicial" not-null="True" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Monto" type="Decimal" p1:ValidateRequired="true" p1:Guid="12b575ae-807e-4527-b003-eb48a8ef8aa4">
-      <column name="monto" not-null="True" precision="18" scale="3" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="18" scale="3" p1:unicode="False" />
     </property>
     <property name="Sfinal" type="Decimal" p1:ValidateRequired="true" p1:Guid="569c5df1-1d9b-4de3-a7ce-ecaacdf60a57">
-      <column name="sfinal" not-null="True" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Fecha" type="DateTime" p1:ValidateRequired="true" p1:Guid="ab81dd88-a3cc-48f6-8ac6-ad1c5d112deb">
-      <column name="fecha" not-null="True" sql-type="date" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="Codcaja" type="String" p1:ValidateMaxLength="10" p1:ValidateRequired="true" p1:Guid="703d3662-5321-4334-9c53-5478b5b9e205">
-      <column name="codcaja" not-null="True" length="10" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="10" p1:unicode="False" />
     </property>
     <property name="Usuario" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="93241594-b528-48ba-a1a1-7991f5ef8fef">
-      <column name="usuario" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Hora" type="Time" p1:ValidateRequired="true" p1:Guid="c0807b68-0d68-4dac-b31e-a0f5ebf2f230">
-      <column name="hora" not-null="True" precision="0" sql-type="time" p1:unicode="False" />
+      <column name="" precision="0" p1:unicode="False" />
     </property>
     <property name="Codagencia" type="String" p1:nullable="True" p1:ValidateMaxLength="10" p1:ValidateRequired="false" p1:Guid="3b31379a-bce3-497d-bf02-a7219149e005">
-      <column name="codagencia" not-null="False" length="10" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="10" p1:unicode="False" />
     </property>
     <property name="Codmoneda" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="512b6d0a-f4d4-488a-9c13-1ff61155669e">
-      <column name="codmoneda" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
   </class>
-  <class name="Descargue" entity-set="Descargues" table="descargues" schema="dbo" p1:Guid="8f7d9a3e-dc9d-4cf6-93ce-d125a169b1e8">
+  <class name="Descargue" entity-set="Descargues" p1:Guid="8f7d9a3e-dc9d-4cf6-93ce-d125a169b1e8">
     <id name="Dgcodage" type="Int32" value-generated="OnAdd" p1:ValidateRequired="true" p1:Guid="3d7da14f-10ce-493a-9a31-af056d9944cb">
-      <column name="dgcodage" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </id>
     <property name="Dgcodcaj" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="0c6b90dd-5509-40b6-a92e-545ee99e2a28">
-      <column name="dgcodcaj" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Dgusuari" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="dc7d4082-ba4f-4e5a-b0e4-1628c59f0a5b">
-      <column name="dgusuari" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Dgnumdes" type="Int32" p1:ValidateRequired="true" p1:Guid="44e855aa-5abb-44e9-b174-a04028d3f3df">
-      <column name="dgnumdes" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="Dgcancom" type="Int32" p1:ValidateRequired="true" p1:Guid="5f4d2d08-721c-4594-9135-a303e7a185cc">
-      <column name="dgcancom" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="Dgpesbrt" type="Decimal" p1:ValidateRequired="true" p1:Guid="3d9b0372-cdb1-4d70-8837-3482b44d50ff">
-      <column name="dgpesbrt" not-null="True" precision="11" scale="2" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="11" scale="2" p1:unicode="False" />
     </property>
     <property name="Dgpesntt" type="Decimal" p1:ValidateRequired="true" p1:Guid="89ca8119-5414-4853-8269-9c5dc387da7e">
-      <column name="dgpesntt" not-null="True" precision="11" scale="2" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="11" scale="2" p1:unicode="False" />
     </property>
     <property name="Dgimptcom" type="Decimal" p1:ValidateRequired="true" p1:Guid="b383b0f2-27ad-4a1c-bc14-b1dc7f1e5935">
-      <column name="dgimptcom" not-null="True" precision="11" scale="2" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="11" scale="2" p1:unicode="False" />
     </property>
     <property name="Dgfecdes" type="DateTime" p1:ValidateRequired="true" p1:Guid="da91389b-5623-4156-a14c-bdcebb89c2e1">
-      <column name="dgfecdes" not-null="True" sql-type="date" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="Dgfecgen" type="DateTime" p1:ValidateRequired="true" p1:Guid="2265aa03-1fa4-4b1e-ac6c-c9751177a71f">
-      <column name="dgfecgen" not-null="True" sql-type="date" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
   </class>
-  <class name="DetCompra" entity-set="DetCompras" table="det_compra" schema="dbo" p1:Guid="ec7b853b-abc7-47d7-bd72-0149bcb8abd3">
+  <class name="DetCompra" entity-set="DetCompras" p1:Guid="ec7b853b-abc7-47d7-bd72-0149bcb8abd3">
     <id name="Iddetacompra" type="Int32" value-generated="OnAdd" p1:ValidateRequired="true" p1:Guid="93d59a6a-a5e1-4a03-9678-cd648b8b4d13">
-      <column name="iddetacompra" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </id>
     <property name="Numcompra" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="36c7a927-1bda-4bf1-8e71-4023114295c3">
-      <column name="numcompra" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Linea" type="Int32" p1:ValidateRequired="true" p1:Guid="710f1cb7-12f5-4df4-a07b-58141a397472">
-      <column name="linea" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="Descripcion" type="String" p1:ValidateMaxLength="30" p1:ValidateRequired="true" p1:Guid="c76d8418-32cc-468b-a87a-407c868d33dc">
-      <column name="descripcion" not-null="True" length="30" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="30" p1:unicode="False" />
     </property>
     <property name="Kilate" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="4e30979f-451f-4218-b5ba-f9c57767f36e">
-      <column name="kilate" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Preciok" type="Decimal" p1:ValidateRequired="true" p1:Guid="cb2d218a-b4b4-40ad-a1f3-40c0f54177b9">
-      <column name="preciok" not-null="True" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Peso" type="Decimal" p1:ValidateRequired="true" p1:Guid="42def24b-2f1f-4d4c-944d-e9727518f4ad">
-      <column name="peso" not-null="True" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Importe" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="3c337ea3-fe51-4306-b0de-d815904cca76">
-      <column name="importe" not-null="False" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Kilshowdoc" type="String" p1:nullable="True" p1:ValidateMaxLength="20" p1:ValidateRequired="false" p1:Guid="687506b9-1106-4d80-9706-160552dff05d">
-      <column name="kilshowdoc" not-null="False" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Numdescargue" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="ff61fb4f-4ab7-4323-82a6-5988e434fec5">
-      <column name="numdescargue" default="0" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" default="0" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="Codagencia" type="String" p1:nullable="True" p1:ValidateMaxLength="10" p1:ValidateRequired="false" p1:Guid="83b2f43c-fee5-4ddd-82ab-3dae610e002e">
-      <column name="codagencia" not-null="False" length="10" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="10" p1:unicode="False" />
     </property>
     <property name="Fecha" type="DateTime" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="5fda3c9e-ec01-4934-b562-cf0c982df853">
-      <column name="fecha" not-null="False" sql-type="date" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
   </class>
-  <class name="Detacaja" entity-set="Detacajas" table="detacaja" schema="dbo" p1:Guid="bf94c754-ba64-410a-bfa2-2d33ab9ea031">
+  <class name="Detacaja" entity-set="Detacajas" p1:Guid="bf94c754-ba64-410a-bfa2-2d33ab9ea031">
     <composite-id>
       <key-property name="Idcaja" type="Int32" p1:ValidateRequired="true" p1:Guid="a3c53df5-437a-4f39-ac1a-5d7e4b195539">
-        <column name="idcaja" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+        <column name="" precision="10" scale="0" p1:unicode="False" />
       </key-property>
       <key-property name="Fecha" type="DateTime" primary-key-index="1" p1:ValidateRequired="true" p1:Guid="e5dd72ee-2cad-4d2e-a83c-d2e149610aff">
-        <column name="fecha" not-null="True" sql-type="datetime" p1:unicode="False" />
+        <column name="" p1:unicode="False" />
       </key-property>
     </composite-id>
     <property name="Idmov" type="Int32" p1:ValidateRequired="true" p1:Guid="649b833d-43db-41eb-a5b7-2571ce35be57">
-      <column name="idmov" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="Hora" type="String" p1:ValidateMaxLength="50" p1:ValidateRequired="true" p1:Guid="a22cea87-ec34-4720-967b-04411832d15f">
-      <column name="hora" not-null="True" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="Concepto" type="String" p1:nullable="True" p1:ValidateMaxLength="250" p1:ValidateRequired="false" p1:Guid="ca35bfcd-40fe-4298-a93a-103afcfb3e60">
-      <column name="concepto" not-null="False" length="250" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="250" p1:unicode="False" />
     </property>
     <property name="Efectivo" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="c549bda1-06f2-4483-be6c-7d2b8fad3738">
-      <column name="efectivo" not-null="False" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Referencia" type="String" p1:nullable="True" p1:ValidateMaxLength="250" p1:ValidateRequired="false" p1:Guid="a14bbee0-6d9a-4691-a58a-fb1dcc686a8f">
-      <column name="referencia" not-null="False" length="250" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="250" p1:unicode="False" />
     </property>
     <property name="Cheque" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="386ad251-9d7a-4f87-963c-4bc45fa6b8af">
-      <column name="cheque" not-null="False" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Transferencia" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="58e03648-f808-4748-8fd0-62fd7cba143e">
-      <column name="transferencia" not-null="False" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Codcaja" type="String" p1:nullable="True" p1:ValidateMaxLength="10" p1:ValidateRequired="false" p1:Guid="4ef0d36a-d354-44bd-9b06-958ba0653f56">
-      <column name="codcaja" not-null="False" length="10" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="10" p1:unicode="False" />
     </property>
     <property name="Tipocambio" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="a35d9baf-d1aa-4218-ad76-1d17678939df">
-      <column name="tipocambio" default="1" not-null="False" precision="12" scale="4" sql-type="numeric" p1:unicode="False" />
+      <column name="" default="1" precision="12" scale="4" p1:unicode="False" />
     </property>
   </class>
-  <class name="Detacierre" entity-set="Detacierres" table="detacierre" schema="dbo" p1:Guid="e99b2bc8-1aa0-40e5-a900-d24166ef3244">
+  <class name="Detacierre" entity-set="Detacierres" p1:Guid="e99b2bc8-1aa0-40e5-a900-d24166ef3244">
     <composite-id>
       <key-property name="Codcierre" type="Int32" p1:ValidateRequired="true" p1:Guid="c5dbe2ee-6778-4186-bf1c-2034643eada8">
-        <column name="codcierre" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+        <column name="" precision="10" scale="0" p1:unicode="False" />
       </key-property>
       <key-property name="Numcompra" type="String" primary-key-index="1" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="f15decab-2dd6-444b-bfcb-acb3a4337c39">
-        <column name="numcompra" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+        <column name="" length="20" p1:unicode="False" />
       </key-property>
     </composite-id>
     <property name="Onzas" type="Decimal" p1:ValidateRequired="true" p1:Guid="214fd81f-9509-4f16-a273-e44cb5629ee3">
-      <column name="onzas" not-null="True" precision="12" scale="3" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="12" scale="3" p1:unicode="False" />
     </property>
     <property name="Saldo" type="Decimal" p1:ValidateRequired="true" p1:Guid="c0d27552-914c-44dd-bd5e-79084f97bd74">
-      <column name="saldo" not-null="True" precision="12" scale="3" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="12" scale="3" p1:unicode="False" />
     </property>
     <property name="Fecha" type="DateTime" p1:ValidateRequired="true" p1:Guid="8c59cf15-81af-4ea4-89e1-81a60a7eef30">
-      <column name="fecha" not-null="True" sql-type="datetime" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="Cantidad" type="Decimal" p1:ValidateRequired="true" p1:Guid="ceed1dab-17dd-4019-b8e8-3cadac4b591e">
-      <column name="cantidad" not-null="True" precision="12" scale="3" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="12" scale="3" p1:unicode="False" />
     </property>
     <property name="Codagencia" type="String" p1:ValidateMaxLength="10" p1:ValidateRequired="true" p1:Guid="6fe265c6-64af-43aa-b594-796e29b427cb">
-      <column name="codagencia" not-null="True" length="10" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="10" p1:unicode="False" />
     </property>
   </class>
-  <class name="Estado" entity-set="Estados" table="Estado" schema="dbo" p1:Guid="1403c023-b17f-4235-84c3-ef39b563b4c5">
+  <class name="Estado" entity-set="Estados" p1:Guid="1403c023-b17f-4235-84c3-ef39b563b4c5">
     <id name="Codestado" type="Int32" value-generated="OnAdd" p1:ValidateRequired="true" p1:Guid="58ec5a0b-3512-4441-baa7-7d00d620cc73">
-      <column name="codestado" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </id>
     <property name="DescEstado" type="String" p1:ValidateMaxLength="50" p1:ValidateRequired="true" p1:Guid="f2951a13-70e8-4ae1-99ad-7d4c2043d854">
-      <column name="desc_estado" not-null="True" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
   </class>
-  <class name="Id" entity-set="Id" table="Ids" schema="dbo" p1:Guid="3d924aaa-9654-4ecc-b200-0f76fedfc661">
+  <class name="Id" entity-set="Id" p1:Guid="3d924aaa-9654-4ecc-b200-0f76fedfc661">
     <id name="Codcliente" type="Int32" p1:ValidateRequired="true" p1:Guid="04114f4b-9db2-4429-9d57-3d0bc9b1ca62">
-      <column name="codcliente" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </id>
     <property name="Codagencia" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="3450c18a-5f3d-4d84-964c-6b6b2d3c1a3d">
-      <column name="codagencia" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="Numcompra" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="68ceea62-cbe6-4073-a17a-5b160e5805d8">
-      <column name="numcompra" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="Idadelanto" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="419e2df1-e8a4-42aa-bbc5-c2124d573f91">
-      <column name="idadelanto" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="Idcompras" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="aae6f05a-ab4f-4127-957c-4cdb7ce417f8">
-      <column name="idcompras" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="IdAdelantos" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="98f1c2c8-0883-482f-952c-d90fa91d0174">
-      <column name="id_adelantos" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="SaldoAnterior" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="d0a48964-5026-4e3a-b970-ebfd865933f0">
-      <column name="saldo_anterior" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="CierreCompra" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="1d8491d5-ea43-4243-b393-34834eb7acab">
-      <column name="cierre_compra" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="PrestamoEgreso" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="52fca107-5da4-401e-be46-34ce0c8ad1bc">
-      <column name="prestamo_egreso" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="PrestamoIngreso" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="015279d6-1fa3-4017-ba40-f910cf9c3900">
-      <column name="prestamo_ingreso" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="AnularCompra" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="6a273637-9dca-4b24-a8be-e7db947b642b">
-      <column name="anular_compra" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="AnularAdelanto" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="a7a14375-350e-4df7-a0b3-5124c7f501c5">
-      <column name="anular_adelanto" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="VariasCompras" type="Boolean" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="93034e79-1077-418c-99f3-41449e4f5470">
-      <column name="varias_compras" not-null="False" sql-type="bit" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="Recibe" type="String" p1:nullable="True" p1:ValidateMaxLength="50" p1:ValidateRequired="false" p1:Guid="34719cc0-481a-4b12-bf73-8f3dd7342c42">
-      <column name="recibe" not-null="False" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="PagoAdelanto" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="3e4b6ace-7067-4859-b4b4-0ddf2fc81fcc">
-      <column name="pago_adelanto" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="Idreserva" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="ab8311bc-9881-4a3c-924b-394f603eb83a">
-      <column name="idreserva" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="Backup" type="DateTime" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="aa96b9d8-23cd-43c2-a8b0-1cc8b4b81ade">
-      <column name="`backup`" not-null="False" sql-type="date" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="Cordobas" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="7c723639-86c4-45ec-9283-5dd7a00974d8">
-      <column name="cordobas" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="Dolares" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="4b8a4e81-19bd-45ff-ad63-3495939e3160">
-      <column name="dolares" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
   </class>
-  <class name="Liquidacion2015" entity-set="Liquidacion2015s" table="liquidacion2015" schema="dbo" p1:Guid="1d67dda8-0139-4006-91cf-5349c863e4de">
+  <class name="Liquidacion2015" entity-set="Liquidacion2015s" p1:Guid="1d67dda8-0139-4006-91cf-5349c863e4de">
     <id name="Numcompra" type="String" p1:ValidateMaxLength="255" p1:ValidateRequired="true" p1:Guid="7049ed2e-f5c8-478e-959b-a86e44a42eaf">
-      <column name="numcompra" not-null="True" length="255" sql-type="nvarchar" p1:unicode="True" />
+      <column name="" length="255" p1:unicode="True" />
     </id>
     <property name="Codcliente" type="String" p1:nullable="True" p1:ValidateMaxLength="255" p1:ValidateRequired="false" p1:Guid="b25ae6dc-4f97-4935-9021-06512c1d418f">
-      <column name="codcliente" not-null="False" length="255" sql-type="nvarchar" p1:unicode="True" />
+      <column name="" length="255" p1:unicode="True" />
     </property>
     <property name="Codcaja" type="String" p1:nullable="True" p1:ValidateMaxLength="255" p1:ValidateRequired="false" p1:Guid="bf67200e-a17c-4c63-89a8-c4b930e6b636">
-      <column name="codcaja" not-null="False" length="255" sql-type="nvarchar" p1:unicode="True" />
+      <column name="" length="255" p1:unicode="True" />
     </property>
     <property name="Peso" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="4f23d0cd-2816-467b-9a2e-7c80999f9b1b">
-      <column name="peso" not-null="False" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Total" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="8e08a4d8-5e63-4bc5-94ca-2f71c9a4f4c2">
-      <column name="total" not-null="False" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Fecha" type="DateTime" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="5aead3b5-a0e1-4440-b0c9-9ba3eaf72ab0">
-      <column name="fecha" not-null="False" sql-type="date" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="Usuario" type="String" p1:nullable="True" p1:ValidateMaxLength="255" p1:ValidateRequired="false" p1:Guid="d057d5b2-3fa4-45dd-ae6b-ac97d201fe90">
-      <column name="usuario" not-null="False" length="255" sql-type="nvarchar" p1:unicode="True" />
+      <column name="" length="255" p1:unicode="True" />
     </property>
     <property name="Hora" type="String" p1:nullable="True" p1:ValidateMaxLength="255" p1:ValidateRequired="false" p1:Guid="035675b6-c36d-4830-8e33-93c129cc1731">
-      <column name="hora" not-null="False" length="255" sql-type="nvarchar" p1:unicode="True" />
+      <column name="" length="255" p1:unicode="True" />
     </property>
     <property name="Cliente" type="String" p1:nullable="True" p1:ValidateMaxLength="255" p1:ValidateRequired="false" p1:Guid="3573a4f9-6ec3-4f84-a618-a60aeb144e90">
-      <column name="cliente" not-null="False" length="255" sql-type="nvarchar" p1:unicode="True" />
+      <column name="" length="255" p1:unicode="True" />
     </property>
   </class>
-  <class name="Listado" entity-set="Listados" table="Listado" schema="dbo" query-type="True" p1:Guid="a069b14a-8eb3-45eb-9802-840f4908f371">
+  <class name="Listado" entity-set="Listados" query-type="True" p1:Guid="a069b14a-8eb3-45eb-9802-840f4908f371">
     <property name="Solicitud" type="Int32" value-generated="OnAdd" p1:ValidateRequired="true" p1:Guid="a396d840-58b1-4d7e-a098-f7454cdf5adc">
-      <column name="Solicitud" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="Ranking" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="c5aa8b2e-d590-442a-bb32-c087951bf6a6">
-      <column name="Ranking" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="Cliente" type="String" p1:nullable="True" p1:ValidateMaxLength="255" p1:ValidateRequired="false" p1:Guid="e49afb64-2adf-4e61-98a1-0570b4204f2a">
-      <column name="Cliente" not-null="False" length="255" sql-type="nvarchar" p1:unicode="True" />
+      <column name="" length="255" p1:unicode="True" />
     </property>
     <property name="Fecha" type="DateTime" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="d8e7480f-06e4-4b05-99b6-12df1f07d667">
-      <column name="Fecha" not-null="False" sql-type="datetime" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="Recibo" type="String" p1:nullable="True" p1:ValidateMaxLength="255" p1:ValidateRequired="false" p1:Guid="0e898407-eaf4-4d8a-af03-2b5dcf2443fb">
-      <column name="Recibo" not-null="False" length="255" sql-type="nvarchar" p1:unicode="True" />
+      <column name="" length="255" p1:unicode="True" />
     </property>
     <property name="Total" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="73cbee7e-c1df-4936-a2a4-c723c4719fa4">
-      <column name="total" not-null="False" precision="18" scale="2" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Codigo" type="String" p1:nullable="True" p1:ValidateMaxLength="255" p1:ValidateRequired="false" p1:Guid="934ec3e6-93d2-41f0-8120-d293d2e88a6f">
-      <column name="codigo" not-null="False" length="255" sql-type="nvarchar" p1:unicode="True" />
+      <column name="" length="255" p1:unicode="True" />
     </property>
   </class>
-  <class name="Mcaja" entity-set="Mcajas" table="mcaja" schema="dbo" p1:Guid="1908cfdb-00db-48fb-bded-57c4469474a9">
+  <class name="Mcaja" entity-set="Mcajas" p1:Guid="1908cfdb-00db-48fb-bded-57c4469474a9">
     <id name="Idcaja" type="Int32" value-generated="OnAdd" p1:ValidateRequired="true" p1:Guid="821eeb3d-4aff-4345-a65f-decc4e5a4f69">
-      <column name="idcaja" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </id>
     <property name="Codcaja" type="String" p1:ValidateMaxLength="10" p1:ValidateRequired="true" p1:Guid="7d08c438-19d5-45fe-bb04-bd4919ea7f15">
-      <column name="codcaja" not-null="True" length="10" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="10" p1:unicode="False" />
     </property>
     <property name="Codagencia" type="String" p1:nullable="True" p1:ValidateMaxLength="10" p1:ValidateRequired="false" p1:Guid="d01b5a93-4ea9-46ab-bd37-a7b67110b8a2">
-      <column name="codagencia" not-null="False" length="10" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="10" p1:unicode="False" />
     </property>
     <property name="Fecha" type="DateTime" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="b78bf78c-ce73-412b-a277-2dec69bd3086">
-      <column name="fecha" not-null="False" sql-type="date" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="Sinicial" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="27955b3d-135c-41d1-8707-77fc0925900f">
-      <column name="sinicial" not-null="False" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Entrada" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="2e55a139-2c19-4a90-9758-33bbb8282e4c">
-      <column name="entrada" not-null="False" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Salida" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="7072ec89-ba24-4298-b872-238e23722ca8">
-      <column name="salida" not-null="False" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Sfinal" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="801768a8-4e93-4d4e-bcc3-50c9dd86ff46">
-      <column name="sfinal" not-null="False" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Estado" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="fb92f6cf-b6a7-4138-a1a6-a20390c857cf">
-      <column name="estado" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
   </class>
-  <class name="Moneda" entity-set="Monedas" table="moneda" schema="dbo" p1:Guid="b96db4d9-03da-4aac-9a4a-880aa77bc4a0">
+  <class name="Moneda" entity-set="Monedas" p1:Guid="b96db4d9-03da-4aac-9a4a-880aa77bc4a0">
     <id name="Codmoneda" type="Int32" value-generated="OnAdd" p1:ValidateRequired="true" p1:Guid="91c1ff12-1b39-44b8-8886-b8a051ca1a63">
-      <column name="codmoneda" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </id>
     <property name="Descripcion" type="String" p1:nullable="True" p1:ValidateMaxLength="250" p1:ValidateRequired="false" p1:Guid="43b88f10-6018-4edf-813f-0c9085e76266">
-      <column name="descripcion" not-null="False" length="250" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="250" p1:unicode="False" />
     </property>
     <property name="Simbolo" type="String" p1:nullable="True" p1:ValidateMaxLength="50" p1:ValidateRequired="false" p1:Guid="c3657d75-b341-4497-b804-5bfae4063d41">
-      <column name="simbolo" not-null="False" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="Fecha" type="DateTime" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="55f40c09-30a6-45dd-bf33-342ce476d465">
-      <column name="fecha" not-null="False" sql-type="date" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
   </class>
-  <class name="Movcaja" entity-set="Movcajas" table="movcaja" schema="dbo" p1:Guid="ef62267a-5f0a-40c6-9752-5fa4d209529c">
+  <class name="Movcaja" entity-set="Movcajas" p1:Guid="ef62267a-5f0a-40c6-9752-5fa4d209529c">
     <id name="Idmov" type="Int32" value-generated="OnAdd" p1:ValidateRequired="true" p1:Guid="b7291c00-8233-409c-9b38-a0039170f01c">
-      <column name="idmov" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </id>
     <property name="Descripcion" type="String" p1:ValidateMaxLength="250" p1:ValidateRequired="true" p1:Guid="c3c2209e-9ed3-4600-b480-4918a78bce98">
-      <column name="descripcion" not-null="True" length="250" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="250" p1:unicode="False" />
     </property>
     <property name="Codrubro" type="Int32" p1:ValidateRequired="true" p1:Guid="1be7a289-1d1f-4aeb-a25b-805a3af49082">
-      <column name="codrubro" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
   </class>
-  <class name="PagosAdelantado" entity-set="PagosAdelantados" table="pagos_adelantados" schema="dbo" query-type="True" p1:Guid="56361b1e-a2d1-4dd3-9e17-880f289e3ba0">
+  <class name="PagosAdelantado" entity-set="PagosAdelantados" query-type="True" p1:Guid="56361b1e-a2d1-4dd3-9e17-880f289e3ba0">
     <property name="IdPagoefec" type="Int32" p1:ValidateRequired="true" p1:Guid="68a37fe7-198d-475f-986c-54e0164d1b7d">
-      <column name="IdPagoefec" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="Idingreso" type="String" p1:ValidateMaxLength="14" p1:ValidateRequired="true" p1:Guid="a214d258-3dc0-45c5-89db-0918ebc06f09">
-      <column name="Idingreso" not-null="True" length="14" sql-type="char" p1:fixed-length="True" p1:unicode="False" />
+      <column name="" length="14" p1:fixed-length="True" p1:unicode="False" />
     </property>
     <property name="Codagencia" type="String" p1:nullable="True" p1:ValidateMaxLength="4" p1:ValidateRequired="false" p1:Guid="8ac0fa25-7780-48e1-9274-ba9b5d62e2f2">
-      <column name="codagencia" not-null="False" length="4" sql-type="char" p1:fixed-length="True" p1:unicode="False" />
+      <column name="" length="4" p1:fixed-length="True" p1:unicode="False" />
     </property>
     <property name="FechaopParcial" type="DateTime" p1:ValidateRequired="true" p1:Guid="94d83d06-7424-400b-9b9c-1787429c0e37">
-      <column name="fechaop_parcial" not-null="True" sql-type="date" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="ValorParcialpagado" type="Decimal" p1:ValidateRequired="true" p1:Guid="a0ea3917-4120-4aa1-a9a6-6ef0f309359c">
-      <column name="valor_parcialpagado" not-null="True" precision="11" scale="2" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="11" scale="2" p1:unicode="False" />
     </property>
     <property name="Usuario" type="String" p1:ValidateMaxLength="10" p1:ValidateRequired="true" p1:Guid="7893ecdd-52b4-42e1-bc9b-63edbab2d922">
-      <column name="usuario" not-null="True" length="10" sql-type="char" p1:fixed-length="True" p1:unicode="False" />
+      <column name="" length="10" p1:fixed-length="True" p1:unicode="False" />
     </property>
     <property name="HoraOp" type="DateTime" p1:ValidateRequired="true" p1:Guid="3750f653-cc68-416c-8a5e-594727af4351">
-      <column name="hora_op" not-null="True" sql-type="date" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="EstadoOp" type="String" p1:ValidateMaxLength="3" p1:ValidateRequired="true" p1:Guid="8cad39c1-f973-4bcd-b554-1e35a9043f3f">
-      <column name="estado_op" not-null="True" length="3" sql-type="char" p1:fixed-length="True" p1:unicode="False" />
+      <column name="" length="3" p1:fixed-length="True" p1:unicode="False" />
     </property>
     <property name="CajaRegadel" type="String" p1:nullable="True" p1:ValidateMaxLength="8" p1:ValidateRequired="false" p1:Guid="64313419-cc8a-477f-aaf1-f314181c5cff">
-      <column name="caja_regadel" not-null="False" length="8" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="8" p1:unicode="False" />
     </property>
   </class>
-  <class name="Pica" entity-set="Picas" table="Pica" schema="dbo" p1:Guid="ba0a2f19-c49b-44c7-b211-a178a434b0da">
+  <class name="Pica" entity-set="Picas" p1:Guid="ba0a2f19-c49b-44c7-b211-a178a434b0da">
     <id name="Codcliente" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="ca8b615a-f9ca-4afb-b259-548a9cba8bc2">
-      <column name="codcliente" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </id>
     <property name="NombreEntidad" type="String" p1:ValidateMaxLength="50" p1:ValidateRequired="true" p1:Guid="c1ff560f-910e-4f11-b6d6-e289070a1409">
-      <column name="nombre_entidad" not-null="True" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="TipoRelacion" type="String" p1:nullable="True" p1:ValidateMaxLength="50" p1:ValidateRequired="false" p1:Guid="3d1c1d8e-c912-4a09-801e-3825261eca6f">
-      <column name="tipo_relacion" not-null="False" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="TiempoMantener" type="String" p1:nullable="True" p1:ValidateMaxLength="50" p1:ValidateRequired="false" p1:Guid="f731e152-cd70-4da5-8161-0f1b70e8bb52">
-      <column name="tiempo_mantener" not-null="False" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="IngresoMensual" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="c0dfabd0-7c75-4346-9959-11b53934c597">
-      <column name="ingreso_mensual" not-null="False" precision="19" scale="4" sql-type="money" p1:unicode="False" />
+      <column name="" precision="19" scale="4" p1:unicode="False" />
     </property>
   </class>
-  <class name="PrecioKilate" entity-set="PrecioKilates" table="PrecioKilate" schema="dbo" p1:Guid="ffc252da-5614-4a26-8704-672f00137eea">
+  <class name="PrecioKilate" entity-set="PrecioKilates" p1:Guid="ffc252da-5614-4a26-8704-672f00137eea">
     <id name="Idprecio" type="Int32" value-generated="OnAdd" p1:ValidateRequired="true" p1:Guid="5e8432d7-021d-4041-806b-1859f19a6c2a">
-      <column name="idprecio" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </id>
     <property name="DescKilate" type="String" p1:ValidateMaxLength="50" p1:ValidateRequired="true" p1:Guid="f8213a7a-cc77-4b8b-b199-fc3db2879af8">
-      <column name="desc_kilate" not-null="True" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="KilatePeso" type="Decimal" p1:ValidateRequired="true" p1:Guid="7b1744d5-c96b-498d-8854-144beef77164">
-      <column name="kilate_peso" not-null="True" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="PrecioKilate1" type="Decimal" p1:ValidateRequired="true" p1:Guid="b5fb72ac-dce4-4d6f-878b-90ffe6b999ff">
-      <column name="precio_kilate" not-null="True" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
   </class>
-  <class name="Precio" entity-set="Precios" table="Precios" schema="dbo" p1:Guid="cd19a4aa-f907-46cb-bb7d-0c11dba60c20">
+  <class name="Precio" entity-set="Precios" p1:Guid="cd19a4aa-f907-46cb-bb7d-0c11dba60c20">
     <composite-id>
       <key-property name="Codcliente" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="aec06b2f-8eb8-49b9-abe9-ab7e5e09f07a">
-        <column name="codcliente" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+        <column name="" length="20" p1:unicode="False" />
       </key-property>
       <key-property name="Kilate" type="Decimal" primary-key-index="1" p1:ValidateRequired="true" p1:Guid="8ad6a2cf-2d5f-4236-8b42-d76ac54355db">
-        <column name="kilate" not-null="True" precision="12" scale="2" sql-type="decimal" p1:unicode="False" />
+        <column name="" precision="12" scale="2" p1:unicode="False" />
       </key-property>
     </composite-id>
     <property name="Precio1" type="Decimal" p1:ValidateRequired="true" p1:Guid="1799f696-2d53-4183-9d4a-5d1b6894ae31">
-      <column name="precio" not-null="True" precision="12" scale="2" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="12" scale="2" p1:unicode="False" />
     </property>
     <property name="Gramos" type="Decimal" p1:ValidateRequired="true" p1:Guid="5198cfc8-7e92-4d41-bb54-0c65e0c506b6">
-      <column name="gramos" not-null="True" precision="12" scale="3" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="12" scale="3" p1:unicode="False" />
     </property>
     <property name="PrecioOro" type="Decimal" p1:ValidateRequired="true" p1:Guid="b39bd8fe-2530-41ee-a4d2-e1ac1101e894">
-      <column name="precio_oro" not-null="True" precision="12" scale="3" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="12" scale="3" p1:unicode="False" />
     </property>
   </class>
-  <class name="ReporteCaja" entity-set="ReporteCajas" table="ReporteCaja" schema="dbo" p1:Guid="4d071e86-dc20-4252-b224-70f2e400bd04">
+  <class name="ReporteCaja" entity-set="ReporteCajas" p1:Guid="4d071e86-dc20-4252-b224-70f2e400bd04">
     <id name="Codagencia" type="String" p1:ValidateMaxLength="10" p1:ValidateRequired="true" p1:Guid="e5ba6a8f-b950-4316-8665-f575a9358779">
-      <column name="codagencia" not-null="True" length="10" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="10" p1:unicode="False" />
     </id>
     <property name="Codrubro" type="String" p1:ValidateMaxLength="10" p1:ValidateRequired="true" p1:Guid="b2e88f78-a693-4137-b565-1b632001b3b1">
-      <column name="codrubro" not-null="True" length="10" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="10" p1:unicode="False" />
     </property>
     <property name="Codoperador" type="String" p1:ValidateMaxLength="10" p1:ValidateRequired="true" p1:Guid="88ea11b0-ec0a-48f1-8cac-64615af83abb">
-      <column name="codoperador" not-null="True" length="10" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="10" p1:unicode="False" />
     </property>
     <property name="Monto" type="Decimal" p1:ValidateRequired="true" p1:Guid="6f04a4da-534a-4a5c-b8c8-54baa621552e">
-      <column name="monto" not-null="True" precision="19" scale="4" sql-type="money" p1:unicode="False" />
+      <column name="" precision="19" scale="4" p1:unicode="False" />
     </property>
     <property name="Fecha" type="DateTime" p1:ValidateRequired="true" p1:Guid="4aff14e4-e570-4630-bdd5-915434c9c154">
-      <column name="fecha" not-null="True" sql-type="date" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
   </class>
-  <class name="Rubro" entity-set="Rubros" table="Rubro" schema="dbo" p1:Guid="23b8ac96-966e-449c-91d3-746de7684192">
+  <class name="Rubro" entity-set="Rubros" p1:Guid="23b8ac96-966e-449c-91d3-746de7684192">
     <id name="Codrubro" type="Int32" p1:ValidateRequired="true" p1:Guid="465ba1e7-1c5c-4bf0-9b1f-3ce13bcdec11">
-      <column name="codrubro" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </id>
     <property name="Descrubro" type="String" p1:ValidateMaxLength="250" p1:ValidateRequired="true" p1:Guid="92dba33f-51b0-407a-9b37-76b661679306">
-      <column name="descrubro" not-null="True" length="250" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="250" p1:unicode="False" />
     </property>
     <property name="Naturaleza" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="551cd3c7-e173-4195-ba43-9b65dba6e4e2">
-      <column name="naturaleza" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
   </class>
-  <class name="TipoCambio" entity-set="TipoCambios" table="TipoCambio" schema="dbo" p1:Guid="05af1d3f-85ab-405e-ad00-8a3b92f1970b">
+  <class name="TipoCambio" entity-set="TipoCambios" p1:Guid="05af1d3f-85ab-405e-ad00-8a3b92f1970b">
     <id name="Fecha" type="DateTime" p1:ValidateRequired="true" p1:Guid="55b0936a-e3b3-4519-981d-2d9e6620f393">
-      <column name="fecha" not-null="True" sql-type="date" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </id>
     <property name="Tipocambio" type="Decimal" p1:ValidateRequired="true" p1:Guid="e563cbcd-e454-4f48-bd1b-3b783a0931e9">
-      <column name="tipocambio" not-null="True" precision="12" scale="4" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="12" scale="4" p1:unicode="False" />
     </property>
     <property name="Hora" type="String" p1:nullable="True" p1:ValidateMaxLength="50" p1:ValidateRequired="false" p1:Guid="4e86e776-d8e4-4141-981f-0d7f327fe954">
-      <column name="hora" not-null="False" length="50" sql-type="nvarchar" p1:unicode="True" />
+      <column name="" length="50" p1:unicode="True" />
     </property>
     <property name="PrecioOro" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="326fc4aa-6255-48f0-9d0f-996feb059301">
-      <column name="precio_oro" not-null="False" precision="18" scale="4" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="18" scale="4" p1:unicode="False" />
     </property>
   </class>
-  <class name="TipoPreciosPagado" entity-set="TipoPreciosPagados" table="TipoPreciosPagados" schema="dbo" p1:Guid="d865c909-a85b-45f9-8924-f647105edc35">
+  <class name="TipoPreciosPagado" entity-set="TipoPreciosPagados" p1:Guid="d865c909-a85b-45f9-8924-f647105edc35">
     <id name="Codprecio" type="Int32" p1:ValidateRequired="true" p1:Guid="c99295aa-c267-40d0-9048-945e97cefa7a">
-      <column name="codprecio" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </id>
     <property name="Descripcion" type="String" p1:ValidateMaxLength="100" p1:ValidateRequired="true" p1:Guid="6308d171-6c16-49ab-8868-980ae983f9cb">
-      <column name="descripcion" not-null="True" length="100" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="100" p1:unicode="False" />
     </property>
     <property name="Pesoinicial" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="19e725ea-eaee-4f26-bdfb-409a9cb9e553">
-      <column name="pesoinicial" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Pesofinal" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="61a0c804-fd4d-4039-a589-746a200b75d1">
-      <column name="pesofinal" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
   </class>
-  <class name="Tmpprecio" entity-set="Tmpprecios" table="tmpprecio" schema="dbo" p1:Guid="2319ccb9-8112-4d3f-a677-4405b5707241">
+  <class name="Tmpprecio" entity-set="Tmpprecios" p1:Guid="2319ccb9-8112-4d3f-a677-4405b5707241">
     <composite-id>
       <key-property name="Codcierre" type="Int32" p1:ValidateRequired="true" p1:Guid="ddf5fc8d-4c9f-4a54-9114-65afe693aee4">
-        <column name="codcierre" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+        <column name="" precision="10" scale="0" p1:unicode="False" />
       </key-property>
       <key-property name="Linea" type="Byte" primary-key-index="1" p1:ValidateRequired="true" p1:Guid="b3fb0fe5-3d81-4b35-8a94-e4f550f1cedc">
-        <column name="linea" not-null="True" precision="3" scale="0" sql-type="tinyint" p1:unicode="False" />
+        <column name="" precision="3" scale="0" p1:unicode="False" />
       </key-property>
     </composite-id>
     <property name="Codcliente" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="8e1b6d45-561f-4d7f-b917-2d447adf9d3b">
-      <column name="codcliente" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Cantidad" type="Decimal" p1:ValidateRequired="true" p1:Guid="e18068ea-7d47-4209-876b-63ee8df0a4c8">
-      <column name="cantidad" not-null="True" precision="12" scale="3" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="12" scale="3" p1:unicode="False" />
     </property>
     <property name="Fecha" type="DateTime" p1:ValidateRequired="true" p1:Guid="d0bc8021-803e-48da-b3d5-c888e0dd9ffd">
-      <column name="fecha" not-null="True" sql-type="datetime" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
   </class>
-  <class name="Usuario" entity-set="Usuarios" table="usuario" schema="dbo" p1:Guid="a3d984a9-f8d2-4a78-8fe5-c89c8cd2d99f">
+  <class name="Usuario" entity-set="Usuarios" p1:Guid="a3d984a9-f8d2-4a78-8fe5-c89c8cd2d99f">
     <id name="Usuario1" type="String" p1:ValidateMaxLength="50" p1:ValidateRequired="true" p1:Guid="b65d2ac0-b80b-4a2f-ab9b-3277c8f87d08">
-      <column name="usuario" not-null="True" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </id>
     <property name="Codoperador" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="9feaaad5-da19-45f9-b927-c3d5e4d3199a">
-      <column name="codoperador" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Clave" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="4d891ab3-5406-476a-9ab7-1077e3df221e">
-      <column name="clave" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Nombre" type="String" p1:ValidateMaxLength="100" p1:ValidateRequired="true" p1:Guid="b5dced1a-fca7-4646-a9d2-95b645facf99">
-      <column name="nombre" not-null="True" length="100" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="100" p1:unicode="False" />
     </property>
     <property name="Pregunta" type="String" p1:ValidateMaxLength="50" p1:ValidateRequired="true" p1:Guid="9b23dc28-4c8e-4338-aad7-9cc1d14dfe5f">
-      <column name="pregunta" not-null="True" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="Respuesta" type="String" p1:ValidateMaxLength="50" p1:ValidateRequired="true" p1:Guid="859eb8d2-0106-4919-bee4-3a90005311b8">
-      <column name="respuesta" not-null="True" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="Fcreau" type="DateTime" p1:ValidateRequired="true" p1:Guid="7b783261-1ae9-4675-9726-59bee5552f5f">
-      <column name="fcreau" not-null="True" sql-type="date" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="Nivel" type="Int32" p1:ValidateRequired="true" p1:Guid="23c407d8-307c-4a57-8f3b-45eb979ce729">
-      <column name="nivel" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="Estado" type="String" p1:nullable="True" p1:ValidateMaxLength="50" p1:ValidateRequired="false" p1:Guid="35f9d77f-0b4b-4464-b199-01403b098a24">
-      <column name="estado" not-null="False" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
   </class>
-  <class name="ComprasOperador" entity-set="ComprasOperadors" table="compras_operador" schema="dbo" query-type="True" p1:Guid="f8d47dd1-759a-4f8e-9f3d-bc4e55909bc1">
+  <class name="ComprasOperador" entity-set="ComprasOperadors" query-type="True" p1:Guid="f8d47dd1-759a-4f8e-9f3d-bc4e55909bc1">
     <property name="Nombre" type="String" p1:ValidateMaxLength="100" p1:ValidateRequired="true" p1:Guid="33a9351a-4878-414a-b78f-ae7983effe6c">
-      <column name="nombre" not-null="True" length="100" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="100" p1:unicode="False" />
     </property>
     <property name="Numcompra" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="9eb836bc-11b8-456b-8f17-52e0eef2ca07">
-      <column name="numcompra" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Fecha" type="DateTime" p1:ValidateRequired="true" p1:Guid="b5b19070-500e-4f3b-846c-d7dedb901657">
-      <column name="fecha" not-null="True" sql-type="date" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="PesoTotal" type="Decimal" p1:ValidateRequired="true" p1:Guid="0f31c4f3-3125-439c-8bcc-2f08962124d8">
-      <column name="peso_total" not-null="True" precision="11" scale="2" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="11" scale="2" p1:unicode="False" />
     </property>
     <property name="Total" type="Decimal" p1:ValidateRequired="true" p1:Guid="f50bda32-68ae-400a-957e-6d4bc5e14973">
-      <column name="total" not-null="True" precision="15" scale="2" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="15" scale="2" p1:unicode="False" />
     </property>
     <property name="Codcaja" type="String" p1:ValidateMaxLength="10" p1:ValidateRequired="true" p1:Guid="0286b99f-e158-41cd-b73a-5a4f6a52fe71">
-      <column name="codcaja" not-null="True" length="10" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="10" p1:unicode="False" />
     </property>
     <property name="Hora" type="String" p1:ValidateMaxLength="50" p1:ValidateRequired="true" p1:Guid="a1ce81f1-40aa-4f22-a08b-facbdfec55d4">
-      <column name="hora" not-null="True" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="Kilate" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="1708fccf-7b5a-449f-8f6a-0fc6cc6026d7">
-      <column name="kilate" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Peso" type="Decimal" p1:ValidateRequired="true" p1:Guid="c7dfbc6a-4cfd-4f8a-a875-6be6394b64f4">
-      <column name="peso" not-null="True" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Importe" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="e61d2d54-3da5-493e-9c77-2731e60d4e13">
-      <column name="importe" not-null="False" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Preciok" type="Decimal" p1:ValidateRequired="true" p1:Guid="385837d5-a34a-4135-be93-2e1d8d6b713d">
-      <column name="preciok" not-null="True" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Codcliente" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="1261c0e3-c6d8-4471-8882-8af84e89e766">
-      <column name="codcliente" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Codagencia" type="String" p1:ValidateMaxLength="10" p1:ValidateRequired="true" p1:Guid="e3927bca-ae61-4a27-a3dd-829fe254c88d">
-      <column name="codagencia" not-null="True" length="10" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="10" p1:unicode="False" />
     </property>
   </class>
-  <class name="DescargueByCompra" entity-set="DescargueByCompras" table="descargueByCompra" schema="dbo" query-type="True" p1:Guid="7ab2068e-33ab-4f79-a660-4b47f1966107">
+  <class name="DescargueByCompra" entity-set="DescargueByCompras" query-type="True" p1:Guid="7ab2068e-33ab-4f79-a660-4b47f1966107">
     <property name="Dgnumdes" type="Int32" p1:ValidateRequired="true" p1:Guid="60eea7f9-0203-4250-b052-6a9124958830">
-      <column name="dgnumdes" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="Dgfecdes" type="DateTime" p1:ValidateRequired="true" p1:Guid="e7d82b5d-1b34-4942-b856-4215a9c0ef0e">
-      <column name="dgfecdes" not-null="True" sql-type="date" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="Numcompra" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="615cd44d-7e45-42d1-a975-350079edf301">
-      <column name="numcompra" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Fecha" type="DateTime" p1:ValidateRequired="true" p1:Guid="e30873df-a51b-49b8-94bc-ab82b47e03ce">
-      <column name="fecha" not-null="True" sql-type="date" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="Codcliente" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="32a65b78-57f7-4eaa-8a3f-abeb604f4608">
-      <column name="codcliente" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Nombres" type="String" p1:ValidateMaxLength="35" p1:ValidateRequired="true" p1:Guid="ef1f061f-c6e1-46d7-ab5e-c4499718fbf1">
-      <column name="nombres" not-null="True" length="35" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="35" p1:unicode="False" />
     </property>
     <property name="Apellidos" type="String" p1:nullable="True" p1:ValidateMaxLength="50" p1:ValidateRequired="false" p1:Guid="8f2c040d-0650-4e77-994e-da1a444bb521">
-      <column name="apellidos" not-null="False" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="Peso" type="Decimal" p1:ValidateRequired="true" p1:Guid="d3dad383-d808-44c9-b557-cd4174bb3e20">
-      <column name="peso" not-null="True" precision="11" scale="2" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="11" scale="2" p1:unicode="False" />
     </property>
     <property name="Total" type="Decimal" p1:ValidateRequired="true" p1:Guid="6f6cc6d3-a632-4f6a-ba40-2ac862f87040">
-      <column name="total" not-null="True" precision="15" scale="2" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="15" scale="2" p1:unicode="False" />
     </property>
     <property name="Cantcompra" type="Int32" p1:ValidateRequired="true" p1:Guid="40323f94-24f3-4d39-87d2-5d046d6774de">
-      <column name="Cantcompra" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
   </class>
-  <class name="MovimientosCajaSelect" entity-set="MovimientosCajaSelects" table="MovimientosCajaSelect" schema="dbo" query-type="True" p1:Guid="7701dba1-b2d6-47c2-96d1-6182c4b92330">
+  <class name="MovimientosCajaSelect" entity-set="MovimientosCajaSelects" query-type="True" p1:Guid="7701dba1-b2d6-47c2-96d1-6182c4b92330">
     <property name="Estado" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="26145f75-2611-45ea-9c9b-e94653c2cbea">
-      <column name="estado" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="Codcaja" type="String" p1:ValidateMaxLength="10" p1:ValidateRequired="true" p1:Guid="5593874a-4eac-402e-9aa4-179589511319">
-      <column name="codcaja" not-null="True" length="10" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="10" p1:unicode="False" />
     </property>
     <property name="Hora" type="String" p1:ValidateMaxLength="50" p1:ValidateRequired="true" p1:Guid="f508342b-7ff3-410f-9d44-84a6a2c92c7e">
-      <column name="hora" not-null="True" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="Fecha" type="DateTime" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="f3b8bcb2-5fb4-4b26-b879-41bacebf3776">
-      <column name="fecha" not-null="False" sql-type="datetime" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="Concepto" type="String" p1:nullable="True" p1:ValidateMaxLength="250" p1:ValidateRequired="false" p1:Guid="71349053-35aa-4b3f-8f0f-79c7d969c515">
-      <column name="concepto" not-null="False" length="250" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="250" p1:unicode="False" />
     </property>
     <property name="Efectivo" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="6aeded54-1feb-47d9-a324-36811ae20db7">
-      <column name="efectivo" not-null="False" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Cheque" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="163733ec-537d-4932-80ff-f24feef64c3b">
-      <column name="cheque" not-null="False" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Transferencia" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="f32b12e8-2e0f-44f0-8f0b-cb66d6720513">
-      <column name="transferencia" not-null="False" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
   </class>
-  <class name="RptMovimientosCaja" entity-set="RptMovimientosCajas" table="rptMovimientosCaja" schema="dbo" query-type="True" p1:Guid="7041689b-cd85-4b17-aa52-10f04bcd3133">
+  <class name="RptMovimientosCaja" entity-set="RptMovimientosCajas" query-type="True" p1:Guid="7041689b-cd85-4b17-aa52-10f04bcd3133">
     <property name="Descrubro" type="String" p1:ValidateMaxLength="250" p1:ValidateRequired="true" p1:Guid="758b935f-9e36-4142-9e44-5a1acc44e83f">
-      <column name="descrubro" not-null="True" length="250" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="250" p1:unicode="False" />
     </property>
     <property name="Descripcion" type="String" p1:ValidateMaxLength="250" p1:ValidateRequired="true" p1:Guid="2eee160e-f2cf-407d-9117-5028dd0ba762">
-      <column name="descripcion" not-null="True" length="250" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="250" p1:unicode="False" />
     </property>
     <property name="Efectivo" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="06a5652e-b03e-4687-beb8-3575853f542e">
-      <column name="Efectivo" not-null="False" precision="38" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="38" scale="2" p1:unicode="False" />
     </property>
     <property name="Cheque" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="99f009a7-8c21-41af-85d2-49e3c91d4ea9">
-      <column name="cheque" not-null="False" precision="38" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="38" scale="2" p1:unicode="False" />
     </property>
     <property name="Transferencia" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="f5fbcef3-548f-47f9-a8d5-43de2cabd5b8">
-      <column name="transferencia" not-null="False" precision="38" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="38" scale="2" p1:unicode="False" />
     </property>
     <property name="Fecha" type="DateTime" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="be3a7f29-b2e5-461d-953e-c74b108bf116">
-      <column name="fecha" not-null="False" sql-type="datetime" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
   </class>
-  <class name="TransaccionEfectivo" entity-set="TransaccionEfectivos" table="TransaccionEfectivo" schema="dbo" query-type="True" p1:Guid="0a3b119e-e010-47bd-90b5-c46196ce02e2">
+  <class name="TransaccionEfectivo" entity-set="TransaccionEfectivos" query-type="True" p1:Guid="0a3b119e-e010-47bd-90b5-c46196ce02e2">
     <property name="Numcompra" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="20cf5ed4-4da9-408c-bef8-9350368eaeb0">
-      <column name="numcompra" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Codcliente" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="afd74e84-98eb-4194-bae0-1ef4f28b9efc">
-      <column name="codcliente" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Nombres" type="String" p1:ValidateMaxLength="35" p1:ValidateRequired="true" p1:Guid="f17504f1-29dc-4a2d-8762-5430e65b47bc">
-      <column name="nombres" not-null="True" length="35" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="35" p1:unicode="False" />
     </property>
     <property name="Apellidos" type="String" p1:nullable="True" p1:ValidateMaxLength="50" p1:ValidateRequired="false" p1:Guid="551108bd-efd1-4f5b-9f26-7cd9fcd22d82">
-      <column name="apellidos" not-null="False" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="Fecha" type="DateTime" p1:ValidateRequired="true" p1:Guid="0aa4e438-9235-4958-88d3-7cb762b5d231">
-      <column name="fecha" not-null="True" sql-type="date" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="FormaPago" type="String" p1:ValidateMaxLength="13" p1:ValidateRequired="true" p1:Guid="2d75f190-6b2e-47d8-82e3-6e3201aec2d1">
-      <column name="FormaPago" not-null="True" length="13" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="13" p1:unicode="False" />
     </property>
     <property name="Total" type="Decimal" p1:ValidateRequired="true" p1:Guid="6439cc86-303d-4c9d-873c-2253e443f5e8">
-      <column name="total" not-null="True" precision="15" scale="2" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="15" scale="2" p1:unicode="False" />
     </property>
   </class>
-  <class name="Vdetacaja" entity-set="Vdetacajas" table="vdetacaja" schema="dbo" query-type="True" p1:Guid="d06bc224-541d-4633-926b-9e9d986ae002">
+  <class name="Vdetacaja" entity-set="Vdetacajas" query-type="True" p1:Guid="d06bc224-541d-4633-926b-9e9d986ae002">
     <property name="Idcaja" type="Decimal" p1:ValidateRequired="true" p1:Guid="934fcbce-c2c8-4ee9-80fd-f699e8db4662">
-      <column name="idcaja" not-null="True" precision="18" scale="0" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="0" p1:unicode="False" />
     </property>
     <property name="Idmov" type="Int32" p1:ValidateRequired="true" p1:Guid="d409dfef-e01e-496f-bf57-8442c66f957f">
-      <column name="idmov" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+      <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="Hora" type="String" p1:ValidateMaxLength="50" p1:ValidateRequired="true" p1:Guid="6f66098e-66b4-4bb6-bbb8-a09781208730">
-      <column name="hora" not-null="True" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="Fecha" type="DateTime" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="aea50f11-6fd9-4bbe-b9b0-50c0d34a9354">
-      <column name="fecha" not-null="False" sql-type="datetime" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
     </property>
     <property name="Concepto" type="String" p1:nullable="True" p1:ValidateMaxLength="250" p1:ValidateRequired="false" p1:Guid="7fcc1005-3bac-4c5d-af14-cb31623bc614">
-      <column name="concepto" not-null="False" length="250" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="250" p1:unicode="False" />
     </property>
     <property name="Efectivo" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="74821f8e-dccd-45b2-9a52-b26db8f8466d">
-      <column name="efectivo" not-null="False" precision="20" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="20" scale="2" p1:unicode="False" />
     </property>
     <property name="Cheque" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="204eb155-0753-4730-95ac-92425b1e06f1">
-      <column name="cheque" not-null="False" precision="20" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="20" scale="2" p1:unicode="False" />
     </property>
     <property name="Transferencia" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="8c2b9b8a-6bc0-4065-a65b-499c08ce693f">
-      <column name="transferencia" not-null="False" precision="20" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="20" scale="2" p1:unicode="False" />
     </property>
     <property name="Codcaja" type="String" p1:nullable="True" p1:ValidateMaxLength="10" p1:ValidateRequired="false" p1:Guid="9c5b4db5-a43c-4396-b83a-1ebae07a0e3f">
-      <column name="codcaja" not-null="False" length="10" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="10" p1:unicode="False" />
     </property>
     <property name="Referencia" type="String" p1:nullable="True" p1:ValidateMaxLength="250" p1:ValidateRequired="false" p1:Guid="a46e521e-408c-47eb-971c-12e2fdf22e84">
-      <column name="referencia" not-null="False" length="250" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="250" p1:unicode="False" />
     </property>
     <property name="Sinicial" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="c05361a6-3818-4e0d-b61d-c74584b932ee">
-      <column name="sinicial" not-null="False" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
     <property name="Sfinal" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="10084121-41e8-4e94-833c-96b80f0524cb">
-      <column name="sfinal" not-null="False" precision="18" scale="2" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
   </class>
-  <class name="VVariacionesCliente" entity-set="VVariacionesClientes" table="vVariacionesCliente" schema="dbo" query-type="True" p1:Guid="4587725d-8e5b-4c5c-89fa-cb67e45e2acc">
+  <class name="VVariacionesCliente" entity-set="VVariacionesClientes" query-type="True" p1:Guid="4587725d-8e5b-4c5c-89fa-cb67e45e2acc">
     <property name="Codcliente" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="ea80db28-1e8a-403b-9748-ec0635fe11ac">
-      <column name="codcliente" not-null="True" length="20" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Nombres" type="String" p1:ValidateMaxLength="35" p1:ValidateRequired="true" p1:Guid="27214415-4c89-4b79-908d-00b42194d153">
-      <column name="nombres" not-null="True" length="35" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="35" p1:unicode="False" />
     </property>
     <property name="Apellidos" type="String" p1:nullable="True" p1:ValidateMaxLength="50" p1:ValidateRequired="false" p1:Guid="0b1f9bbb-86c2-433b-8e89-e02587f464c0">
-      <column name="apellidos" not-null="False" length="50" sql-type="varchar" p1:unicode="False" />
+      <column name="" length="50" p1:unicode="False" />
     </property>
     <property name="Mes" type="String" p1:nullable="True" p1:ValidateMaxLength="30" p1:ValidateRequired="false" p1:Guid="486c6aff-ae73-4c41-94af-5db524de5534">
-      <column name="mes" not-null="False" length="30" sql-type="nvarchar" p1:unicode="True" />
+      <column name="" length="30" p1:unicode="True" />
     </property>
     <property name="Monto" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="83702a90-dca3-45d4-a0ab-33520282bd5d">
-      <column name="Monto" not-null="False" precision="32" scale="8" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="32" scale="8" p1:unicode="False" />
     </property>
     <property name="MontoMensual" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="ae158672-6286-4953-8db7-792300c2a17e">
-      <column name="`Monto Mensual`" not-null="False" precision="38" scale="2" sql-type="decimal" p1:unicode="False" />
+      <column name="" precision="38" scale="2" p1:unicode="False" />
     </property>
     <property name="Variacion" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="35cc702a-2202-4f22-a666-6b052c715202">
-      <column name="Variacion" not-null="False" precision="38" scale="6" sql-type="numeric" p1:unicode="False" />
+      <column name="" precision="38" scale="6" p1:unicode="False" />
     </property>
     <property name="Fecha" type="DateTime" p1:ValidateRequired="true" p1:Guid="6669a7ca-1613-4ded-9217-eb2375206138">
-      <column name="fecha" not-null="True" sql-type="date" p1:unicode="False" />
+      <column name="" p1:unicode="False" />
+    </property>
+  </class>
+  <class name="ReservaOro" entity-set="ReservaOros" p1:Guid="2b87f83e-6f94-49ee-8e25-75ffbccc356a">
+    <id name="IdReserva" type="Int32" p1:ValidateRequired="true" p1:Guid="ad456847-b06b-4139-9e2d-224daf5c7da4">
+      <column name="" unique="True" />
+    </id>
+    <property name="CodCliente" type="String" p1:ValidateRequired="true" p1:Guid="1fe1a1d9-4117-45e5-bfca-2eaacf2f7710">
+      <column name="" />
+    </property>
+    <property name="FechaReserva" type="DateOnly" p1:ValidateRequired="true" p1:Guid="d7b8d9d8-060e-4011-a503-b879b87e861d">
+      <column name="" />
+    </property>
+    <property name="PrecioReserva" type="Decimal" p1:ValidateRequired="true" p1:Guid="6193cedd-508c-472b-9913-f9f28cb8951c">
+      <column name="" />
+    </property>
+    <property name="Gramos" type="Decimal" p1:ValidateRequired="true" p1:Guid="01c48922-3b08-43a9-ae7b-02197703c0cd">
+      <column name="" />
+    </property>
+    <property name="Onzas" type="Decimal" p1:ValidateRequired="true" p1:Guid="ffe54d43-2c60-41b1-bf62-629b10bbd004">
+      <column name="" />
+    </property>
+    <property name="PrecioKiate" type="String" p1:ValidateRequired="true" p1:Guid="6d068490-2fca-4505-9c8b-fccee43fd1ee">
+      <column name="" />
+    </property>
+    <property name="Estado" type="Boolean" p1:ValidateRequired="true" p1:Guid="502642b1-8c54-4d5e-a8c0-d541a0cab502">
+      <column name="" />
+    </property>
+    <property name="KilateProm" type="Decimal" p1:ValidateRequired="true" p1:Guid="76e7ebf3-21c7-4a14-a74d-633b8f6f510d">
+      <column name="" />
+    </property>
+    <property name="Saldo" type="Decimal" p1:ValidateRequired="true" p1:Guid="ddd249f1-ef68-4877-b261-d35779a53329">
+      <column name="" />
+    </property>
+  </class>
+  <class name="DetaReserva" entity-set="DetaReservas" p1:Guid="5113936d-7c6f-4a41-920a-de30250d4bef">
+    <composite-id>
+      <key-property name="IdReserva" type="Int32" p1:ValidateRequired="true" p1:Guid="c841c026-4337-4c6f-9957-8561aa75d473">
+        <column name="" />
+      </key-property>
+      <key-property name="linea" type="Int32" p1:ValidateRequired="true" p1:Guid="bd1fba23-50b2-41c4-83c1-bc8058788288">
+        <column name="" />
+      </key-property>
+    </composite-id>
+    <property name="Fecha" type="DateOnly" p1:ValidateRequired="true" p1:Guid="527fef02-7ad8-4559-b010-2a514875f725">
+      <column name="" />
+    </property>
+    <property name="Entregadas" type="Decimal" p1:ValidateRequired="true" p1:Guid="a2d4b032-786f-48be-a912-4ec30041ecd7">
+      <column name="" />
+    </property>
+    <property name="Diferencias" type="Decimal" p1:ValidateRequired="true" p1:Guid="754d4ca2-614e-4e1f-b76c-ba7b73a44069">
+      <column name="" />
+    </property>
+    <property name="Usuario" type="String" p1:ValidateRequired="true" p1:Guid="49fefa75-1c09-4079-a9f5-71d0be088b00">
+      <column name="" />
+    </property>
+    <property name="Hora" type="String" p1:ValidateRequired="true" p1:Guid="ee56f4bd-8785-413c-99b3-beb68572604c">
+      <column name="" />
     </property>
   </class>
   <associations>
@@ -1188,6 +1245,14 @@
       </end1>
       <end2 multiplicity="One" name="Pica1" class="Cliente" relation-class="Pica" constrained="False" lazy="False" p1:Guid="25fab1b3-d3dc-4576-b26d-90fb5929405d">
         <property name="Codcliente" />
+      </end2>
+    </association>
+    <association name="ReservaOro_DetaReserva" cardinality="OneToMany" p1:Guid="352b8139-c0b9-462d-99a0-f7c4337a9f0b">
+      <end1 multiplicity="One" name="ReservaOro" class="DetaReserva" relation-class="ReservaOro" constrained="True" lazy="False" p1:Guid="59cf122e-b629-4ef4-a2fd-51f4a2aa0628">
+        <property name="IdReserva" />
+      </end1>
+      <end2 multiplicity="Many" name="DetaReservas" class="ReservaOro" relation-class="DetaReserva" lazy="False" p1:Guid="98c67ca3-c25d-4c98-8f70-26365eb2b95a">
+        <property name="IdReserva" />
       </end2>
     </association>
   </associations>

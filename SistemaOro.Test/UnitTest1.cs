@@ -13,7 +13,7 @@ public class Tests
     }
 
     [Test]
-    public async Task TestUsuario()
+    public async Task TestRubro()
     {
         var usuarioRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IUsuarioRepository>();
         var listUser = await usuarioRepository.FindAll();
@@ -21,21 +21,5 @@ public class Tests
         {
             Console.WriteLine($@"Usuario: {usuario.Usuario1} creado en {usuario.Fcreau.ToLongDateString()}");
         }
-    }
-
-    [Test]
-    public void TestConfiguracionGeneral()
-    {
-        ConfiguracionGeneral.Caja = "C001";
-        ConfiguracionGeneral.Agencia = "A001";
-        Console.WriteLine($@"Configuración: {ConfiguracionGeneral.Caja} y {ConfiguracionGeneral.Agencia}");
-    }
-
-    [Test]
-    public async Task TestAdelantos()
-    {
-        var adelantosRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IAdelantosRepository>();
-        var findAll = await adelantosRepository.FindAll();
-        Console.WriteLine(findAll.Count);
     }
 }
