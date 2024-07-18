@@ -103,7 +103,7 @@ public class AdelantosRepository(IParametersRepository parametersRepository, IMa
 
     public async Task<Adelanto?> FindByCodigoAdelanto(string codigoAdelanto)
     {
-        return await context.Adelantos.SingleOrDefaultAsync(adelanto => adelanto.Idsalida == codigoAdelanto && adelanto.Activa!.Value);
+        return await context.Adelantos.SingleOrDefaultAsync(adelanto => adelanto.Idsalida == codigoAdelanto && adelanto.Estado);
     }
 
     public async Task<List<Adelanto>> FindAll()
@@ -145,7 +145,7 @@ public class AdelantosRepository(IParametersRepository parametersRepository, IMa
             return false;
         }
 
-        find.Activa = false;
+        find.Estado = false;
         if (!debitar) return await context.SaveChangesAsync() > 0;
         var findMcaja = await maestroCajaRepository.FindByCajaAndAgencia(ConfiguracionGeneral.Caja, ConfiguracionGeneral.Agencia);
         if (findMcaja is null) return await context.SaveChangesAsync() > 0;

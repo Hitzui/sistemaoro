@@ -175,13 +175,13 @@ public class DescarguesRepository(DataContext context, ICompraRepository compraR
             into g
             select new SaldoCompra
             (
-                Mes: g.Key,
-                PesoC: g.Sum(x => x.c.Peso),
-                ValorC: g.Sum(x => x.c.Total),
-                PesoD: g.Sum(x => x.d.Dgpesntt),
-                ValorD: g.Sum(x => x.d.Dgimptcom),
-                Pesos: g.Sum(x => x.d.Dgpesntt - x.c.Peso),
-                Valores: g.Sum(x => x.d.Dgimptcom - x.c.Total)
+                 g.Key,
+                g.Sum(x => x.c.Peso),
+                 g.Sum(x => x.c.Total),
+                 g.Sum(x => x.d.Dgpesntt),
+                 g.Sum(x => x.d.Dgimptcom),
+                 g.Sum(x => x.d.Dgpesntt - x.c.Peso),
+                 g.Sum(x => x.d.Dgimptcom - x.c.Total)
             );
         return await result.ToListAsync();
     }

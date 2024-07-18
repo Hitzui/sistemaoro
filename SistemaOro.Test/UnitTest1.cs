@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using SistemaOro.Data.Configuration;
 using SistemaOro.Data.Libraries;
 using SistemaOro.Data.Repositories;
@@ -15,11 +16,8 @@ public class Tests
     [Test]
     public async Task TestRubro()
     {
-        var usuarioRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IUsuarioRepository>();
+        var usuarioRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IDescarguesRepository>();
         var listUser = await usuarioRepository.FindAll();
-        foreach (var usuario in listUser)
-        {
-            Console.WriteLine($@"Usuario: {usuario.Usuario1} creado en {usuario.Fcreau.ToLongDateString()}");
-        }
+        Debug.WriteLine(listUser);
     }
 }

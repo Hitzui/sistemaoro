@@ -1,12 +1,14 @@
 ﻿using System.Data;
+using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using SistemaOro.Data.Configuration;
 using SistemaOro.Data.Entities;
 using SistemaOro.Data.Libraries;
 
 namespace SistemaOro.Data.Repositories;
 
-public class ClienteRepository(IParametersRepository parametersRepository,DataContext context) : IClienteRepository
+public class ClienteRepository(IParametersRepository parametersRepository, DataContext context) : IClienteRepository
 {
     public async Task<string> CodCliente()
     {
@@ -25,7 +27,7 @@ public class ClienteRepository(IParametersRepository parametersRepository,DataCo
 
     public async Task<bool> Create(Cliente cliente)
     {
-        context.Add(cliente);
+        context.Clientes.Add(cliente);
         var findParameters = await parametersRepository.RecuperarParametros();
         if (findParameters is null)
         {
@@ -54,14 +56,17 @@ public class ClienteRepository(IParametersRepository parametersRepository,DataCo
         }
 
         context.Entry(findCliente).CurrentValues.SetValues(cliente);
-        var result = await context.SaveChangesAsync() > 0;
-        if (result)
+        try
         {
+            await context.SaveChangesAsync();
             return true;
         }
-
-        ErrorSms = $"No fue posible guardar los datos del cliente con el codigo {cliente.Codcliente} en la base de datos";
-        return false;
+        catch (Exception e)
+        {
+            Debug.WriteLine(e);
+            ErrorSms = $"No fue posible guardar los datos del cliente con el codigo {cliente.Codcliente} en la base de datos";
+            return false;
+        }
     }
 
     public async Task<bool> Delete(Cliente cliente)
@@ -86,7 +91,7 @@ public class ClienteRepository(IParametersRepository parametersRepository,DataCo
 
     public async Task<Cliente?> FindById(string codcliente)
     {
-        return await context.Clientes.SingleOrDefaultAsync(cliente => cliente.Codcliente == codcliente);
+        return await context.Clientes.AsNoTracking().FirstOrDefaultAsync(cliente => cliente.Codcliente == codcliente);
     }
 
     public async Task<List<Cliente>> FindAll()
@@ -116,10 +121,10 @@ public class ClienteRepository(IParametersRepository parametersRepository,DataCo
 
     public async Task<List<Cliente>> FilterByNameAndPagination(string nombre, int page = 0)
     {
-        return await new GenericRepo<Cliente>(context).Get(
-            filter: f => f.Nombres.Contains(nombre),
-            orderBy: o => o.OrderBy(p => p.Nombres),
-            pageNumber: page, pageSize: 10
+        return await new GenericRepo<Cliente>().Get(
+            f => f.Nombres.Contains(nombre),
+            o => o.OrderBy(p => p.Nombres),
+            "", page, 10
         ).ToListAsync();
     }
 

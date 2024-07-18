@@ -1,14 +1,14 @@
-﻿using System.Linq.Expressions;
+﻿using System.Diagnostics;
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using SistemaOro.Data.Entities;
 using SistemaOro.Data.Exceptions;
 
 namespace SistemaOro.Data.Repositories;
 
-public abstract class FacadeEntity<TEntity>(DbContext context) : ICrudRepository<TEntity>
+public abstract class FacadeEntity<TEntity>(DataContext context) : ICrudRepository<TEntity>
     where TEntity : class
 {
-    private readonly DbContext _context = context ?? throw new ArgumentNullException(nameof(context));
     private readonly DbSet<TEntity> _set = context.Set<TEntity>();
     
     public string ErrorSms { get; protected set; } = "";
@@ -29,51 +29,65 @@ public abstract class FacadeEntity<TEntity>(DbContext context) : ICrudRepository
             ErrorSms = "No existe en el cotexto actual la entidad";
             return false;
         }
-        await _set.AddAsync(entity);
         try
         {
-            await _context.BulkSaveChangesAsync();
+            await _set.AddAsync(entity);
+            await context.SaveChangesAsync();
             return true;
         }
         catch (Exception e)
         {
-            ErrorSms = $"No existe en el cotexto actual la entidad. Error: {e.Message} {e.Source}";
+            var mensaje2=string.Empty;
+            if (e.InnerException is not null)
+            {
+                mensaje2 = e.InnerException.Message;
+            }
+            ErrorSms = $"No existe en el cotexto actual la entidad. Error: {e.Message} {mensaje2}";
+            Console.WriteLine(ErrorSms);
+            context.ChangeTracker.Clear();
             return false;
         }
     }
 
     public virtual async Task<bool> UpdateAsync(TEntity? entity)
     {
-        if (entity is null)
-        {
-            throw new EntityValidationException("Debe especificar la entidad a actualizar");
-        }
-        _set.Update(entity);
         try
         {
-            await _context.BulkSaveChangesAsync();
+            if (entity is null)
+            {
+                throw new EntityValidationException("Debe especificar la entidad a actualizar");
+            }
+            _set.Update(entity);
+            await context.SaveChangesAsync();
             return true;
         }
         catch (Exception e)
         {
             ErrorSms = $"No existe en el cotexto actual la entidad. Error: {e.Message} {e.Source}";
+            context.ChangeTracker.Clear();
             return false;
         }
     }
 
-    public virtual async Task<bool> DeleteAsync(int id)
+    public virtual async Task<bool> DeleteAsync(object id)
     {
-        var entity = await _set.FindAsync(id);
-        if (entity == null) return false;
-        _set.Remove(entity);
         try
         {
-            await _context.BulkSaveChangesAsync();
+            var entity = await _set.FindAsync(id);
+            if (entity == null) return false;
+            _set.Remove(entity);
+            await context.SaveChangesAsync();
             return true;
         }
         catch (Exception e)
         {
-            ErrorSms = $"No existe en el cotexto actual la entidad. Error: {e.Message} {e.Source}";
+            var mensaje = "";
+            if (e.InnerException is not null)
+            {
+                mensaje = e.InnerException.Message;
+            }
+            ErrorSms = $"No existe en el cotexto actual la entidad. Error: {e.Message} {mensaje}";
+            context.ChangeTracker.Clear();
             return false;
         }
 

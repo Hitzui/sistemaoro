@@ -1,0 +1,40 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:SistemaOro.Forms.Views.TipoDocumento"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:tipoDocumento="clr-namespace:SistemaOro.Forms.ViewModels.TipoDocumento"
+    x:Class="SistemaOro.Forms.Views.TipoDocumento.TipoDocumentoPage"
+    mc:Ignorable="d"
+    Title="{Binding Title}" Height="450" Width="602">
+    <Window.DataContext>
+        <tipoDocumento:TipoDocumentoViewModel />
+    </Window.DataContext>
+    <Grid>
+
+        <dxg:GridControl x:Name="grid"
+                         AutoGenerateColumns="AddNew"
+                         EnableSmartColumnsGeneration="True" ItemsSource="{Binding ItemsSource}"
+                         RestoreStateKeyFieldName="Idtipodocumento" RestoreStateOnSourceChange="True">
+            <dxg:GridControl.TotalSummary>
+                <dxg:GridSummaryItem Alignment="Right" SummaryType="Count" />
+            </dxg:GridControl.TotalSummary>
+            <dxg:GridControl.InputBindings>
+                <KeyBinding Command="{Binding View.Commands.DeleteFocusedRow, ElementName=grid}" Key="Delete" />
+            </dxg:GridControl.InputBindings>
+            <dxg:GridControl.View>
+                <dxg:TableView NewItemRowPosition="Top" ShowUpdateRowButtons="OnCellEditorOpen"
+                               ValidateRowCommand="{Binding ValidateRowCommand}"
+                               ValidateRowDeletionCommand="{Binding ValidateRowDeletionCommand}"
+                               DataSourceRefreshCommand="{Binding DataSourceRefreshCommand}"
+                               ShowFixedTotalSummary="True" />
+            </dxg:GridControl.View>
+            <dxg:GridColumn FieldName="Idtipodocumento" IsSmart="True" ReadOnly="True" />
+            <dxg:GridColumn FieldName="Nombre" IsSmart="True" />
+            <dxg:GridColumn FieldName="Simbolo" IsSmart="True" />
+        </dxg:GridControl>
+
+    </Grid>
+</Window>

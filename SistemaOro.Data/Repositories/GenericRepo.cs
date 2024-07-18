@@ -1,11 +1,13 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using SistemaOro.Data.Entities;
+using SistemaOro.Data.Libraries;
 
 namespace SistemaOro.Data.Repositories;
 
-public class GenericRepo<T>(DbContext dbContext) where T : class
+public class GenericRepo<T> where T : class
 {
-    private readonly DbSet<T> _dbSet = dbContext.Set<T>();
+    private readonly DbSet<T> _dbSet = VariablesGlobales.Instance.DataContext.Set<T>();
 
     public IQueryable<T> Get(
         Expression<Func<T, bool>>? filter = null,
