@@ -17,14 +17,14 @@ public class HelpersMessage
         return dialog;
     }
 
-    public static MessageBoxResult MensajeConfirmacionResult(string title, string message, MessageBoxImage boxImage)
+    public static MessageBoxResult MensajeConfirmacionResult(string title, string message)
     {
         return ThemedMessageBox.Show(
             title: title,
             text: message,
             messageBoxButtons: MessageBoxButton.OKCancel,
             defaultButton: MessageBoxResult.OK,
-            icon: boxImage
+            icon: MessageBoxImage.Question
         );
     }
     public static MessageBoxResult MensajeInformacionResult(string title, string message)

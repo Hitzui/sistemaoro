@@ -74,6 +74,9 @@
     <property name="Numcompra" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="c6236eb7-cbd9-42b7-a945-f5b55eaafb91">
       <column name="numcompra" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
     </property>
+    <property name="Logo" type="Clob" p1:nullable="True" p1:ValidateMaxLength="2147483647" p1:ValidateRequired="false" p1:Guid="a48a645a-11d2-45d4-890d-72deae4d54b9">
+      <column name="logo" not-null="False" length="2147483647" sql-type="text" p1:unicode="False" />
+    </property>
   </class>
   <class name="Caja" entity-set="Cajas" table="caja" schema="dbo" p1:Guid="5ec1fb01-2cfe-4265-add8-f38d8430c5ce">
     <id name="Codcaja" type="String" p1:ValidateMaxLength="10" p1:ValidateRequired="true" p1:Guid="5669069a-7a1a-4670-a975-f633229510b6">
@@ -81,6 +84,9 @@
     </id>
     <property name="Descripcion" type="String" p1:ValidateMaxLength="50" p1:ValidateRequired="true" p1:Guid="b4ef2996-c023-46c0-9767-136b63e9b8ca">
       <column name="descripcion" not-null="True" length="50" sql-type="varchar" p1:unicode="False" />
+    </property>
+    <property name="Codagencia" type="String" p1:nullable="True" p1:ValidateMaxLength="10" p1:ValidateRequired="false" p1:Guid="375cf6ea-1fe0-4e68-ab8d-9bd274dcce5a">
+      <column name="codagencia" not-null="False" length="10" sql-type="varchar" p1:unicode="False" />
     </property>
   </class>
   <class name="CierrePrecio" entity-set="CierrePrecios" table="cierre_precios" schema="dbo" p1:Guid="273f7a2c-eaae-4212-b553-f99c1662176c">
@@ -527,6 +533,9 @@
     </property>
     <property name="Nocontrato" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="fe915cda-0092-4e8b-aae3-9ae700bb0c4c">
       <column name="nocontrato" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+    </property>
+    <property name="Logo" type="VarBinary" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="c48e75f9-a272-409e-832c-57b6f59f4012">
+      <column name="logo" not-null="False" sql-type="varbinary(max)" p1:unicode="False" />
     </property>
   </class>
   <class name="Liquidacion2015" entity-set="Liquidacion2015s" table="liquidacion2015" schema="dbo" p1:Guid="987cb083-8158-4597-b11b-218e2eabb9d2">

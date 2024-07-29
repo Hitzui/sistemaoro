@@ -10,5 +10,7 @@ namespace SistemaOro.Forms.Services
     public class VariablesGlobalesForm
     {
         public static Cliente? SelectedCliente;
+        public static Usuario? Usuario;
+        public static Agencia? Agencia;
     }
 }

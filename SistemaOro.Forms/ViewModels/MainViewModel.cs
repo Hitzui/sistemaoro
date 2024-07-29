@@ -12,6 +12,7 @@ using SistemaOro.Forms.Services;
 using SistemaOro.Forms.Services.Helpers;
 using SistemaOro.Forms.Services.Mensajes;
 using SistemaOro.Forms.Views;
+using SistemaOro.Forms.Views.Agencias;
 using SistemaOro.Forms.Views.Cajas;
 using SistemaOro.Forms.Views.Clientes;
 using Unity;
@@ -25,13 +26,28 @@ namespace SistemaOro.Forms.ViewModels
 
         public MainViewModel()
         {
-            ListadoCajasCommand = new DelegateCommand(ListadoCajas);
+            ListadoMovimientosCajasCommand = new DelegateCommand(ListadoMovimientosCajas);
             AgregarClienteCommand = new DelegateCommand(OnAgregarCliente);
             ListaClientesCommand = new DelegateCommand(OnListadoClientes);
             EditarClienteCommand = new DelegateCommand(OnEditarClienteCommand);
             TiposDocumentosCommand = new DelegateCommand(OnTiposDocumentosCommand);
             DeleteClienteCommand = new DelegateCommand(OnDeleteClienteCommand);
             TipoCambioCommand = new DelegateCommand(OnTipoCambioCommand);
+            ListadoCajasCommand = new DelegateCommand(OnListadoCajasCommand);
+            AgenciasCommand = new DelegateCommand(OnAgenciasCommand);
+            _mainFrame = new Frame();
+        }
+
+        private void OnAgenciasCommand()
+        {
+            _mainFrame.Navigate(new AgenciasPage());
+        }
+
+        private void OnListadoCajasCommand()
+        {
+            var pageCajas = new CajasPage();
+            var themedWindow = HelpersWindows.DefaultWindow(pageCajas);
+            themedWindow.ShowDialog();
         }
 
         private void OnTipoCambioCommand()
@@ -48,7 +64,7 @@ namespace SistemaOro.Forms.ViewModels
                 return;
             }
 
-            var messageBox = HelpersMessage.MensajeConfirmacionResult(ClienteMessages.TituloEliminarCliente, ClienteMessages.EliminarClienteContent, MessageBoxImage.Warning);
+            var messageBox = HelpersMessage.MensajeConfirmacionResult(ClienteMessages.TituloEliminarCliente, ClienteMessages.EliminarClienteContent);
             if (messageBox == MessageBoxResult.Cancel)
             {
                 VariablesGlobalesForm.SelectedCliente = null;
@@ -105,6 +121,9 @@ namespace SistemaOro.Forms.ViewModels
                 RaisePropertyChanged();
             }
         }
+
+        public ICommand AgenciasCommand { get; }
+        public ICommand ListadoMovimientosCajasCommand { get; }
         public ICommand ListadoCajasCommand { get; }
 
         public ICommand TipoCambioCommand { get; set; }
@@ -130,7 +149,7 @@ namespace SistemaOro.Forms.ViewModels
             _mainFrame = mainFrame;
         }
 
-        private void ListadoCajas()
+        private void ListadoMovimientosCajas()
         {
             _mainFrame.Navigate(new MovimientosCajasPage());
         }

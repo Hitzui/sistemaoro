@@ -64,6 +64,8 @@ public class ClienteFormViewModel : BaseViewModel
         {
             TipoDocumentos.Add(tipoDocumento);
         }
+
+        IsLoading = false;
     }
 
     private Data.Entities.TipoDocumento? _tipoDocumento;

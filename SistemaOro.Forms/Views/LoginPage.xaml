@@ -1,13 +1,59 @@
-﻿<Page
+﻿<dx:ThemedWindow
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:SistemaOro.Forms.Views"
-    xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" x:Class="SistemaOro.Forms.Views.LoginPage"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:helpers="clr-namespace:SistemaOro.Forms.Services.Helpers"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:ViewModels="clr-namespace:SistemaOro.Forms.ViewModels"
+    x:Class="SistemaOro.Forms.Views.LoginPage"
     mc:Ignorable="d"
-    d:DesignHeight="450" d:DesignWidth="800"
-    Title="LoginPage">
-
-    <Grid/>
-</Page>
+    Title="Iniciar Sesion" ResizeMode="NoResize" Icon="{dx:DXImage SvgImages/Business Objects/BO_User.svg}"
+    WindowStartupLocation="CenterScreen" Width="800" Height="550" WindowStyle="None" Loaded="ThemedWindow_Loaded">
+    <Window.DataContext>
+        <ViewModels:LoginViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="411*" />
+            <ColumnDefinition Width="389*" />
+        </Grid.ColumnDefinitions>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Views/background_01.jpg" />
+        </Grid.Background>
+        <Label Content="Iniciar Sesión en la Aplicación" Margin="64,74,28,431" FontSize="20" FontFamily="Arial"
+               FontWeight="Bold" Foreground="White" Grid.Column="1" />
+        <dxe:TextEdit
+            Margin="64,138,48,0"
+            VerticalAlignment="Top"
+            Height="33"
+            helpers:AdditionalImageHelper.AdditionalIcon="{dx:DXImage SvgImages/Business Objects/BO_User.svg}"
+            Label="" NullText="Ingresar Usuario" EditValue="{Binding Username}" Grid.Column="1" TabIndex="0" KeyDown="TextEdit_KeyDown" />
+        <dx:SimpleButton x:Name="btnLogin" Content="Iniciar Sesión" Height="37" Margin="64,0,48,170" VerticalAlignment="Bottom"
+                         Glyph="{dx:DXImage SvgImages/Business Objects/BO_User.svg}"
+                         IsEnabled="{Binding Enable}" Grid.Column="1" Click="SimpleButton_Click" TabIndex="3" />
+        <dx:SimpleButton Content="Salir" Height="37"
+                         Command="{Binding ExitCommand}"
+                         Margin="64,0,48,103"
+                         VerticalAlignment="Bottom"
+                         Glyph="{dx:DXImage SvgImages/XAF/Action_Exit.svg}" Grid.Column="1" TabIndex="4" />
+        <dxe:ComboBoxEdit x:Name="cmbAgencia" HorizontalAlignment="Left" Margin="64,261,0,0" VerticalAlignment="Top" Width="277"
+                          Height="36" NullText="Seleccione una sucursal" Grid.Column="1"
+                          DisplayMember="Nomagencia" ValueMember="Codagencia"
+                          ItemsSource="{Binding Agencias}" SelectedItem="{Binding SelectedAgencia}" TabIndex="2" KeyDown="cmbAgencia_KeyDown" IsTextEditable="False" />
+        <dxe:ImageEdit HorizontalAlignment="Left" Margin="29,85,0,0"
+                       VerticalAlignment="Top" Width="371" Height="181" Source="{Binding LogoImageSource}" ShowMenu="False" Stretch="Fill" TabIndex="6"
+                       />
+        <dxe:PasswordBoxEdit x:Name="txtPassword"
+                             Margin="64,192,48,0"
+                             helpers:AdditionalImageHelper.AdditionalIcon="{dx:DXImage SvgImages/Business Objects/BO_Security_Permission.svg}"
+                             VerticalAlignment="Top"
+                             ShowPasswordButtonVisibility="Auto"
+                             Text="{Binding Password}" Grid.Column="1" Height="35" Label="Ingresa contraseña" TabIndex="1" KeyDown="txtPassword_KeyDown" />
+        <dx:SimpleButton Content="Buscar Logo" HorizontalAlignment="Left" 
+                         Height="35" Margin="58,393,0,0" VerticalAlignment="Top"
+                         Width="206" Glyph="{dx:DXImage SvgImages/Actions/Open.svg}"
+                         Command="{Binding FindImageCommand}" TabIndex="5"/>
+    </Grid>
+</dx:ThemedWindow>

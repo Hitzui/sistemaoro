@@ -13,7 +13,7 @@ public class BaseViewModel: ViewModelBase
         get => _title;
         set => SetValue(ref _title, value);
     }
-    private bool _isLoading;
+    private bool _isLoading=true;
     public bool IsLoading
     {
         get => _isLoading;

@@ -7,7 +7,8 @@
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
     x:Class="SistemaOro.Forms.MainWindow"
     Loaded="MainWindow_OnLoaded"
-    Title="Sistema de Gestión de Oro" Height="800" Width="1000" Icon="/cash_ico.ico" WindowState="Maximized" WindowStartupLocation="CenterScreen">
+    Title="Sistema de Gestión de Oro" Height="800" Width="1000" Icon="/cash_ico.ico" WindowState="Maximized"
+    WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <local:MainViewModel />
     </Window.DataContext>
@@ -34,36 +35,54 @@
                             Content="Agregar"
                             RibbonStyle="Large"
                             Glyph="{dx:DXImage 
-                            SvgImages/Business Objects/BO_Department.svg}" Command="{Binding AgregarClienteCommand}" />
+                            SvgImages/Business Objects/BO_Department.svg}"
+                            Command="{Binding AgregarClienteCommand}" />
                         <dxb:BarButtonItem
                             x:Name="BarButtonEditarCliente"
                             Content="Editar"
                             RibbonStyle="Large"
-                            Glyph="{dx:DXImage SvgImages/Business Objects/BO_Person.svg}" Command="{Binding EditarClienteCommand}" />
-                        <dxb:BarButtonItem Content="Eliminar" RibbonStyle="Large" LargeGlyph="{dx:DXImage SvgImages/Dashboards/DeleteQuery.svg}" Command="{Binding DeleteClienteCommand}"/>
+                            Glyph="{dx:DXImage SvgImages/Business Objects/BO_Person.svg}"
+                            Command="{Binding EditarClienteCommand}" />
+                        <dxb:BarButtonItem Content="Eliminar" RibbonStyle="Large"
+                                           LargeGlyph="{dx:DXImage SvgImages/Dashboards/DeleteQuery.svg}"
+                                           Command="{Binding DeleteClienteCommand}" />
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Herramientas">
                         <dxb:BarButtonItem x:Name="BarButtonTipoDocumentos" Content="Tipos de Documentos"
                                            Glyph="{dx:DXImage SvgImages/RichEdit/DocumentProperties.svg}"
                                            RibbonStyle="Large" Command="{Binding TiposDocumentosCommand}" />
-                        <dxb:BarButtonItem Content="Tipo de Cambio" 
+                        <dxb:BarButtonItem Content="Tipo de Cambio"
                                            Command="{Binding TipoCambioCommand}"
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Business_Money.svg}" RibbonStyle="Large"/>
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Business_Money.svg}"
+                                           RibbonStyle="Large" />
                     </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
             </dxr:RibbonPageCategory>
             <dxr:RibbonPageCategory>
                 <dxr:RibbonPage Caption="Caja">
                     <dxr:RibbonPageGroup Caption="Cajas">
-                        <dxb:BarButtonItem Content="Movimientos de Cajas" 
+                        <dxb:BarButtonItem Content="Movimientos de Cajas"
+                                           Command="{Binding ListadoMovimientosCajasCommand}"
+                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Position.svg}"
+                                           RibbonStyle="Large" />
+                        <dxb:BarButtonItem Content="Cajas Sistema"
                                            Command="{Binding ListadoCajasCommand}"
-                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Position.svg}" 
-                                           RibbonStyle="Large"/>
-                        <dxb:BarButtonItem Content="Cajas Sistema" Glyph="{dx:DXImage SvgImages/Business Objects/BO_Product_Group.svg}" RibbonStyle="Large"/>
+                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Product_Group.svg}"
+                                           RibbonStyle="Large" />
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Administrar">
-                        <dxb:BarButtonItem Content="Agregar Mov." Glyph="{dx:DXImage SvgImages/Outlook Inspired/AddColumn.svg}" RibbonStyle="Large"/>
-                        <dxb:BarButtonItem Content="Rubros" Glyph="{dx:DXImage SvgImages/Business Objects/BO_Category.svg}" RibbonStyle="Large"/>
+                        <dxb:BarButtonItem Content="Agregar Mov."
+                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/AddColumn.svg}"
+                                           RibbonStyle="Large" />
+                        <dxb:BarButtonItem Content="Rubros"
+                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Category.svg}"
+                                           RibbonStyle="Large" />
+                    </dxr:RibbonPageGroup>
+                    <dxr:RibbonPageGroup Caption="Agencias">
+                        <dxb:BarButtonItem Content="Agencias"
+                                           Command="{Binding AgenciasCommand}"
+                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Organization.svg}"
+                                           RibbonStyle="Large" />
                     </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
             </dxr:RibbonPageCategory>

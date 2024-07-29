@@ -40,7 +40,7 @@ public class TipoCambioViewModel : BaseViewModel
             return;
         }
 
-        var message = HelpersMessage.MensajeConfirmacionResult(MensajesGenericos.EliminarTitulo, TipoCambioMensajes.Eliminar, MessageBoxImage.Question);
+        var message = HelpersMessage.MensajeConfirmacionResult(MensajesGenericos.EliminarTitulo, TipoCambioMensajes.Eliminar);
         if (message == MessageBoxResult.Cancel)
         {
             return;
@@ -70,7 +70,7 @@ public class TipoCambioViewModel : BaseViewModel
 
     private async void OnSaveCommand()
     {
-        var message = HelpersMessage.MensajeConfirmacionResult(MensajesGenericos.GuardarTitulo, TipoCambioMensajes.Guardar, MessageBoxImage.Question);
+        var message = HelpersMessage.MensajeConfirmacionResult(MensajesGenericos.GuardarTitulo, TipoCambioMensajes.Guardar);
         if (message == MessageBoxResult.Cancel)
         {
             return;
@@ -172,7 +172,7 @@ public class TipoCambioViewModel : BaseViewModel
     [Command]
     public async void ValidateRowDeletionCommand(ValidateRowDeletionArgs args)
     {
-        var message = HelpersMessage.MensajeConfirmacionResult(MensajesGenericos.EliminarTitulo, TipoCambioMensajes.Eliminar, MessageBoxImage.Question);
+        var message = HelpersMessage.MensajeConfirmacionResult(MensajesGenericos.EliminarTitulo, TipoCambioMensajes.Eliminar);
         if (message == MessageBoxResult.Cancel)
         {
             OnLoad();
