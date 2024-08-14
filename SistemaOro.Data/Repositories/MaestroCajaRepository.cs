@@ -4,7 +4,7 @@ using SistemaOro.Data.Exceptions;
 
 namespace SistemaOro.Data.Repositories;
 
-public class MaestroCajaRepository(IParametersRepository parametersRepository,DataContext context) : IMaestroCajaRepository
+public class MaestroCajaRepository(IParametersRepository parametersRepository, DataContext context) : IMaestroCajaRepository
 {
     public async Task<bool> ValidarCajaAbierta(string caja)
     {
@@ -16,7 +16,6 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository,Da
             if (mcaja is not null) return mcaja.Fecha!.Value.Day == DateTime.Now.Day;
             ErrorSms = $"No existe el maestro de caja con el codigo de caja {caja}";
             return false;
-
         }
         catch (Exception e)
         {
@@ -33,14 +32,14 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository,Da
                             && mcaja.Codagencia == agencia);
     }
 
-    public async Task<Mcaja?> FindByCajaAndAgencia(string? caja, string? agencia)
+    public Task<Mcaja?> FindByCajaAndAgencia(string? caja, string? agencia)
     {
-        var findQuery = Find(caja, agencia);
-        var find = await findQuery.Where(mcaja => mcaja.Estado == 1).FirstOrDefaultAsync();
-        if (find is not null) return find;
-        ErrorSms=$"No existe la caja o apertura de caja con el codigo {caja}";
-        return null;
-
+        var find = context.Mcajas.AsNoTracking()
+            .Where(mcaja => mcaja.Estado == 1
+                            && mcaja.Codagencia == agencia
+                            && mcaja.Codcaja == caja)
+            .FirstOrDefaultAsync();
+        return find;
     }
 
     public async Task<bool> EstadoCaja(string? caja, string? agencia)
@@ -65,7 +64,7 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository,Da
         try
         {
             var query = Find(caja, agencia);
-            var xestado = query.FirstOrDefault() ?? new Mcaja
+            var xestado = query.OrderByDescending(mcaja => mcaja.Idcaja).FirstOrDefault() ?? new Mcaja
             {
                 Sfinal = 0,
                 Sinicial = 0,
@@ -73,7 +72,7 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository,Da
                 Idcaja = 0,
                 Fecha = DateTime.Now,
                 Codagencia = agencia,
-                Codcaja = caja
+                Codcaja = caja!
             };
 
 
@@ -84,6 +83,10 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository,Da
             }
 
             var parametros = await parametersRepository.RecuperarParametros();
+            if (parametros is null)
+            {
+                return false;
+            }
             var crearM = new Mcaja
             {
                 Codcaja = xestado.Codcaja,
@@ -95,7 +98,8 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository,Da
                 Sinicial = xestado.Sfinal,
                 Sfinal = xestado.Sfinal
             };
-            crearM = context.Add(crearM).Entity;
+            context.Add(crearM);
+            await context.SaveChangesAsync();
             var dcaja = new Detacaja
             {
                 Idcaja = crearM.Idcaja,
@@ -133,7 +137,7 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository,Da
             }
 
             var parametros = await parametersRepository.RecuperarParametros();
-            var query =  Find(caja, agencia);
+            var query = Find(caja, agencia);
             var crearM = await query.FirstOrDefaultAsync(mcaja => mcaja.Estado == 1);
             if (crearM is null || parametros is null)
             {
@@ -156,7 +160,7 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository,Da
             };
             context.Add(detaCaja);
             crearM.Estado = 0;
-            await context.BulkSaveChangesAsync();
+            await context.SaveChangesAsync();
             return true;
         }
         catch (Exception ex)
@@ -195,7 +199,7 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository,Da
         context.Add(dcaja);
         try
         {
-            await context.BulkSaveChangesAsync();
+            await context.SaveChangesAsync();
             return true;
         }
         catch (Exception e)

@@ -9,13 +9,15 @@
     x:Class="SistemaOro.Forms.Views.Agencias.AgenciasPage"
     mc:Ignorable="d"
     d:DesignHeight="450" d:DesignWidth="800"
-    Title="AgenciasPage">
+    Title="AgenciasPage" Loaded="Page_Loaded">
     <Page.DataContext>
         <agencias:AgenciasViewModel />
     </Page.DataContext>
     <Grid>
 
-        <dxg:GridControl x:Name="grid" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True"
+        <dxg:GridControl x:Name="GridAgencia" EnableSmartColumnsGeneration="True"
+                         SelectionMode="Row"
+                         SelectedItem="{Binding SelectedAgencia}"
                          ItemsSource="{Binding ItemsSource}" RestoreStateKeyFieldName="Codagencia"
                          RestoreStateOnSourceChange="True">
             <dxg:GridControl.TotalSummary>
@@ -23,14 +25,13 @@
             </dxg:GridControl.TotalSummary>
             <dxg:GridControl.View>
                 <dxg:TableView DataSourceRefreshCommand="{Binding DataSourceRefreshCommand}"
-                               ShowFixedTotalSummary="True" />
+                               ShowFixedTotalSummary="True" ShowSearchPanelMode="Always" />
             </dxg:GridControl.View>
             <dxg:GridColumn FieldName="Codagencia" IsSmart="True" ReadOnly="True" />
             <dxg:GridColumn FieldName="Nomagencia" IsSmart="True" />
             <dxg:GridColumn FieldName="Diragencia" IsSmart="True" />
             <dxg:GridColumn FieldName="Disagencia" IsSmart="True" />
             <dxg:GridColumn FieldName="Telagencia" IsSmart="True" />
-            <dxg:GridColumn FieldName="Numcompra" IsSmart="True" />
         </dxg:GridControl>
 
     </Grid>

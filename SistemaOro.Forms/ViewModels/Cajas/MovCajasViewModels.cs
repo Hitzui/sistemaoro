@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Documents;
+using DevExpress.Mvvm.Native;
 using SistemaOro.Data.Dto;
 using SistemaOro.Data.Libraries;
 using SistemaOro.Data.Repositories;
+using SistemaOro.Forms.Services;
 using Unity;
 
 namespace SistemaOro.Forms.ViewModels.Cajas;
@@ -14,12 +16,22 @@ public class MovCajasViewModels :BaseViewModel
     public MovCajasViewModels()
     {
         Title = "Movimientos de Caja";
-        _itemSource = new List<MovCajasDto>();
+        _itemSource = new DXObservableCollection<MovCajasDto>();
     }
 
-    private List<MovCajasDto> _itemSource;
+    public MovCajasDto SelectedItem
+    {
+        get => GetValue<MovCajasDto>();
+        set
+        {
+            SetValue(value);
+            VariablesGlobalesForm.Instance.MovCajasDtoSelected = value;
+        }
+    }
 
-    public List<MovCajasDto> ItemSource
+    private DXObservableCollection<MovCajasDto> _itemSource;
+
+    public DXObservableCollection<MovCajasDto> ItemSource
     {
         get => _itemSource;
         set => SetValue(ref _itemSource, value);
@@ -28,7 +40,9 @@ public class MovCajasViewModels :BaseViewModel
     public async void OnLoad()
     {
         IsLoading=true;
-        ItemSource = await MovimientosRepository.GetMovcajasAndRubro();
+        var findAll = await MovimientosRepository.GetMovcajasAndRubro();
+        VariablesGlobalesForm.Instance.MovimientosCajaCollection = new DXObservableCollection<MovCajasDto>(findAll);
+        ItemSource = VariablesGlobalesForm.Instance.MovimientosCajaCollection;
         IsLoading=false;
     }
 }

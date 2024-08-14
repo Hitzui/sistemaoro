@@ -14,7 +14,7 @@
     </Page.DataContext>
     <Grid>
 
-        <dxg:GridControl AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" ItemsSource="{Binding ItemSource}" ShowLoadingPanel="{Binding IsLoading}">
+        <dxg:GridControl AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" ItemsSource="{Binding ItemSource}" ShowLoadingPanel="{Binding IsLoading}" SelectedItem="{Binding SelectedItem}">
             <dxg:GridControl.View>
                 <dxg:TableView AllowEditing="False"/>
             </dxg:GridControl.View>

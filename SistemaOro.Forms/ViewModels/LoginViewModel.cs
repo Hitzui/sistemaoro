@@ -52,10 +52,9 @@ public class LoginViewModel : BaseViewModel
             var param = await _parametersRepository.RecuperarParametros();
             LogoImageSource = new BitmapImage(new Uri(op.FileName));
             await using FileStream fs = new FileStream(op.FileName, FileMode.Open, FileAccess.Read);
-            byte[] imageData;
-            imageData = new byte[fs.Length];
-            fs.Read(imageData, 0, (int)fs.Length);
-            if (param is not null)
+            var imageData = new byte[fs.Length];
+            var result = fs.Read(imageData, 0, (int)fs.Length);
+            if (param is not null && result>0)
             {
                 param.Logo = imageData;
                 await _parametersRepository.ActualizarParametros(param);
@@ -92,8 +91,8 @@ public class LoginViewModel : BaseViewModel
         var validatePassword = user.Clave == Password;
         if (validatePassword)
         {
-            VariablesGlobalesForm.Usuario = user;
-            VariablesGlobalesForm.Agencia = SelectedAgencia;
+            VariablesGlobalesForm.Instance.Usuario = user;
+            VariablesGlobalesForm.Instance.Agencia = SelectedAgencia;
             return true;
         }
 

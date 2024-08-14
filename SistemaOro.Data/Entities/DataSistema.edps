@@ -44,6 +44,7 @@
         <File Name="DataSistema.VVariacionesCliente.cs" />
         <File Name="DataSistema.TipoDocumento.cs" />
         <File Name="DataSistema.EstadoCompra.cs" />
+        <File Name="DataSistema.Nivel.cs" />
       </GeneratedFiles>
     </Generation>
     <DatabaseFirstNamingRules>

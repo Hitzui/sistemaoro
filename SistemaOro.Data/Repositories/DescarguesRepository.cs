@@ -24,7 +24,7 @@ public class DescarguesRepository(DataContext context, ICompraRepository compraR
         context.UpdateRange(findDetaCompra);
         try
         {
-            await context.BulkSaveChangesAsync();
+            await context.SaveChangesAsync();
             return true;
         }
         catch (Exception e)
@@ -93,9 +93,9 @@ public class DescarguesRepository(DataContext context, ICompraRepository compraR
 
         try
         {
-            await context.SingleInsertAsync(descargue);
-            await context.BulkUpdateAsync(listCompra);
-            await context.BulkUpdateAsync(listDetaCompra);
+            await context.AddAsync(descargue);
+            context.UpdateRange(listCompra);
+            context.UpdateRange(listDetaCompra);
             return true;
         }
         catch (Exception e)

@@ -6,6 +6,8 @@ using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Windows;
+using SistemaOro.Forms.Services;
+using Unity;
 
 namespace SistemaOro.Forms
 {
@@ -14,6 +16,7 @@ namespace SistemaOro.Forms
     /// </summary>
     public partial class App : Application
     {
+        public static UnityContainer UnityContainer => new UnityContainer();
         static App()
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;

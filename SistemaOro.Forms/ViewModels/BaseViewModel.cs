@@ -1,11 +1,15 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using DevExpress.Mvvm;
 using SistemaOro.Forms.Views;
+using Unity;
 
 namespace SistemaOro.Forms.ViewModels;
 
 public class BaseViewModel: ViewModelBase
 {
+    public Action? CloseAction { get; set; }
+
     private string _title=string.Empty;
 
     public string Title

@@ -15,7 +15,13 @@ public class MovimientosCajaRepository(DataContext dataContext) : FacadeEntity<M
                 movcaja => movcaja.Codrubro,
                 rubro => rubro.Codrubro,
                 (movcaja, rubro) => new { movcaja, rubro })
-            .Select(arg => new MovCajasDto(arg.movcaja.Idmov, arg.movcaja.Descripcion, arg.rubro.Codrubro, arg.rubro.Descrubro, arg.rubro.Naturaleza == 0 ? "Egreso" : "Ingreso"))
-            .ToListAsync();
+            .Select(arg => new MovCajasDto(
+                    arg.movcaja.Idmov,
+                    arg.movcaja.Descripcion,
+                    arg.rubro.Codrubro,
+                    arg.rubro.Descrubro,
+                    arg.rubro.Naturaleza == 0 ? "Egreso" : "Ingreso"
+                )
+            ).ToListAsync();
     }
 }

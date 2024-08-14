@@ -49,7 +49,7 @@ public class ConfiguracionGeneral
         if (ExisteArchivo()) return;
         _xdoc = new XDocument(
             new XElement("Configuracion",
-                new XElement("Caja", "C01"),
+                new XElement("Caja", "C001"),
                 new XElement("Agencia", "A001"),
                 new XElement("Instancia", "server"),
                 new XElement("Catalogo", "EfectiOro"),

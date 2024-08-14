@@ -57,13 +57,19 @@ public abstract class FacadeEntity<TEntity>(DataContext context) : ICrudReposito
             {
                 throw new EntityValidationException("Debe especificar la entidad a actualizar");
             }
-            _set.Update(entity);
+
+            await _set.AddAsync(entity);
             await context.SaveChangesAsync();
             return true;
         }
         catch (Exception e)
         {
-            ErrorSms = $"No existe en el cotexto actual la entidad. Error: {e.Message} {e.Source}";
+            var mensaje2=string.Empty;
+            if (e.InnerException is not null)
+            {
+                mensaje2 = e.InnerException.Message;
+            }
+            ErrorSms = $"Error: {e.Message} {mensaje2}";
             context.ChangeTracker.Clear();
             return false;
         }
@@ -73,9 +79,7 @@ public abstract class FacadeEntity<TEntity>(DataContext context) : ICrudReposito
     {
         try
         {
-            var entity = await _set.FindAsync(id);
-            if (entity == null) return false;
-            _set.Remove(entity);
+            context.Remove(id);
             await context.SaveChangesAsync();
             return true;
         }
@@ -86,7 +90,7 @@ public abstract class FacadeEntity<TEntity>(DataContext context) : ICrudReposito
             {
                 mensaje = e.InnerException.Message;
             }
-            ErrorSms = $"No existe en el cotexto actual la entidad. Error: {e.Message} {mensaje}";
+            ErrorSms = $"Error: {e.Message} {mensaje}";
             context.ChangeTracker.Clear();
             return false;
         }

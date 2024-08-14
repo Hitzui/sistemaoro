@@ -30,5 +30,10 @@ namespace SistemaOro.Forms
         {
             ((MainViewModel)DataContext).SetMainFrame(MainFrame);
         }
+
+        private void ThemedWindow_Closed(object sender, EventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
     }
 }

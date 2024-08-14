@@ -55,6 +55,7 @@ public class VariablesGlobales
 
     public static string? ConnectionString => ConfigurationBuilder.GetConnectionString("ConnectionString");
 
+
     public IConfigurationSection ConfigurationSection => ConfigurationBuilder.GetSection("globals");
 
     private static IConfigurationRoot ConfigurationBuilder
@@ -70,6 +71,7 @@ public class VariablesGlobales
             return configurationBuilder.Build();
         }
     }
+
     public Usuario? Usuario { get; set; }
 
     public UnityContainer UnityContainer { get; }

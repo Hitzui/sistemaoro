@@ -1,0 +1,34 @@
+﻿<dx:ThemedWindow
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:SistemaOro.Forms.Views.Cajas"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:cajas="clr-namespace:SistemaOro.Forms.ViewModels.Cajas"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    x:Class="SistemaOro.Forms.Views.Cajas.AgregarMovimientoCaja"
+    mc:Ignorable="d"
+    Title="{Binding Title}" Height="258" Width="509" Icon="{dx:DXImage SvgImages/Business Objects/BO_StateMachine.svg}"
+    ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="ThemedWindow_Loaded">
+    <dx:ThemedWindow.DataContext>
+        <cajas:AgregarMovimientoCajaViewModel />
+    </dx:ThemedWindow.DataContext>
+    <Grid>
+        <Label Content="Descripción del movimiento:" HorizontalAlignment="Left" Margin="20,35,0,0"
+               VerticalAlignment="Top" />
+        <dxe:TextEdit HorizontalAlignment="Left" Margin="176,35,0,0" VerticalAlignment="Top" Width="272"
+                      EditValue="{Binding Movcaja.Descripcion}" />
+        <Label Content="Tipo del movimiento:" HorizontalAlignment="Left" Margin="58,99,0,0" VerticalAlignment="Top" />
+        <dxe:ComboBoxEdit HorizontalAlignment="Left" Margin="176,99,0,0" VerticalAlignment="Top" Width="272"
+                          SelectedItem="{Binding SelectedRubro}"
+                          ItemsSource="{Binding Rubros}"
+                          DisplayMember="Descrubro" ValueMember="Codrubro"
+                          SelectedIndex="0" />
+        <dx:SimpleButton Content="Guardar" HorizontalAlignment="Left" Margin="104,176,0,0" Width="118" Height="28"
+                         VerticalAlignment="Top" Glyph="{dx:DXImage SvgImages/Save/Save.svg}" Command="{Binding SaveCommand}" />
+        <dx:SimpleButton x:Name="BtnCancelar" Content="Cancelar" HorizontalAlignment="Left" Margin="312,176,0,0"
+                         Width="118" Height="28" VerticalAlignment="Top"
+                         Glyph="{dx:DXImage SvgImages/Outlook Inspired/Cancel.svg}" Click="BtnCancelar_Click" />
+    </Grid>
+</dx:ThemedWindow>

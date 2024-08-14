@@ -1,0 +1,57 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:agencias="clr-namespace:SistemaOro.Forms.ViewModels.Agencias"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+    x:Class="SistemaOro.Forms.Views.Agencias.FormAgencia"
+    mc:Ignorable="d"
+    Title="{Binding Title}" Height="472" Width="644" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
+    ResizeMode="NoResize" Icon="{dx:DXImage SvgImages/Dashboards/EditRules.svg}">
+    <Window.DataContext>
+        <agencias:FormAgenciaViewModel />
+    </Window.DataContext>
+    <dx:LoadingDecorator IsSplashScreenShown="{Binding IsLoading}">
+        <dxlc:DockLayoutControl>
+            <Grid>
+                <Label Content="Código Agencia:" HorizontalAlignment="Left" Margin="52,47,0,0" VerticalAlignment="Top" />
+
+                <dxe:TextEdit HorizontalAlignment="Left" Margin="144,47,0,0" VerticalAlignment="Top" Width="132"
+                              EditValue="{Binding SelectedAgencia.Codagencia}"
+                              IsEnabled="{Binding EnableCodigoAgencia}" />
+                <Label Content="Nombre Agencia:" HorizontalAlignment="Left" Margin="47,95,0,0" VerticalAlignment="Top" />
+                <dxe:TextEdit HorizontalAlignment="Left" Margin="144,95,0,0" VerticalAlignment="Top" Width="388"
+                              EditValue="{Binding SelectedAgencia.Nomagencia}" ValidateOnTextInput="False"
+                              Validate="TextEdit_Validate" />
+                <Label Content="Dirección Agencia:" HorizontalAlignment="Left" Margin="41,142,0,0"
+                       VerticalAlignment="Top" />
+                <dxe:TextEdit HorizontalAlignment="Left" Margin="144,142,0,0" VerticalAlignment="Top" Width="388"
+                              EditValue="{Binding SelectedAgencia.Diragencia}" />
+                <Label Content="Ubicación Agencia:" HorizontalAlignment="Left" Margin="38,195,0,0"
+                       VerticalAlignment="Top" />
+                <dxe:TextEdit HorizontalAlignment="Left" Margin="144,195,0,0" VerticalAlignment="Top" Width="388"
+                              EditValue="{Binding SelectedAgencia.Disagencia}" />
+                <Label Content="Teléfono Agencia:" HorizontalAlignment="Left" Margin="297,47,0,0"
+                       VerticalAlignment="Top" />
+                <dxe:TextEdit HorizontalAlignment="Left" Margin="400,47,0,0" VerticalAlignment="Top" Width="132"
+                              EditValue="{Binding SelectedAgencia.Telagencia}" />
+                <Label Content="Logo:" HorizontalAlignment="Left" Margin="38,240,0,0" VerticalAlignment="Top" />
+                <Image Margin="144,240,340,85" Source="{Binding LogoImageSource}" Stretch="Fill" />
+
+                <dx:SimpleButton Content="Buscar imagen" Height="25" Margin="362,251,134,0" VerticalAlignment="Top"
+                                 Glyph="{dx:DXImage SvgImages/DiagramIcons/LoadImage.svg}"
+                                 Command="{Binding FindImageCommand}" />
+                <dx:SimpleButton Content="Guardar" HorizontalAlignment="Left" Margin="184,0,0,28" Width="112"
+                                 Glyph="{dx:DXImage SvgImages/DiagramIcons/save.svg}" Height="33"
+                                 VerticalAlignment="Bottom" Command="{Binding SaveCommand}" />
+                <dx:SimpleButton Content="Cancelar" HorizontalAlignment="Left" Margin="382,0,0,28" Width="112"
+                                 Glyph="{dx:DXImage SvgImages/HybridDemoIcons/BottomPanel/HybridDemo_Cancel.svg}"
+                                 Click="SimpleButton_Click" Height="33" VerticalAlignment="Bottom" />
+
+            </Grid>
+        </dxlc:DockLayoutControl>
+    </dx:LoadingDecorator>
+</Window>

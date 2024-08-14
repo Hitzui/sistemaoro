@@ -11,7 +11,8 @@ public class PreciosKilatesRepository(DataContext context) : FacadeEntity<Precio
         try
         {
             await context.PrecioKilates.ExecuteDeleteAsync();
-            await context.PrecioKilates.BulkInsertAsync(precioKilates);
+            await context.PrecioKilates.AddRangeAsync(precioKilates);
+            await context.SaveChangesAsync();
             return true;
         }
         catch (Exception e)

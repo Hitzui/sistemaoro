@@ -1,0 +1,70 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:SistemaOro.Forms.Views.Cajas"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:cajas="clr-namespace:SistemaOro.Forms.ViewModels.Cajas"
+    x:Class="SistemaOro.Forms.Views.Cajas.MaestroCajaPage"
+    mc:Ignorable="d"
+    d:DesignHeight="450" d:DesignWidth="800"
+    Title="{Binding Title}" Loaded="Page_Loaded">
+    <Page.DataContext>
+        <cajas:MaestroCajaViewModel />
+    </Page.DataContext>
+    <Grid>
+
+        <dxe:TextEdit IsEnabled="False" HorizontalAlignment="Left" Margin="56,33,0,0" VerticalAlignment="Top"
+                      Width="143" EditValue="{Binding MaestroCaja.Codcaja}" />
+        <Label Content="Fecha:" HorizontalAlignment="Left" Margin="581,30,0,0" VerticalAlignment="Top" />
+        <Label Content="{Binding MaestroCaja.Fecha}" HorizontalAlignment="Left" Margin="619,30,0,0" VerticalAlignment="Top" Width="120" />
+
+        <dx:SimpleButton Content="Abrir Caja" HorizontalAlignment="Left" Height="22" Margin="292,33,0,0"
+                         VerticalAlignment="Top" Width="100" Command="{Binding AperturarCajaCommand}"
+                         Glyph="{dx:DXImage SvgImages/Icon Builder/Security_Unlock.svg}" IsEnabled="{Binding IsOpen}" />
+        <dx:SimpleButton Content="Cerrar Caja" HorizontalAlignment="Left" Height="22" Margin="458,33,0,0"
+                         VerticalAlignment="Top" Width="100" Command="{Binding CerrarCajaCommand}"
+                         Glyph="{dx:DXImage SvgImages/Outlook Inspired/Private.svg}" IsEnabled="{Binding IsClose}"/>
+
+        <Grid
+            Margin="50,125,50,263">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Border BorderBrush="Black" BorderThickness="2" Grid.Column="0" Grid.Row="0">
+                <Label Content="Saldo Inicial" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="2" Grid.Column="1" Grid.Row="0">
+                <Label Content="Entradas" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="2" Grid.Column="2" Grid.Row="0">
+                <Label Content="Salidas" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="2" Grid.Column="3" Grid.Row="0">
+                <Label Content="Saldo Final" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="2" Grid.Column="0" Grid.Row="1">
+                <Label Content="{Binding MaestroCaja.Sinicial}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="2" Grid.Column="1" Grid.Row="1">
+                <Label Content="{Binding MaestroCaja.Entrada}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="2" Grid.Column="2" Grid.Row="1">
+                <Label Content="{Binding MaestroCaja.Salida}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="2" Grid.Column="3" Grid.Row="1">
+                <Label Content="{Binding MaestroCaja.Sfinal}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+        </Grid>
+
+    </Grid>
+</Page>

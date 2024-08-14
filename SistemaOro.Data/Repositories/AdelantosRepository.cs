@@ -33,7 +33,7 @@ public class AdelantosRepository(IParametersRepository parametersRepository, IMa
             context.Add(comprasAdelantos);
             try
             {
-                await context.BulkSaveChangesAsync();
+                await context.SaveChangesAsync();
                 return true;
             }
             catch (Exception e)
@@ -63,7 +63,7 @@ public class AdelantosRepository(IParametersRepository parametersRepository, IMa
 
         try
         {
-            await context.BulkSaveChangesAsync();
+            await context.SaveChangesAsync();
             return true;
         }
         catch (Exception e)
@@ -83,7 +83,7 @@ public class AdelantosRepository(IParametersRepository parametersRepository, IMa
 
         try
         {
-            await context.BulkSaveChangesAsync();
+            await context.SaveChangesAsync();
             return true;
         }
         catch (Exception e)
