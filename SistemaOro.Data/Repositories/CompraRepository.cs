@@ -405,7 +405,8 @@ public class CompraRepository(IAdelantosRepository adelantoRepository, IParamete
         }
 
         await context.AnularCompraAsync(numeroCompra, _agencia);
-        await maestroCajaRepository.GuardarDatosDetaCaja(nuevoDetaCaja, mcaja);
+        var movcaja = await context.Movcajas.FindAsync(nuevoDetaCaja.Idmov);
+        await maestroCajaRepository.GuardarDatosDetaCaja(nuevoDetaCaja,movcaja!, mcaja);
         var result = await context.SaveChangesAsync() > 0;
         if (result)
         {

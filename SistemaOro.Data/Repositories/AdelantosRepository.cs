@@ -51,7 +51,8 @@ public class AdelantosRepository(IParametersRepository parametersRepository, IMa
 
     public async Task<bool> Update(decimal adelanto, string idSalida, string numCompra)
     {
-        var config = VariablesGlobales.Instance.ConfiguracionGeneral;
+        var caja = VariablesGlobales.Instance.ConfigurationSection["CAJA"];
+        var agencia = VariablesGlobales.Instance.ConfigurationSection["AGENCIA"];
         var find = await context.Adelantos.FindAsync(idSalida);
         if (find is null)
         {
@@ -59,7 +60,7 @@ public class AdelantosRepository(IParametersRepository parametersRepository, IMa
         }
 
         find.Saldo = adelanto;
-        find.Numcompra = string.IsNullOrEmpty(find.Numcompra) ? $@"{ConfiguracionGeneral.Agencia}.{numCompra}" : $@"{find.Numcompra};{ConfiguracionGeneral.Agencia}.{numCompra}";
+        find.Numcompra = string.IsNullOrEmpty(find.Numcompra) ? $@"{agencia}.{numCompra}" : $@"{find.Numcompra};{agencia}.{numCompra}";
 
         try
         {
@@ -125,6 +126,8 @@ public class AdelantosRepository(IParametersRepository parametersRepository, IMa
     public async Task<bool> AnularAdelanto(string codigo, bool debitar)
     {
         var param = await parametersRepository.RecuperarParametros();
+        var caja = VariablesGlobales.Instance.ConfigurationSection["CAJA"];
+        var agencia = VariablesGlobales.Instance.ConfigurationSection["AGENCIA"];
         if (param is null)
         {
             throw new Exception(VariablesGlobales.Instance.ConfigurationSection["ERROR_PARAM"]);
@@ -147,7 +150,7 @@ public class AdelantosRepository(IParametersRepository parametersRepository, IMa
 
         find.Estado = false;
         if (!debitar) return await context.SaveChangesAsync() > 0;
-        var findMcaja = await maestroCajaRepository.FindByCajaAndAgencia(ConfiguracionGeneral.Caja, ConfiguracionGeneral.Agencia);
+        var findMcaja = await maestroCajaRepository.FindByCajaAndAgencia(caja, agencia);
         if (findMcaja is null) return await context.SaveChangesAsync() > 0;
         findMcaja.Entrada = find.Monto.Value;
         findMcaja.Salida = decimal.Zero;
@@ -164,8 +167,10 @@ public class AdelantosRepository(IParametersRepository parametersRepository, IMa
             Concepto = $"***REVERTIR ADELANTO: {codigo}***",
             Fecha = DateTime.Now
         };
-        var insertValueDetaCaja = await maestroCajaRepository.GuardarDatosDetaCaja(nuevoDetaCaja, findMcaja);
+        var movcaja = await context.Movcajas.FindAsync(nuevoDetaCaja.Idmov);
+        var insertValueDetaCaja = await maestroCajaRepository.GuardarDatosDetaCaja(nuevoDetaCaja, movcaja!, findMcaja);
         if (insertValueDetaCaja) return await context.SaveChangesAsync() > 0;
+
         ErrorSms = maestroCajaRepository.ErrorSms;
         return false;
     }

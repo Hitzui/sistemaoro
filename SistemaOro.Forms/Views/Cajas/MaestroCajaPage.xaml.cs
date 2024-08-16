@@ -30,5 +30,10 @@ namespace SistemaOro.Forms.Views.Cajas
         {
             ((MaestroCajaViewModel)DataContext).Load();
         }
+
+        private void Page_GotFocus(object sender, RoutedEventArgs e)
+        {
+            ((MaestroCajaViewModel)DataContext).Load();
+        }
     }
 }

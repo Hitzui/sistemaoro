@@ -17,36 +17,36 @@ public class MaestroCajaViewModel : BaseViewModel
     private IMaestroCajaRepository _maestroCajaRepository;
     private string? _caja;
     private string? _agencia;
+
     public MaestroCajaViewModel()
     {
         _maestroCajaRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IMaestroCajaRepository>();
         _caja = VariablesGlobalesForm.Instance.VariablesGlobales["CAJA"];
-        _agencia =VariablesGlobalesForm.Instance.VariablesGlobales["AGENCIA"];
+        _agencia = VariablesGlobalesForm.Instance.VariablesGlobales["AGENCIA"];
         Title = "Maestro de caja";
         CerrarCajaCommand = new DelegateCommand(OnCerrarCajaCommand);
-        AperturarCajaCommand = new AsyncCommand(OnAperturarCajaCommand);
+        AperturarCajaCommand = new DelegateCommand(OnAperturarCajaCommand);
     }
 
-    private Task OnAperturarCajaCommand()
+    private async void OnAperturarCajaCommand()
     {
         var result = HelpersMessage.MensajeConfirmacionResult(MensajesMaestroCaja.AperturarCajaTitulo, MensajesMaestroCaja.AperturarCajaQ);
         if (result == MessageBoxResult.Cancel)
         {
-            return Task.CompletedTask;
+            return;
         }
-        return Task.Run(async () =>
-        {
-            var open=await _maestroCajaRepository.AbrirCaja(_caja, _agencia);
-            if (!open)
+
+            var open = await _maestroCajaRepository.AbrirCaja(_caja, _agencia);
+            if (open == false)
             {
                 HelpersMessage.MensajeErroResult(MensajesGenericos.ErrorTitulo, _maestroCajaRepository.ErrorSms);
             }
             else
             {
+                VariablesGlobalesForm.Instance.MaestroCaja = null;
                 HelpersMessage.MensajeInformacionResult(MensajesMaestroCaja.AperturarCajaTitulo, MensajesMaestroCaja.AperturarCaja);
                 Load();
             }
-        });
     }
 
     private async void OnCerrarCajaCommand()
@@ -72,23 +72,20 @@ public class MaestroCajaViewModel : BaseViewModel
     public bool IsClose
     {
         get => GetValue<bool>();
-        set=>SetValue(value);
+        set => SetValue(value);
     }
+
     public bool IsOpen
     {
         get => GetValue<bool>();
         set => SetValue(value);
     }
-    public Mcaja? MaestroCaja
-    {
-        get =>GetValue<Mcaja>();
-        set => SetValue(value);
-    }
+
+    public Mcaja? MaestroCaja => VariablesGlobalesForm.Instance.MaestroCaja;
 
     public async void Load()
     {
         VariablesGlobalesForm.Instance.MaestroCaja = await _maestroCajaRepository.FindByCajaAndAgencia(_caja, _agencia);
-        MaestroCaja=VariablesGlobalesForm.Instance.MaestroCaja;
         if (MaestroCaja is null)
         {
             IsOpen = true;

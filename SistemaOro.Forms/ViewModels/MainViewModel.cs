@@ -25,9 +25,13 @@ namespace SistemaOro.Forms.ViewModels
     public class MainViewModel : BaseViewModel
     {
         private Frame _mainFrame;
+        private IParametersRepository _parametersRepository;
+        private IMaestroCajaRepository _maestroCajaRepository;
 
         public MainViewModel()
         {
+            _maestroCajaRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IMaestroCajaRepository>();
+            _parametersRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IParametersRepository>();
             ListadoMovimientosCajasCommand = new DelegateCommand(ListadoMovimientosCajas);
             AgregarClienteCommand = new DelegateCommand(OnAgregarCliente);
             ListaClientesCommand = new DelegateCommand(OnListadoClientes);
@@ -44,7 +48,14 @@ namespace SistemaOro.Forms.ViewModels
             EditarMovimientoCajaCommand = new DelegateCommand(OnEditarMovimientoCajaCommand);
             RubroCommand = new DelegateCommand(OnRubroCommand);
             MaestroCajaCommand = new DelegateCommand(OnMaestroCajaCommand);
+            RealizarMovimientoCajaCommand = new DelegateCommand(OnRealizarMovimientoCajaCommand);
             _mainFrame = new Frame();
+        }
+
+        private void OnRealizarMovimientoCajaCommand()
+        {
+            var frm = new RealizarMovimientoCajaPage();
+            frm.ShowDialog();
         }
 
         private void OnMaestroCajaCommand()
@@ -202,6 +213,7 @@ namespace SistemaOro.Forms.ViewModels
         public ICommand EditarClienteCommand { get; set; }
 
         public ICommand TiposDocumentosCommand { get; set; }
+        public ICommand RealizarMovimientoCajaCommand { get; set; }
 
         public ICommand AgregarClienteCommand
         {
@@ -213,9 +225,13 @@ namespace SistemaOro.Forms.ViewModels
             }
         }
 
-        public void SetMainFrame(Frame mainFrame)
+        public async void SetMainFrame(Frame mainFrame)
         {
             _mainFrame = mainFrame;
+            var caja = VariablesGlobalesForm.Instance.VariablesGlobales["CAJA"];
+            var agencia = VariablesGlobalesForm.Instance.VariablesGlobales["AGENCIA"];
+            VariablesGlobalesForm.Instance.Parametros = await _parametersRepository.RecuperarParametros();
+            VariablesGlobalesForm.Instance.MaestroCaja = await _maestroCajaRepository.FindByCajaAndAgencia(caja, agencia);
         }
 
         private void ListadoMovimientosCajas()

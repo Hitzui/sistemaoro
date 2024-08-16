@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows;
 using DevExpress.Mvvm;
+using SistemaOro.Data.Entities;
+using SistemaOro.Forms.Services;
 using SistemaOro.Forms.Views;
 using Unity;
 
@@ -23,5 +25,4 @@ public class BaseViewModel: ViewModelBase
         get => _isLoading;
         set => SetProperty(ref _isLoading, value, nameof(IsLoading));
     }
-
 }

@@ -6,12 +6,13 @@ namespace SistemaOro.Data.Repositories;
 
 public class MaestroCajaRepository(IParametersRepository parametersRepository, DataContext context) : IMaestroCajaRepository
 {
-    public async Task<bool> ValidarCajaAbierta(string caja)
+    public async Task<bool> ValidarCajaAbierta(string caja, string codagencia)
     {
         try
         {
             var mcaja = await context.Mcajas
                 .SingleOrDefaultAsync(mcaja1 => mcaja1.Codcaja == caja
+                                                && mcaja1.Codagencia == codagencia
                                                 && mcaja1.Estado == 1);
             if (mcaja is not null) return mcaja.Fecha!.Value.Day == DateTime.Now.Day;
             ErrorSms = $"No existe el maestro de caja con el codigo de caja {caja}";
@@ -34,12 +35,10 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
 
     public Task<Mcaja?> FindByCajaAndAgencia(string? caja, string? agencia)
     {
-        var find = context.Mcajas.AsNoTracking()
-            .Where(mcaja => mcaja.Estado == 1
-                            && mcaja.Codagencia == agencia
-                            && mcaja.Codcaja == caja)
-            .FirstOrDefaultAsync();
-        return find;
+        return context.Mcajas.AsNoTracking()
+            .SingleOrDefaultAsync(mcaja => mcaja.Estado == 1
+                                           && mcaja.Codagencia == agencia
+                                           && mcaja.Codcaja == caja);
     }
 
     public async Task<bool> EstadoCaja(string? caja, string? agencia)
@@ -114,8 +113,8 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
                 Efectivo = xestado.Fecha!.Value.Day == DateTime.Now.Day ? 0 : crearM.Sfinal
             };
             context.Add(dcaja);
-            var save = await context.SaveChangesAsync();
-            return save > 0;
+            await context.SaveChangesAsync();
+            return true;
         }
         catch (Exception ex)
         {
@@ -170,16 +169,16 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
         }
     }
 
-    public async Task<bool> ActualizarDatosMaestroCaja(Mcaja mocaja)
+    public async Task<bool> ActualizarDatosMaestroCaja(string codcaja, string codagencia, decimal entrada, decimal salida)
     {
-        var query = Find(mocaja.Codcaja, mocaja.Codagencia!);
+        var query = Find(codcaja, codagencia);
         try
         {
             await query.Where(mcaja => mcaja.Estado == 1)
                 .ExecuteUpdateAsync(calls =>
-                    calls.SetProperty(mcaja => mcaja.Entrada, mcaja => mcaja.Entrada!.Value + mocaja.Entrada!.Value)
-                        .SetProperty(mcaja => mcaja.Salida, mcaja => mcaja.Salida!.Value + mocaja.Salida!.Value)
-                        .SetProperty(mcaja => mcaja.Sfinal, mcaja => mcaja.Entrada!.Value + mocaja.Entrada!.Value - mocaja.Salida!.Value)
+                    calls.SetProperty(mcaja => mcaja.Entrada, mcaja => mcaja.Entrada!.Value + entrada)
+                        .SetProperty(mcaja => mcaja.Salida, mcaja => mcaja.Salida!.Value + salida)
+                        .SetProperty(mcaja => mcaja.Sfinal, mcaja => mcaja.Sfinal!.Value + entrada - salida)
                 );
             return true;
         }
@@ -190,11 +189,31 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
         }
     }
 
-    public async Task<bool> GuardarDatosDetaCaja(Detacaja dcaja, Mcaja mocaja)
+    public async Task<bool> GuardarDatosDetaCaja(Detacaja dcaja, Movcaja movcaja, Mcaja mocaja)
     {
-        var actualizarMcaja = await ActualizarDatosMaestroCaja(mocaja);
+        var entrada = decimal.Zero;
+        var salida = decimal.Zero;
+        var rubro = await context.Rubros.AsNoTracking().SingleOrDefaultAsync(rubro1 => rubro1.Codrubro == movcaja.Codrubro);
+        if (rubro is null)
+        {
+            return false;
+        }
+        if (rubro.Naturaleza==0)
+        {
+            salida = dcaja.Efectivo!.Value;
+        }
+        else
+        {
+            entrada = dcaja.Efectivo!.Value;
+        }
+        var actualizarMcaja = await ActualizarDatosMaestroCaja(mocaja.Codcaja, mocaja.Codagencia!, entrada, salida);
         if (!actualizarMcaja) return false;
-        var tipoCambio = context.TipoCambios.Single(cambio => cambio.Fecha == DateTime.Now);
+        var tipoCambio = await context.TipoCambios.AsNoTracking().SingleOrDefaultAsync(cambio => cambio.Fecha == DateTime.Now) ?? new TipoCambio
+        {
+            Fecha = DateTime.Now,
+            PrecioOro = decimal.Zero,
+            Tipocambio = decimal.One
+        };
         dcaja.Tipocambio = tipoCambio.Tipocambio;
         context.Add(dcaja);
         try
@@ -204,7 +223,7 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
         }
         catch (Exception e)
         {
-            ErrorSms = $"No existe en el cotexto actual la entidad. Error: {e.Message} {e.Source}";
+            ErrorSms = $"Error: {e.Message} {e.Source}";
             return false;
         }
     }
