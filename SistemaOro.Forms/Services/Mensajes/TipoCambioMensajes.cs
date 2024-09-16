@@ -1,6 +1,4 @@
-﻿using Microsoft.Identity.Client;
-
-namespace SistemaOro.Forms.Services.Mensajes;
+﻿namespace SistemaOro.Forms.Services.Mensajes;
 
 public class TipoCambioMensajes
 {

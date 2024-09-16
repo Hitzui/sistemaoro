@@ -24,9 +24,9 @@ namespace SistemaOro.Forms.ViewModels;
 
 public class LoginViewModel : BaseViewModel
 {
-    private IUsuarioRepository _usuarioRepository;
-    private IAgenciaRepository _agenciaRepository;
-    private IParametersRepository _parametersRepository;
+    private readonly IUsuarioRepository _usuarioRepository;
+    private readonly IAgenciaRepository _agenciaRepository;
+    private readonly IParametersRepository _parametersRepository;
 
     public LoginViewModel()
     {
@@ -166,9 +166,9 @@ public class LoginViewModel : BaseViewModel
         set => SetValue(ref _agencias, value);
     }
 
-    private ImageSource _logoImageSource;
+    private ImageSource? _logoImageSource;
 
-    public ImageSource LogoImageSource
+    public ImageSource? LogoImageSource
     {
         get => _logoImageSource;
         set => SetValue(ref _logoImageSource, value);

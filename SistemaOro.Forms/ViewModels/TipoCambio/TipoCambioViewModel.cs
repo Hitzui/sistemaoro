@@ -3,7 +3,6 @@ using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using System.Linq;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;

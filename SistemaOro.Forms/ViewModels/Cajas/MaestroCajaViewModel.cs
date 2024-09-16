@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using DevExpress.Mvvm;
 using SistemaOro.Data.Entities;
@@ -15,8 +14,8 @@ namespace SistemaOro.Forms.ViewModels.Cajas;
 public class MaestroCajaViewModel : BaseViewModel
 {
     private IMaestroCajaRepository _maestroCajaRepository;
-    private string? _caja;
-    private string? _agencia;
+    private readonly string? _caja;
+    private readonly string? _agencia;
 
     public MaestroCajaViewModel()
     {
@@ -36,17 +35,18 @@ public class MaestroCajaViewModel : BaseViewModel
             return;
         }
 
-            var open = await _maestroCajaRepository.AbrirCaja(_caja, _agencia);
-            if (open == false)
-            {
-                HelpersMessage.MensajeErroResult(MensajesGenericos.ErrorTitulo, _maestroCajaRepository.ErrorSms);
-            }
-            else
-            {
-                VariablesGlobalesForm.Instance.MaestroCaja = null;
-                HelpersMessage.MensajeInformacionResult(MensajesMaestroCaja.AperturarCajaTitulo, MensajesMaestroCaja.AperturarCaja);
-                Load();
-            }
+        var open = await _maestroCajaRepository.AbrirCaja(_caja, _agencia);
+        if (open == false)
+        {
+            HelpersMessage.MensajeErroResult(MensajesGenericos.ErrorTitulo, _maestroCajaRepository.ErrorSms);
+        }
+        else
+        {
+            VariablesGlobalesForm.Instance.MaestroCaja = null;
+            MaestroCaja = null;
+            HelpersMessage.MensajeInformacionResult(MensajesMaestroCaja.AperturarCajaTitulo, MensajesMaestroCaja.AperturarCaja);
+            Load();
+        }
     }
 
     private async void OnCerrarCajaCommand()
@@ -81,11 +81,16 @@ public class MaestroCajaViewModel : BaseViewModel
         set => SetValue(value);
     }
 
-    public Mcaja? MaestroCaja => VariablesGlobalesForm.Instance.MaestroCaja;
+    public Mcaja? MaestroCaja
+    {
+        get => GetValue<Mcaja>();
+        private set => SetValue(value);
+    }
 
     public async void Load()
     {
         VariablesGlobalesForm.Instance.MaestroCaja = await _maestroCajaRepository.FindByCajaAndAgencia(_caja, _agencia);
+        MaestroCaja = VariablesGlobalesForm.Instance.MaestroCaja;
         if (MaestroCaja is null)
         {
             IsOpen = true;
@@ -101,4 +106,5 @@ public class MaestroCajaViewModel : BaseViewModel
     public ICommand CerrarCajaCommand { get; }
 
     public ICommand AperturarCajaCommand { get; }
+
 }

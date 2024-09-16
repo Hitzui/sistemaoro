@@ -20,7 +20,7 @@ public class UsuarioRepository(DataContext context) : FacadeEntity<Usuario>(cont
 
     public async Task<Usuario?> FindByUsuario(string nomusuario)
     {
-        var find = await _context.Usuarios.FirstOrDefaultAsync(usuario => usuario.Usuario1.Contains(nomusuario));
+        var find = await _context.Usuarios.FirstOrDefaultAsync(usuario => usuario.Username.Contains(nomusuario));
         if (find is not null) return find;
         ErrorSms = $"No existe el usuario con el codigo: {nomusuario}";
         return null;

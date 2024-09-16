@@ -1,4 +1,5 @@
-﻿using SistemaOro.Data.Entities;
+﻿using SistemaOro.Data.Dto;
+using SistemaOro.Data.Entities;
 
 namespace SistemaOro.Data.Repositories;
 
@@ -25,6 +26,12 @@ public interface IMaestroCajaRepository
     Task<decimal> ValidarPrestamosPuentes();
 
     Task<List<Detacaja>?> RecuperarDetaCajaValores(Mcaja mcaja);
+
+    Task<List<DtoMovimientosCaja>> FindAllByIdMaestroCaja(int id);
+
+    Task<List<DtoMovimientosCaja>> FindAllByFechaDesde(DateTime fechaDesde);
+
+    Task<List<DtoMovimientosCaja>> FindAllByFechaDesdeAndFechaHasta(DateTime fechaDesde,DateTime fechaHasta);
 
     string ErrorSms { get; }
 }

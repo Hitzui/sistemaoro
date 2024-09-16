@@ -76,6 +76,12 @@ public class FormAgenciaViewModel : BaseViewModel
             return;
         }
 
+        if (string.IsNullOrWhiteSpace(SelectedAgencia.Ruc))
+        {
+            HelpersMessage.MensajeErroResult(MensajesGenericos.ErrorTitulo, MensajesAgencias.RucAgencia);
+            return;
+        }
+
         var dialog = HelpersMessage.MensajeConfirmacionResult(MensajesGenericos.GuardarTitulo, MensajesAgencias.Guardar);
         if (dialog == MessageBoxResult.No)
         {

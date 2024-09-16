@@ -224,7 +224,7 @@ public class AdelantosRepository(IParametersRepository parametersRepository, IMa
                 Hora = DateTime.Now.TimeOfDay,
                 Idadelanto = adelanto.Idsalida,
                 Numcompra = adelanto.Idsalida,
-                Usuario = VariablesGlobales.Instance.Usuario!.Usuario1,
+                Usuario = VariablesGlobales.Instance.Usuario!.Username,
                 Codmoneda = adelanto.Codmoneda,
                 Codagencia = ConfiguracionGeneral.Agencia,
                 Sinicial = saldo

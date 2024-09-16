@@ -58,7 +58,7 @@ public abstract class FacadeEntity<TEntity>(DataContext context) : ICrudReposito
                 throw new EntityValidationException("Debe especificar la entidad a actualizar");
             }
 
-            await _set.AddAsync(entity);
+            _set.Update(entity);
             await context.SaveChangesAsync();
             return true;
         }

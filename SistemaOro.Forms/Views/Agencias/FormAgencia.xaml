@@ -9,7 +9,7 @@
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
     x:Class="SistemaOro.Forms.Views.Agencias.FormAgencia"
     mc:Ignorable="d"
-    Title="{Binding Title}" Height="472" Width="644" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
+    Title="{Binding Title}" Height="513" Width="644" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
     ResizeMode="NoResize" Icon="{dx:DXImage SvgImages/Dashboards/EditRules.svg}">
     <Window.DataContext>
         <agencias:FormAgenciaViewModel />
@@ -38,10 +38,10 @@
                        VerticalAlignment="Top" />
                 <dxe:TextEdit HorizontalAlignment="Left" Margin="400,47,0,0" VerticalAlignment="Top" Width="132"
                               EditValue="{Binding SelectedAgencia.Telagencia}" />
-                <Label Content="Logo:" HorizontalAlignment="Left" Margin="38,240,0,0" VerticalAlignment="Top" />
-                <Image Margin="144,240,340,85" Source="{Binding LogoImageSource}" Stretch="Fill" />
+                <Label Content="Logo:" HorizontalAlignment="Left" Margin="47,291,0,0" VerticalAlignment="Top" />
+                <Image Margin="143,284,340,80" Source="{Binding LogoImageSource}" Stretch="Fill" />
 
-                <dx:SimpleButton Content="Buscar imagen" Height="25" Margin="362,251,134,0" VerticalAlignment="Top"
+                <dx:SimpleButton Content="Buscar imagen" Height="25" Margin="411,302,85,0" VerticalAlignment="Top"
                                  Glyph="{dx:DXImage SvgImages/DiagramIcons/LoadImage.svg}"
                                  Command="{Binding FindImageCommand}" />
                 <dx:SimpleButton Content="Guardar" HorizontalAlignment="Left" Margin="184,0,0,28" Width="112"
@@ -50,8 +50,11 @@
                 <dx:SimpleButton Content="Cancelar" HorizontalAlignment="Left" Margin="382,0,0,28" Width="112"
                                  Glyph="{dx:DXImage SvgImages/HybridDemoIcons/BottomPanel/HybridDemo_Cancel.svg}"
                                  Click="SimpleButton_Click" Height="33" VerticalAlignment="Bottom" />
+                <Label Content="RUC Agencia:" HorizontalAlignment="Left" Margin="67,0,0,0"
+                    VerticalAlignment="Center" />
 
             </Grid>
+            <dxe:TextEdit HorizontalAlignment="Left" Height="25" VerticalAlignment="Center" Width="383" Margin="-474,0,0,0" EditValue="{Binding SelectedAgencia.Ruc}"/>
         </dxlc:DockLayoutControl>
     </dx:LoadingDecorator>
 </Window>

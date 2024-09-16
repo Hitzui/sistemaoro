@@ -24,4 +24,5 @@ public class MovimientosCajaRepository(DataContext dataContext) : FacadeEntity<M
                 )
             ).ToListAsync();
     }
+
 }

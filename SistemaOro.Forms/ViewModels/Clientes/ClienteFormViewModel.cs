@@ -9,6 +9,7 @@ using System.Windows.Input;
 using DevExpress.Xpf.WindowsUI;
 using SistemaOro.Forms.Services.Mensajes;
 using Unity;
+using SistemaOro.Forms.Models;
 
 namespace SistemaOro.Forms.ViewModels.Clientes;
 
@@ -34,28 +35,32 @@ public class ClienteFormViewModel : BaseViewModel
         set => SetProperty(ref _tipoDocumentos, value, nameof(TipoDocumentos));
     }
 
-    private Cliente? _selectedCliente;
 
-    public Cliente? SelectedCliente
+    public DtoCliente? SelectedCliente
     {
-        get => _selectedCliente;
-        set => SetProperty(ref _selectedCliente, value, nameof(SelectedCliente));
+        get => GetValue<DtoCliente>();
+        set => SetValue(value);
     }
 
-    public async void Load(Cliente? selectedCliente)
+    public async void Load(Cliente? cliente)
     {
-        SelectedCliente = selectedCliente ?? new();
+        SelectedCliente = new DtoCliente();
+        if (cliente is not null)
+        {
+            SelectedCliente = SelectedCliente.GetDtoCliente(cliente);
+        }
+
         if (string.IsNullOrWhiteSpace(SelectedCliente!.Codcliente))
         {
             NumeroCliente = await _clienteRepository.CodCliente();
-            SelectedCliente.Codcliente=NumeroCliente;
+            SelectedCliente.Codcliente = NumeroCliente;
             _isNew = true;
         }
         else
         {
             _isNew = false;
             NumeroCliente = SelectedCliente.Codcliente;
-            TipoDocumento = await _tipoDocumentoRepository.GetByIdAsync(SelectedCliente.Idtipodocumento!);
+            SelectedCliente.TipoDocumento = await _tipoDocumentoRepository.GetByIdAsync(cliente!.Idtipodocumento!);
         }
 
         TipoDocumentos.Clear();
@@ -66,14 +71,6 @@ public class ClienteFormViewModel : BaseViewModel
         }
 
         IsLoading = false;
-    }
-
-    private Data.Entities.TipoDocumento? _tipoDocumento;
-
-    public Data.Entities.TipoDocumento? TipoDocumento
-    {
-        get => _tipoDocumento;
-        set => SetValue(ref _tipoDocumento, value);
     }
 
     private string? _numeroCliente;
@@ -88,7 +85,10 @@ public class ClienteFormViewModel : BaseViewModel
 
     private async void Save()
     {
-        if (string.IsNullOrWhiteSpace(_numeroCliente)) { return; }
+        if (string.IsNullOrWhiteSpace(_numeroCliente))
+        {
+            return;
+        }
 
         var dialog = new WinUIDialogWindow(MensajesGenericos.GuardarTitulo, MessageBoxButton.YesNo)
         {
@@ -107,31 +107,34 @@ public class ClienteFormViewModel : BaseViewModel
             winuidialog.ShowDialog();
             return;
         }
+
         if (Validate())
         {
             winuidialog.Content = new TextBlock { Text = ClienteMessages.CamposVacios };
             winuidialog.ShowDialog();
             return;
         }
+
         IsLoading = true;
-        if (TipoDocumento is null)
+        if (SelectedCliente.TipoDocumento is null)
         {
             winuidialog.Title = MensajesGenericos.ErrorTitulo;
             winuidialog.Content = new TextBlock { Text = ClienteMessages.SeleccionarTipoDocumento };
-            IsLoading=false;
+            IsLoading = false;
             winuidialog.ShowDialog();
             return;
         }
 
-        SelectedCliente.Idtipodocumento = TipoDocumento.Idtipodocumento;
+        var cliente = SelectedCliente.GetCliente();
+        cliente.Idtipodocumento = SelectedCliente.TipoDocumento.Idtipodocumento;
         bool save;
         if (!_isNew)
         {
-            save = await _clienteRepository.Update(SelectedCliente);
+            save = await _clienteRepository.Update(cliente);
         }
         else
         {
-            save = await _clienteRepository.Create(SelectedCliente);
+            save = await _clienteRepository.Create(cliente);
         }
 
         if (save)
@@ -143,6 +146,7 @@ public class ClienteFormViewModel : BaseViewModel
             winuidialog.Title = MensajesGenericos.ErrorTitulo;
             winuidialog.Content = new TextBlock { Text = $"{ClienteMessages.ClienteGuardarError}\n{_clienteRepository.ErrorSms}" };
         }
+
         IsLoading = false;
         winuidialog.ShowDialog();
     }
@@ -153,6 +157,7 @@ public class ClienteFormViewModel : BaseViewModel
                || string.IsNullOrWhiteSpace(SelectedCliente.Apellidos)
                || string.IsNullOrWhiteSpace(SelectedCliente.Numcedula)
                || string.IsNullOrWhiteSpace(SelectedCliente.Direccion)
-               || string.IsNullOrWhiteSpace(SelectedCliente.Telefono);
+               || string.IsNullOrWhiteSpace(SelectedCliente.Email)
+               || string.IsNullOrWhiteSpace(SelectedCliente.Celular);
     }
 }

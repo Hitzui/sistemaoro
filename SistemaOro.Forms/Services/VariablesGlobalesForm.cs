@@ -1,9 +1,11 @@
 ﻿using System.IO;
+using System.Windows.Controls;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.Native;
 using Microsoft.Extensions.Configuration;
 using SistemaOro.Data.Dto;
 using SistemaOro.Data.Entities;
+using SistemaOro.Forms.Repository;
 
 namespace SistemaOro.Forms.Services
 {
@@ -51,6 +53,7 @@ namespace SistemaOro.Forms.Services
             }
         }
 
+        public IDtoTipoPrecioRepository DtoTipoPrecioRepository => new DtoTipoPrecioRepository();
         private Cliente? _selectedCliente;
 
         public Cliente? SelectedCliente
@@ -121,6 +124,12 @@ namespace SistemaOro.Forms.Services
         public Id? Parametros
         {
             get => GetValue<Id>();
+            set => SetValue(value);
+        }
+
+        public Frame? MainFrame
+        {
+            get => GetValue<Frame>();
             set => SetValue(value);
         }
     }

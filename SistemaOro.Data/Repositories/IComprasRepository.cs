@@ -1,4 +1,5 @@
-﻿using SistemaOro.Data.Entities;
+﻿using SistemaOro.Data.Dto;
+using SistemaOro.Data.Entities;
 
 namespace SistemaOro.Data.Repositories;
 
@@ -15,4 +16,9 @@ public interface ICompraRepository
     Task<bool> AnularCompra(string numeroCompra);
     Task<List<Compra>> FindByCodigoCliente(string codCliente);
     Task<bool> UpdateValues(Compra compra);
+    /// <summary>
+    /// Busca las compras vigentes y retorna una lista con los nombres y codigos de clientes
+    /// </summary>
+    /// <returns>Lista de compras por clientes</returns>
+    Task<IList<DtoComprasClientes>> FindComprasClientes();
 }

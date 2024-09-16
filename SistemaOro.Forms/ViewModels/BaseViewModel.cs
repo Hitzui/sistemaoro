@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using DevExpress.Mvvm;
 using SistemaOro.Data.Entities;

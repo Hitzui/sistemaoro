@@ -1,11 +1,11 @@
 ﻿using DevExpress.Mvvm;
-using Microsoft.EntityFrameworkCore;
 using SistemaOro.Data.Entities;
 using SistemaOro.Data.Libraries;
 using SistemaOro.Forms.Services;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Xpf;
 using System;
+using System.Diagnostics;
 using System.Linq.Expressions;
 using DevExpress.Data.Filtering;
 using DevExpress.Xpf.Data;
@@ -19,17 +19,13 @@ namespace SistemaOro.Forms.ViewModels.Clientes;
 
 public class ClientesViewModels : BaseViewModel
 {
-    private IClienteRepository _clienteRepository;
+    private readonly IClienteRepository _clienteRepository;
+
     public ClientesViewModels()
     {
-        FilterCommand = new DelegateCommand(OnFilterCommand);
         _clienteRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IClienteRepository>();
     }
 
-    private async void OnFilterCommand()
-    {
-        
-    }
 
     private Cliente _selectedItem = new();
 
@@ -53,14 +49,9 @@ public class ClientesViewModels : BaseViewModel
     public void FetchPage(FetchPageAsyncArgs args)
     {
         const int pageTakeCount = 5;
-        args.Result = Task.Run<FetchRowsResult>(() =>
-        {
-            var context = new DataContext();
-            var queryable = context.Clientes.AsNoTracking()
-                .SortBy(args.SortOrder, defaultUniqueSortPropertyName: nameof(Cliente.Codcliente))
-                .Where(MakeFilterExpression((CriteriaOperator)args.Filter));
-            return queryable.Skip(args.Skip).Take(args.Take * pageTakeCount).ToArray();
-        });
+        args.Result = Task.Run<FetchRowsResult>(() => _clienteRepository.FetchPage(args.Skip, args.Take * pageTakeCount)
+            .SortBy(args.SortOrder, defaultUniqueSortPropertyName: nameof(Cliente.Codcliente))
+            .Where(MakeFilterExpression((CriteriaOperator)args.Filter)).ToArray());
     }
 
     [Command]
@@ -73,6 +64,4 @@ public class ClientesViewModels : BaseViewModel
             return queryable.GetSummaries(args.Summaries);
         });
     }
-
-    public ICommand FilterCommand { get; set; }
 }

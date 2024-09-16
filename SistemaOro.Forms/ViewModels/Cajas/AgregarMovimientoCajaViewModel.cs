@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using DevExpress.Mvvm;
+﻿using DevExpress.Mvvm;
 using SistemaOro.Data.Entities;
 using SistemaOro.Data.Libraries;
 using SistemaOro.Data.Repositories;
 using SistemaOro.Forms.Services;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
+using System.Windows.Input;
 using Unity;
 
 namespace SistemaOro.Forms.ViewModels.Cajas;
@@ -42,16 +41,16 @@ public class AgregarMovimientoCajaViewModel : BaseViewModel
 
         Movcaja.Codrubro = SelectedRubro.Codrubro;
         var returnTask = isNew ? _movimientosRepository.AddAsync(Movcaja).WaitAsync(CancellationToken.None) : _movimientosRepository.UpdateAsync(Movcaja).WaitAsync(CancellationToken.None);
-        var task= await returnTask;
+        var task = await returnTask;
         if (task)
         {
-            CloseAction?.Invoke(); 
+            CloseAction?.Invoke();
         }
         else
         {
             Debug.WriteLine(_movimientosRepository.ErrorSms);
         }
-        
+
     }
 
     public ICommand SaveCommand { get; }
@@ -83,7 +82,7 @@ public class AgregarMovimientoCajaViewModel : BaseViewModel
         var findMovcaja = await _movimientosRepository.GetByIdAsync(VariablesGlobalesForm.Instance.MovCajasDtoSelected.IdMov);
         if (findMovcaja != null)
         {
-            Movcaja=findMovcaja;
+            Movcaja = findMovcaja;
         }
         SelectedRubro = await _rubroRepository.FindById(VariablesGlobalesForm.Instance.MovCajasDtoSelected.Codrubro);
     }

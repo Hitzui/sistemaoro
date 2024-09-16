@@ -102,6 +102,17 @@
                     <dxr:RibbonPageGroup Caption="Maestro Caja">
                         <dxb:BarButtonItem Command="{Binding MaestroCajaCommand}"  Content="Maestro Caja" Glyph="{dx:DXImage SvgImages/Icon Builder/Shopping_CashVoucher.svg}" RibbonStyle="Large"/>
                         <dxb:BarButtonItem Command="{Binding RealizarMovimientoCajaCommand}"  Content="Realziar Movimiento" RibbonStyle="Large" Glyph="{dx:DXImage SvgImages/Business Objects/BO_Sale_Item.svg}"/>
+                        <dxb:BarButtonItem Command="{Binding ReportesMaestroCajaCommand}"  Content="Reportes" RibbonStyle="Large" Glyph="{dx:DXImage SvgImages/XAF/Action_Report_ShowDesigner.svg}"/>
+                    </dxr:RibbonPageGroup>
+                </dxr:RibbonPage>
+            </dxr:RibbonPageCategory>
+            <dxr:RibbonPageCategory>
+                <dxr:RibbonPage Caption="Compras">
+                    <dxr:RibbonPageGroup Caption="Compras">
+                        <dxb:BarButtonItem Command="{Binding RealizarCompraCommand}"  Content="Compra" RibbonStyle="Large" Glyph="{dx:DXImage SvgImages/Outlook Inspired/BuyNow.svg}"/>
+                    </dxr:RibbonPageGroup>
+                    <dxr:RibbonPageGroup Caption="Precios">
+                        <dxb:BarButtonItem Command="{Binding TiposPreciosCommand}" Content="Tipos de Precios" RibbonStyle="Large" Glyph="{dx:DXImage SvgImages/Business Objects/BO_Opportunity.svg}"/>
                     </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
             </dxr:RibbonPageCategory>

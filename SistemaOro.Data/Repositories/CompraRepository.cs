@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using SistemaOro.Data.Configuration;
+using SistemaOro.Data.Dto;
 using SistemaOro.Data.Entities;
 using SistemaOro.Data.Exceptions;
 using SistemaOro.Data.Libraries;
@@ -136,7 +138,7 @@ public class CompraRepository(IAdelantosRepository adelantoRepository, IParamete
                         Hora = DateTime.Now.TimeOfDay,
                         Idadelanto = adelanto.Idsalida,
                         Numcompra = compra.Numcompra,
-                        Usuario = _usuario.Usuario1,
+                        Usuario = _usuario.Username,
                         Codagencia = _agencia,
                         Codmoneda = adelanto.Codmoneda
                     };
@@ -381,7 +383,7 @@ public class CompraRepository(IAdelantosRepository adelantoRepository, IParamete
                 Numcompra = "",
                 Transferencia = 0M,
                 Cheque = 0M,
-                Usuario = usuario.Usuario1,
+                Usuario = usuario.Username,
                 Codcliente = findCompra.Codcliente,
                 Idsalida = recpuerarCodigoAdelanto ?? ""
             };
@@ -440,5 +442,23 @@ public class CompraRepository(IAdelantosRepository adelantoRepository, IParamete
 
         ErrorSms = $"No se actualizaron los datos de la compra con codigo {compra.Numcompra} en la sucursal {_agencia}";
         return false;
+    }
+
+    public async Task<IList<DtoComprasClientes>> FindComprasClientes()
+    {
+        var result = context.Compras.AsNoTracking()
+            .Where(compra => compra.Codestado == EstadoCompra.Vigente || compra.Codestado==EstadoCompra.Cerrada)
+            .Join(context.Clientes.AsNoTracking(), compra => compra.Codcliente, cliente => cliente.Codcliente, (compra, cliente) => new { compra, cliente })
+            .Select(arg => new DtoComprasClientes()
+            {
+                Numcompra = arg.compra.Numcompra,
+                Codcliente = arg.cliente.Codcliente,
+                Nombre = arg.cliente.Nombres,
+                Apellido = arg.cliente.Apellidos,
+                Total = arg.compra.Total,
+                Fecha = arg.compra.Fecha,
+                Nocontrato = arg.compra.Nocontrato
+            });
+        return await result.ToListAsync();
     }
 }

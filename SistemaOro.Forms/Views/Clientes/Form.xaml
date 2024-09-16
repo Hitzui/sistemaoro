@@ -3,7 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:views="clr-namespace:SistemaOro.Forms.Views.Clientes"
     xmlns:local="clr-namespace:SistemaOro.Forms.ViewModels.Clientes"
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
@@ -15,7 +14,18 @@
     <Window.DataContext>
         <local:ClienteFormViewModel />
     </Window.DataContext>
-
+    <Window.Resources>
+        <Style x:Key="ValidationStyle" TargetType="dxe:TextEdit">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="BorderBrush" Value="Red" />
+                    <Setter Property="ToolTip" 
+                            Value="{Binding (Validation.Errors)[0].ErrorContent, 
+                        RelativeSource={RelativeSource Self}}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <dx:LoadingDecorator IsSplashScreenShown="{Binding IsLoading}">
         <dxlc:DockLayoutControl>
             <Grid Margin="0,0,-765,482">
@@ -38,7 +48,7 @@
                     Grid.Column="2"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center" Height="0" Width="0" />
-                <dx:SimpleButton
+                <dx:SimpleButton x:Name="BtnSave"
                     Grid.Column="2"
                     Content=""
                     Height="48"
@@ -46,7 +56,7 @@
                     VerticalAlignment="Bottom"
                     HorizontalAlignment="Left" Width="64"
                     Glyph="{dx:DXImage SvgImages/DiagramIcons/save.svg}"
-                    Command="{Binding SaveCommand}" />
+                    Command="{Binding SaveCommand}" Click="BtnSave_Click" />
             </Grid>
             <dx:DXTabControl Margin="5,73,-769,10">
                 <dx:DXTabItem Header="Datos del Cliente">
@@ -55,15 +65,16 @@
                                VerticalAlignment="Top"
                                Width="70" />
                         <dxe:TextEdit x:Name="TxtNombres" HorizontalAlignment="Left" Margin="71,70,0,0"
+                                      Style="{StaticResource ValidationStyle}"
                                       VerticalAlignment="Top" Width="150" Height="24"
-                                      Text="{Binding SelectedCliente.Nombres}"
-                                      EditValue="{Binding SelectedCliente.Nombres}" />
+                                      EditValue="{Binding SelectedCliente.Nombres, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
                         <Label Content="Apellidos" HorizontalAlignment="Left" Margin="249,48,0,0"
                                VerticalAlignment="Top"
                                Width="70" />
                         <dxe:TextEdit x:Name="TxtApellidos" HorizontalAlignment="Left" Margin="249,70,0,0"
                                       VerticalAlignment="Top" Width="150" Height="24"
-                                      Text="{Binding SelectedCliente.Apellidos}" />
+                                      Text="{Binding SelectedCliente.Apellidos, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                      EditValue="{Binding SelectedCliente.Apellidos}" />
                         <Label Content="Fecha Nacimiento" HorizontalAlignment="Left" Margin="449,48,0,0"
                                VerticalAlignment="Top" Width="110" />
                         <dxe:DateEdit x:Name="TxtFechaNacimiento" HorizontalAlignment="Left" Margin="449,72,0,0"
@@ -99,26 +110,27 @@
                                Width="75" />
                         <dxe:TextEdit HorizontalAlignment="Left" Margin="71,311,0,0" VerticalAlignment="Top"
                                       Width="150"
-                                      Text="{Binding SelectedCliente.Telefono}" />
+                                      Text="{Binding SelectedCliente.Telefono}"
+                                      EditValue="{Binding SelectedCliente.Telefono}" />
                         <Label Content="Número Celular" HorizontalAlignment="Left" Margin="249,284,0,0"
                                VerticalAlignment="Top"
                                Width="103" />
                         <dxe:TextEdit HorizontalAlignment="Left" Margin="249,311,0,0" VerticalAlignment="Top"
                                       Width="150"
-                                      Text="{Binding SelectedCliente.Celular}" />
+                                      EditValue="{Binding SelectedCliente.Celular, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                         <Label Content="Correo Eléctronico" HorizontalAlignment="Left" Margin="449,284,0,0"
                                VerticalAlignment="Top"
                                Width="103" />
                         <dxe:TextEdit HorizontalAlignment="Left" Margin="449,311,0,0" VerticalAlignment="Top"
                                       Width="150"
-                                      Text="{Binding SelectedCliente.Email}" />
+                                      EditValue="{Binding SelectedCliente.Email, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                         <Label Content="Documento de identificación" HorizontalAlignment="Left"
                                Margin="188,355,0,0"
                                VerticalAlignment="Top"
                                Width="164" />
                         <dxe:TextEdit HorizontalAlignment="Left" Margin="188,382,0,0" VerticalAlignment="Top"
                                       Width="164"
-                                      Text="{Binding SelectedCliente.Numcedula}" />
+                                      EditValue="{Binding SelectedCliente.Numcedula, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                         <Label Content="Fecha de emisión" HorizontalAlignment="Left" Margin="366,355,0,0"
                                VerticalAlignment="Top"
                                Width="150" />
@@ -126,7 +138,7 @@
                                       Width="150"
                                       Text="{Binding SelectedCliente.FEmision}"
                                       EditValue="{Binding SelectedCliente.FEmision}" />
-                        <Label Content="Fecha de emisión" HorizontalAlignment="Left" Margin="535,355,0,0"
+                        <Label Content="Fecha de vencimiento" HorizontalAlignment="Left" Margin="535,355,0,0"
                                VerticalAlignment="Top"
                                Width="150" />
                         <dxe:DateEdit HorizontalAlignment="Left" Margin="535,382,0,0" VerticalAlignment="Top"
@@ -134,10 +146,11 @@
                                       EditValue="{Binding SelectedCliente.FVencimiento}" />
                         <Label Content="Tipo de Documento" HorizontalAlignment="Left" Margin="31,355,0,0"
                                VerticalAlignment="Top" Width="115" />
-                        <dxe:ComboBoxEdit x:Name="cmbTipoDocumento" HorizontalAlignment="Left" Margin="31,382,0,0"
+                        <dxe:ComboBoxEdit x:Name="CmbTipoDocumento" HorizontalAlignment="Left" Margin="31,382,0,0"
                                           DisplayMember="Simbolo" ValueMember="Idtipodocumento"
-                                          VerticalAlignment="Top" Width="122" SelectedItem="{Binding TipoDocumento}"
-                                          ItemsSource="{Binding TipoDocumentos}">
+                                          VerticalAlignment="Top" Width="122"
+                                          ItemsSource="{Binding TipoDocumentos}" 
+                                          SelectedItem="{Binding SelectedCliente.TipoDocumento}">
                             <dxe:ComboBoxEdit />
                         </dxe:ComboBoxEdit>
                     </Grid>

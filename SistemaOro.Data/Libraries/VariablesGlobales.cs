@@ -35,6 +35,7 @@ public class VariablesGlobales
         UnityContainer.RegisterSingleton<IRubroRepository, RubroRepository>();
         UnityContainer.RegisterSingleton<ITipoCambioRepository, TipoCambioRepository>();
         UnityContainer.RegisterSingleton<ITipoDocumentoRepository, TipoDocumentoRepository>();
+        UnityContainer.RegisterSingleton<ITipoPrecioRepository, TipoPrecioRepository>();
         UnityContainer.RegisterSingleton<IUsuarioRepository, UsuarioRepository>();
         UnityContainer.RegisterInstance(typeof(DataContext));
     }

@@ -7,14 +7,14 @@
 
 public class ParametersRepository(DataContext context) : IParametersRepository
 {
-    public async Task<Id?> RecuperarParametros()
+    public Task<Id?> RecuperarParametros()
     {
-        return await context.Id.FirstOrDefaultAsync();
+        return context.Id.SingleOrDefaultAsync();
     }
 
     public async Task<int> ActualizarParametros(Id param)
     {
-        var find = await context.Id.FirstOrDefaultAsync();
+        var find = await context.Id.SingleOrDefaultAsync();
         if (find is null)
         {
             return 0;

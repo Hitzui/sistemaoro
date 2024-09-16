@@ -19,7 +19,7 @@ public interface IClienteRepository
     Task<List<Cliente>> FilterByNameAndPagination(string nombre, int page=0);
     Task<List<Cliente>> FilterByCodigo(string codigo);
     Task<List<Cliente>> FilterByApellido(string apellido);
-    
+    IQueryable<Cliente> FetchPage(int skip, int take);
     string? ErrorSms { get; }
     Task<bool> ExisteCliente(string codcliente);
     

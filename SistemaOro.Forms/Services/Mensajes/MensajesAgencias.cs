@@ -10,5 +10,6 @@ public class MensajesAgencias
     public const string EliminarAgencia = "Agencia eliminada de forma correcta";
     public const string EliminarResultAgencia = "¿Seguro desea eliminar la agencia seleccionada? Esta acción no se puede revertir.";
     public const string Iguales = "No se puede eliminar la agencia seleccionada, ya que es la que está activa actualmente";
+    public const string RucAgencia = "Debe especificar una RUC para la agencia";
     public static string Guardar = "¿Seguro desea guardar los datos de la agencia?";
 }

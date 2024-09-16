@@ -1,9 +1,16 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using DevExpress.Data.Filtering;
 using DevExpress.Xpf.Data;
 using DevExpress.Xpf.Grid;
 using SistemaOro.Data.Entities;
+using SistemaOro.Data.Libraries;
+using SistemaOro.Data.Repositories;
+using SistemaOro.Forms.Services;
+using SistemaOro.Forms.Services.Helpers;
+using SistemaOro.Forms.Services.Mensajes;
+using Unity;
 
 namespace SistemaOro.Forms.Views.Clientes
 {
@@ -14,7 +21,7 @@ namespace SistemaOro.Forms.Views.Clientes
     {
         public Listado()
         {
-            InitializeComponent(); 
+            InitializeComponent();
         }
 
         private void OnSearchStringToFilterCriteria(object sender, SearchStringToFilterCriteriaEventArgs e)
@@ -26,7 +33,43 @@ namespace SistemaOro.Forms.Views.Clientes
                                                                            || cliente.Apellidos!.Contains(filter)
                                                                            || cliente.Numcedula.Contains(filter));
             }
+
             e.ApplyToColumnsFilter = true;
+        }
+
+        private void BarButtonItem_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        {
+            //llamar a formulario editar cliente
+            var frm = new Form
+            {
+                SelectedCliente = (Cliente?)GridListadoCliente.CurrentItem
+            };
+            frm.ShowDialog();
+        }
+
+        private async void BarButtonItem_ItemClick_1(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        {
+            //eliminar el cliente
+            var messageBox = HelpersMessage.MensajeConfirmacionResult(ClienteMessages.TituloEliminarCliente, ClienteMessages.EliminarClienteContent);
+            if (messageBox == MessageBoxResult.Cancel)
+            {
+                VariablesGlobalesForm.Instance.SelectedCliente = null;
+                return;
+            }
+
+            var selectedCliente = (Cliente)GridListadoCliente.CurrentItem;
+            var repositoryCliente = VariablesGlobales.Instance.UnityContainer.Resolve<IClienteRepository>();
+            var result = await repositoryCliente.Delete(selectedCliente);
+            if (result)
+            {
+                HelpersMessage.DialogWindow(ClienteMessages.TituloEliminarCliente, ClienteMessages.ClienteEliminadoSuccess).ShowDialog();
+            }
+            else
+            {
+                HelpersMessage.DialogWindow(ClienteMessages.TituloEliminarCliente, $"{ClienteMessages.ClienteEliminadoError}\n{repositoryCliente.ErrorSms}").ShowDialog();
+            }
+
+            VariablesGlobalesForm.Instance.SelectedCliente = null;
         }
     }
 }

@@ -11,6 +11,7 @@
     xmlns:entities="clr-namespace:SistemaOro.Data.Entities;assembly=SistemaOro.Data"
     xmlns:clientes="clr-namespace:SistemaOro.Forms.ViewModels.Clientes"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
     x:Class="SistemaOro.Forms.Views.Clientes.Listado"
     mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800"
     Title="Listado">
@@ -34,7 +35,14 @@
                                      GetTotalSummariesCommand="{Binding GetTotalSummariesCommand}"/>
             </dxg:GridControl.ItemsSource>
             <dxg:GridControl.View>
-                <dxg:TableView ShowFixedTotalSummary="True" ShowSearchPanelMode="Always" SearchStringToFilterCriteria="OnSearchStringToFilterCriteria" />
+                <dxg:TableView ShowFixedTotalSummary="True" ShowSearchPanelMode="Always" 
+                               SearchStringToFilterCriteria="OnSearchStringToFilterCriteria">
+                    <dxg:TableView.RowCellMenuCustomizations>  
+                        <dxb:BarButtonItem Content="Editar" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Edit.svg}" ItemClick="BarButtonItem_ItemClick"/>  
+                        <dxb:BarButtonItem Content="Imprimir" Glyph="{dx:DXImage SvgImages/Dashboards/Print.svg}"/>  
+                        <dxb:BarButtonItem Content="Delete" Glyph="{dx:DXImage SvgImages/HybridDemoIcons/BottomPanel/HybridDemo_Delete.svg}" ItemClick="BarButtonItem_ItemClick_1"/>  
+                    </dxg:TableView.RowCellMenuCustomizations> 
+                </dxg:TableView>
             </dxg:GridControl.View>
             <dxg:GridColumn FieldName="Codcliente" IsSmart="True" ReadOnly="True"/>
             <dxg:GridColumn FieldName="Nombres" IsSmart="True" AllowBestFit="True" BestFitMode="AllRows"/>

@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using DevExpress.Xpf.Editors;
 using SistemaOro.Data.Entities;
 using SistemaOro.Forms.ViewModels.Clientes;
 
@@ -13,10 +14,14 @@ public partial class Form : Window
         _viewModel = (ClienteFormViewModel)DataContext;
     }
 
-    public static Cliente? SelectedCliente { get; set; }
+    public Cliente? SelectedCliente { get; set; }
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
         _viewModel.Load(SelectedCliente);
+    }
+
+    private void BtnSave_Click(object sender, RoutedEventArgs e)
+    {
     }
 }

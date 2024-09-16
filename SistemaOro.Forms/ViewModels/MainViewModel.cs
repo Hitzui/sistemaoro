@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -16,6 +17,8 @@ using SistemaOro.Forms.Views;
 using SistemaOro.Forms.Views.Agencias;
 using SistemaOro.Forms.Views.Cajas;
 using SistemaOro.Forms.Views.Clientes;
+using SistemaOro.Forms.Views.Compras;
+using SistemaOro.Forms.Views.Precios;
 using SistemaOro.Forms.Views.Rubros;
 using Unity;
 using Listado = SistemaOro.Forms.Views.Clientes.Listado;
@@ -49,7 +52,27 @@ namespace SistemaOro.Forms.ViewModels
             RubroCommand = new DelegateCommand(OnRubroCommand);
             MaestroCajaCommand = new DelegateCommand(OnMaestroCajaCommand);
             RealizarMovimientoCajaCommand = new DelegateCommand(OnRealizarMovimientoCajaCommand);
+            ReportesMaestroCajaCommand = new DelegateCommand(OnReportesMaestroCajaCommand);
+            RealizarCompraCommand = new DelegateCommand(OnRealizarCompraCommand);
+            TiposPreciosCommand = new DelegateCommand(OnTiposPreciosCommand);
             _mainFrame = new Frame();
+            VariablesGlobalesForm.Instance.MainFrame = _mainFrame;
+        }
+
+        private void OnTiposPreciosCommand()
+        {
+            var frm = new TiposPreciosWindow();
+            frm.ShowDialog();
+        }
+
+        private void OnRealizarCompraCommand()
+        {
+            _mainFrame.Navigate(new ComprasPage());
+        }
+
+        private void OnReportesMaestroCajaCommand()
+        {
+            _mainFrame.Navigate(new ReportesMaestroCajaPage());
         }
 
         private void OnRealizarMovimientoCajaCommand()
@@ -167,14 +190,14 @@ namespace SistemaOro.Forms.ViewModels
         {
             if (VariablesGlobalesForm.Instance.SelectedCliente is null) return;
             var mainWindow = new Form();
-            Form.SelectedCliente = VariablesGlobalesForm.Instance.SelectedCliente;
+            mainWindow.SelectedCliente = VariablesGlobalesForm.Instance.SelectedCliente;
             mainWindow.ShowDialog();
         }
 
         private void OnAgregarCliente()
         {
             var mainWindow = new Form();
-            Form.SelectedCliente = null;
+            mainWindow.SelectedCliente = null;
             mainWindow.ShowDialog();
         }
 
@@ -194,6 +217,7 @@ namespace SistemaOro.Forms.ViewModels
             }
         }
 
+        public ICommand ReportesMaestroCajaCommand { get; set; }
         public ICommand MaestroCajaCommand { get; set; }
         public ICommand RubroCommand { get; set; }
         public ICommand AgregarMovimientoCajaCommand { get; set; }
@@ -214,6 +238,8 @@ namespace SistemaOro.Forms.ViewModels
 
         public ICommand TiposDocumentosCommand { get; set; }
         public ICommand RealizarMovimientoCajaCommand { get; set; }
+        public ICommand RealizarCompraCommand { get; set; }
+        public ICommand TiposPreciosCommand { get; set; }
 
         public ICommand AgregarClienteCommand
         {
