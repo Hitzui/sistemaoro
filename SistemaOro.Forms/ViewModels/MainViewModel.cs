@@ -18,6 +18,7 @@ using SistemaOro.Forms.Views.Agencias;
 using SistemaOro.Forms.Views.Cajas;
 using SistemaOro.Forms.Views.Clientes;
 using SistemaOro.Forms.Views.Compras;
+using SistemaOro.Forms.Views.Monedas;
 using SistemaOro.Forms.Views.Precios;
 using SistemaOro.Forms.Views.Rubros;
 using Unity;
@@ -53,10 +54,29 @@ namespace SistemaOro.Forms.ViewModels
             MaestroCajaCommand = new DelegateCommand(OnMaestroCajaCommand);
             RealizarMovimientoCajaCommand = new DelegateCommand(OnRealizarMovimientoCajaCommand);
             ReportesMaestroCajaCommand = new DelegateCommand(OnReportesMaestroCajaCommand);
+            ListasCompraCommand = new DelegateCommand(OnListasCompraCommand);
             RealizarCompraCommand = new DelegateCommand(OnRealizarCompraCommand);
             TiposPreciosCommand = new DelegateCommand(OnTiposPreciosCommand);
+            PrecioKilateCommand = new DelegateCommand(OnPrecioKilateCommand);
             _mainFrame = new Frame();
             VariablesGlobalesForm.Instance.MainFrame = _mainFrame;
+        }
+
+        [Command]
+        public void MonedasWindowCommand()
+        {
+            var frmMoneda = new MonedasWindow();
+            frmMoneda.ShowDialog();
+        }
+
+        private void OnPrecioKilateCommand()
+        {
+            _mainFrame.Navigate(new PreciosKilatePage());
+        }
+
+        private void OnListasCompraCommand()
+        {
+            _mainFrame.Navigate(new ComprasPage());
         }
 
         private void OnTiposPreciosCommand()
@@ -67,7 +87,7 @@ namespace SistemaOro.Forms.ViewModels
 
         private void OnRealizarCompraCommand()
         {
-            _mainFrame.Navigate(new ComprasPage());
+            _mainFrame.Navigate(new FormComprasPage());
         }
 
         private void OnReportesMaestroCajaCommand()
@@ -216,7 +236,7 @@ namespace SistemaOro.Forms.ViewModels
                 RaisePropertyChanged();
             }
         }
-
+        public ICommand PrecioKilateCommand { get; set; }
         public ICommand ReportesMaestroCajaCommand { get; set; }
         public ICommand MaestroCajaCommand { get; set; }
         public ICommand RubroCommand { get; set; }
@@ -238,9 +258,9 @@ namespace SistemaOro.Forms.ViewModels
 
         public ICommand TiposDocumentosCommand { get; set; }
         public ICommand RealizarMovimientoCajaCommand { get; set; }
+        public ICommand ListasCompraCommand { get; set; }
         public ICommand RealizarCompraCommand { get; set; }
         public ICommand TiposPreciosCommand { get; set; }
-
         public ICommand AgregarClienteCommand
         {
             get { return GetProperty(() => AgregarClienteCommand); }

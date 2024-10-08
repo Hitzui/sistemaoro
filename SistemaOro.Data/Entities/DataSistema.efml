@@ -646,6 +646,9 @@
     <property name="Fecha" type="DateTime" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="ee66bb7f-348e-40f9-b28f-c938e6136534">
       <column name="" p1:unicode="False" />
     </property>
+    <property name="Default" type="Boolean" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="2f035be1-312f-4cb2-ac73-cbf42404b56b">
+      <column name="`Default`" default="0" not-null="False" sql-type="bit" p1:unicode="False" />
+    </property>
   </class>
   <class name="Movcaja" entity-set="Movcajas" p1:Guid="1c52b1c6-e7b4-4623-afd6-8955aa9971c2">
     <id name="Idmov" type="Int32" value-generated="OnAdd" p1:ValidateRequired="true" p1:Guid="3cb86eac-53af-4ebb-a4e6-20dd85b31e1e">

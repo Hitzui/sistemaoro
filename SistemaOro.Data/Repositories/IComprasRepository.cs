@@ -6,7 +6,7 @@ namespace SistemaOro.Data.Repositories;
 public interface ICompraRepository
 {
     void ImprimirCompra(string numeroCompra);
-    Task<bool> Create(Compra compra, List<DetCompra> detaCompra, Mcaja? modCaja = null, Detacaja? dcaja = null, List<Adelanto>? listaAdelantos = null, List<CierrePrecio>? listaPreciosaCerrar = null);
+    Task<bool> Create(Compra compra, List<DetCompra> detaCompra, List<Adelanto>? listaAdelantos = null, List<CierrePrecio>? listaPreciosaCerrar = null);
     Task<bool> UpdateDescargue(Compra compra);
     Task<string?> CodigoCompra();
     string? ErrorSms { get; }

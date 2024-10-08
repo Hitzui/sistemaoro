@@ -109,10 +109,15 @@
             <dxr:RibbonPageCategory>
                 <dxr:RibbonPage Caption="Compras">
                     <dxr:RibbonPageGroup Caption="Compras">
-                        <dxb:BarButtonItem Command="{Binding RealizarCompraCommand}"  Content="Compra" RibbonStyle="Large" Glyph="{dx:DXImage SvgImages/Outlook Inspired/BuyNow.svg}"/>
+                        <dxb:BarButtonItem Command="{Binding ListasCompraCommand}"  Content="Compras" RibbonStyle="Large" Glyph="{dx:DXImage SvgImages/Outlook Inspired/BuyNow.svg}"/>
+                        <dxb:BarButtonItem Content="Realizar Compra" RibbonStyle="Large" Glyph="{dx:DXImage SvgImages/Business Objects/BO_Sale.svg}" Command="{Binding RealizarCompraCommand}"/>
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Precios">
                         <dxb:BarButtonItem Command="{Binding TiposPreciosCommand}" Content="Tipos de Precios" RibbonStyle="Large" Glyph="{dx:DXImage SvgImages/Business Objects/BO_Opportunity.svg}"/>
+                        <dxb:BarButtonItem Command="{Binding PrecioKilateCommand}"  Content="Precio Kilate" RibbonStyle="Large" Glyph="{dx:DXImage SvgImages/Spreadsheet/Financial.svg}"/>
+                    </dxr:RibbonPageGroup>
+                    <dxr:RibbonPageGroup Caption="Herramientas">
+                        <dxb:BarButtonItem Command="{Binding MonedasWindowCommand}"  Content="Monedas" RibbonStyle="Large" Glyph="{dx:DXImage SvgImages/Icon Builder/Travel_CurrencyExchange.svg}"/>
                     </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
             </dxr:RibbonPageCategory>

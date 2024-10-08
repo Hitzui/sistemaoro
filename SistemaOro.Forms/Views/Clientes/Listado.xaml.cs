@@ -1,8 +1,6 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using DevExpress.Data.Filtering;
-using DevExpress.Xpf.Data;
 using DevExpress.Xpf.Grid;
 using SistemaOro.Data.Entities;
 using SistemaOro.Data.Libraries;

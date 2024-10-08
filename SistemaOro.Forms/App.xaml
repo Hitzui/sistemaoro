@@ -9,10 +9,6 @@
              StartupUri="/Views/LoginPage.xaml">
     <Application.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-        <Style TargetType="dxe:TextEdit">
-            <Setter Property="CornerRadius" Value="12" />
-        </Style>
-
         <ControlTemplate x:Key="{themes:TextEditThemeKey ResourceKey=Template, ThemeName=Office2016White}"
                          TargetType="{x:Type dxe:TextEdit}">
             <ContentControl x:Name="PART_Root"

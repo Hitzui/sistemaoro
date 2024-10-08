@@ -15,7 +15,7 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
                 .SingleOrDefaultAsync(mcaja1 => mcaja1.Codcaja == caja
                                                 && mcaja1.Codagencia == codagencia
                                                 && mcaja1.Estado == 1);
-            if (mcaja is not null) return mcaja.Fecha!.Value.Day == DateTime.Now.Day;
+            if (mcaja is not null) return mcaja.Fecha!.Value.Date == DateTime.Now.Date;
             ErrorSms = $"No existe el maestro de caja con el codigo de caja {caja}";
             return false;
         }

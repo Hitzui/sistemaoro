@@ -20,6 +20,7 @@ namespace SistemaOro.Forms
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             CompatibilitySettings.UseLightweightThemes = true;
+            ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11Light.Name;
             ApplicationThemeHelper.Preload(PreloadCategories.Core);
         }
     }
