@@ -6,7 +6,6 @@ using SistemaOro.Data.Repositories;
 using Unity;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using DevExpress.Xpf.CodeView;
 
 namespace SistemaOro.Forms.ViewModels.Clientes;
 
@@ -48,6 +47,9 @@ public class FilterClientesViewModel : BaseViewModel
     {
         _itemsSource.Clear();
         var itemsSource = await _clienteRepository.FindAll();
-        _itemsSource.AddRange(itemsSource);
+        foreach (var cliente in itemsSource)
+        {
+            _itemsSource.Add(cliente);
+        }
     }
 }

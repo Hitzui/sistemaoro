@@ -11,19 +11,7 @@
     mc:Ignorable="d" Height="800" Width="1200" WindowState="Maximized">
     <Grid>
 
-        <dxp:DocumentPreviewControl
-            x:Name="RptViewer"
-            Grid.Row="0"
-            Grid.Column="0"
-            AllowDocumentEditing="False"
-            RequestDocumentCreation="True"
-            AutoShowParametersPanel="False"
-            HorizontalAlignment="Stretch"
-            Height="NaN"
-            Margin="0,0,0,0"
-            VerticalAlignment="Stretch"
-            Width="NaN">
-        </dxp:DocumentPreviewControl>
+        <dxp:DocumentPreviewControl x:Name="RptViewer" />
 
     </Grid>
 </dx:ThemedWindow>

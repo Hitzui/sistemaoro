@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using SistemaOro.Data.Configuration;
 using SistemaOro.Data.Entities;
 using SistemaOro.Data.Exceptions;
@@ -218,7 +219,7 @@ public class AdelantosRepository(IParametersRepository parametersRepository, IMa
             var saldo = adelanto.Saldo;
             var comprasAdelantos = new ComprasAdelanto
             {
-                Codcaja = detaCaja.Codcaja,
+                Codcaja = detaCaja.Codcaja!,
                 Codcliente = adelanto.Codcliente,
                 Fecha = DateTime.Now,
                 Hora = DateTime.Now.TimeOfDay,
@@ -267,6 +268,7 @@ public class AdelantosRepository(IParametersRepository parametersRepository, IMa
         {
             ErrorSms =
                 $"No se recuperaron datos según las fechas indicadas {desde.ToShortDateString()} y {hasta.ToShortDateString()} con el codigo del cliente {codCliente}";
+            Debug.WriteLine(e.Message);
             return new List<Adelanto>();
         }
     }

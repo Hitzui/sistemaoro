@@ -42,9 +42,8 @@
         <File Name="DataSistema.TipoPrecio.cs" />
         <File Name="DataSistema.ComprasOperador1.cs" />
         <File Name="DataSistema.DescargueByCompra.cs" />
-        <File Name="DataSistema.RptMovimientosCaja.cs" />
-        <File Name="DataSistema.Vdetacaja.cs" />
         <File Name="DataSistema.VVariacionesCliente.cs" />
+        <File Name="DataSistema.DetalleCompra.cs" />
         <File Name="DataSistema.EstadoCompra.cs" />
         <File Name="DataSistema.Nivel.cs" />
       </GeneratedFiles>

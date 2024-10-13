@@ -40,6 +40,10 @@ public class MonedasViewModel : BaseViewModel
                 return;
             }
             var nuevaDescripcion = args.NewValue.ToString();
+            if (args.OldValue is null)
+            {
+                return;
+            }
             var oldDescripcion = args.OldValue.ToString();
             if (string.Equals(nuevaDescripcion, oldDescripcion, StringComparison.CurrentCultureIgnoreCase))
             {
@@ -95,7 +99,7 @@ public class MonedasViewModel : BaseViewModel
     }
 
     [Command]
-    public async void DataSourceRefresh(DataSourceRefreshArgs args)
+    public void DataSourceRefresh(DataSourceRefreshArgs args)
     {
         Load();
     }

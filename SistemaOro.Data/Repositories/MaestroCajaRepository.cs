@@ -85,6 +85,7 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
             var parametros = await parametersRepository.RecuperarParametros();
             if (parametros is null)
             {
+                ErrorSms = "No hay parametros configurados en el sistema";
                 return false;
             }
 
@@ -99,8 +100,7 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
                 Sinicial = xestado.Sfinal,
                 Sfinal = xestado.Sfinal
             };
-            context.Add(crearM);
-            await context.SaveChangesAsync();
+            crearM = context.Mcajas.Add(crearM).Entity;
             var dcaja = new Detacaja
             {
                 Idcaja = crearM.Idcaja,
@@ -112,15 +112,23 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
                 Idmov = parametros.SaldoAnterior!.Value,
                 Referencia = string.Empty,
                 Codcaja = caja,
+                Tipocambio = decimal.Zero,
                 Efectivo = xestado.Fecha!.Value.Day == DateTime.Now.Day ? 0 : crearM.Sfinal
             };
-            context.Add(dcaja);
+            //context.Detacajas.Add(dcaja);
+            crearM.Detacajas.Add(dcaja);
             await context.SaveChangesAsync();
             return true;
         }
         catch (Exception ex)
         {
-            ErrorSms = $"No se realizó la apertura de caja de forma exitosa, intente nuevamente {ex.Message}";
+            var innerMessage = "";
+            if (ex.InnerException is not null)
+            {
+                innerMessage = ex.InnerException.Message;
+            }
+
+            ErrorSms = $"No se realizó la apertura de caja de forma exitosa, intente nuevamente {ex.Message} {innerMessage}";
             return false;
         }
     }
@@ -128,7 +136,11 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
     public async Task<bool> CerrarCaja(string? caja, string? agencia)
     {
         try
-        {
+        { 
+            if (context.ChangeTracker.HasChanges())
+            {
+                context.ChangeTracker.Clear();
+            }
             var prestamos = await ValidarPrestamosPuentes();
             if (prestamos != decimal.Zero)
             {
@@ -166,7 +178,12 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
         }
         catch (Exception ex)
         {
-            ErrorSms = $"Se produjo un error al intentar cerrar la caja: {ex.Message}";
+            var innerMessage = "";
+            if (ex.InnerException is not null)
+            {
+                innerMessage=ex.InnerException.Message;
+            }
+            ErrorSms = $"Se produjo un error al intentar cerrar la caja: {ex.Message} {innerMessage}";
             return false;
         }
     }
@@ -193,41 +210,50 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
 
     public async Task<bool> GuardarDatosDetaCaja(Detacaja dcaja, Movcaja movcaja, Mcaja mocaja)
     {
-        var entrada = decimal.Zero;
-        var salida = decimal.Zero;
-        var rubro = await context.Rubros.AsNoTracking().SingleOrDefaultAsync(rubro1 => rubro1.Codrubro == movcaja.Codrubro);
-        if (rubro is null)
-        {
-            return false;
-        }
-
-        if (rubro.Naturaleza == 0)
-        {
-            salida = dcaja.Efectivo!.Value;
-        }
-        else
-        {
-            entrada = dcaja.Efectivo!.Value;
-        }
-
-        var actualizarMcaja = await ActualizarDatosMaestroCaja(mocaja.Codcaja, mocaja.Codagencia!, entrada, salida);
-        if (!actualizarMcaja) return false;
-        var tipoCambio = await context.TipoCambios.AsNoTracking().SingleOrDefaultAsync(cambio => cambio.Fecha == DateTime.Now) ?? new TipoCambio
-        {
-            Fecha = DateTime.Now,
-            PrecioOro = decimal.Zero,
-            Tipocambio = decimal.One
-        };
-        dcaja.Tipocambio = tipoCambio.Tipocambio;
-        context.Add(dcaja);
         try
         {
+            if (context.ChangeTracker.HasChanges())
+            {
+                context.ChangeTracker.Clear();
+            }
+            var entrada = decimal.Zero;
+            var salida = decimal.Zero;
+            var rubro = await context.Rubros.AsNoTracking().SingleOrDefaultAsync(rubro1 => rubro1.Codrubro == movcaja.Codrubro);
+            if (rubro is null)
+            {
+                return false;
+            }
+
+            if (rubro.Naturaleza == 0)
+            {
+                salida = dcaja.Efectivo!.Value;
+            }
+            else
+            {
+                entrada = dcaja.Efectivo!.Value;
+            }
+
+            var actualizarMcaja = await ActualizarDatosMaestroCaja(mocaja.Codcaja, mocaja.Codagencia!, entrada, salida);
+            if (!actualizarMcaja) return false;
+            var tipoCambio = await context.TipoCambios.AsNoTracking().SingleOrDefaultAsync(cambio => cambio.Fecha == DateTime.Now) ?? new TipoCambio
+            {
+                Fecha = DateTime.Now,
+                PrecioOro = decimal.Zero,
+                Tipocambio = decimal.Zero
+            };
+            dcaja.Tipocambio = tipoCambio.Tipocambio;
+            context.Add(dcaja);
             await context.SaveChangesAsync();
             return true;
         }
         catch (Exception e)
         {
-            ErrorSms = $"Error: {e.Message} {e.Source}";
+            var innerMessage = "";
+            if (e.InnerException is not null)
+            {
+                innerMessage = e.InnerException.Message;
+            }
+            ErrorSms = $"Error al realizar el movimiento en caja: {e.Message} {innerMessage}";
             return false;
         }
     }
@@ -341,6 +367,26 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
         return query.AsNoTracking().ToListAsync();
     }
 
+    public Task<List<DtoMovimientosCaja>> FindAllByFechaDesdeActiva(DateTime fechaDesde)
+    {
+        var query = from detacaja in context.Detacajas
+            join mcaja in context.Mcajas on detacaja.Idcaja equals mcaja.Idcaja
+            join movcaja in context.Movcajas on detacaja.Idmov equals movcaja.Idmov
+            join rubro in context.Rubros on movcaja.Codrubro equals rubro.Codrubro
+            where detacaja.Fecha.Date == fechaDesde.Date && mcaja.Estado>0
+            select new DtoMovimientosCaja(
+                movcaja.Descripcion,
+                detacaja.Hora,
+                detacaja.Fecha,
+                detacaja.Concepto,
+                detacaja.Referencia,
+                rubro.Naturaleza == 1 ? detacaja.Efectivo.Value : detacaja.Efectivo.Value * -1,
+                rubro.Naturaleza == 1 ? detacaja.Cheque.Value : detacaja.Cheque.Value * -1,
+                rubro.Naturaleza == 1 ? detacaja.Transferencia.Value : detacaja.Transferencia.Value * -1
+            );
+        return query.AsNoTracking().ToListAsync();
+    }
+
     public Task<List<DtoMovimientosCaja>> FindAllByFechaDesdeAndFechaHasta(DateTime fechaDesde, DateTime fechaHasta)
     {
         var query = from detacaja in context.Detacajas
@@ -356,7 +402,7 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
                 rubro.Naturaleza == 1 ? detacaja.Efectivo.Value : detacaja.Efectivo.Value * -1,
                 rubro.Naturaleza == 1 ? detacaja.Cheque.Value : detacaja.Cheque.Value * -1,
                 rubro.Naturaleza == 1 ? detacaja.Transferencia.Value : detacaja.Transferencia.Value * -1
-                );
+            );
         return query.AsNoTracking().ToListAsync();
     }
 

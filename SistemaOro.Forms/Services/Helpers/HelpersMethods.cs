@@ -1,6 +1,9 @@
 ﻿using System.IO;
+using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 using DevExpress.Drawing;
+using DevExpress.XtraReports.UI;
+using SistemaOro.Forms.Views.Reportes.Compras;
 
 namespace SistemaOro.Forms.Services.Helpers;
 
@@ -16,10 +19,20 @@ public class HelpersMethods
         bitmap.EndInit();
         return bitmap;
     }
+
     public static DXImage LoadDxImage(byte[]? b)
     {
         var ms = new MemoryStream(b);
         var bitmap = DXImage.FromStream(ms);
         return bitmap;
+    }
+
+    public static void LoadReport(XtraReport report)
+    {
+        var reportPrintTool = new ReportPrintTool(report);
+        reportPrintTool.PreviewRibbonForm.WindowState = FormWindowState.Maximized;
+        reportPrintTool.AutoShowParametersPanel = false;
+        report.CreateDocument(false);
+        reportPrintTool.ShowRibbonPreview();
     }
 }

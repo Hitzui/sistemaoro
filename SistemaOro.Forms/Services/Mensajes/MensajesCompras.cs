@@ -8,4 +8,5 @@ public class MensajesCompras
     public const string TotalNoValido = "El total no corresponde con el monto ingresado, verificar los montos para continuar";
     public const string MonedaVacia = "Seleccione un tipo de moneda para la compra";
     public const string TipoPrecioVacio = "Seleccione un tipo de descuento a aplicar";
+    public const string ImprimirCompra = "¿Desea imprimir los contratos de la compra guardada?";
 }

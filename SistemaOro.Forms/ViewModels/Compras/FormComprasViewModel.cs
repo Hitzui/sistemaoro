@@ -10,7 +10,6 @@ using SistemaOro.Data.Repositories;
 using Unity;
 using System.Collections.ObjectModel;
 using System.Windows;
-using DevExpress.Xpf.CodeView;
 using DevExpress.XtraEditors;
 using SistemaOro.Forms.Models;
 using SistemaOro.Forms.Repository;
@@ -21,6 +20,12 @@ using SistemaOro.Forms.ViewModels.Clientes;
 using SistemaOro.Forms.Views.Clientes;
 using static System.Decimal;
 using System.Collections.Generic;
+using DevExpress.Mvvm.Native;
+using DevExpress.XtraSpreadsheet.Commands;
+using SistemaOro.Forms.Views.Reportes;
+using SistemaOro.Forms.Views.Reportes.Compras;
+using DevExpress.XtraReports.UI;
+using System.Windows.Forms;
 
 namespace SistemaOro.Forms.ViewModels.Compras
 {
@@ -109,7 +114,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
                 {
                     MontoEfectivo = Zero;
                 }
-            } 
+            }
         }
 
         public bool IsCheque
@@ -120,7 +125,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
                 SetValue(value);
                 if (!value)
                 {
-                    MontoCheque=Zero;
+                    MontoCheque = Zero;
                 }
             }
         }
@@ -146,7 +151,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
                 SetValue(value);
                 if (!value)
                 {
-                    MontoPorPagar=Zero;
+                    MontoPorPagar = Zero;
                 }
             }
         }
@@ -159,7 +164,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
                 SetValue(value);
                 if (!value)
                 {
-                    MontoAdelanto=Zero;
+                    MontoAdelanto = Zero;
                 }
             }
         }
@@ -290,8 +295,8 @@ namespace SistemaOro.Forms.ViewModels.Compras
 
         public Moneda? Moneda
         {
-            get=>GetValue<Moneda>(); 
-            set=>SetValue(value);
+            get => GetValue<Moneda>();
+            set => SetValue(value);
         }
 
         public DtoTiposPrecios? SelectedTiposPrecios
@@ -309,9 +314,9 @@ namespace SistemaOro.Forms.ViewModels.Compras
         public EstadoCompra SelectedEstadoCompra
         {
             get => GetValue<EstadoCompra>();
-            set=> SetValue(value);
+            set => SetValue(value);
         }
-        private ObservableCollection<EstadoCompra> _estadoCompras=new();
+        private ObservableCollection<EstadoCompra> _estadoCompras = new();
 
         public ObservableCollection<EstadoCompra> EstadoCompras
         {
@@ -344,15 +349,23 @@ namespace SistemaOro.Forms.ViewModels.Compras
         {
             var kilates = await _preciosKilatesRepository.FindAll();
             NumeroCompra = await _compraRepository.CodigoCompra();
-            PrecioKilates.AddRange(kilates);
+            kilates.ForEach(PrecioKilates.Add);
             ItemsSource = new ObservableCollection<DetCompra>();
             var findAll = await _tipoPrecioRepository.FindAll();
-            TiposPrecios.AddRange(findAll);
-            EstadoCompras.AddRange(Enum.GetValues<EstadoCompra>());
+            findAll.ForEach(TiposPrecios.Add);
+            //TiposPrecios.AddRange(findAll);
+            if (TiposPrecios.Count > 0)
+            {
+                SelectedTiposPrecios = TiposPrecios.FirstOrDefault();
+            }
+            foreach (var estadoCompra in Enum.GetValues<EstadoCompra>())
+            {
+                EstadoCompras.Add(estadoCompra);
+            }
             SelectedEstadoCompra = EstadoCompra.Vigente;
             var findAllMonedas = await _monedaRepository.FindAll();
-            Monedas.AddRange(findAllMonedas);
-            if (findAllMonedas.Count>0)
+            findAllMonedas.ForEach(Monedas.Add);
+            if (findAllMonedas.Count > 0)
             {
                 Moneda = findAllMonedas.SingleOrDefault(mo => mo.Default!.Value);
             }
@@ -431,23 +444,21 @@ namespace SistemaOro.Forms.ViewModels.Compras
             }
             var compra = new Compra
             {
-                Numcompra = NumeroCompra,
+                Numcompra = NumeroCompra ?? "",
                 Adelantos = MontoAdelanto,
                 Subtotal = SubTotal,
                 Cheque = MontoCheque,
                 Transferencia = MontoTransferencia,
                 PorCobrar = 0,
                 PorPagar = MontoPorPagar,
-                Codagencia = _codagencia,
-                Codcaja = _codagencia,
                 Codcliente = SelectedCliente.Codcliente,
                 Codestado = EstadoCompra.Vigente,
-                Usuario = VariablesGlobalesForm.Instance.Usuario.Username,
+                Usuario = VariablesGlobalesForm.Instance.Usuario.Codoperador,
                 Hora = Fecha.ToShortTimeString(),
-                FormaPago =  string.Join(", ", _mediosDePago),
+                FormaPago = string.Join(", ", _mediosDePago),
                 Codmoneda = Moneda.Codmoneda,
                 Descuento = SelectedTiposPrecios.Precio,
-                Dgnumdes = 0,
+                Dgnumdes = null,
                 Efectivo = MontoEfectivo,
                 Total = Total,
                 Fecha = Fecha,
@@ -457,6 +468,23 @@ namespace SistemaOro.Forms.ViewModels.Compras
             if (save)
             {
                 HelpersMessage.MensajeInformacionResult("Guardar", "Se ha guardado la compra con exito");
+                result = HelpersMessage.MensajeConfirmacionResult(MensajesGenericos.GuardarTitulo, MensajesCompras.ImprimirCompra);
+                if (result == MessageBoxResult.OK)
+                {
+                    var findCompra = _compraRepository.DetalleCompraImprimir(compra.Numcompra);
+                    //Reporte Anexo
+                    var reporteAnexo = new ReporteAnexo();
+                    reporteAnexo.DataSource=findCompra;
+                    HelpersMethods.LoadReport(reporteAnexo);
+                    //Reporte Contrato Contra Venta
+                    var reporteContrantoContraVenta = new ReporteContrantoContraVenta();
+                    reporteContrantoContraVenta.DataSource=findCompra;
+                    HelpersMethods.LoadReport(reporteContrantoContraVenta);
+                    //Reporte Contrato Prestamo
+                    var reporteContrantoPrestamo = new ReporteContrantoPrestamo();
+                    reporteContrantoPrestamo.DataSource=findCompra;
+                    HelpersMethods.LoadReport(reporteContrantoPrestamo);
+                }
             }
             else
             {
@@ -500,14 +528,14 @@ namespace SistemaOro.Forms.ViewModels.Compras
             switch (args.FieldName)
             {
                 case nameof(DetCompra.Descripcion):
-                {
-                    if (string.IsNullOrWhiteSpace(newValue))
                     {
-                        args.Result = new ValidationErrorInfo("Debe especificar una descripcion para continuar", ValidationErrorType.Critical);
-                    }
+                        if (string.IsNullOrWhiteSpace(newValue))
+                        {
+                            args.Result = new ValidationErrorInfo("Debe especificar una descripcion para continuar", ValidationErrorType.Critical);
+                        }
 
-                    break;
-                }
+                        break;
+                    }
                 case nameof(DetCompra.Preciok):
                     if (string.IsNullOrWhiteSpace(newValue))
                     {
@@ -542,7 +570,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
         private void FnCalcularTotal()
         {
             SubTotal = ItemsSource.Count > 0 ? ItemsSource.Sum(compra => compra.Importe)!.Value : Zero;
-            Total = SelectedTiposPrecios is not null ? Add(SubTotal,  Multiply(SubTotal, SelectedTiposPrecios.Precio!.Value)) : SubTotal;
+            Total = SelectedTiposPrecios is not null ? Add(SubTotal, Multiply(SubTotal, SelectedTiposPrecios.Precio!.Value)) : SubTotal;
         }
     }
 }

@@ -21,10 +21,10 @@
 
         <dxe:DateEdit EditValue="{Binding FechaDesde}"  HorizontalAlignment="Left" Margin="117,42,0,0" VerticalAlignment="Top" Width="160"/>
         <dxe:DateEdit EditValue="{Binding FechaHasta}" HorizontalAlignment="Left" Margin="117,97,0,0" VerticalAlignment="Top" Width="160"/>
-        <RadioButton Content="Movimientos de cajas" HorizontalAlignment="Left" Margin="418,41,0,0" VerticalAlignment="Top" IsChecked="True"/>
-        <RadioButton Content="Consolidado de la caja" HorizontalAlignment="Left" Margin="418,81,0,0" VerticalAlignment="Top"/>
+        <RadioButton Content="Movimientos de cajas" HorizontalAlignment="Left" Margin="351,46,0,0" VerticalAlignment="Top" IsChecked="True"/>
+        <RadioButton Content="Consolidado de la caja" HorizontalAlignment="Left" Margin="351,86,0,0" VerticalAlignment="Top"/>
 
-        <dx:SimpleButton Command="{Binding ReportCommand}" Content="Generar Reporte" HorizontalAlignment="Left" Height="30" Margin="582,52,0,0" VerticalAlignment="Top" Width="150" Glyph="{dx:DXImage SvgImages/Business Objects/BO_Validation.svg}"/>
+        <dx:SimpleButton Command="{Binding ReportCommand}" Content="Generar Reporte" HorizontalAlignment="Left" Height="30" Margin="555,46,0,0" VerticalAlignment="Top" Width="150" Glyph="{dx:DXImage SvgImages/Business Objects/BO_Validation.svg}"/>
 
         <dxg:GridControl ItemsSource="{Binding MovimientosCajas}" AutoGenerateColumns="None" EnableSmartColumnsGeneration="True" Margin="0,148,0,0">
             <dxg:GridControl.View>
@@ -39,6 +39,7 @@
             <dxg:GridColumn FieldName="Cheque" IsSmart="True"/>
             <dxg:GridColumn FieldName="Transferencia" IsSmart="True"/>
         </dxg:GridControl>
+        <dxe:CheckEdit IsChecked="{Binding CajaActiva}" HorizontalAlignment="Left" Margin="555,97,0,0" VerticalAlignment="Top" Content="Caja Activa"/>
 
     </Grid>
 </Page>

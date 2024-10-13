@@ -1,6 +1,8 @@
-﻿namespace SistemaOro.Forms.Views.Reportes.Caja
+﻿using DevExpress.XtraReports.UI;
+
+namespace SistemaOro.Forms.Views.Reportes.Caja
 {
-	public partial class RptMovimientosCaja : DevExpress.XtraReports.UI.XtraReport
+	public partial class RptMovimientosCaja : XtraReport
 	{	
 		public RptMovimientosCaja()
 		{
