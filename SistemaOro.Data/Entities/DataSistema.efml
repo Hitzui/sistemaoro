@@ -297,6 +297,9 @@
     <property name="Descuento" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="666fb4f1-a27a-496d-b332-58db6f00c810">
       <column name="" precision="18" scale="2" p1:unicode="False" />
     </property>
+    <property name="IdTipoPrecio" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="c1923b33-c0db-4e23-9b7f-13dec9dc2327">
+      <column name="IdTipoPrecio" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+    </property>
   </class>
   <class name="ComprasAdelanto" entity-set="ComprasAdelantos" p1:Guid="2eb6efd2-ee01-4a17-a94b-ba1790e0549c">
     <id name="IdcomprasAdelantos" type="Int32" value-generated="OnAdd" p1:ValidateRequired="true" p1:Guid="0c1ab106-8158-4483-ba5c-218d56746ae3">
@@ -1271,6 +1274,14 @@
       </end1>
       <end2 multiplicity="Many" name="Movcajas" class="Rubro" relation-class="Movcaja" lazy="False" p1:Guid="64841981-e3bf-4de2-ba79-260f547c7c43">
         <property name="Codrubro" />
+      </end2>
+    </association>
+    <association name="TipoPrecio_Compra" cardinality="OneToMany" on-delete="SetNull" p1:Guid="f3175321-0888-4557-990e-d543791f1929">
+      <end1 multiplicity="ZeroOrOne" name="TipoPrecio" class="Compra" relation-class="TipoPrecio" constrained="True" lazy="False" p1:Guid="a84081c6-92f2-46cf-9014-02beb9800200">
+        <property name="Idtipoprecio" />
+      </end1>
+      <end2 multiplicity="Many" name="Compras" class="TipoPrecio" relation-class="Compra" lazy="False" p1:Guid="53cfb512-9c93-48b4-a49c-cd684382eb06">
+        <property name="IdTipoPrecio" />
       </end2>
     </association>
   </associations>

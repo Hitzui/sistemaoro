@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using SistemaOro.Data.Dto;
+using SistemaOro.Data.Entities;
 using SistemaOro.Forms.ViewModels.Compras;
 
 namespace SistemaOro.Forms.Views.Compras
@@ -25,8 +27,16 @@ namespace SistemaOro.Forms.Views.Compras
         public FormComprasPage()
         {
             InitializeComponent();
+            ((FormComprasViewModel)DataContext).CloseAction += () =>
+            {
+                NavigationService.Navigate(new ComprasPage());
+            };
         }
 
+        public void SetSelectedCompra(DtoComprasClientes compra)
+        {
+            ((FormComprasViewModel)DataContext).SelectedCompra = compra;
+        }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             ((FormComprasViewModel)DataContext).LoadValues();

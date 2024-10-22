@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using SistemaOro.Data.Configuration;
 using SistemaOro.Data.Dto;
 using SistemaOro.Data.Entities;
@@ -13,7 +14,6 @@ public class CompraRepository(
     IMaestroCajaRepository maestroCajaRepository,
     ICierrePrecioRepository cierrePrecioRepository,
     ITipoCambioRepository tipoCambioRepository,
-    IMonedaRepository monedaRepository,
     DataContext context)
     : ICompraRepository
 {
@@ -41,6 +41,7 @@ public class CompraRepository(
                 ErrorSms = "No existen los parametros de caja o agencia, favor crearlos";
                 return false;
             }
+
             var existCaja = await context.Cajas.SingleOrDefaultAsync(caja => caja.Codcaja == _caja);
             if (existCaja is null)
             {
@@ -54,12 +55,19 @@ public class CompraRepository(
                 ErrorSms = "No existe la agencia, favor crearla";
                 return false;
             }
+
             compra.Codcaja = _caja;
             compra.Codagencia = _agencia;
-            var modCaja = await maestroCajaRepository.FindByCajaAndAgencia(existCaja.Codcaja, _agencia);
+            var modCaja = await context.Mcajas.SingleOrDefaultAsync(mcaja => mcaja.Codagencia == _agencia && mcaja.Codcaja == _caja && mcaja.Estado == 1);
             if (modCaja is null)
             {
                 ErrorSms = "No hay caja activa para realizar la operación";
+                return false;
+            }
+
+            if (modCaja.Fecha!.Value.Date.CompareTo(DateTime.Now.Date) < 0)
+            {
+                ErrorSms = "No ha aperturado caja para el día de hoy. Aperture caja para realizar movimientos.";
                 return false;
             }
 
@@ -79,7 +87,7 @@ public class CompraRepository(
             var saldoDolares = decimal.Zero;
             var saldoCordobas = decimal.Zero;
             compra.Numcompra = numeroCompra;
-            var param = await parametersRepository.RecuperarParametros();
+            var param = await context.Id.FirstOrDefaultAsync();
             if (param is null)
             {
                 ErrorSms = (VariablesGlobales.Instance.ConfigurationSection["ERROR_PARAM"]);
@@ -90,7 +98,7 @@ public class CompraRepository(
             param.Nocontrato += 1;
             var tbTipoCambio = await tipoCambioRepository.FindByDateNow();
             var tipoCambioDia = decimal.One;
-            var moneda = await monedaRepository.GetByIdAsync(compra.Codmoneda);
+            var moneda = await context.Monedas.FindAsync(compra.Codmoneda);
             if (moneda is null)
             {
                 ErrorSms = VariablesGlobales.Instance.ConfigurationSection["ERROR_MONEDA"];
@@ -130,7 +138,7 @@ public class CompraRepository(
             {
                 Tipocambio = tipoCambioDia,
                 Concepto = $"***Compra: {numeroCompra}***",
-                Referencia = $"Compra: {numeroCompra}; Moneda: {moneda.Descripcion}",
+                Referencia = numeroCompra,
                 Codcaja = _caja,
                 Cheque = cheque,
                 Efectivo = efectivo,
@@ -234,17 +242,6 @@ public class CompraRepository(
                 }
             }
 
-            var montoCordobas = decimal.Zero;
-            if (compra.Codmoneda == param.Dolares)
-            {
-                montoCordobas = decimal.Multiply(compra.Efectivo, tipoCambioDia);
-            }
-
-            if (compra.Codmoneda == param.Cordobas)
-            {
-                montoCordobas = compra.Efectivo;
-            }
-
             compra.SaldoAdelanto = saldoCordobas;
             compra.SaldoAdelantoDolares = saldoDolares;
             await context.Compras.AddAsync(compra);
@@ -253,16 +250,13 @@ public class CompraRepository(
                 compra.DetCompras.Add(detCompra);
             }
 
-            var salida = decimal.Add(modCaja.Salida!.Value, montoCordobas);
-
+            modCaja.Sfinal -= efectivo;
+            modCaja.Salida += efectivo;
+            existeAgencia.Numcompra += 1;
             var result = await context.SaveChangesAsync();
             if (result > 0)
             {
-                await maestroCajaRepository.ActualizarDatosMaestroCaja(_caja, _agencia, decimal.Zero, salida);
                 await context.Precios.Where(precio => precio.Codcliente == compra.Codcliente).ExecuteDeleteAsync();
-                await context.Agencias.Where(agencia => agencia.Codagencia == _agencia)
-                    .ExecuteUpdateAsync(calls => calls
-                        .SetProperty(agencia => agencia.Numcompra, agencia => agencia.Numcompra + 1));
             }
 
             await transaction.CommitAsync();
@@ -322,7 +316,11 @@ public class CompraRepository(
 
     public async Task<Compra?> FindById(string numerocompra)
     {
-        var find = await context.Compras.Where(compra => compra.Numcompra == numerocompra && compra.Codagencia == _agencia).SingleOrDefaultAsync();
+        var find = await context.Compras.Include(compra => compra.DetCompras)
+            .Include(compra => compra.Cliente).ThenInclude(cliente => cliente.TipoDocumento)
+            .Include(compra => compra.Moneda)
+            .Where(compra => compra.Numcompra == numerocompra && compra.Codagencia == _agencia)
+            .SingleOrDefaultAsync();
         if (find is not null) return find;
         ErrorSms = $"No existe la compra con codigo {numerocompra} en la sucursal {_agencia}";
         return null;
@@ -330,27 +328,70 @@ public class CompraRepository(
 
     public async Task<bool> UpdateByDetaCompra(Compra compra, List<DetCompra> detaCompra)
     {
-        context.Update(compra);
-        foreach (var detCompra in detaCompra)
+        try
         {
-            context.Update(detCompra);
-        }
+            var param = await context.Id.FirstOrDefaultAsync();
+            if (param is null)
+            {
+                ErrorSms = "NO hay parametros configurados en sistema";
+                return false;
+            }
 
-        var detalleCaja = await context.Detacajas.SingleOrDefaultAsync(detacaja => detacaja.Concepto == $"***COMPRA: {compra.Numcompra}***");
-        if (detalleCaja is not null)
+            var mcaja = await context.Mcajas.SingleOrDefaultAsync(mc => mc.Codagencia == _agencia && mc.Codcaja == _caja && mc.Estado > 0 && mc.Fecha!.Value.Date == DateTime.Now.Date);
+            if (mcaja is null)
+            {
+                ErrorSms = "NO se ha aperturado caja para el día de hoy";
+                return false;
+            }
+
+            var efectivoOriginal = await context.Compras.AsNoTracking().Where(c => c.Numcompra == compra.Numcompra).Select(c => c.Efectivo).SingleOrDefaultAsync();
+            var efectivoEditado = compra.Efectivo;
+            if (efectivoEditado < efectivoOriginal)
+            {
+                // Entrada de efectivo (menos efectivo fue usado en la compra)
+                var entrada = efectivoOriginal - efectivoEditado;
+                mcaja.Entrada = decimal.Add(entrada, mcaja.Entrada!.Value);
+                mcaja.Sfinal = decimal.Add(mcaja.Sfinal!.Value, entrada);
+            }
+            else if (efectivoEditado > efectivoOriginal)
+            {
+                // Salida de efectivo (más efectivo fue usado en la compra)
+                var salida = efectivoEditado - efectivoOriginal;
+                mcaja.Salida = decimal.Add(mcaja.Salida!.Value, salida);
+                mcaja.Sfinal = decimal.Subtract(mcaja.Sfinal!.Value, salida);
+            }
+
+            compra.DetCompras.Clear();
+            context.Compras.Update(compra);
+            foreach (var detCompra in detaCompra)
+            {
+                compra.DetCompras.Add(detCompra);
+            }
+
+
+            var detalleCaja = await context.Detacajas.SingleOrDefaultAsync(detacaja => detacaja.Referencia == compra.Numcompra && detacaja.Idcaja==mcaja.Idcaja);
+            if (detalleCaja is not null)
+            {
+                detalleCaja.Efectivo = compra.Efectivo;
+                detalleCaja.Cheque = compra.Cheque;
+                detalleCaja.Transferencia = compra.Transferencia;
+            }
+
+            var result = await context.SaveChangesAsync() > 0;
+            if (result)
+            {
+                return true;
+            }
+
+            ErrorSms = $"No se pudo actualizar los detalles de la compra con el numero de compra {compra.Numcompra}";
+            return false;
+        }
+        catch (Exception e)
         {
-            detalleCaja.Cheque = compra.Cheque;
-            detalleCaja.Transferencia = compra.Transferencia;
+            Debug.WriteLine(e);
+            ErrorSms = $"No se pudo actualizar los detalles de la compra con el numero de compra {compra.Numcompra}. {e.Message}";
+            return false;
         }
-
-        var result = await context.SaveChangesAsync() > 0;
-        if (result)
-        {
-            return true;
-        }
-
-        ErrorSms = $"No se pudo actualizar los detalles de la compra con el numero de compra {compra.Numcompra}";
-        return false;
     }
 
     public async Task<bool> AnularCompra(string numeroCompra)
@@ -523,6 +564,7 @@ public class CompraRepository(
         var result = context.Compras.AsNoTracking()
             .Where(compra => compra.Codestado == EstadoCompra.Vigente || compra.Codestado == EstadoCompra.Cerrada)
             .Join(context.Clientes.AsNoTracking(), compra => compra.Codcliente, cliente => cliente.Codcliente, (compra, cliente) => new { compra, cliente })
+            .OrderByDescending(arg => arg.compra.Fecha)
             .Select(arg => new DtoComprasClientes()
             {
                 Numcompra = arg.compra.Numcompra,
@@ -536,8 +578,8 @@ public class CompraRepository(
         return await result.ToListAsync();
     }
 
-    public List<DetalleCompra> DetalleCompraImprimir(string numcompra)
+    public Task<List<DetalleCompra>> DetalleCompraImprimir(string numcompra)
     {
-        return context.DetalleCompras.Where(compra => compra.Numcompra == numcompra).ToList();
+        return context.DetalleCompras.Where(compra => compra.Numcompra == numcompra).ToListAsync();
     }
 }

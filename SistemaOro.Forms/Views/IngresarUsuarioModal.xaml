@@ -1,0 +1,21 @@
+﻿<dx:ThemedWindow x:Class="SistemaOro.Forms.Views.IngresarUsuarioModal" Title="IngresarUsuarioModal" Height="305" Width="479" Icon="{dx:DXImage SvgImages/Business Objects/BO_User.svg}" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    xmlns:viewModels="clr-namespace:SistemaOro.Forms.ViewModels">
+    <Window.DataContext>
+        <viewModels:IngresarUsuarioViewModel />
+    </Window.DataContext>
+    <Grid>
+
+        <dxe:TextEdit HorizontalAlignment="Left" Margin="136,41,0,0" VerticalAlignment="Top" Width="267" Label="Ingresar usuario" />
+        <dxe:TextEdit HorizontalAlignment="Left" Margin="136,126,0,0" VerticalAlignment="Top" Width="267" Label="Ingresar contraseña" />
+        <dx:SimpleButton Content="" HorizontalAlignment="Left" Height="42" Margin="69,41,0,0" VerticalAlignment="Top" Width="62" Glyph="{dx:DXImage SvgImages/Business Objects/BO_User.svg}" />
+        <dx:SimpleButton Content="" HorizontalAlignment="Left" Height="42" Margin="69,126,0,0" VerticalAlignment="Top" Width="62" Glyph="{dx:DXImage SvgImages/XAF/Action_Security_ChangePassword.svg}" RenderTransformOrigin="0.689,2.391" />
+        <dx:SimpleButton x:Name="BtnCancelar" Content="Cancelar" HorizontalAlignment="Left" Height="29" Margin="69,223,0,0" VerticalAlignment="Top" Width="103" Glyph="{dx:DXImage SvgImages/HybridDemoIcons/BottomPanel/HybridDemo_Cancel.svg}" RenderTransformOrigin="0.689,2.391" Click="BtnCancelar_Click" />
+        <dx:SimpleButton x:Name="BtnAceptar" Content="Aceptar" HorizontalAlignment="Left" Height="29" Margin="296,223,0,0" VerticalAlignment="Top" Width="107" Glyph="{dx:DXImage SvgImages/XAF/Demo_Security_FullAccess.svg}" RenderTransformOrigin="0.689,2.391" />
+
+    </Grid>
+</dx:ThemedWindow>

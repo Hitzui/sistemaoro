@@ -9,4 +9,5 @@ public class MensajesCompras
     public const string MonedaVacia = "Seleccione un tipo de moneda para la compra";
     public const string TipoPrecioVacio = "Seleccione un tipo de descuento a aplicar";
     public const string ImprimirCompra = "¿Desea imprimir los contratos de la compra guardada?";
+    public const string CamposVaciosDetalleCompra = "Hay descripciones con campos datos vacíos, favor rellenar todos los campos para continuar";
 }

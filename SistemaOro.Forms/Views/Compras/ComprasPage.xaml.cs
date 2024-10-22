@@ -12,7 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using SistemaOro.Forms.ViewModels;
+using DevExpress.Mvvm;
+using DevExpress.Xpf.Bars;
+using SistemaOro.Forms.ViewModels.Compras;
 
 namespace SistemaOro.Forms.Views.Compras
 {
@@ -29,6 +31,16 @@ namespace SistemaOro.Forms.Views.Compras
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             ((ComprasViewModel)DataContext).Load();
+        }
+
+        private void BarItem_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            ((ComprasViewModel)DataContext).ImprimirCompra();
+        }
+
+        private void EditarCompraItem_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            ((ComprasViewModel)DataContext).EditarCompraCommand(NavigationService);
         }
     }
 }

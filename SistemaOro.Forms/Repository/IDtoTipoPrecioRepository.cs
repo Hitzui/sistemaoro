@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using SistemaOro.Data.Repositories;
 using SistemaOro.Forms.Models;
 
 namespace SistemaOro.Forms.Repository;

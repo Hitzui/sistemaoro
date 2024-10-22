@@ -27,9 +27,10 @@ public class HelpersMethods
         return bitmap;
     }
 
-    public static void LoadReport(XtraReport report)
+    public static void LoadReport(XtraReport report, string title="Previsualizar Reporte")
     {
         var reportPrintTool = new ReportPrintTool(report);
+        reportPrintTool.PreviewForm.Text = title;
         reportPrintTool.PreviewRibbonForm.WindowState = FormWindowState.Maximized;
         reportPrintTool.AutoShowParametersPanel = false;
         report.CreateDocument(false);
