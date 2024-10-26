@@ -1,11 +1,6 @@
 ﻿using DevExpress.Xpf.Core;
 using OfficeOpenXml;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
 using System.Windows;
-using SistemaOro.Forms.Services;
 using Unity;
 
 namespace SistemaOro.Forms
@@ -19,8 +14,9 @@ namespace SistemaOro.Forms
         static App()
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            CompatibilitySettings.UseLightweightThemes = true;
-            ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11Light.Name;
+            //CompatibilitySettings.UseLightweightThemes = true;
+            ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Office2019Colorful.Name;
+            //LightweightThemeManager.AllowStandardControlsTheming = false;
             ApplicationThemeHelper.Preload(PreloadCategories.Core);
         }
     }

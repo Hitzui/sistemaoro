@@ -50,7 +50,7 @@
                              helpers:AdditionalImageHelper.AdditionalIcon="{dx:DXImage SvgImages/Business Objects/BO_Security_Permission.svg}"
                              VerticalAlignment="Top"
                              ShowPasswordButtonVisibility="Auto"
-                             Text="{Binding Password}" Grid.Column="1" Height="35" Label="Ingresa contraseña" TabIndex="1" KeyDown="txtPassword_KeyDown" />
+                             Text="{Binding Password}" Grid.Column="1" Height="35" TabIndex="1" KeyDown="txtPassword_KeyDown" NullText="Ingresar Contraseña" />
         <dx:SimpleButton Content="Buscar Logo" HorizontalAlignment="Left" 
                          Height="35" Margin="58,393,0,0" VerticalAlignment="Top"
                          Width="206" Glyph="{dx:DXImage SvgImages/Actions/Open.svg}"

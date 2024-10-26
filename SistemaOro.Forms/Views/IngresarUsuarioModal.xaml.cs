@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using SistemaOro.Forms.ViewModels;
 
 
 namespace SistemaOro.Forms.Views
@@ -23,11 +24,40 @@ namespace SistemaOro.Forms.Views
         public IngresarUsuarioModal()
         {
             InitializeComponent();
+            ((IngresarUsuarioViewModel)DataContext).CerrarDialogo = result =>
+            {
+                DialogResult = result;
+                Close();
+            };
         }
 
         private void BtnCancelar_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void TxtUsername_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key==Key.Enter)
+            {
+                TxtPassword.Focus();
+            }
+        }
+
+        private void TxtPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key==Key.Enter)
+            {
+                BtnAceptar.Focus();
+            }
+        }
+
+        private void BtnAceptar_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key==Key.Enter)
+            {
+                BtnAceptar.Command.Execute(null);
+            }
         }
     }
 }

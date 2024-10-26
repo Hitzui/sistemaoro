@@ -5,13 +5,15 @@
     xmlns:local="clr-namespace:SistemaOro.Forms.ViewModels"
     xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+    xmlns:av="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av"
     x:Class="SistemaOro.Forms.MainWindow"
     Loaded="MainWindow_OnLoaded"
     Title="Sistema de Gestión de Oro" Height="800" Width="1000" Icon="/cash_ico.ico" WindowState="Maximized"
     WindowStartupLocation="CenterScreen" Closed="ThemedWindow_Closed">
-    <Window.DataContext>
+    <dx:ThemedWindow.DataContext>
         <local:MainViewModel />
-    </Window.DataContext>
+    </dx:ThemedWindow.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -34,8 +36,7 @@
                             x:Name="BarButtonAgregarCliente"
                             Content="Agregar"
                             RibbonStyle="Large"
-                            Glyph="{dx:DXImage 
-                            SvgImages/Business Objects/BO_Department.svg}"
+                            Glyph="{dx:DXImage SvgImages/Business Objects/BO_Department.svg}"
                             Command="{Binding AgregarClienteCommand}" />
                         <dxb:BarButtonItem
                             x:Name="BarButtonEditarCliente"
@@ -100,24 +101,60 @@
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}" />
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Maestro Caja">
-                        <dxb:BarButtonItem Command="{Binding MaestroCajaCommand}"  Content="Maestro Caja" Glyph="{dx:DXImage SvgImages/Icon Builder/Shopping_CashVoucher.svg}" RibbonStyle="Large"/>
-                        <dxb:BarButtonItem Command="{Binding RealizarMovimientoCajaCommand}"  Content="Realziar Movimiento" RibbonStyle="Large" Glyph="{dx:DXImage SvgImages/Business Objects/BO_Sale_Item.svg}"/>
-                        <dxb:BarButtonItem Command="{Binding ReportesMaestroCajaCommand}"  Content="Reportes" RibbonStyle="Large" Glyph="{dx:DXImage SvgImages/XAF/Action_Report_ShowDesigner.svg}"/>
+                        <dxb:BarButtonItem Command="{Binding MaestroCajaCommand}" Content="Maestro Caja"
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Shopping_CashVoucher.svg}"
+                                           RibbonStyle="Large" />
+                        <dxb:BarButtonItem Command="{Binding RealizarMovimientoCajaCommand}"
+                                           Content="Realziar Movimiento" RibbonStyle="Large"
+                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Sale_Item.svg}" />
+                        <dxb:BarButtonItem Command="{Binding ReportesMaestroCajaCommand}" Content="Reportes"
+                                           RibbonStyle="Large"
+                                           Glyph="{dx:DXImage SvgImages/XAF/Action_Report_ShowDesigner.svg}" />
                     </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
             </dxr:RibbonPageCategory>
             <dxr:RibbonPageCategory>
                 <dxr:RibbonPage Caption="Compras">
                     <dxr:RibbonPageGroup Caption="Compras">
-                        <dxb:BarButtonItem Command="{Binding ListasCompraCommand}"  Content="Compras" RibbonStyle="Large" Glyph="{dx:DXImage SvgImages/Outlook Inspired/BuyNow.svg}"/>
-                        <dxb:BarButtonItem Content="Realizar Compra" RibbonStyle="Large" Glyph="{dx:DXImage SvgImages/Business Objects/BO_Sale.svg}" Command="{Binding RealizarCompraCommand}"/>
+                        <dxb:BarButtonItem Command="{Binding ListasCompraCommand}" Content="Compras"
+                                           RibbonStyle="Large"
+                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/BuyNow.svg}" />
+                        <dxb:BarButtonItem Content="Realizar Compra" RibbonStyle="Large"
+                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Sale.svg}"
+                                           Command="{Binding RealizarCompraCommand}" />
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Precios">
-                        <dxb:BarButtonItem Command="{Binding TiposPreciosCommand}" Content="Tipos de Precios" RibbonStyle="Large" Glyph="{dx:DXImage SvgImages/Business Objects/BO_Opportunity.svg}"/>
-                        <dxb:BarButtonItem Command="{Binding PrecioKilateCommand}"  Content="Precio Kilate" RibbonStyle="Large" Glyph="{dx:DXImage SvgImages/Spreadsheet/Financial.svg}"/>
+                        <dxb:BarButtonItem Command="{Binding TiposPreciosCommand}" Content="Tipos de Precios"
+                                           RibbonStyle="Large"
+                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Opportunity.svg}" />
+                        <dxb:BarButtonItem Command="{Binding PrecioKilateCommand}" Content="Precio Kilate"
+                                           RibbonStyle="Large" Glyph="{dx:DXImage SvgImages/Spreadsheet/Financial.svg}" />
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Herramientas">
-                        <dxb:BarButtonItem Command="{Binding MonedasWindowCommand}"  Content="Monedas" RibbonStyle="Large" Glyph="{dx:DXImage SvgImages/Icon Builder/Travel_CurrencyExchange.svg}"/>
+                        <dxb:BarButtonItem Command="{Binding MonedasWindowCommand}" Content="Monedas"
+                                           RibbonStyle="Large"
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Travel_CurrencyExchange.svg}" />
+                    </dxr:RibbonPageGroup>
+                </dxr:RibbonPage>
+            </dxr:RibbonPageCategory>
+            <dxr:RibbonPageCategory>
+                <dxr:RibbonPage Caption="Configuración">
+                    <dxr:RibbonPageGroup Caption="Configuración de sistema">
+                        <dxb:BarButtonItem Command="{Binding UsuariosListaCommand}" Content="Usuarios"
+                                           RibbonStyle="Large"
+                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_MyDetails.svg}" />
+                        <dxb:BarButtonItem Command="{Binding EditUsuarioCommand}" Content="Editar" RibbonStyle="Large"
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Edit.svg}" />
+                        <dxb:BarButtonItem Command="{Binding NewUsuarioCommand}" Content="Nuevo" RibbonStyle="Large"
+                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}" />
+                        <dxb:BarButtonItem Command="{Binding DeleteUsuarioCommand}" Content="Eliminar"
+                                           RibbonStyle="Large"
+                                           Glyph="{dx:DXImage SvgImages/HybridDemoIcons/BottomPanel/HybridDemo_Delete.svg}" />
+                    </dxr:RibbonPageGroup>
+                    <dxr:RibbonPageGroup Caption="Configuración">
+                        <dxb:BarButtonItem Command="{Binding ParametrosCommand}" Content="Parametros Sistema"
+                                           RibbonStyle="Large"
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Settings.svg}" />
                     </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
             </dxr:RibbonPageCategory>

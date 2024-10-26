@@ -24,6 +24,7 @@ public abstract class FacadeEntity<TEntity>(DataContext context) : ICrudReposito
 
     public virtual async Task<bool> AddAsync(TEntity? entity)
     {
+        context.ChangeTracker.Clear();
         if (entity is null)
         {
             ErrorSms = "No existe en el cotexto actual la entidad";
@@ -33,6 +34,7 @@ public abstract class FacadeEntity<TEntity>(DataContext context) : ICrudReposito
         {
             await _set.AddAsync(entity);
             await context.SaveChangesAsync();
+            context.ChangeTracker.Clear();
             return true;
         }
         catch (Exception e)
@@ -51,6 +53,7 @@ public abstract class FacadeEntity<TEntity>(DataContext context) : ICrudReposito
 
     public virtual async Task<bool> UpdateAsync(TEntity? entity)
     {
+        context.ChangeTracker.Clear();
         try
         {
             if (entity is null)
@@ -60,6 +63,7 @@ public abstract class FacadeEntity<TEntity>(DataContext context) : ICrudReposito
 
             _set.Update(entity);
             await context.SaveChangesAsync();
+            context.ChangeTracker.Clear();
             return true;
         }
         catch (Exception e)
@@ -77,6 +81,7 @@ public abstract class FacadeEntity<TEntity>(DataContext context) : ICrudReposito
 
     public virtual async Task<bool> DeleteAsync(object id)
     {
+        context.ChangeTracker.Clear();
         try
         {
             context.Remove(id);
@@ -99,7 +104,7 @@ public abstract class FacadeEntity<TEntity>(DataContext context) : ICrudReposito
 
     public virtual async Task<List<TEntity>> FindAll()
     {
-        return await _set.ToListAsync();
+        return await _set.AsNoTracking().ToListAsync();
     }
 
     public IQueryable<TEntity> Get(

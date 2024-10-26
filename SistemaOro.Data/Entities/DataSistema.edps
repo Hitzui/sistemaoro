@@ -46,6 +46,7 @@
         <File Name="DataSistema.DetalleCompra.cs" />
         <File Name="DataSistema.EstadoCompra.cs" />
         <File Name="DataSistema.Nivel.cs" />
+        <File Name="DataSistema.EstadoUsuario.cs" />
       </GeneratedFiles>
     </Generation>
     <DatabaseFirstNamingRules>

@@ -99,15 +99,16 @@ namespace SistemaOro.Forms.Services
         }
 
         private Mcaja? _maestroCaja;
+
         public Mcaja? MaestroCaja
         {
             get => _maestroCaja;
-            set => SetValue(ref _maestroCaja,value);
+            set => SetValue(ref _maestroCaja, value);
         }
 
         private DXObservableCollection<Agencia> _agenciasCollection;
 
-        public  DXObservableCollection<Agencia> AgenciasCollection
+        public DXObservableCollection<Agencia> AgenciasCollection
         {
             get => _agenciasCollection;
             set => SetValue(ref _agenciasCollection, value);
@@ -131,6 +132,18 @@ namespace SistemaOro.Forms.Services
         {
             get => GetValue<Frame>();
             set => SetValue(value);
+        }
+
+        public Usuario? SelectedUsuario
+        {
+            get => GetValue<Usuario>();
+            set => SetValue(value);
+        }
+
+        public bool PermitirEdicionCompra
+        {
+            get=>GetValue<bool>(); 
+            set=>SetValue(value);
         }
     }
 }

@@ -16,6 +16,8 @@ public static class MapperConfig
         {
             cfg.CreateMap<Cliente, DtoCliente>();
             cfg.CreateMap<DtoCliente, Cliente>();
+            cfg.CreateMap<DtoUsuario, Usuario>();
+            cfg.CreateMap<Usuario, DtoUsuario>();
             cfg.CreateMap<DtoTiposPrecios, TipoPrecio>();
             cfg.CreateMap<TipoPrecio, DtoTiposPrecios>();
         });

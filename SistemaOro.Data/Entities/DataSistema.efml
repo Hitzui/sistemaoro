@@ -12,6 +12,10 @@
       <Member Name="Supervisor" Value="2" p1:Guid="60f7571d-94dd-4f79-a25f-e601b0c20f43" />
       <Member Name="Caja" Value="3" p1:Guid="085a66f0-cc49-4ae4-a2b7-4ab09f2b0865" />
     </EnumType>
+    <EnumType Name="EstadoUsuario" class="EstadoUsuario" p1:Guid="44dae38a-ed9e-4df1-b3e6-48f8791aa81a">
+      <Member Name="Inactivo" Value="0" p1:Guid="a916720e-0aeb-40db-b7db-0dd5c45882e4" />
+      <Member Name="Activo" Value="1" p1:Guid="b070d1a5-5678-4b6a-81dd-872ec3423423" />
+    </EnumType>
   </class>
   <class name="Adelanto" entity-set="Adelantos" p1:Guid="4d3f278f-df00-4c8c-97cd-d112f68b4936">
     <id name="Idsalida" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="17473892-f6ac-48a8-8dc5-563e579344a4">
@@ -858,8 +862,8 @@
     <property name="Nivel" type="SistemaOro.Data.Entities.Nivel" p1:ValidateRequired="true" p1:Guid="30501934-eff3-4886-8787-afde345505e5">
       <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
-    <property name="Estado" type="String" p1:nullable="True" p1:ValidateMaxLength="50" p1:ValidateRequired="false" p1:Guid="3c148814-ec9e-43d8-8df4-ebd60f0efe97">
-      <column name="" length="50" p1:unicode="False" />
+    <property name="Estado" type="SistemaOro.Data.Entities.EstadoUsuario" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="3c148814-ec9e-43d8-8df4-ebd60f0efe97">
+      <column name="Estado" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
     </property>
   </class>
   <class name="ComprasOperador" entity-set="ComprasOperadors" query-type="True" p1:Guid="22782cc7-c0b0-4c87-8614-0ba9b1ba837e">

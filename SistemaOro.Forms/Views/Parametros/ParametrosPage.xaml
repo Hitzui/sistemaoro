@@ -1,0 +1,110 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:SistemaOro.Forms.Views.Parametros"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:parametros="clr-namespace:SistemaOro.Forms.ViewModels.Parametros"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    x:Class="SistemaOro.Forms.Views.Parametros.ParametrosPage"
+    mc:Ignorable="d"
+    d:DesignHeight="650" d:DesignWidth="800"
+    Title="{Binding Title}" Background="White" Loaded="Page_Loaded">
+    <Page.DataContext>
+        <parametros:ParametrosViewModel />
+    </Page.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="100" />
+        </Grid.RowDefinitions>
+        <dxlc:LayoutControl Grid.Row="0">
+            <dxlc:LayoutGroup Header="Parametros" View="GroupBox">
+                <dxlc:LayoutGroup Orientation="Vertical">
+                    <dxlc:LayoutItem Label="Código de Cliente" Margin="0,0,0,10" AddColonToLabel="True"
+                                     IsRequired="True" LabelPosition="Top">
+                        <dxe:TextEdit EditValue="{Binding Parametros.Codcliente}" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Código de Agencia" Margin="0,0,0,10" AddColonToLabel="True"
+                                     IsRequired="True" LabelPosition="Top">
+                        <dxe:TextEdit EditValue="{Binding Parametros.Codagencia}" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Número de Compra" Margin="0,0,0,10" AddColonToLabel="True"
+                                     IsRequired="True" LabelPosition="Top">
+                        <dxe:TextEdit EditValue="{Binding Parametros.Numcompra}" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Número de Adelanto" Margin="0,0,0,10" AddColonToLabel="True"
+                                     IsRequired="True" LabelPosition="Top">
+                        <dxe:TextEdit EditValue="{Binding Parametros.Idadelanto}" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Anular Compra" Margin="0,0,0,10" AddColonToLabel="True" IsRequired="True"
+                                     LabelPosition="Top">
+                        <dxe:TextEdit EditValue="{Binding Parametros.AnularCompra}" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Anular Adelanto" Margin="0,0,0,10" AddColonToLabel="True" IsRequired="True"
+                                     LabelPosition="Top">
+                        <dxe:TextEdit EditValue="{Binding Parametros.AnularAdelanto}" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Nombre de Usuario Voucher" Margin="0,0,0,10" AddColonToLabel="True"
+                                     IsRequired="True" LabelPosition="Top">
+                        <dxe:TextEdit EditValue="{Binding Parametros.Recibe}" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Tipo Moneda Dolar" Margin="0,0,0,10" AddColonToLabel="True"
+                                     IsRequired="True" LabelPosition="Top">
+                        <dxe:TextEdit EditValue="{Binding Parametros.Dolares}" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Número de contrato" LabelPosition="Top">
+                        <dxe:TextEdit EditValue="{Binding Parametros.Nocontrato}"/>
+                    </dxlc:LayoutItem>
+                </dxlc:LayoutGroup>
+            </dxlc:LayoutGroup>
+            <dxlc:LayoutGroup Header="Parametros" View="GroupBox">
+                <dxlc:LayoutGroup Orientation="Vertical">
+                    <dxlc:LayoutItem Label="Movimiento de Adelanto" Margin="0,0,0,10" AddColonToLabel="True"
+                                     LabelPosition="Top">
+                        <dxe:TextEdit EditValue="{Binding Parametros.IdAdelantos}" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Movimiento de Compra" Margin="0,0,0,10" AddColonToLabel="True"
+                                     LabelPosition="Top">
+                        <dxe:TextEdit EditValue="{Binding Parametros.Idcompras}" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Saldo del día Anterior" Margin="0,0,0,10" AddColonToLabel="True"
+                                     LabelPosition="Top">
+                        <dxe:TextEdit EditValue="{Binding Parametros.SaldoAnterior}" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Cierre de Compra" Margin="0,0,0,10" AddColonToLabel="True"
+                                     LabelPosition="Top">
+                        <dxe:TextEdit EditValue="{Binding Parametros.CierreCompra}" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Prestamo Puente Egreso" Margin="0,0,0,10" AddColonToLabel="True"
+                                     LabelPosition="Top">
+                        <dxe:TextEdit EditValue="{Binding Parametros.PrestamoEgreso}" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Prestamo Puente Ingreso" Margin="0,0,0,10" AddColonToLabel="True"
+                                     LabelPosition="Top">
+                        <dxe:TextEdit EditValue="{Binding Parametros.PrestamoIngreso}" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Pago o Abono Adelanto" Margin="0,0,0,10" AddColonToLabel="True"
+                                     LabelPosition="Top">
+                        <dxe:TextEdit EditValue="{Binding Parametros.PagoAdelanto}" />
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="Tipo Moneda Local" Margin="0,0,0,10" AddColonToLabel="True"
+                                     LabelPosition="Top">
+                        <dxe:TextEdit EditValue="{Binding Parametros.Cordobas}" />
+                    </dxlc:LayoutItem>
+                </dxlc:LayoutGroup>
+            </dxlc:LayoutGroup>
+        </dxlc:LayoutControl>
+
+        <Grid Grid.Row="1">
+            <dx:SimpleButton Content="Aplicar" HorizontalAlignment="Right" Height="41"
+                             Command="{Binding SaveCommandTask}"
+                             VerticalAlignment="Center" Width="116" IsDefault="True"
+                             AsyncDisplayMode="Wait" 
+                             Glyph="{dx:DXImage SvgImages/DiagramIcons/save.svg}" BorderThickness="1,1,1,1" Margin="0,0,100,0" />
+        </Grid>
+
+    </Grid>
+</Page>

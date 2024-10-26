@@ -21,13 +21,15 @@ using SistemaOro.Forms.Views.Clientes;
 using static System.Decimal;
 using System.Collections.Generic;
 using DevExpress.Mvvm.Native;
-using DevExpress.XtraSpreadsheet.Commands;
 using SistemaOro.Forms.Views.Reportes;
 using SistemaOro.Forms.Views.Reportes.Compras;
 using DevExpress.XtraReports.UI;
 using System.Windows.Forms;
 using SistemaOro.Forms.Views.Compras;
 using SistemaOro.Data.Dto;
+using SistemaOro.Forms.Views;
+using DevExpress.Xpf.Core;
+using DevExpress.Xpf.WindowsUI;
 
 namespace SistemaOro.Forms.ViewModels.Compras
 {
@@ -79,7 +81,8 @@ namespace SistemaOro.Forms.ViewModels.Compras
             {
                 if (ItemsSource.Any(compra => compra.Kilate.Equals(SelectedPrecioKilate.DescKilate)))
                 {
-                    XtraMessageBox.Show("Ya está ingresando el Quilate seleccionado", "Agregar");
+                    var message = new DXMessageBoxService();
+                    message.ShowMessage("Ya está ingresando el Quilate seleccionado", "Agregar");
                     return;
                 }
             }
@@ -382,6 +385,11 @@ namespace SistemaOro.Forms.ViewModels.Compras
             if (SelectedCompra is null) return;
             HelpersMessage.MensajeInformacionResult("Compra", "Se ha pasado una compra a editar");
             var compra = await _compraRepository.FindById(SelectedCompra.Numcompra ?? "0000");
+            if (compra is null)
+            {
+                WinUIMessageBox.Show($"No existe la compra con el código {SelectedCompra.Numcompra}", "Compra");
+                return;
+            }
             NumeroCompra = compra.Numcompra;
             MontoEfectivo = compra.Efectivo;
             MontoCheque=compra.Cheque;
@@ -419,7 +427,13 @@ namespace SistemaOro.Forms.ViewModels.Compras
             {
                 if (VariablesGlobalesForm.Instance.Usuario.Nivel ==Nivel.Caja)
                 {
-                    
+                    var ingresarUsuario = new IngresarUsuarioModal();
+                    ingresarUsuario.ShowDialog();
+                    if (!VariablesGlobalesForm.Instance.PermitirEdicionCompra)
+                    {
+                        HelpersMessage.DialogWindow("Editar", "No posee los permisos de edicion", MessageBoxButton.OK);
+                        return;
+                    }
                 }
             }
             if (ItemsSource.Count <= 0)
@@ -646,7 +660,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
         private void FnCalcularTotal()
         {
             SubTotal = ItemsSource.Count > 0 ? ItemsSource.Sum(compra => compra.Importe)!.Value : Zero;
-            Total = SelectedTiposPrecios is not null ? Add(SubTotal, Multiply(SubTotal, SelectedTiposPrecios.Precio!.Value)) : SubTotal;
+            Total = SelectedTiposPrecios is not null ? Divide(SubTotal, SelectedTiposPrecios.Precio!.Value) : SubTotal;
         }
     }
 }

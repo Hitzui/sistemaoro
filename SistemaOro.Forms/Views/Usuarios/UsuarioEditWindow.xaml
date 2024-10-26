@@ -1,0 +1,133 @@
+﻿<dx:ThemedWindow
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:usuarios="clr-namespace:SistemaOro.Forms.ViewModels.Usuarios"
+    xmlns:models="clr-namespace:SistemaOro.Forms.Models"
+    x:Class="SistemaOro.Forms.Views.Usuarios.UsuarioEditWindow"
+    Title="UsuarioEditWindow" Height="378" Width="621" Icon="{dx:DXImage SvgImages/Icon Builder/Actions_User.svg}"
+    Loaded="ThemedWindow_Loaded" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <dx:ThemedWindow.DataContext>
+        <usuarios:UsuarioEditViewModel />
+    </dx:ThemedWindow.DataContext>
+    <dx:ThemedWindow.Resources>
+        <models:DtoUsuario x:Key="Data" />
+
+        <!--The tool tip for the TextBox to display the validation error message.-->
+        <Style x:Key="TextBoxInError" TargetType="dxe:TextEdit">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                        Path=(Validation.Errors)[0].ErrorContent}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </dx:ThemedWindow.Resources>
+    <Grid>
+        <dxlc:LayoutControl Margin="0,0,0,62">
+            <dxlc:LayoutGroup Orientation="Vertical" Header="Datos de Usuario">
+                <dxlc:LayoutGroup Orientation="Vertical">
+                    <dxlc:LayoutGroup Header="LayoutGroup" />
+                    <dxlc:LayoutItem Label="Código:" VerticalAlignment="Top" Margin="0,0,0,5">
+                        <dxe:TextEdit x:Name="TxtCodigo" Style="{StaticResource TextBoxInError}"
+                                      EditValue="{Binding SelectedUsuario.Codoperador}">
+                            <dxe:TextEdit.Text>
+                                <Binding Path="Codoperador" Source="{StaticResource Data}"
+                                         ValidatesOnExceptions="True"
+                                         UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <DataErrorValidationRule />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </dxe:TextEdit.Text>
+                        </dxe:TextEdit>
+                    </dxlc:LayoutItem>
+                </dxlc:LayoutGroup>
+                <dxlc:LayoutItem Label="Nombre de Usuario:" Margin="0,0,0,5">
+                    <dxe:TextEdit EditValue="{Binding SelectedUsuario.Username}">
+                        <dxe:TextEdit.Text>
+                            <Binding Path="Username" Source="{StaticResource Data}"
+                                     ValidatesOnExceptions="True"
+                                     UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <DataErrorValidationRule />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </dxe:TextEdit.Text>
+                    </dxe:TextEdit>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Contraseña:" Margin="0,0,0,5">
+                    <dxe:PasswordBoxEdit EditValue="{Binding SelectedUsuario.Clave}">
+                        <dxe:PasswordBoxEdit.Text>
+                            <Binding Path="Clave" Source="{StaticResource Data}"
+                                     ValidatesOnExceptions="True"
+                                     UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <DataErrorValidationRule />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </dxe:PasswordBoxEdit.Text>
+                    </dxe:PasswordBoxEdit>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Nombre completo:" Margin="0,0,0,5">
+                    <dxe:TextEdit EditValue="{Binding SelectedUsuario.Nombre}">
+                        <dxe:TextEdit.Text>
+                            <Binding Path="Nombre" Source="{StaticResource Data}"
+                                     ValidatesOnExceptions="True"
+                                     UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <DataErrorValidationRule />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </dxe:TextEdit.Text>
+                    </dxe:TextEdit>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Pregunta de seguridad:" Margin="0,0,0,5">
+                    <dxe:TextEdit EditValue="{Binding SelectedUsuario.Pregunta}">
+                        <dxe:TextEdit.Text>
+                            <Binding Path="Pregunta" Source="{StaticResource Data}"
+                                     ValidatesOnExceptions="True"
+                                     UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <DataErrorValidationRule />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </dxe:TextEdit.Text>
+                    </dxe:TextEdit>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Respuesta:" Margin="0,0,0,5">
+                    <dxe:TextEdit EditValue="{Binding SelectedUsuario.Respuesta}">
+                        <dxe:TextEdit.Text>
+                            <Binding Path="Respuesta" Source="{StaticResource Data}"
+                                     ValidatesOnExceptions="True"
+                                     UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <DataErrorValidationRule />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </dxe:TextEdit.Text>
+                    </dxe:TextEdit>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Nivel de acceso:" Margin="0,0,0,5">
+                    <dxe:ComboBoxEdit SelectedItem="{Binding SelectedUsuario.Nivel}" ItemsSource="{Binding Niveles}" />
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Estado del Usuario:">
+                    <dxe:ComboBoxEdit SelectedItem="{Binding SelectedUsuario.Estado}"
+                                      ItemsSource="{Binding EstadoUsuarios}" />
+                </dxlc:LayoutItem>
+            </dxlc:LayoutGroup>
+
+        </dxlc:LayoutControl>
+        <dx:SimpleButton x:Name="BtnCancelar" Content="Cancelar"
+                         HorizontalAlignment="Left" Height="30" Margin="116,300,0,0" VerticalAlignment="Top"
+                         Width="113" Background="#FF8E0000" Foreground="White" Click="BtnCancelar_Click" />
+        <dx:SimpleButton Content="Aceptar"
+                         Command="{Binding SaveCommand}"
+                         HorizontalAlignment="Left" Height="30" Margin="413,300,0,0" VerticalAlignment="Top"
+                         Width="113" Background="#FF017538" Foreground="White" />
+
+    </Grid>
+</dx:ThemedWindow>

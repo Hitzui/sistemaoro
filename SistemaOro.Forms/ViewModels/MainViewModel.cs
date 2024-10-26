@@ -19,8 +19,10 @@ using SistemaOro.Forms.Views.Cajas;
 using SistemaOro.Forms.Views.Clientes;
 using SistemaOro.Forms.Views.Compras;
 using SistemaOro.Forms.Views.Monedas;
+using SistemaOro.Forms.Views.Parametros;
 using SistemaOro.Forms.Views.Precios;
 using SistemaOro.Forms.Views.Rubros;
+using SistemaOro.Forms.Views.Usuarios;
 using Unity;
 using Listado = SistemaOro.Forms.Views.Clientes.Listado;
 
@@ -62,6 +64,38 @@ namespace SistemaOro.Forms.ViewModels
             VariablesGlobalesForm.Instance.MainFrame = _mainFrame;
         }
 
+        [Command]
+        public void ParametrosCommand()
+        {
+            var param = new ParametrosPage();
+            _mainFrame.Navigate(param);
+        }
+        [Command]
+        public void NewUsuarioCommand()
+        {
+            var frmUsuario = new UsuarioEditWindow();
+            VariablesGlobalesForm.Instance.SelectedUsuario = null;
+            frmUsuario.ShowDialog();
+        }
+
+        [Command]
+        public void EditUsuarioCommand()
+        {
+            var frmUsuario = new UsuarioEditWindow();
+            frmUsuario.ShowDialog();
+        }
+
+        [Command]
+        public void DeleteUsuarioCommand()
+        {
+        }
+
+        [Command]
+        public void UsuariosListaCommand()
+        {
+            var frmusuarios = new ListaUsuarios();
+            _mainFrame.Navigate(frmusuarios);
+        }
         [Command]
         public void MonedasWindowCommand()
         {

@@ -1,9 +1,8 @@
-﻿using System.IO;
+﻿using DevExpress.XtraReports.UI;
+using System.IO;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 using DevExpress.Drawing;
-using DevExpress.XtraReports.UI;
-using SistemaOro.Forms.Views.Reportes.Compras;
 
 namespace SistemaOro.Forms.Services.Helpers;
 
