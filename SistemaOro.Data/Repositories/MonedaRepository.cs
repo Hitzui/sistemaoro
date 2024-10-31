@@ -7,32 +7,31 @@ public class MonedaRepository(DataContext context) : FacadeEntity<Moneda>(contex
 {
     private readonly DataContext _context = context;
 
-    public Task<int> Save(Moneda moneda)
+    public async Task<int> Save(Moneda moneda)
     {
-        foreach (var contextMoneda in _context.Monedas)
-        {
-            if (contextMoneda.Codmoneda == moneda.Codmoneda) continue;
-            if (moneda.Default!.Value)
-            {
-                contextMoneda.Default = false;
-            }
-        }
+        await using var ctx = new DataContext();
 
         if (moneda.Codmoneda <= 0)
         {
-            _context.AddAsync(moneda);
+            await ctx.AddAsync(moneda);
         }
         else
         {
-            _context.Monedas.Update(moneda);
+            ctx.Monedas.Update(moneda);
         }
 
 
-        return _context.SaveChangesAsync();
+        var save= await ctx.SaveChangesAsync();
+        ctx.ChangeTracker.Clear();
+        if (moneda.Default!.Value)
+        {
+            await ctx.Monedas.Where(m => m.Codmoneda != moneda.Codmoneda).ExecuteUpdateAsync(calls => calls.SetProperty(u => u.Default, false));
+        }
+        return save;
     }
 
     public Task<Moneda?> FindDefaultMoneda()
     {
-        return context.Monedas.AsNoTracking().SingleOrDefaultAsync(moneda => moneda.Default!.Value);
+        return _context.Monedas.AsNoTracking().SingleOrDefaultAsync(moneda => moneda.Default!.Value);
     }
 }

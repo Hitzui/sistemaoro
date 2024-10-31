@@ -10,9 +10,12 @@ namespace SistemaOro.Forms.Repository;
 public class DtoTipoPrecioRepository : IDtoTipoPrecioRepository
 {
     private readonly ITipoPrecioRepository _tipoPrecioRepotistory = VariablesGlobales.Instance.UnityContainer.Resolve<ITipoPrecioRepository>();
+
+    public string Error { get; private set; }
+
     public async Task<IList<DtoTiposPrecios>> FindAll()
     {
-        var findAll =await _tipoPrecioRepotistory.FindAll();
+        var findAll = await _tipoPrecioRepotistory.FindAll();
         var templist = new List<DtoTiposPrecios>();
         foreach (var item in findAll)
         {
@@ -39,16 +42,27 @@ public class DtoTipoPrecioRepository : IDtoTipoPrecioRepository
                 dtoTiposPrecios.Error = "No fue posible recuperar la entidad";
                 return false;
             }
-            findTipoPrecio.Precio= tipoPrecio.Precio;
-            findTipoPrecio.Descripcion= tipoPrecio.Descripcion;
+
+            findTipoPrecio.Precio = tipoPrecio.Precio;
+            findTipoPrecio.Descripcion = tipoPrecio.Descripcion;
             save = await _tipoPrecioRepotistory.UpdateAsync(findTipoPrecio);
         }
+
         dtoTiposPrecios.Error = _tipoPrecioRepotistory.ErrorSms;
         return save;
     }
 
-    public Task<bool> DeleteTask(int id)
+    public async Task<bool> DeleteTask(int id)
     {
-        return _tipoPrecioRepotistory.DeleteAsync(id);
+        var tipoPrecio = await _tipoPrecioRepotistory.GetByIdAsync(id);
+        if (tipoPrecio is null)
+        {
+            Error = $"No fue posible eliminar el tipo de precio con ID: {id}";
+            return false;
+        }
+
+        var delete = await _tipoPrecioRepotistory.DeleteAsync(tipoPrecio);
+        Error = _tipoPrecioRepotistory.ErrorSms;
+        return delete;
     }
 }

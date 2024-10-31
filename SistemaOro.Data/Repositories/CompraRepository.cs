@@ -123,8 +123,8 @@ public class CompraRepository(
             if (compra.Codmoneda == param.Dolares)
             {
                 efectivo = compra.Efectivo * tipoCambioDia;
-                transferencia = compra.Efectivo * tipoCambioDia;
-                cheque = compra.Efectivo * tipoCambioDia;
+                transferencia = compra.Transferencia * tipoCambioDia;
+                cheque = compra.Cheque* tipoCambioDia;
             }
 
             if (decimal.Compare(modCaja.Sfinal.Value, efectivo) < 0)

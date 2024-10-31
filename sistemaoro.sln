@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SistemaOro.Data", "SistemaO
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SistemaOro.Test", "SistemaOro.Test\SistemaOro.Test.csproj", "{CE7EB1B4-63B4-454A-85B7-724FC454341B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaOro.Forms", "SistemaOro.Forms\SistemaOro.Forms.csproj", "{144670CB-6396-488C-A76D-2E03A3B69E78}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SistemaOro.Forms", "SistemaOro.Forms\SistemaOro.Forms.csproj", "{144670CB-6396-488C-A76D-2E03A3B69E78}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SistemaOro.Setup", "SistemaOro.Setup\SistemaOro.Setup.vdproj", "{02791C9D-F239-4690-B9B5-9AC8E9B4562B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,7 +46,6 @@ Global
 		{AEB63C56-9158-4097-870F-D049022CC974}.Release|x86.ActiveCfg = Release|Any CPU
 		{AEB63C56-9158-4097-870F-D049022CC974}.Release|x86.Build.0 = Release|Any CPU
 		{CE7EB1B4-63B4-454A-85B7-724FC454341B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CE7EB1B4-63B4-454A-85B7-724FC454341B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE7EB1B4-63B4-454A-85B7-724FC454341B}.Debug|ARM.ActiveCfg = Debug|Any CPU
 		{CE7EB1B4-63B4-454A-85B7-724FC454341B}.Debug|ARM.Build.0 = Debug|Any CPU
 		{CE7EB1B4-63B4-454A-85B7-724FC454341B}.Debug|ARM64.ActiveCfg = Debug|Any CPU
@@ -83,6 +84,16 @@ Global
 		{144670CB-6396-488C-A76D-2E03A3B69E78}.Release|x64.Build.0 = Release|Any CPU
 		{144670CB-6396-488C-A76D-2E03A3B69E78}.Release|x86.ActiveCfg = Release|Any CPU
 		{144670CB-6396-488C-A76D-2E03A3B69E78}.Release|x86.Build.0 = Release|Any CPU
+		{02791C9D-F239-4690-B9B5-9AC8E9B4562B}.Debug|Any CPU.ActiveCfg = Debug
+		{02791C9D-F239-4690-B9B5-9AC8E9B4562B}.Debug|ARM.ActiveCfg = Debug
+		{02791C9D-F239-4690-B9B5-9AC8E9B4562B}.Debug|ARM64.ActiveCfg = Debug
+		{02791C9D-F239-4690-B9B5-9AC8E9B4562B}.Debug|x64.ActiveCfg = Debug
+		{02791C9D-F239-4690-B9B5-9AC8E9B4562B}.Debug|x86.ActiveCfg = Debug
+		{02791C9D-F239-4690-B9B5-9AC8E9B4562B}.Release|Any CPU.ActiveCfg = Release
+		{02791C9D-F239-4690-B9B5-9AC8E9B4562B}.Release|ARM.ActiveCfg = Release
+		{02791C9D-F239-4690-B9B5-9AC8E9B4562B}.Release|ARM64.ActiveCfg = Release
+		{02791C9D-F239-4690-B9B5-9AC8E9B4562B}.Release|x64.ActiveCfg = Release
+		{02791C9D-F239-4690-B9B5-9AC8E9B4562B}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

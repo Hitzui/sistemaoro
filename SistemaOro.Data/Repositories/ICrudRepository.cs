@@ -7,7 +7,7 @@ public interface ICrudRepository<TEntity>
     Task<TEntity?> GetByIdAsync(object id);
     Task<bool> AddAsync(TEntity? entity);
     Task<bool> UpdateAsync(TEntity? entity);
-    Task<bool> DeleteAsync(object id);
+    Task<bool> DeleteAsync(object entity);
 
     Task<List<TEntity>> FindAll();
 }

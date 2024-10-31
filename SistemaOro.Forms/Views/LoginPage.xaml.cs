@@ -42,6 +42,7 @@ namespace SistemaOro.Forms.Views
         private void ThemedWindow_Loaded(object sender, RoutedEventArgs e)
         {
             _viewModel.OnLoad();
+            TxtUsername.Focus();
         }
 
         private void TextEdit_KeyDown(object sender, KeyEventArgs e)

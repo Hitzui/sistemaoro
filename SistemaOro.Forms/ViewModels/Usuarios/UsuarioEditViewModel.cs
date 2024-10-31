@@ -22,7 +22,7 @@ public class UsuarioEditViewModel : BaseViewModel
 {
     private int _auxiliar = 1;
     private readonly IUsuarioRepository _usuarioRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IUsuarioRepository>();
-
+    public bool ResultOk = false;
     public UsuarioEditViewModel()
     {
         Title = "Datos Usuario";
@@ -82,6 +82,7 @@ public class UsuarioEditViewModel : BaseViewModel
                 if (save)
                 {
                     XtraMessageBox.Show("Se han guardado los datos de forma correcta", "Guardar");
+                    ResultOk = true;
                     CloseAction?.Invoke();
                 }
                 else
@@ -95,6 +96,7 @@ public class UsuarioEditViewModel : BaseViewModel
                 if (edit)
                 {
                     XtraMessageBox.Show("Se han guardado los datos de forma correcta", "Guardar");
+                    ResultOk = true;
                     CloseAction?.Invoke();
                 }
                 else

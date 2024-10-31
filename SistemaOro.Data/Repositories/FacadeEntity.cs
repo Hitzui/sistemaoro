@@ -79,12 +79,12 @@ public abstract class FacadeEntity<TEntity>(DataContext context) : ICrudReposito
         }
     }
 
-    public virtual async Task<bool> DeleteAsync(object id)
+    public virtual async Task<bool> DeleteAsync(object entity)
     {
         context.ChangeTracker.Clear();
         try
         {
-            context.Remove(id);
+            context.Remove(entity);
             await context.SaveChangesAsync();
             return true;
         }
@@ -104,7 +104,8 @@ public abstract class FacadeEntity<TEntity>(DataContext context) : ICrudReposito
 
     public virtual async Task<List<TEntity>> FindAll()
     {
-        return await _set.AsNoTracking().ToListAsync();
+        await using var context2 = new DataContext();
+        return await context2.Set<TEntity>().AsNoTracking().ToListAsync();
     }
 
     public IQueryable<TEntity> Get(

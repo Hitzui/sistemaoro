@@ -90,6 +90,11 @@ namespace SistemaOro.Data.Entities
             }
         }
 
+        public override string ToString()
+        {
+            return Simbolo;
+        }
+
         public virtual IList<Cliente> Clientes
         {
             get

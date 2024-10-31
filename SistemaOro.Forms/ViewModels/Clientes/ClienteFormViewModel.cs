@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using DevExpress.Mvvm;
@@ -7,9 +9,10 @@ using SistemaOro.Data.Libraries;
 using SistemaOro.Data.Repositories;
 using System.Windows.Input;
 using DevExpress.Xpf.WindowsUI;
+using NLog;
 using SistemaOro.Forms.Services.Mensajes;
 using Unity;
-using SistemaOro.Forms.Models;
+using SistemaOro.Forms.Services.Helpers;
 
 namespace SistemaOro.Forms.ViewModels.Clientes;
 
@@ -18,6 +21,7 @@ public class ClienteFormViewModel : BaseViewModel
     private IClienteRepository _clienteRepository;
     private ITipoDocumentoRepository _tipoDocumentoRepository;
     private bool _isNew;
+    private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
     public ClienteFormViewModel()
     {
@@ -35,39 +39,67 @@ public class ClienteFormViewModel : BaseViewModel
         set => SetProperty(ref _tipoDocumentos, value, nameof(TipoDocumentos));
     }
 
+    private Data.Entities.TipoDocumento? _tipoDocumento;
 
-    public DtoCliente? SelectedCliente
+    public Data.Entities.TipoDocumento? SelectedTipoDocumento
     {
-        get => GetValue<DtoCliente>();
-        set => SetValue(value);
+        get => _tipoDocumento;
+        set => SetValue(ref _tipoDocumento, value);
+    }
+
+    private Cliente? _selectedCliente;
+
+    public Cliente? SelectedCliente
+    {
+        get => _selectedCliente;
+        private set => SetValue(ref _selectedCliente, value);
     }
 
     public async void Load(Cliente? cliente)
     {
-        SelectedCliente = new DtoCliente();
-        if (cliente is not null)
+        try
         {
-            SelectedCliente = SelectedCliente.GetDtoCliente(cliente);
-        }
+            var tiposDocumentosFindAll = await _tipoDocumentoRepository.FindAll();
+            if (tiposDocumentosFindAll.Count > 0)
+            {
+                foreach (var tipoDocumento in tiposDocumentosFindAll)
+                {
+                    TipoDocumentos.Add(tipoDocumento);
+                }
+            }
 
-        if (string.IsNullOrWhiteSpace(SelectedCliente!.Codcliente))
-        {
-            NumeroCliente = await _clienteRepository.CodCliente();
-            SelectedCliente.Codcliente = NumeroCliente;
-            _isNew = true;
-        }
-        else
-        {
-            _isNew = false;
-            NumeroCliente = SelectedCliente.Codcliente;
-            SelectedCliente.TipoDocumento = await _tipoDocumentoRepository.GetByIdAsync(cliente!.Idtipodocumento!);
-        }
+            if (cliente is not null)
+            {
+                var findById = await _clienteRepository.FindById(cliente.Codcliente);
+                if (findById is null)
+                {
+                    HelpersMessage.MensajeErroResult("Error", $"Se produjo el siguiente error: {_clienteRepository.ErrorSms}");
+                    return;
+                }
 
-        TipoDocumentos.Clear();
-        var tiposDocumentosFindAll = await _tipoDocumentoRepository.FindAll();
-        foreach (var tipoDocumento in tiposDocumentosFindAll)
+                SelectedCliente = findById;
+                SelectedTipoDocumento = findById.TipoDocumento;
+                _isNew = false;
+                NumeroCliente = findById.Codcliente;
+            }
+            else
+            {
+                NumeroCliente = await _clienteRepository.CodCliente();
+                SelectedCliente = new Cliente
+                {
+                    Codcliente = NumeroCliente,
+                    FNacimiento = DateTime.Now,
+                    FIngreso = DateTime.Now,
+                    FEmision = DateTime.Now,
+                    FVencimiento = DateTime.Now
+                };
+                SelectedTipoDocumento = tiposDocumentosFindAll.ElementAt(0);
+                _isNew = true;
+            }
+        }
+        catch (Exception ex)
         {
-            TipoDocumentos.Add(tipoDocumento);
+            logger.Error(ex, "Ha ocurrido un error");
         }
 
         IsLoading = false;
@@ -116,7 +148,7 @@ public class ClienteFormViewModel : BaseViewModel
         }
 
         IsLoading = true;
-        if (SelectedCliente.TipoDocumento is null)
+        if (SelectedTipoDocumento is null)
         {
             winuidialog.Title = MensajesGenericos.ErrorTitulo;
             winuidialog.Content = new TextBlock { Text = ClienteMessages.SeleccionarTipoDocumento };
@@ -125,16 +157,15 @@ public class ClienteFormViewModel : BaseViewModel
             return;
         }
 
-        var cliente = SelectedCliente.GetCliente();
-        cliente.Idtipodocumento = SelectedCliente.TipoDocumento.Idtipodocumento;
+        SelectedCliente.Idtipodocumento = SelectedTipoDocumento.Idtipodocumento;
         bool save;
         if (!_isNew)
         {
-            save = await _clienteRepository.Update(cliente);
+            save = await _clienteRepository.Update(SelectedCliente);
         }
         else
         {
-            save = await _clienteRepository.Create(cliente);
+            save = await _clienteRepository.Create(SelectedCliente);
         }
 
         if (save)

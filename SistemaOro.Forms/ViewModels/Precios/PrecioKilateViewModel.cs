@@ -62,9 +62,23 @@ public class PrecioKilateViewModel : BaseViewModel
             return;
         }
 
+        bool save;
         if (args.IsNewItem)
         {
-            await _preciosKilatesRepository.AddAsync(item);
+            save = await _preciosKilatesRepository.AddAsync(item);
+        }
+        else
+        {
+            save = await _preciosKilatesRepository.UpdateAsync(item);
+        }
+
+        if (save)
+        {
+            HelpersMessage.MensajeConfirmacionResult("Precio", "Se han guardado los cambios");
+        }
+        else
+        {
+            HelpersMessage.MensajeErroResult("Error", $"Se produjo el siguiente erro: {_preciosKilatesRepository.ErrorSms}");
         }
     }
 

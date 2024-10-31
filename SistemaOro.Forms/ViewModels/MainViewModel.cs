@@ -2,10 +2,12 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Input;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.Core;
+using DevExpress.XtraEditors;
 using SistemaOro.Data.Entities;
 using SistemaOro.Data.Libraries;
 using SistemaOro.Data.Repositories;
@@ -13,10 +15,11 @@ using SistemaOro.Forms.Services;
 using SistemaOro.Forms.Services.Helpers;
 using SistemaOro.Forms.Services.Mensajes;
 using SistemaOro.Forms.ViewModels.Agencias;
+using SistemaOro.Forms.ViewModels.Clientes;
+using SistemaOro.Forms.ViewModels.Usuarios;
 using SistemaOro.Forms.Views;
 using SistemaOro.Forms.Views.Agencias;
 using SistemaOro.Forms.Views.Cajas;
-using SistemaOro.Forms.Views.Clientes;
 using SistemaOro.Forms.Views.Compras;
 using SistemaOro.Forms.Views.Monedas;
 using SistemaOro.Forms.Views.Parametros;
@@ -24,6 +27,7 @@ using SistemaOro.Forms.Views.Precios;
 using SistemaOro.Forms.Views.Rubros;
 using SistemaOro.Forms.Views.Usuarios;
 using Unity;
+using Form = SistemaOro.Forms.Views.Clientes.Form;
 using Listado = SistemaOro.Forms.Views.Clientes.Listado;
 
 namespace SistemaOro.Forms.ViewModels
@@ -31,17 +35,17 @@ namespace SistemaOro.Forms.ViewModels
     public class MainViewModel : BaseViewModel
     {
         private Frame _mainFrame;
-        private IParametersRepository _parametersRepository;
-        private IMaestroCajaRepository _maestroCajaRepository;
+        private readonly IParametersRepository _parametersRepository;
+        private readonly IMaestroCajaRepository _maestroCajaRepository;
+        private readonly IUsuarioRepository _usuarioRepository;
 
         public MainViewModel()
         {
             _maestroCajaRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IMaestroCajaRepository>();
             _parametersRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IParametersRepository>();
+            _usuarioRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IUsuarioRepository>();
             ListadoMovimientosCajasCommand = new DelegateCommand(ListadoMovimientosCajas);
-            AgregarClienteCommand = new DelegateCommand(OnAgregarCliente);
             ListaClientesCommand = new DelegateCommand(OnListadoClientes);
-            EditarClienteCommand = new DelegateCommand(OnEditarClienteCommand);
             TiposDocumentosCommand = new DelegateCommand(OnTiposDocumentosCommand);
             DeleteClienteCommand = new DelegateCommand(OnDeleteClienteCommand);
             TipoCambioCommand = new DelegateCommand(OnTipoCambioCommand);
@@ -64,18 +68,24 @@ namespace SistemaOro.Forms.ViewModels
             VariablesGlobalesForm.Instance.MainFrame = _mainFrame;
         }
 
+
         [Command]
         public void ParametrosCommand()
         {
             var param = new ParametrosPage();
             _mainFrame.Navigate(param);
         }
+
         [Command]
         public void NewUsuarioCommand()
         {
             var frmUsuario = new UsuarioEditWindow();
             VariablesGlobalesForm.Instance.SelectedUsuario = null;
             frmUsuario.ShowDialog();
+            if (frmUsuario.DataContext is not UsuarioEditViewModel model) return;
+            if (!model.ResultOk) return;
+            var frmUsuarios = new ListaUsuarios();
+            _mainFrame.Navigate(frmUsuarios);
         }
 
         [Command]
@@ -83,11 +93,53 @@ namespace SistemaOro.Forms.ViewModels
         {
             var frmUsuario = new UsuarioEditWindow();
             frmUsuario.ShowDialog();
+            if (frmUsuario.DataContext is not UsuarioEditViewModel model) return;
+            if (!model.ResultOk) return;
+            var frmUsuarios = new ListaUsuarios();
+            _mainFrame.Navigate(frmUsuarios);
         }
 
         [Command]
-        public void DeleteUsuarioCommand()
+        public async void DeleteUsuarioCommand()
         {
+            var result = XtraMessageBox.Show("¿Seguro quiere elminar al usuario seleccionado? Esta acción no se puede revertir", "Eliminar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.No)
+            {
+                return;
+            }
+
+            if (VariablesGlobalesForm.Instance.Usuario is null)
+            {
+                return;
+            }
+
+            var selectedUsuario = VariablesGlobalesForm.Instance.SelectedUsuario;
+            if (selectedUsuario != null)
+            {
+                if (selectedUsuario.Codoperador == VariablesGlobalesForm.Instance.Usuario.Codoperador)
+                {
+                    HelpersMessage.MensajeInformacionResult("Eliminar Usuario", "No se puede eliminar el usuario con el cual se ha iniciado sesión.");
+                    return;
+                }
+
+                if (VariablesGlobalesForm.Instance.Usuario.Nivel == Nivel.Caja)
+                {
+                    HelpersMessage.MensajeInformacionResult("Eliminar Usuario", "No puede eliminar el usuario, no cuenta con los permisos.");
+                    return;
+                }
+
+                var delete = await _usuarioRepository.DeleteAsync(selectedUsuario);
+                if (delete)
+                {
+                    HelpersMessage.MensajeInformacionResult("Eliminar", " Se ha eliminado al usuario");
+                    var frmUsuarios = new ListaUsuarios();
+                    _mainFrame.Navigate(frmUsuarios);
+                }
+                else
+                {
+                    HelpersMessage.MensajeInformacionResult("Eliminar", $"Se produjo el siguiente error: {_usuarioRepository.ErrorSms}");
+                }
+            }
         }
 
         [Command]
@@ -96,6 +148,7 @@ namespace SistemaOro.Forms.ViewModels
             var frmusuarios = new ListaUsuarios();
             _mainFrame.Navigate(frmusuarios);
         }
+
         [Command]
         public void MonedasWindowCommand()
         {
@@ -240,18 +293,22 @@ namespace SistemaOro.Forms.ViewModels
             page.Show();
         }
 
-        private void OnEditarClienteCommand()
+        [Command]
+        public void EditarClienteCommand()
         {
             if (VariablesGlobalesForm.Instance.SelectedCliente is null) return;
             var mainWindow = new Form();
-            mainWindow.SelectedCliente = VariablesGlobalesForm.Instance.SelectedCliente;
+            if (mainWindow.DataContext is not ClienteFormViewModel clienteFormViewModel) return;
+            clienteFormViewModel.Load(VariablesGlobalesForm.Instance.SelectedCliente);
             mainWindow.ShowDialog();
         }
 
-        private void OnAgregarCliente()
+        [Command]
+        public void AgregarClienteCommand()
         {
             var mainWindow = new Form();
-            mainWindow.SelectedCliente = null;
+            if (mainWindow.DataContext is not ClienteFormViewModel clienteFormViewModel) return;
+            clienteFormViewModel.Load(null);
             mainWindow.ShowDialog();
         }
 
@@ -270,6 +327,7 @@ namespace SistemaOro.Forms.ViewModels
                 RaisePropertyChanged();
             }
         }
+
         public ICommand PrecioKilateCommand { get; set; }
         public ICommand ReportesMaestroCajaCommand { get; set; }
         public ICommand MaestroCajaCommand { get; set; }
@@ -288,22 +346,11 @@ namespace SistemaOro.Forms.ViewModels
 
         public ICommand DeleteClienteCommand { get; set; }
 
-        public ICommand EditarClienteCommand { get; set; }
-
         public ICommand TiposDocumentosCommand { get; set; }
         public ICommand RealizarMovimientoCajaCommand { get; set; }
         public ICommand ListasCompraCommand { get; set; }
         public ICommand RealizarCompraCommand { get; set; }
         public ICommand TiposPreciosCommand { get; set; }
-        public ICommand AgregarClienteCommand
-        {
-            get { return GetProperty(() => AgregarClienteCommand); }
-            set
-            {
-                SetProperty(() => AgregarClienteCommand, value);
-                RaisePropertyChanged();
-            }
-        }
 
         public async void SetMainFrame(Frame mainFrame)
         {

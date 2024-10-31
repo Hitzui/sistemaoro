@@ -28,7 +28,8 @@ namespace SistemaOro.Forms.Views.Usuarios
         }
 
         private void BtnCancelar_Click(object sender, RoutedEventArgs e)
-        { 
+        {
+            DialogResult = false;
             Close();
         }
 

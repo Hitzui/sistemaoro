@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using SistemaOro.Data.Entities;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Xpf;
@@ -12,6 +13,7 @@ using SistemaOro.Data.Libraries;
 using SistemaOro.Forms.Models;
 using SistemaOro.Forms.Repository;
 using SistemaOro.Forms.Services;
+using SistemaOro.Forms.Services.Helpers;
 using Unity;
 
 namespace SistemaOro.Forms.ViewModels.Precios
@@ -46,10 +48,23 @@ namespace SistemaOro.Forms.ViewModels.Precios
         }
 
         [Command]
-        public void ValidateRowDeletion(ValidateRowDeletionArgs args)
+        public async void ValidateRowDeletion(ValidateRowDeletionArgs args)
         {
+            var result = HelpersMessage.MensajeConfirmacionResult("Eliminar", "Se ha eliminado el tipo de precio");
+            if (result==MessageBoxResult.Cancel)
+            {
+                return;
+            }
             var item = (DtoTiposPrecios)args.Items.Single();
-            _dtoTipoPrecioRepository.DeleteTask(item.IdTipoPrecio);
+           var delete = await _dtoTipoPrecioRepository.DeleteTask(item.IdTipoPrecio);
+           if (delete)
+           {
+               HelpersMessage.MensajeInformacionResult("Eliminar", "Se ha eliminado el tipo de precio");
+           }
+           else
+           {
+               HelpersMessage.MensajeErroResult("Error", $"Se produjo el siguiente error: {_dtoTipoPrecioRepository.Error}");
+           }
         }
 
         [Command]

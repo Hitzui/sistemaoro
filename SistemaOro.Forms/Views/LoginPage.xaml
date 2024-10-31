@@ -24,7 +24,7 @@
         </Grid.Background>
         <Label Content="Iniciar Sesión en la Aplicación" Margin="64,74,28,431" FontSize="20" FontFamily="Arial"
                FontWeight="Bold" Foreground="White" Grid.Column="1" />
-        <dxe:TextEdit
+        <dxe:TextEdit x:Name="TxtUsername"
             Margin="64,138,48,0"
             VerticalAlignment="Top"
             Height="33"

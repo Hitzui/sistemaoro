@@ -533,6 +533,11 @@ namespace SistemaOro.Forms.ViewModels.Compras
             else
             {
                 var findCompra = await _compraRepository.FindById(SelectedCompra.Numcompra!);
+                if (findCompra is null)
+                {
+                    HelpersMessage.MensajeErroResult(MensajesGenericos.GuardarTitulo, MensajesCompras.NoExisteCompra);
+                    return;
+                }
                 findCompra.Adelantos = MontoAdelanto;
                 findCompra.Subtotal = SubTotal;
                 findCompra.Cheque = MontoCheque;
@@ -559,7 +564,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
                 result = HelpersMessage.MensajeConfirmacionResult(MensajesGenericos.GuardarTitulo, MensajesCompras.ImprimirCompra);
                 if (result == MessageBoxResult.OK)
                 {
-                    var findCompra = await _compraRepository.DetalleCompraImprimir(NumeroCompra);
+                    var findCompra = await _compraRepository.DetalleCompraImprimir(NumeroCompra ?? "");
                     //Reporte Anexo
                     var reporteAnexo = new ReporteAnexo();
                     reporteAnexo.DataSource=findCompra;
@@ -660,7 +665,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
         private void FnCalcularTotal()
         {
             SubTotal = ItemsSource.Count > 0 ? ItemsSource.Sum(compra => compra.Importe)!.Value : Zero;
-            Total = SelectedTiposPrecios is not null ? Divide(SubTotal, SelectedTiposPrecios.Precio!.Value) : SubTotal;
+            Total = SelectedTiposPrecios is not null ? Multiply(SubTotal, SelectedTiposPrecios.Precio!.Value) : SubTotal;
         }
     }
 }

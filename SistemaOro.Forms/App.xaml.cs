@@ -1,7 +1,6 @@
 ﻿using DevExpress.Xpf.Core;
 using OfficeOpenXml;
 using System.Windows;
-using Unity;
 
 namespace SistemaOro.Forms
 {
@@ -10,7 +9,6 @@ namespace SistemaOro.Forms
     /// </summary>
     public partial class App : Application
     {
-        public static UnityContainer UnityContainer => new UnityContainer();
         static App()
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;

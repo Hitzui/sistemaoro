@@ -7,8 +7,10 @@ using SistemaOro.Forms.Models;
 
 namespace SistemaOro.Forms.Repository;
 
-public interface IDtoTipoPrecioRepository 
+public interface IDtoTipoPrecioRepository
 {
+    public string Error { get; }
+
     Task<IList<DtoTiposPrecios>> FindAll();
 
     Task<bool> SaveTask(DtoTiposPrecios dtoTiposPrecios);

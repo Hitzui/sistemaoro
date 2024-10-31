@@ -69,17 +69,20 @@ public class ClienteRepository(IParametersRepository parametersRepository, DataC
             if (findCliente is null)
             {
                 ErrorSms = "No existe el cliente a actualizar los datos";
+                context.ChangeTracker.Clear();
                 return false;
             }
 
             context.Clientes.Update(cliente);
             var result = await context.SaveChangesAsync();
+            context.ChangeTracker.Clear();
             return result > 0;
         }
         catch (Exception e)
         {
             Debug.WriteLine(e.Message);
             ErrorSms = e.Message;
+            context.ChangeTracker.Clear();
             return false;
         }
     }
@@ -113,7 +116,9 @@ public class ClienteRepository(IParametersRepository parametersRepository, DataC
 
     public Task<Cliente?> FindById(string codcliente)
     {
-        return context.Clientes.AsNoTracking().SingleOrDefaultAsync(cliente => cliente.Codcliente == codcliente);
+        return context.Clientes.AsNoTracking()
+            .Include(cliente => cliente.TipoDocumento)
+            .SingleOrDefaultAsync(cliente => cliente.Codcliente == codcliente);
     }
 
     public Task<List<Cliente>> FindAll()
