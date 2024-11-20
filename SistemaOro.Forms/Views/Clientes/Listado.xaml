@@ -18,41 +18,46 @@
     <Page.DataContext>
         <clientes:ClientesViewModels />
     </Page.DataContext>
+
     <Grid Margin="0">
-        <dxg:GridControl x:Name="GridListadoCliente" 
-                         SelectedItem="{Binding SelectedItem}" 
+        <dxg:GridControl x:Name="GridListadoCliente"
+                         SelectedItem="{Binding SelectedItem}"
                          SelectionMode="Row" RestoreStateKeyFieldName="Codcliente"
-                         RestoreStateOnSourceChange="True" 
-                         ShowLoadingPanel="True" Grid.Row="0" >
+                         RestoreStateOnSourceChange="True"
+                         ShowLoadingPanel="True" Grid.Row="0">
             <dxg:GridControl.TotalSummary>
-                <dxg:GridSummaryItem Alignment="Right" SummaryType="Count"/>
+                <dxg:GridSummaryItem Alignment="Right" SummaryType="Count" />
             </dxg:GridControl.TotalSummary>
             <dxg:GridControl.ItemsSource>
-                <dx:PagedAsyncSource ElementType="{x:Type entities:Cliente}" 
-                                     KeyProperty="Codcliente" 
+                <dx:PagedAsyncSource ElementType="{x:Type entities:Cliente}"
+                                     KeyProperty="Codcliente"
                                      PageNavigationMode="ArbitraryWithTotalPageCount"
-                                     FetchPageCommand="{Binding FetchPageCommand}" 
-                                     GetTotalSummariesCommand="{Binding GetTotalSummariesCommand}"/>
+                                     FetchPageCommand="{Binding FetchPageCommand}"
+                                     GetTotalSummariesCommand="{Binding GetTotalSummariesCommand}" />
             </dxg:GridControl.ItemsSource>
             <dxg:GridControl.View>
-                <dxg:TableView ShowFixedTotalSummary="True" ShowSearchPanelMode="Always" 
+                <dxg:TableView ShowFixedTotalSummary="True" ShowSearchPanelMode="Always"
                                SearchStringToFilterCriteria="OnSearchStringToFilterCriteria">
-                    <dxg:TableView.RowCellMenuCustomizations>  
-                        <dxb:BarButtonItem Content="Editar" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Edit.svg}" ItemClick="BarButtonItem_ItemClick"/>  
-                        <dxb:BarButtonItem Content="Imprimir" Glyph="{dx:DXImage SvgImages/Dashboards/Print.svg}"/>  
-                        <dxb:BarButtonItem Content="Delete" Glyph="{dx:DXImage SvgImages/HybridDemoIcons/BottomPanel/HybridDemo_Delete.svg}" ItemClick="BarButtonItem_ItemClick_1"/>  
-                    </dxg:TableView.RowCellMenuCustomizations> 
+                    <dxg:TableView.RowCellMenuCustomizations>
+                        <dxb:BarButtonItem Content="Editar"
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Edit.svg}"
+                                           ItemClick="BarButtonItem_ItemClick" />
+                        <dxb:BarButtonItem Content="Imprimir" Glyph="{dx:DXImage SvgImages/Dashboards/Print.svg}" />
+                        <dxb:BarButtonItem Content="Delete"
+                                           Glyph="{dx:DXImage SvgImages/HybridDemoIcons/BottomPanel/HybridDemo_Delete.svg}"
+                                           ItemClick="BarButtonItem_ItemClick_1" />
+                    </dxg:TableView.RowCellMenuCustomizations>
                 </dxg:TableView>
             </dxg:GridControl.View>
-            <dxg:GridColumn FieldName="Codcliente" IsSmart="True" ReadOnly="True"/>
-            <dxg:GridColumn FieldName="Nombres" IsSmart="True" AllowBestFit="True" BestFitMode="AllRows"/>
-            <dxg:GridColumn FieldName="Apellidos" IsSmart="True" AllowBestFit="True" BestFitMode="AllRows"/>
-            <dxg:GridColumn FieldName="Numcedula" IsSmart="True" AllowBestFit="True" BestFitMode="AllRows"/>
-            <dxg:GridColumn FieldName="Direccion" IsSmart="True" Width="400"/>
-            <dxg:GridColumn FieldName="Ciudad" IsSmart="True"/>
-            <dxg:GridColumn FieldName="Telefono" IsSmart="True"/>
-            <dxg:GridColumn FieldName="Celular" IsSmart="True"/>
-            <dxg:GridColumn FieldName="Email" IsSmart="True"/>
+            <dxg:GridColumn FieldName="Codcliente" IsSmart="True" ReadOnly="True" />
+            <dxg:GridColumn FieldName="Nombres" IsSmart="True" AllowBestFit="True" BestFitMode="AllRows" />
+            <dxg:GridColumn FieldName="Apellidos" IsSmart="True" AllowBestFit="True" BestFitMode="AllRows" />
+            <dxg:GridColumn FieldName="Numcedula" IsSmart="True" AllowBestFit="True" BestFitMode="AllRows" />
+            <dxg:GridColumn FieldName="Direccion" IsSmart="True" Width="400" />
+            <dxg:GridColumn FieldName="Ciudad" IsSmart="True" />
+            <dxg:GridColumn FieldName="Telefono" IsSmart="True" />
+            <dxg:GridColumn FieldName="Celular" IsSmart="True" />
+            <dxg:GridColumn FieldName="Email" IsSmart="True" />
         </dxg:GridControl>
     </Grid>
 

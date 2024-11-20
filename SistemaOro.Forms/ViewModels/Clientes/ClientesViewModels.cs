@@ -42,7 +42,7 @@ public class ClientesViewModels : BaseViewModel
         return converter.Convert(filter);
     }
 
-    [Command]
+    [AsyncCommand]
     public void FetchPage(FetchPageAsyncArgs args)
     {
         const int pageTakeCount = 5;

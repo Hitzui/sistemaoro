@@ -17,13 +17,14 @@ using SistemaOro.Forms.Services.Helpers;
 
 namespace SistemaOro.Forms.ViewModels.Clientes;
 
-public class ClienteFormViewModel : BaseViewModel
+public partial class ClienteFormViewModel : BaseViewModel
 {
     private IClienteRepository _clienteRepository;
     private ITipoDocumentoRepository _tipoDocumentoRepository;
     private bool _isNew;
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private Cliente? _cliente;
+
     public ClienteFormViewModel()
     {
         Title = "Detalle de Cliente";
@@ -54,6 +55,37 @@ public class ClienteFormViewModel : BaseViewModel
     {
         get => _selectedCliente;
         private set => SetValue(ref _selectedCliente, value);
+    }
+
+    private bool _isSiOtraAe;
+
+    public bool IsSiOtraAe
+    {
+        get => _isSiOtraAe;
+        set => SetValue(ref _isSiOtraAe, value);
+    }
+
+    private bool _isNoOtraAe;
+
+    public bool IsNoOtraAe
+    {
+        get => _isNoOtraAe;
+        set => SetValue(ref _isNoOtraAe, value);
+    }
+
+    private bool _isCuentaPropia;
+    private bool _isTercero;
+
+    public bool IsCuentaPropia
+    {
+        get => _isCuentaPropia;
+        set => SetProperty(ref _isCuentaPropia, value, "IsCuentaPropia");
+    }
+
+    public bool IsTercero
+    {
+        get => _isTercero;
+        set => SetProperty(ref _isTercero, value, "IsTercero");
     }
 
     public async void Load(Cliente? cliente)
@@ -91,6 +123,17 @@ public class ClienteFormViewModel : BaseViewModel
                 SelectedTipoDocumento = tiposDocumentosFindAll.Find(documento => documento.Idtipodocumento == _cliente.Idtipodocumento);
                 _isNew = false;
                 NumeroCliente = _cliente.Codcliente;
+                if (!string.IsNullOrWhiteSpace(SelectedCliente.OtraAe))
+                {
+                    IsNoOtraAe = SelectedCliente.OtraAe.Equals("no", StringComparison.InvariantCultureIgnoreCase);
+                    IsSiOtraAe = !IsNoOtraAe;
+                }
+
+                if (!string.IsNullOrWhiteSpace(SelectedCliente.ActuaPor))
+                {
+                    IsCuentaPropia = SelectedCliente.ActuaPor.Equals("Cuenta propia", StringComparison.InvariantCultureIgnoreCase);
+                    IsTercero = !IsCuentaPropia;
+                }
             }
             else
             {
@@ -105,6 +148,7 @@ public class ClienteFormViewModel : BaseViewModel
                     Telefono = string.Empty
                 };
                 SelectedTipoDocumento = tiposDocumentosFindAll.ElementAt(0);
+                IsNoOtraAe = true;
                 _isNew = true;
             }
         }

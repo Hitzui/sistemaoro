@@ -7,58 +7,57 @@
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     x:Class="SistemaOro.Forms.Views.Clientes.Form"
     mc:Ignorable="d"
-    Title="{Binding Title}" Height="602" Width="779" Icon="{dx:DXImage SvgImages/Business Objects/BO_MyDetails.svg}"
+    Title="{Binding Title}" Height="625" Width="832" Icon="{dx:DXImage SvgImages/Business Objects/BO_MyDetails.svg}"
     Loaded="Window_Loaded" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
-    <Window.DataContext>
-        <local:ClienteFormViewModel />
-    </Window.DataContext>
     <Window.Resources>
-        <Style x:Key="ValidationStyle" TargetType="dxe:TextEdit">
+        <Style x:Key="ValidationStyle" TargetType="{x:Type dxe:TextEdit}">
             <Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="True">
                     <Setter Property="BorderBrush" Value="Red" />
-                    <Setter Property="ToolTip" 
-                            Value="{Binding (Validation.Errors)[0].ErrorContent, 
-                        RelativeSource={RelativeSource Self}}" />
+                    <Setter Property="ToolTip"
+                            Value="{Binding (Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Mode=Self}}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
     </Window.Resources>
+    <Window.DataContext>
+        <local:ClienteFormViewModel />
+    </Window.DataContext>
     <dx:LoadingDecorator IsSplashScreenShown="{Binding IsLoading}">
         <dxlc:DockLayoutControl>
-            <Grid Margin="0,0,-765,482">
+            <Grid dxlc:DockLayoutControl.Dock="Top" Height="60" Margin="5,0,5,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="125" />
-                    <ColumnDefinition Width="125" />
+                    <ColumnDefinition Width="169" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Label
                     Grid.Row="0"
-                    Content="Número de Cliente:" Grid.ColumnSpan="2" Margin="10,22,115,-22" />
+                    Content="Número de Cliente:" VerticalAlignment="Center" />
                 <Label
                     Grid.Row="0"
                     Grid.Column="1"
-                    Content="{Binding NumeroCliente}" Margin="10,26,505,-23" Grid.ColumnSpan="2" />
+                    Content="{Binding NumeroCliente}" Margin="0,14,0,14" />
                 <StackPanel
                     Grid.Column="2"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center" Height="0" Width="0" />
                 <dx:SimpleButton x:Name="BtnSave"
-                    Grid.Column="2"
-                    Content=""
-                    Height="48"
-                    Margin="422,0,0,-38"
-                    VerticalAlignment="Bottom"
-                    HorizontalAlignment="Left" Width="64"
-                    Glyph="{dx:DXImage SvgImages/DiagramIcons/save.svg}"
-                    Command="{Binding SaveCommand}" Click="BtnSave_Click" />
+                                 Grid.Column="2"
+                                 Content=""
+                                 Height="48"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Right" Width="64"
+                                 Glyph="{dx:DXImage SvgImages/DiagramIcons/save.svg}"
+                                 Command="{Binding SaveCommand}" Click="BtnSave_Click" Margin="0,5,20,0" />
             </Grid>
-            <dx:DXTabControl Margin="5,73,-769,10">
+            <dx:DXTabControl dxlc:DockLayoutControl.Dock="Client">
                 <dx:DXTabItem Header="Datos del Cliente">
                     <Grid>
                         <Label Content="Nombres" HorizontalAlignment="Left" Margin="71,48,0,0"
@@ -67,7 +66,7 @@
                         <dxe:TextEdit x:Name="TxtNombres" HorizontalAlignment="Left" Margin="71,70,0,0"
                                       Style="{StaticResource ValidationStyle}"
                                       VerticalAlignment="Top" Width="150" Height="24"
-                                      EditValue="{Binding SelectedCliente.Nombres, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                                      EditValue="{Binding SelectedCliente.Nombres, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                         <Label Content="Apellidos" HorizontalAlignment="Left" Margin="249,48,0,0"
                                VerticalAlignment="Top"
                                Width="70" />
@@ -148,8 +147,114 @@
                                VerticalAlignment="Top" Width="115" />
                         <dxe:ComboBoxEdit x:Name="CmbTipoDocumento" HorizontalAlignment="Left" Margin="31,382,0,0"
                                           VerticalAlignment="Top" Width="122"
-                                          ItemsSource="{Binding TipoDocumentos}" 
-                                          SelectedItem="{Binding SelectedTipoDocumento}"/>
+                                          ItemsSource="{Binding TipoDocumentos}"
+                                          SelectedItem="{Binding SelectedTipoDocumento}" />
+                    </Grid>
+                </dx:DXTabItem>
+                <dx:DXTabItem Header="Perfil Cliente">
+                    <Grid Background="#00000000">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal" Height="50" UseLayoutRounding="False"
+                                    ScrollViewer.CanContentScroll="True" Margin="0,0,0,10">
+                            <dxe:TextEdit Width="187" Label="Ocupación u oficio:"
+                                          EditValue="{Binding SelectedCliente.Ocupacion}" Margin="10,0,15,0" />
+                            <dxe:TextEdit Width="375" Label="Lugar de trabajo o comercio:"
+                                          EditValue="{Binding SelectedCliente.DireccionNegocio}" />
+                            <dxe:TextEdit Width="146" Label="Tiempo en el comercio u oficio"
+                                          EditValue="{Binding SelectedCliente.TiempoNeg}" Margin="20,0,0,0" />
+                        </StackPanel>
+                        <dxlc:LayoutGroup Grid.Row="1" Padding="0,0,0,10">
+                            <dxlc:GroupBox HorizontalAlignment="Left" Height="93" VerticalAlignment="Top" Width="291"
+                                           Header="Realiza alguna otra actividad Económica"
+                                           MaximizeElementVisibility="Hidden" MinimizeElementVisibility="Hidden">
+                                <StackPanel Orientation="Horizontal">
+                                    <RadioButton Content="Si" Margin="0,0,100,0" IsChecked="{Binding IsSiOtraAe}" />
+                                    <RadioButton Content="No" IsChecked="{Binding IsNoOtraAe}" />
+                                </StackPanel>
+                            </dxlc:GroupBox>
+                            <dxlc:GroupBox Header="Favor Explicar">
+                                <dxe:MemoEdit EditValue="{Binding SelectedCliente.DescOtra}" Margin="5,0,5,2" />
+                            </dxlc:GroupBox>
+                        </dxlc:LayoutGroup>
+                        <Grid Grid.Row="2" Margin="0,0,0,10" Height="100">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="4*" />
+                                <ColumnDefinition Width="9*" />
+                            </Grid.ColumnDefinitions>
+                            <dxlc:GroupBox MinimizeElementVisibility="Hidden" MaximizeElementVisibility="Hidden"
+                                           Header="Favor Inidcar si Actua por:" Margin="0,0,5,0">
+                                <StackPanel
+                                    Orientation="Horizontal">
+                                    <RadioButton
+                                        Content="Cuenta propia" Margin="0,0,20,0" IsChecked="{Binding IsCuentaPropia}" />
+                                    <RadioButton
+                                        Content="De un Tercero" IsChecked="{Binding IsTercero}" />
+                                </StackPanel>
+                            </dxlc:GroupBox>
+                            <dxlc:GroupBox Header="Si actua por tercero, favor indicar Nombre y diccion"
+                                           Grid.Column="1" IsEnabled="{Binding IsTercero}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="5*" />
+                                        <ColumnDefinition Width="10*" />
+                                    </Grid.ColumnDefinitions>
+                                    <d:Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </d:Grid.RowDefinitions>
+                                    <Label Content="Nombres:" VerticalAlignment="Center" Height="22" />
+                                    <Label Content="Dirección:" VerticalContentAlignment="Center" Grid.Row="1" Grid.Column="0" />
+                                    <dxe:TextEdit Grid.Column="1" VerticalAlignment="Center"
+                                                  EditValue="{Binding SelectedCliente.NombreTercero}" Height="22" />
+                                    <dxe:TextEdit Grid.Column="1" Grid.Row="1"  VerticalAlignment="Center"
+                                                  EditValue="{Binding SelectedCliente.DireccionTercero}" Height="22" />
+                                </Grid>
+                            </dxlc:GroupBox>
+                        </Grid>
+                        <dxlc:GroupBox Header="Perfil Transaccional" Grid.Row="3" Margin="0,0,0,10">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <dxe:TextEdit
+                                    VerticalAlignment="Center" Label="Número total de operaciones al mes"
+                                    EditValue="{Binding SelectedCliente.TotalOperaciones}" Grid.Column="0"
+                                    Margin="0,0,5,0" />
+                                <dxe:TextEdit
+                                    VerticalAlignment="Center" Label="Monto mensual estimado a realizar"
+                                    EditValue="{Binding SelectedCliente.MontoMensual}" Grid.Column="1" Margin="5,0,0,0" />
+                            </Grid>
+                        </dxlc:GroupBox>
+                        <dxlc:GroupBox Header="Si va requerir pago con transferencia bancaria, indicar a continuación:"
+                                       Grid.Row="4">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <dxe:TextEdit
+                                    VerticalAlignment="Center" Margin="5,5,5,5" Label="Nombre Cuenta"
+                                    EditValue="{Binding SelectedCliente.NomCuenta}" />
+                                <dxe:TextEdit
+                                    VerticalAlignment="Center" Margin="5,0,5,0" Label="Número de cuenta"
+                                    EditValue="{Binding SelectedCliente.NumCuenta}" Grid.Column="1" />
+                                <dxe:TextEdit
+                                    VerticalAlignment="Center" Margin="5,0,5,0" Label="Banco"
+                                    EditValue="{Binding SelectedCliente.NomBanco}" Grid.Column="2" />
+                            </Grid>
+                        </dxlc:GroupBox>
                     </Grid>
                 </dx:DXTabItem>
             </dx:DXTabControl>
