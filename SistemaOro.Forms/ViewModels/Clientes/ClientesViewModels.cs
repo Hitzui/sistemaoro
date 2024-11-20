@@ -29,8 +29,10 @@ public class ClientesViewModels : BaseViewModel
         get => _selectedItem;
         set
         {
-            SetProperty(ref _selectedItem, value, nameof(SelectedItem));
-            VariablesGlobalesForm.Instance.SelectedCliente = value;
+            if (SetValue(ref _selectedItem, value))
+            {
+                VariablesGlobalesForm.Instance.SelectedCliente = _selectedItem;
+            }
         }
     }
 

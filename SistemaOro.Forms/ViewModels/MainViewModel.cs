@@ -274,7 +274,7 @@ namespace SistemaOro.Forms.ViewModels
             }
 
             var repositoryCliente = VariablesGlobales.Instance.UnityContainer.Resolve<IClienteRepository>();
-            var result = await repositoryCliente.Delete(VariablesGlobalesForm.Instance.SelectedCliente);
+            var result = await repositoryCliente.DeleteAsync(VariablesGlobalesForm.Instance.SelectedCliente);
             if (result)
             {
                 HelpersMessage.DialogWindow(ClienteMessages.TituloEliminarCliente, ClienteMessages.ClienteEliminadoSuccess).ShowDialog();

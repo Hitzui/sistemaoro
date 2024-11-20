@@ -19,13 +19,13 @@
         </StackPanel>
         <dxg:GridControl Grid.Row="1" x:Name="GridControlCliente" ItemsSource="{Binding ItemsSource}" 
                          RestoreStateKeyFieldName="Codcliente" RestoreStateOnSourceChange="True" 
-                         SelectedItem="{Binding SelectedCliente}">
+                         SelectedItem="{Binding SelectedCliente}" SelectionMode="Row">
             <dxg:GridControl.TotalSummary>
                 <dxg:GridSummaryItem Alignment="Right" SummaryType="Count"/>
             </dxg:GridControl.TotalSummary>
             <dxg:GridControl.View>
                 <dxg:TableView DataSourceRefreshCommand="{Binding DataSourceRefreshCommand}" 
-                               ShowFixedTotalSummary="True"/>
+                               ShowFixedTotalSummary="True" AllowEditing="False" ShowSearchPanelMode="Always"/>
             </dxg:GridControl.View>
             <dxg:GridColumn FieldName="Codcliente" Header="Cod. Cliente" IsSmart="True" ReadOnly="True" Width="150"/>
             <dxg:GridColumn FieldName="Nombres" IsSmart="True" Width="*"/>

@@ -1134,7 +1134,7 @@
             this.tableCell8.StylePriority.UseFont = false;
             this.tableCell8.StylePriority.UseTextAlignment = false;
             this.tableCell8.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
-            this.tableCell8.TextFormatString = "{0:C2}";
+            this.tableCell8.TextFormatString = "{0:N2}";
             this.tableCell8.Weight = 0.14943754078278876D;
             // 
             // tableCell9
@@ -1157,7 +1157,7 @@
             this.tableCell9.StylePriority.UseFont = false;
             this.tableCell9.StylePriority.UseTextAlignment = false;
             this.tableCell9.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
-            this.tableCell9.TextFormatString = "{0:C2}";
+            this.tableCell9.TextFormatString = "{0:N2}";
             this.tableCell9.Weight = 0.17142513541025306D;
             // 
             // tableCell10
@@ -1180,7 +1180,7 @@
             this.tableCell10.StylePriority.UseFont = false;
             this.tableCell10.StylePriority.UseTextAlignment = false;
             this.tableCell10.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
-            this.tableCell10.TextFormatString = "{0:C2}";
+            this.tableCell10.TextFormatString = "{0:N2}";
             this.tableCell10.Weight = 0.18016476902286463D;
             // 
             // Title

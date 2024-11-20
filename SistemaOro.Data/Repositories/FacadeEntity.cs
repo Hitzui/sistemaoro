@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 using SistemaOro.Data.Entities;
 using SistemaOro.Data.Exceptions;
 
@@ -9,6 +10,7 @@ namespace SistemaOro.Data.Repositories;
 public abstract class FacadeEntity<TEntity>(DataContext context) : ICrudRepository<TEntity>
     where TEntity : class
 {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private readonly DbSet<TEntity> _set = context.Set<TEntity>();
     
     public string ErrorSms { get; protected set; } = "";
@@ -45,7 +47,7 @@ public abstract class FacadeEntity<TEntity>(DataContext context) : ICrudReposito
                 mensaje2 = e.InnerException.Message;
             }
             ErrorSms = $"No existe en el cotexto actual la entidad. Error: {e.Message} {mensaje2}";
-            Console.WriteLine(ErrorSms);
+            Logger.Error(e, "Error en agregar FacadeEntity");
             context.ChangeTracker.Clear();
             return false;
         }
@@ -75,6 +77,7 @@ public abstract class FacadeEntity<TEntity>(DataContext context) : ICrudReposito
             }
             ErrorSms = $"Error: {e.Message} {mensaje2}";
             context.ChangeTracker.Clear();
+            Logger.Error(e, "Error en UpdateAsync FacadeEntity");
             return false;
         }
     }
@@ -97,6 +100,7 @@ public abstract class FacadeEntity<TEntity>(DataContext context) : ICrudReposito
             }
             ErrorSms = $"Error: {e.Message} {mensaje}";
             context.ChangeTracker.Clear();
+            Logger.Error(e, "Error en DeleteAsync FacadeEntity");
             return false;
         }
 
@@ -108,25 +112,50 @@ public abstract class FacadeEntity<TEntity>(DataContext context) : ICrudReposito
         return await context2.Set<TEntity>().AsNoTracking().ToListAsync();
     }
 
-    public IQueryable<TEntity> Get(
+    protected IQueryable<TEntity> Get(
         Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
         string includeProperties = "",
-        int? pageSize = null, int? pageNumber = null
+        int? pageSize = null,
+        int? pageNumber = null
     )
     {
         var query = _set.AsNoTracking();
 
-        if (filter is not null) query = query.Where(filter);
-
-        if (orderBy is not null) query = orderBy(query);
-
-        foreach (var property in includeProperties.Split(
-                     new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+        // Aplicar filtro, si existe
+        if (filter is not null)
         {
-            query = query.Include(property);
+            query = query.Where(filter);
         }
 
-        return pageNumber is not null && pageSize is not null ? query.Skip((pageNumber.Value - 1) * pageSize.Value).Take(pageSize.Value) : query;
+        // Aplicar orden, si existe
+        if (orderBy is not null)
+        {
+            query = orderBy(query);
+        }
+
+        // Incluir propiedades relacionadas
+        if (!string.IsNullOrWhiteSpace(includeProperties))
+        {
+            foreach (var property in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(property.Trim());
+            }
+        }
+
+        // Aplicar paginación si ambos parámetros están especificados y son válidos
+        if (pageNumber.HasValue && pageSize.HasValue && pageNumber > 0 && pageSize > 0)
+        {
+            query = query.Skip((pageNumber.Value - 1) * pageSize.Value).Take(pageSize.Value);
+        }
+
+        return query;
     }
+
+
+    protected Task<TEntity?> FindByProperty(Expression<Func<TEntity, bool>> predicate)
+    {
+        return _set.AsNoTracking().SingleOrDefaultAsync(predicate);
+    }
+
 }

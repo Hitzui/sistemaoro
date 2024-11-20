@@ -10,6 +10,7 @@ using SistemaOro.Data.Repositories;
 using System.Windows.Input;
 using DevExpress.Xpf.WindowsUI;
 using NLog;
+using SistemaOro.Forms.Models;
 using SistemaOro.Forms.Services.Mensajes;
 using Unity;
 using SistemaOro.Forms.Services.Helpers;
@@ -21,8 +22,8 @@ public class ClienteFormViewModel : BaseViewModel
     private IClienteRepository _clienteRepository;
     private ITipoDocumentoRepository _tipoDocumentoRepository;
     private bool _isNew;
-    private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    private Cliente? _cliente;
     public ClienteFormViewModel()
     {
         Title = "Detalle de Cliente";
@@ -47,9 +48,9 @@ public class ClienteFormViewModel : BaseViewModel
         set => SetValue(ref _tipoDocumento, value);
     }
 
-    private Cliente? _selectedCliente;
+    private DtoCliente? _selectedCliente;
 
-    public Cliente? SelectedCliente
+    public DtoCliente? SelectedCliente
     {
         get => _selectedCliente;
         private set => SetValue(ref _selectedCliente, value);
@@ -62,36 +63,46 @@ public class ClienteFormViewModel : BaseViewModel
             var tiposDocumentosFindAll = await _tipoDocumentoRepository.FindAll();
             if (tiposDocumentosFindAll.Count > 0)
             {
+                TipoDocumentos.Clear();
                 foreach (var tipoDocumento in tiposDocumentosFindAll)
                 {
                     TipoDocumentos.Add(tipoDocumento);
                 }
             }
+            else
+            {
+                HelpersMessage.MensajeErroResult("Error", $"No hay tipos de documentos registrados en sistemas {_tipoDocumentoRepository.ErrorSms}");
+                IsLoading = false;
+                return;
+            }
 
             if (cliente is not null)
             {
-                var findById = await _clienteRepository.FindById(cliente.Codcliente);
-                if (findById is null)
+                _cliente = await _clienteRepository.GetByIdAsync(cliente.Codcliente);
+                if (_cliente is null)
                 {
                     HelpersMessage.MensajeErroResult("Error", $"Se produjo el siguiente error: {_clienteRepository.ErrorSms}");
+                    IsLoading = false;
                     return;
                 }
 
-                SelectedCliente = findById;
-                SelectedTipoDocumento = findById.TipoDocumento;
+                SelectedCliente = new DtoCliente();
+                SelectedCliente = SelectedCliente.GetDtoCliente(_cliente);
+                SelectedTipoDocumento = tiposDocumentosFindAll.Find(documento => documento.Idtipodocumento == _cliente.Idtipodocumento);
                 _isNew = false;
-                NumeroCliente = findById.Codcliente;
+                NumeroCliente = _cliente.Codcliente;
             }
             else
             {
                 NumeroCliente = await _clienteRepository.CodCliente();
-                SelectedCliente = new Cliente
+                SelectedCliente = new DtoCliente()
                 {
                     Codcliente = NumeroCliente,
                     FNacimiento = DateTime.Now,
                     FIngreso = DateTime.Now,
                     FEmision = DateTime.Now,
-                    FVencimiento = DateTime.Now
+                    FVencimiento = DateTime.Now,
+                    Telefono = string.Empty
                 };
                 SelectedTipoDocumento = tiposDocumentosFindAll.ElementAt(0);
                 _isNew = true;
@@ -99,7 +110,8 @@ public class ClienteFormViewModel : BaseViewModel
         }
         catch (Exception ex)
         {
-            logger.Error(ex, "Ha ocurrido un error");
+            Logger.Error(ex, "Ha ocurrido un error");
+            HelpersMessage.MensajeErroResult("Error", ex.Message);
         }
 
         IsLoading = false;
@@ -157,15 +169,16 @@ public class ClienteFormViewModel : BaseViewModel
             return;
         }
 
-        SelectedCliente.Idtipodocumento = SelectedTipoDocumento.Idtipodocumento;
+        _cliente = SelectedCliente.GetCliente();
+        _cliente.Idtipodocumento = SelectedTipoDocumento.Idtipodocumento;
         bool save;
         if (!_isNew)
         {
-            save = await _clienteRepository.Update(SelectedCliente);
+            save = await _clienteRepository.UpdateAsync(_cliente);
         }
         else
         {
-            save = await _clienteRepository.Create(SelectedCliente);
+            save = await _clienteRepository.Create(_cliente);
         }
 
         if (save)
@@ -174,8 +187,7 @@ public class ClienteFormViewModel : BaseViewModel
         }
         else
         {
-            winuidialog.Title = MensajesGenericos.ErrorTitulo;
-            winuidialog.Content = new TextBlock { Text = $"{ClienteMessages.ClienteGuardarError}\n{_clienteRepository.ErrorSms}" };
+            HelpersMessage.MensajeErroResult(MensajesGenericos.ErrorTitulo, $"Se produjo el siguiente error: {_clienteRepository.ErrorSms}");
         }
 
         IsLoading = false;

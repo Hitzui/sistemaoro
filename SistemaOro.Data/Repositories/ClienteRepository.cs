@@ -1,20 +1,20 @@
 ﻿using System.Data;
-using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+using NLog;
 using SistemaOro.Data.Configuration;
 using SistemaOro.Data.Entities;
-using SistemaOro.Data.Libraries;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SistemaOro.Data.Repositories;
 
-public class ClienteRepository(IParametersRepository parametersRepository, DataContext context) : IClienteRepository
+public class ClienteRepository(DataContext context) : FacadeEntity<Cliente>(context), IClienteRepository
 {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
     public async Task<string> CodCliente()
     {
         var codcaja = ConfiguracionGeneral.Caja;
-        var codagencia = ConfiguracionGeneral.Agencia;
-        var findParameters = await parametersRepository.RecuperarParametros();
+        var findParameters = await context.Id.SingleOrDefaultAsync();
         if (findParameters is null)
         {
             ErrorSms = "No existen los parametros en la base de datos";
@@ -29,8 +29,7 @@ public class ClienteRepository(IParametersRepository parametersRepository, DataC
     {
         try
         {
-            context.Clientes.Add(cliente);
-            var findParameters = await parametersRepository.RecuperarParametros();
+            var findParameters = await context.Id.SingleOrDefaultAsync();
             if (findParameters is null)
             {
                 ErrorSms = "No existen los parametros en la base de datos";
@@ -38,9 +37,11 @@ public class ClienteRepository(IParametersRepository parametersRepository, DataC
             }
 
             findParameters.Codcliente += 1;
-            var result = await context.SaveChangesAsync() > 0;
-            if (result)
+            var save = await AddAsync(cliente);
+
+            if (save)
             {
+                context.ChangeTracker.Clear();
                 return true;
             }
 
@@ -49,13 +50,13 @@ public class ClienteRepository(IParametersRepository parametersRepository, DataC
         }
         catch (Exception e)
         {
-            Debug.WriteLine(e);
             var mensaje = "";
             if (e.InnerException is not null)
             {
                 mensaje = e.InnerException.Message;
             }
 
+            Logger.Error(e, "Ha ocurrido un error en el metodo Create");
             ErrorSms = $"No fue posible crear el cliente en la base de datos {e.Message} {mensaje}";
             return false;
         }
@@ -65,14 +66,6 @@ public class ClienteRepository(IParametersRepository parametersRepository, DataC
     {
         try
         {
-            var findCliente = await FindById(cliente.Codcliente);
-            if (findCliente is null)
-            {
-                ErrorSms = "No existe el cliente a actualizar los datos";
-                context.ChangeTracker.Clear();
-                return false;
-            }
-
             context.Clientes.Update(cliente);
             var result = await context.SaveChangesAsync();
             context.ChangeTracker.Clear();
@@ -80,31 +73,38 @@ public class ClienteRepository(IParametersRepository parametersRepository, DataC
         }
         catch (Exception e)
         {
-            Debug.WriteLine(e.Message);
-            ErrorSms = e.Message;
-            context.ChangeTracker.Clear();
+            var mensaje = "";
+            if (e.InnerException is not null)
+            {
+                mensaje = e.InnerException.Message;
+            }
+
+            ErrorSms = $"No fue posible actualizar el cliente en la base de datos {e.Message} {mensaje}";
+            Logger.Error(e, "Ha ocurrido un error en el metodo Update");
             return false;
         }
     }
 
     public async Task<bool> Delete(Cliente cliente)
     {
-        var find = await FindById(cliente.Codcliente);
-        if (find is null)
+        try
         {
-            ErrorSms = $"No existe el cliente con el codigo {cliente.Codcliente} en la base de datos";
+            context.Clientes.Remove(cliente);
+            var result = await context.SaveChangesAsync() > 0;
+            if (result)
+            {
+                return true;
+            }
+
+            ErrorSms = $"No fue posible eliminar los datos del cliente con el codigo {cliente.Codcliente} en la base de datos";
             return false;
         }
-
-        context.Clientes.Remove(cliente);
-        var result = await context.SaveChangesAsync() > 0;
-        if (result)
+        catch (Exception e)
         {
-            return true;
+            ErrorSms = e.Message;
+            Logger.Error(e, "Ha ocurrido un error en el metodo Update");
+            return false;
         }
-
-        ErrorSms = $"No fue posible eliminar los datos del cliente con el codigo {cliente.Codcliente} en la base de datos";
-        return false;
     }
 
 
@@ -116,56 +116,55 @@ public class ClienteRepository(IParametersRepository parametersRepository, DataC
 
     public Task<Cliente?> FindById(string codcliente)
     {
-        return context.Clientes.AsNoTracking()
+        return context.Clientes
             .Include(cliente => cliente.TipoDocumento)
             .SingleOrDefaultAsync(cliente => cliente.Codcliente == codcliente);
     }
 
     public Task<List<Cliente>> FindAll()
     {
-        return context.Clientes.OrderBy(cliente => cliente.Nombres).ToListAsync();
+        return Get(orderBy: query => query.OrderBy(cliente => cliente.Nombres)).ToListAsync();
     }
 
-    public async Task<Cliente?> FindByNombre(string nombre)
+    public Task<Cliente?> FindByNombre(string nombre)
     {
-        return await context.Clientes.FirstOrDefaultAsync(cliente => cliente.Nombres == nombre);
+        return FindByProperty(cliente => cliente.Nombres == nombre);
     }
 
-    public async Task<Cliente?> FindByApellido(string apellido)
+    public Task<Cliente?> FindByApellido(string apellido)
     {
-        return await context.Clientes.FirstOrDefaultAsync(cliente => cliente.Apellidos == apellido);
+        return FindByProperty(cliente => cliente.Apellidos == apellido);
     }
 
-    public async Task<Cliente?> FindByCedula(string cedula)
+    public Task<Cliente?> FindByCedula(string cedula)
     {
-        return await context.Clientes.FirstOrDefaultAsync(cliente => cliente.Numcedula == cedula);
+        return FindByProperty(cliente => cliente.Numcedula == cedula);
     }
 
-    public async Task<List<Cliente>> FilterByName(string nombre)
+    public Task<List<Cliente>> FilterByName(string nombre)
     {
-        return await context.Clientes.Where(cliente => cliente.Nombres.Contains(nombre)).ToListAsync();
+        return Get(filter: cliente => cliente.Nombres.Contains(nombre)).ToListAsync();
     }
 
-    public async Task<List<Cliente>> FilterByNameAndPagination(string nombre, int page = 0)
+    public Task<List<Cliente>> FilterByNameAndPagination(string nombre, int page = 0)
     {
-        return await new GenericRepo<Cliente>().Get(
-            f => f.Nombres.Contains(nombre),
-            o => o.OrderBy(p => p.Nombres),
-            "", page, 10
+        return Get(
+            filter: f => f.Nombres.Contains(nombre),
+            orderBy: o => o.OrderBy(p => p.Nombres),
+            pageSize: 10,
+            pageNumber: page
         ).ToListAsync();
     }
 
     public Task<List<Cliente>> FilterByCodigo(string codigo)
     {
-        return context.Clientes.Where(cliente => cliente.Codcliente.Contains(codigo)).ToListAsync();
+        return Get(filter: cliente => cliente.Codcliente.Contains(codigo)).ToListAsync();
     }
 
     public Task<List<Cliente>> FilterByApellido(string apellido)
     {
-        return context.Clientes.Where(cliente => cliente.Apellidos!.Contains(apellido)).ToListAsync();
+        return Get(filter: cliente => cliente.Apellidos!.Contains(apellido)).ToListAsync();
     }
-
-    public string? ErrorSms { get; private set; }
 
     public async Task<bool> ExisteCliente(string codcliente)
     {
@@ -204,6 +203,6 @@ public class ClienteRepository(IParametersRepository parametersRepository, DataC
 
     public Task<List<Cliente>> FilterByNameAndApellido(string filtro)
     {
-        return context.Clientes.Where(cliente => cliente.Nombres.Contains(filtro) || cliente.Apellidos!.Contains(filtro)).ToListAsync();
+        return Get(filter: cliente => cliente.Nombres.Contains(filtro) || cliente.Apellidos!.Contains(filtro)).ToListAsync();
     }
 }

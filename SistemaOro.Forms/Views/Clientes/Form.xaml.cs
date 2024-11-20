@@ -18,7 +18,7 @@ public partial class Form : Window
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
-        _viewModel.Load(SelectedCliente);
+        
     }
 
     private void BtnSave_Click(object sender, RoutedEventArgs e)

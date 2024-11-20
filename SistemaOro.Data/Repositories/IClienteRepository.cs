@@ -3,15 +3,11 @@ using SistemaOro.Data.Entities;
 
 namespace SistemaOro.Data.Repositories;
 
-public interface IClienteRepository
+public interface IClienteRepository : ICrudRepository<Cliente>
 {
     Task<string> CodCliente();
     Task<bool> Create(Cliente cliente);
-    Task<bool> Update(Cliente cliente);
-    Task<bool> Delete(Cliente cliente);
     Task<List<Cliente>> FindAll();
-    Task<Cliente?> FindById(string codcliente);
-
     Task<Cliente?> FindByNombre(string nombre);
     Task<Cliente?> FindByApellido(string apellido);
     Task<Cliente?> FindByCedula(string cedula);

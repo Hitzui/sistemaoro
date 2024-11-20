@@ -225,13 +225,13 @@ public class DtoCliente : ViewModelBase, IDataErrorInfo
                     }
                     break;
                 case nameof(Numcedula):
-                    if (string.IsNullOrWhiteSpace(Email))
+                    if (string.IsNullOrWhiteSpace(Numcedula))
                     {
                         error = "El número de identificación es requerido.";
                     }
                     break;
                 case nameof(Celular):
-                    if (string.IsNullOrWhiteSpace(Email))
+                    if (string.IsNullOrWhiteSpace(Celular))
                     {
                         error = "El número de celular es requerido.";
                     }

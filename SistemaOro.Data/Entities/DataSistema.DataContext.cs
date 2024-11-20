@@ -51,7 +51,8 @@ namespace SistemaOro.Data.Entities
             {
                 optionsBuilder.UseSqlServer(GetConnectionString("ConnectionString"));
             }
-            CustomizeConfiguration(ref optionsBuilder);
+
+            optionsBuilder.EnableSensitiveDataLogging();
             base.OnConfiguring(optionsBuilder);
         }
 
