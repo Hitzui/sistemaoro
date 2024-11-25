@@ -44,19 +44,19 @@ public class PrecioKilateViewModel : BaseViewModel
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(item.DescKilate))
+        if (string.IsNullOrWhiteSpace(item.Descripcion))
         {
             args.Result = new ValidationErrorInfo("Descripcion no puede estar vacia", ValidationErrorType.Critical);
             return;
         }
 
-        if (decimal.Compare(item.KilatePeso, decimal.Zero) <= 0)
+        if (decimal.Compare(item.Peso, decimal.Zero) <= 0)
         {
             args.Result = new ValidationErrorInfo("El peso debe ser mayor a cero", ValidationErrorType.Critical);
             return;
         }
 
-        if (decimal.Compare(item.PrecioKilate1, decimal.Zero) <= 0)
+        if (decimal.Compare(item.Precio, decimal.Zero) <= 0)
         {
             args.Result = new ValidationErrorInfo("El precio debe ser mayor a cero", ValidationErrorType.Critical);
             return;
@@ -74,7 +74,7 @@ public class PrecioKilateViewModel : BaseViewModel
 
         if (save)
         {
-            HelpersMessage.MensajeConfirmacionResult("Precio", "Se han guardado los cambios");
+            HelpersMessage.MensajeInformacionResult("Precio", "Se han guardado los cambios");
         }
         else
         {
@@ -89,7 +89,7 @@ public class PrecioKilateViewModel : BaseViewModel
         if (result is MessageBoxResult.Yes or MessageBoxResult.OK)
         {
             var item = (PrecioKilate)args.Items.Single();
-            await _preciosKilatesRepository.DeleteAsync(item.DescKilate);
+            await _preciosKilatesRepository.DeleteAsync(item.IdPrecioKilate);
         }
 
         DataSourceRefresh(new DataSourceRefreshArgs());

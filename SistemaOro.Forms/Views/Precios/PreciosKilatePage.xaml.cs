@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using SistemaOro.Forms.ViewModels.Precios;
 
 namespace SistemaOro.Forms.Views.Precios
 {
@@ -22,6 +23,8 @@ namespace SistemaOro.Forms.Views.Precios
     {
         public PreciosKilatePage()
         {
+            var viewModel = new PrecioKilateViewModel();
+            DataContext = viewModel;
             InitializeComponent();
         }
     }

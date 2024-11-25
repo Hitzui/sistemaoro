@@ -1,13 +1,20 @@
-﻿using SistemaOro.Data.Entities;
+﻿using System;
+using SistemaOro.Data.Entities;
 using DevExpress.Mvvm.DataAnnotations;
 using System.Linq;
 using System.Collections.Generic;
 using DevExpress.Mvvm.Xpf;
+using NLog;
+using SistemaOro.Data.Libraries;
+using SistemaOro.Data.Repositories;
+using Unity;
 
 namespace SistemaOro.Forms.ViewModels.TipoDocumento;
 
 public class TipoDocumentoViewModel : BaseViewModel
 {
+    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
     public TipoDocumentoViewModel()
     {
         Title = "Lista de tipos de documentos";
@@ -32,12 +39,19 @@ public class TipoDocumentoViewModel : BaseViewModel
     }
 
     [Command]
-    public void ValidateRow(RowValidationArgs args)
+    public async void ValidateRow(RowValidationArgs args)
     {
-        var item = (Data.Entities.TipoDocumento)args.Item;
-        if (args.IsNewItem)
-            _context.TipoDocumentos.Add(item);
-        _context.SaveChanges();
+        try
+        {
+            var item = (Data.Entities.TipoDocumento)args.Item;
+            if (args.IsNewItem)
+                _context.TipoDocumentos.Add(item);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e, "Error validating data");
+        }
     }
 
     [Command]

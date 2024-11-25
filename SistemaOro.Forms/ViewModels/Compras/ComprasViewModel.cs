@@ -7,6 +7,7 @@ using DevExpress.Data;
 using DevExpress.DataAccess.Sql;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
+using NLog;
 using SistemaOro.Data.Dto;
 using SistemaOro.Data.Entities;
 using SistemaOro.Data.Libraries;
@@ -21,7 +22,7 @@ namespace SistemaOro.Forms.ViewModels.Compras;
 public class ComprasViewModel : BaseViewModel
 {
     private readonly ICompraRepository _compraRepository;
-
+    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
     public ComprasViewModel()
     {
         _compraRepository = VariablesGlobales.Instance.UnityContainer.Resolve<ICompraRepository>();
@@ -67,6 +68,14 @@ public class ComprasViewModel : BaseViewModel
         }
 
         var findCompra = await _compraRepository.DetalleCompraImprimir(SelectedCompra.Numcompra!);
+        _logger.Info($"Numero de compra {SelectedCompra.Numcompra} - Cantidad de datos en la lista: {findCompra.Count}");
+        if (findCompra.Count>0)
+        {
+            foreach (var detalleCompra in findCompra)
+            {
+                _logger.Info($"Datos: {detalleCompra.Numcompra} - {detalleCompra.Nocontrato}");
+            }
+        }
         //Reporte Anexo
         var reporteAnexo = new ReporteAnexo();
         reporteAnexo.DataSource = findCompra;
@@ -79,6 +88,10 @@ public class ComprasViewModel : BaseViewModel
         var reporteContrantoPrestamo = new ReporteContrantoPrestamo();
         reporteContrantoPrestamo.DataSource = findCompra;
         HelpersMethods.LoadReport(reporteContrantoPrestamo, "Reporte de Contrato de Prestamo");
+        //Reporte Comprobante de compra
+        var reporteComprobanteCompra = new ReporteComprobanteCompra();
+        reporteComprobanteCompra.Parameters["parNumcompra"].Value = SelectedCompra.Numcompra;
+        HelpersMethods.LoadReport(reporteComprobanteCompra);
     }
 
     public async void Load()

@@ -15,4 +15,6 @@ public interface IPreciosKilatesRepository : ICrudRepository<PrecioKilate>
     Task<CierrePrecio?> FindByCierrePrecio(int codCierre);
 
     Task<List<CierrePrecio>> FindByClienteList(string codCliente);
+
+    Task<bool> ActualizarPreciosGuardados(TipoCambio tipoCambio);
 }

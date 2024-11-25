@@ -11,7 +11,7 @@
       x:Class="SistemaOro.Forms.Views.Cajas.ReportesMaestroCajaPage"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="{Binding Title}" Loaded="Page_Loaded">
+      Title="{Binding Title}" Loaded="Page_Loaded" Background="White">
     <Page.DataContext>
         <cajas:ReportesMaestroCajaViewModel/>
     </Page.DataContext>
@@ -24,7 +24,7 @@
         <RadioButton Content="Movimientos de cajas" HorizontalAlignment="Left" Margin="351,46,0,0" VerticalAlignment="Top" IsChecked="True"/>
         <RadioButton Content="Consolidado de la caja" HorizontalAlignment="Left" Margin="351,86,0,0" VerticalAlignment="Top"/>
 
-        <dx:SimpleButton Command="{Binding ReportCommand}" Content="Generar Reporte" HorizontalAlignment="Left" Height="30" Margin="555,46,0,0" VerticalAlignment="Top" Width="150" Glyph="{dx:DXImage SvgImages/Business Objects/BO_Validation.svg}"/>
+        <dx:SimpleButton Command="{Binding ReportCommand}" Content="Generar Reporte" HorizontalAlignment="Left" Height="30" Margin="555,46,0,0" VerticalAlignment="Top" Width="150" Glyph="{dx:DXImage SvgImages/Print/Print.svg}"/>
 
         <dxg:GridControl ItemsSource="{Binding MovimientosCajas}" AutoGenerateColumns="None" EnableSmartColumnsGeneration="True" Margin="0,148,0,0">
             <dxg:GridControl.View>

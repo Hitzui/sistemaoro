@@ -719,14 +719,17 @@
     </property>
   </class>
   <class name="PrecioKilate" entity-set="PrecioKilates" p1:Guid="a4a60d81-1978-4cb9-84b9-09b893009bcd">
-    <id name="DescKilate" type="String" p1:ValidateMaxLength="50" p1:ValidateRequired="true" p1:Guid="43f0efc2-d041-4559-a645-43796e056f7f">
-      <column name="" length="50" p1:unicode="False" />
+    <id name="IdPrecioKilate" type="Int32" value-generated="OnAdd" p1:ValidateRequired="true" p1:Guid="dc11bf8b-9103-4c12-b648-84c10db100ed">
+      <column name="IdPrecioKilate" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
     </id>
-    <property name="KilatePeso" type="Decimal" p1:ValidateRequired="true" p1:Guid="6a128ca5-f1a8-477a-8fa8-397ed44dc77d">
-      <column name="" precision="18" scale="2" p1:unicode="False" />
+    <property name="Descripcion" type="String" p1:ValidateMaxLength="50" p1:ValidateRequired="true" p1:Guid="beb8cdd9-1295-4966-981a-fd8cbe19f389">
+      <column name="Descripcion" not-null="True" length="50" sql-type="nvarchar" p1:unicode="True" />
     </property>
-    <property name="PrecioKilate1" type="Decimal" p1:ValidateRequired="true" p1:Guid="db86d37a-2c7a-404b-9e8a-f2f2e1c65d14">
-      <column name="" precision="18" scale="2" p1:unicode="False" />
+    <property name="Peso" type="Decimal" p1:ValidateRequired="true" p1:Guid="397b816b-f6f5-47e7-b31b-a23f8453a2ad">
+      <column name="Peso" not-null="True" precision="18" scale="2" sql-type="decimal" p1:unicode="False" />
+    </property>
+    <property name="Precio" type="Decimal" p1:ValidateRequired="true" p1:Guid="4e8d300b-0b3e-4d03-8bb8-338baf6e51d0">
+      <column name="Precio" not-null="True" precision="18" scale="2" sql-type="decimal" p1:unicode="False" />
     </property>
   </class>
   <class name="Precio" entity-set="Precios" p1:Guid="57c570c7-7f19-44bd-a43b-c4bc3569a771">

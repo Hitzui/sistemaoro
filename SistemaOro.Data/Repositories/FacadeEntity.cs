@@ -10,7 +10,7 @@ namespace SistemaOro.Data.Repositories;
 public abstract class FacadeEntity<TEntity>(DataContext context) : ICrudRepository<TEntity>
     where TEntity : class
 {
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    private readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private readonly DbSet<TEntity> _set = context.Set<TEntity>();
     
     public string ErrorSms { get; protected set; } = "";
@@ -55,7 +55,6 @@ public abstract class FacadeEntity<TEntity>(DataContext context) : ICrudReposito
 
     public virtual async Task<bool> UpdateAsync(TEntity? entity)
     {
-        context.ChangeTracker.Clear();
         try
         {
             if (entity is null)
