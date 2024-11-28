@@ -98,4 +98,16 @@ public class ComprasViewModel : BaseViewModel
     {
         ComprasClientesList = await _compraRepository.FindComprasClientes();
     }
+
+    public void ImprimirTicketCompra()
+    {
+        if (SelectedCompra is null)
+        {
+            HelpersMessage.MensajeErroResult("Imprimir", "No hay una compra seleccionada a imprimir");
+            return;
+        }
+        var reporteCompraTicket = new ReporteCompraTicket();
+        reporteCompraTicket.Parameters["parNumeroCompra"].Value = SelectedCompra.Numcompra;
+        HelpersMethods.LoadReport(reporteCompraTicket);
+    }
 }

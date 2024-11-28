@@ -27,9 +27,10 @@ namespace SistemaOro.Forms.Views.Clientes
         {
             if (!string.IsNullOrEmpty(e.SearchString))
             {
-                var filter = e.SearchString.ToLower();
-                e.Filter = CriteriaOperator.FromLambda<Cliente>(cliente => cliente.Nombres.Contains(filter)
-                                                                           || cliente.Apellidos!.Contains(filter)
+                var filter = e.SearchString.Trim().ToLower();
+                e.Filter = CriteriaOperator.FromLambda<Cliente>(cliente => cliente.Codcliente.Contains(filter)
+                                                                           || cliente.Nombres.Contains(filter)
+                                                                           || (cliente.Apellidos != null && cliente.Apellidos.Contains(filter))
                                                                            || cliente.Numcedula.Contains(filter));
             }
 

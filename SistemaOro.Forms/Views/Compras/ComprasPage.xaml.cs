@@ -42,5 +42,10 @@ namespace SistemaOro.Forms.Views.Compras
         {
             ((ComprasViewModel)DataContext).EditarCompraCommand(NavigationService);
         }
+
+        private void ImprimirTicket_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            ((ComprasViewModel)DataContext).ImprimirTicketCompra();
+        }
     }
 }

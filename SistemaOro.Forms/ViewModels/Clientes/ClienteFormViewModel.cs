@@ -215,19 +215,12 @@ public partial class ClienteFormViewModel : BaseViewModel
 
         _cliente = SelectedCliente.GetCliente();
         _cliente.Idtipodocumento = SelectedTipoDocumento.Idtipodocumento;
-        bool save;
-        if (!_isNew)
-        {
-            save = await _clienteRepository.UpdateAsync(_cliente);
-        }
-        else
-        {
-            save = await _clienteRepository.Create(_cliente);
-        }
+        var save = _isNew ? await _clienteRepository.Create(_cliente) : await _clienteRepository.UpdateAsync(_cliente);
 
         if (save)
         {
             winuidialog.Content = new TextBlock { Text = ClienteMessages.DatosGuardadosSuccess };
+            winuidialog.ShowDialog();
         }
         else
         {
@@ -235,7 +228,6 @@ public partial class ClienteFormViewModel : BaseViewModel
         }
 
         IsLoading = false;
-        winuidialog.ShowDialog();
     }
 
     private bool Validate()

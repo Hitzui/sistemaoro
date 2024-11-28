@@ -499,9 +499,12 @@
     </property>
   </class>
   <class name="Id" entity-set="Id" p1:Guid="37b45daa-256a-42d3-9cb8-8a3cd85f2ad9">
-    <id name="Codcliente" type="Int32" p1:ValidateRequired="true" p1:Guid="672e9716-5763-498d-af95-9e0c197f4bac">
-      <column name="" precision="10" scale="0" p1:unicode="False" />
+    <id name="Idparametro" type="Int32" p1:ValidateRequired="true" p1:Guid="af46fb91-d890-4058-a86d-c94c57a4b8e0">
+      <column name="Idparametro" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
     </id>
+    <property name="Codcliente" type="Int32" p1:ValidateRequired="true" p1:Guid="672e9716-5763-498d-af95-9e0c197f4bac">
+      <column name="" precision="10" scale="0" p1:unicode="False" />
+    </property>
     <property name="Codagencia" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="2db0a040-21be-4672-a508-10345909954a">
       <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>

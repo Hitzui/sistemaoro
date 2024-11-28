@@ -57,6 +57,7 @@ public abstract class FacadeEntity<TEntity>(DataContext context) : ICrudReposito
     {
         try
         {
+            context.ChangeTracker.Clear();
             if (entity is null)
             {
                 throw new EntityValidationException("Debe especificar la entidad a actualizar");

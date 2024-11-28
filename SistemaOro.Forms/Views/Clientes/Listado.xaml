@@ -3,14 +3,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:views="clr-namespace:SistemaOro.Forms.Views"
-    xmlns:local="clr-namespace:SistemaOro.Forms.ViewModels"
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-    xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
-    xmlns:entities="clr-namespace:SistemaOro.Data.Entities;assembly=SistemaOro.Data"
     xmlns:clientes="clr-namespace:SistemaOro.Forms.ViewModels.Clientes"
-    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
     x:Class="SistemaOro.Forms.Views.Clientes.Listado"
     mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800"
@@ -24,20 +19,13 @@
                          SelectedItem="{Binding SelectedItem}"
                          SelectionMode="Row" RestoreStateKeyFieldName="Codcliente"
                          RestoreStateOnSourceChange="True"
-                         ShowLoadingPanel="True" Grid.Row="0">
+                         Grid.Row="0" ItemsSource="{Binding ItemsSource}">
             <dxg:GridControl.TotalSummary>
-                <dxg:GridSummaryItem Alignment="Right" SummaryType="Count" />
+                <dxg:GridSummaryItem Alignment="Right" SummaryType="Count"/>
             </dxg:GridControl.TotalSummary>
-            <dxg:GridControl.ItemsSource>
-                <dx:PagedAsyncSource ElementType="{x:Type entities:Cliente}"
-                                     KeyProperty="Codcliente"
-                                     PageNavigationMode="ArbitraryWithTotalPageCount"
-                                     FetchPageCommand="{Binding FetchPageCommand}"
-                                     GetTotalSummariesCommand="{Binding GetTotalSummariesCommand}" />
-            </dxg:GridControl.ItemsSource>
             <dxg:GridControl.View>
                 <dxg:TableView ShowFixedTotalSummary="True" ShowSearchPanelMode="Always"
-                               SearchStringToFilterCriteria="OnSearchStringToFilterCriteria">
+                               DataSourceRefreshCommand="{Binding DataSourceRefreshCommand}">
                     <dxg:TableView.RowCellMenuCustomizations>
                         <dxb:BarButtonItem Content="Editar"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Edit.svg}"
@@ -49,15 +37,15 @@
                     </dxg:TableView.RowCellMenuCustomizations>
                 </dxg:TableView>
             </dxg:GridControl.View>
-            <dxg:GridColumn FieldName="Codcliente" IsSmart="True" ReadOnly="True" />
-            <dxg:GridColumn FieldName="Nombres" IsSmart="True" AllowBestFit="True" BestFitMode="AllRows" />
-            <dxg:GridColumn FieldName="Apellidos" IsSmart="True" AllowBestFit="True" BestFitMode="AllRows" />
-            <dxg:GridColumn FieldName="Numcedula" IsSmart="True" AllowBestFit="True" BestFitMode="AllRows" />
-            <dxg:GridColumn FieldName="Direccion" IsSmart="True" Width="400" />
-            <dxg:GridColumn FieldName="Ciudad" IsSmart="True" />
-            <dxg:GridColumn FieldName="Telefono" IsSmart="True" />
-            <dxg:GridColumn FieldName="Celular" IsSmart="True" />
-            <dxg:GridColumn FieldName="Email" IsSmart="True" />
+            <dxg:GridColumn Header="Codigo Cliente"  FieldName="Codcliente" IsSmart="True" ReadOnly="True" Width="*"/>
+            <dxg:GridColumn FieldName="Nombres" IsSmart="True" Width="*"/>
+            <dxg:GridColumn FieldName="Apellidos" IsSmart="True" Width="*"/>
+            <dxg:GridColumn Header="Identificacion" FieldName="Numcedula" IsSmart="True" Width="*"/>
+            <dxg:GridColumn FieldName="Direccion" IsSmart="True" Width="*"/>
+            <dxg:GridColumn FieldName="Telefono" IsSmart="True" Width="*"/>
+            <dxg:GridColumn FieldName="Telefono" IsSmart="True" Width="*"/>
+            <dxg:GridColumn FieldName="Celular" IsSmart="True" Width="*" />
+            <dxg:GridColumn FieldName="Email" IsSmart="True" Width="*"/>
         </dxg:GridControl>
     </Grid>
 

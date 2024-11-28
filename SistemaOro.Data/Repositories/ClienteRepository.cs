@@ -27,8 +27,10 @@ public class ClienteRepository(DataContext context) : FacadeEntity<Cliente>(cont
 
     public async Task<bool> Create(Cliente cliente)
     {
+        await using var tx = await context.Database.BeginTransactionAsync();
         try
         {
+            context.ChangeTracker.Clear();
             var findParameters = await context.Id.SingleOrDefaultAsync();
             if (findParameters is null)
             {
@@ -37,16 +39,12 @@ public class ClienteRepository(DataContext context) : FacadeEntity<Cliente>(cont
             }
 
             findParameters.Codcliente += 1;
-            var save = await AddAsync(cliente);
-
-            if (save)
-            {
-                context.ChangeTracker.Clear();
-                return true;
-            }
-
-            ErrorSms = "No fue posible crear los datos del cliente en el sistema.";
-            return false;
+            await context.AddAsync(cliente);
+            await context.SaveChangesAsync();
+            context.ChangeTracker.Clear();
+            Logger.Info($"Se han guardado los datos del cliente {DateTime.Now}");
+            await tx.CommitAsync();
+            return true;
         }
         catch (Exception e)
         {
@@ -58,6 +56,7 @@ public class ClienteRepository(DataContext context) : FacadeEntity<Cliente>(cont
 
             Logger.Error(e, "Ha ocurrido un error en el metodo Create");
             ErrorSms = $"No fue posible crear el cliente en la base de datos {e.Message} {mensaje}";
+            await tx.RollbackAsync();
             return false;
         }
     }

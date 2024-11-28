@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using SistemaOro.Data.Repositories;
 using Unity;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace SistemaOro.Forms.ViewModels.Clientes;
 
@@ -60,5 +62,26 @@ public class ClientesViewModels : BaseViewModel
             var queryable = context.Clientes.Where(MakeFilterExpression((CriteriaOperator)args.Filter));
             return queryable.GetSummaries(args.Summaries);
         });
+    }
+    DataContext _Context;
+    IList<Cliente> _ItemsSource;
+    public IList<Cliente> ItemsSource
+    {
+        get
+        {
+            if (_ItemsSource == null && !DevExpress.Mvvm.ViewModelBase.IsInDesignMode)
+            {
+                _Context = new DataContext();
+                _ItemsSource = _Context.Clientes.AsNoTracking().ToList();
+            }
+            return _ItemsSource;
+        }
+    }
+    [Command]
+    public void DataSourceRefresh(DataSourceRefreshArgs args)
+    {
+        _ItemsSource = null;
+        _Context = null;
+        RaisePropertyChanged(nameof(ItemsSource));
     }
 }

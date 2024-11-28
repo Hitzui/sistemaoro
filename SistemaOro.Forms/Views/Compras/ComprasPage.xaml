@@ -23,6 +23,7 @@
                     <dxg:TableView.RowCellMenuCustomizations>  
                         <dxb:BarButtonItem x:Name="EditarCompraItem" Content="Editar" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Edit.svg}" ItemClick="EditarCompraItem_OnItemClick"/>  
                         <dxb:BarButtonItem ItemClick="BarItem_OnItemClick"  Content="Imprimir" Glyph="{dx:DXImage SvgImages/Dashboards/Print.svg}"/>  
+                        <dxb:BarButtonItem x:Name="ImprimirTicket" Content="Imprimir Ticket" Glyph="{dx:DXImage SvgImages/Dashboards/Print.svg}" ItemClick="ImprimirTicket_ItemClick"/>  
                         <dxb:BarButtonItem x:Name="DeleteCompraItem" Content="Delete" Glyph="{dx:DXImage SvgImages/HybridDemoIcons/BottomPanel/HybridDemo_Delete.svg}"/>  
                     </dxg:TableView.RowCellMenuCustomizations>  
                 </dxg:TableView>
