@@ -19,14 +19,12 @@ using SistemaOro.Forms.ViewModels.Clientes;
 using SistemaOro.Forms.Views.Clientes;
 using static System.Decimal;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using DevExpress.Mvvm.Native;
 using SistemaOro.Forms.Views.Reportes.Compras;
 using SistemaOro.Data.Dto;
 using SistemaOro.Forms.Views;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.WindowsUI;
-using DevExpress.XtraEditors;
 using NLog;
 
 namespace SistemaOro.Forms.ViewModels.Compras
@@ -53,6 +51,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
             _tipoCambioRepository = VariablesGlobales.Instance.UnityContainer.Resolve<ITipoCambioRepository>();
             _tipoPrecioRepository = VariablesGlobalesForm.Instance.DtoTipoPrecioRepository;
             _codagencia = VariablesGlobalesForm.Instance.Agencia!.Codagencia;
+            _itemsSource = new ObservableCollection<DetCompra>();
         }
 
         private void OnSelectClienteCommand()
@@ -82,20 +81,20 @@ namespace SistemaOro.Forms.ViewModels.Compras
 
                 var message = new DXMessageBoxService();
                 var linea = ItemsSource.Count + 1;
-                if (ItemsSource.Count > 0)
+                /*if (ItemsSource.Count > 0)
                 {
                     if (ItemsSource.Any(compra => compra.Kilate.Equals(SelectedPrecioKilate.Descripcion)))
                     {
                         message.ShowMessage("Ya está ingresando el Quilate seleccionado", "Agregar");
                         return;
                     }
-                }
+                }*/
 
                 var valorTipoCambio = Zero;
                 var tipoCambio = await _tipoCambioRepository.FindByDateNow();
                 if (tipoCambio is not null)
                 {
-                    valorTipoCambio = Math.Round(tipoCambio.Tipocambio, 2);
+                    valorTipoCambio = HelpersMethods.RedondeoHaciaArriba(tipoCambio.Tipocambio);
                 }
 
                 if (SelectedMoneda is not null)
@@ -117,9 +116,9 @@ namespace SistemaOro.Forms.ViewModels.Compras
                 {
                     Importe = Importe,
                     Codagencia = _codagencia,
-                    Descripcion = "",
+                    Descripcion = string.Empty,
                     Fecha = Fecha,
-                    Kilate = SelectedPrecioKilate.Descripcion,
+                    Kilate = $"{SelectedPrecioKilate.Peso}",
                     Kilshowdoc = $"{SelectedPrecioKilate.Peso} kilate",
                     Linea = linea,
                     Numcompra = NumeroCompra!,
@@ -209,7 +208,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
 
         public decimal Peso
         {
-            get => _peso;
+            get => HelpersMethods.RedondeoHaciaArriba(_peso);
             set => SetValue(ref _peso, value, changedCallback: NotifyImporteChanged());
         }
 
@@ -217,7 +216,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
 
         public decimal Precio
         {
-            get => _precio;
+            get => HelpersMethods.RedondeoHaciaArriba(_precio);
             set => SetValue(ref _precio, value, changedCallback: NotifyImporteChanged());
         }
 
@@ -225,7 +224,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
 
         public decimal Importe
         {
-            get => _importe;
+            get => HelpersMethods.RedondeoHaciaArriba(_importe);
             set => SetValue(ref _importe, value);
         }
 
@@ -233,24 +232,16 @@ namespace SistemaOro.Forms.ViewModels.Compras
 
         public decimal Total
         {
-            get => _total;
-            set
-            {
-                var t = Math.Floor(value * 100) / 100;
-                SetValue(ref _total, t);
-            }
+            get => HelpersMethods.RedondeoHaciaArriba(_total);
+            set => SetValue(ref _total, value);
         }
 
         private decimal _subTotal = Zero;
 
         public decimal SubTotal
         {
-            get => _subTotal;
-            set
-            {
-                var t = Math.Floor(value * 100) / 100;
-                SetValue(ref _subTotal, t);
-            }
+            get => HelpersMethods.RedondeoHaciaArriba(_subTotal);
+            set => SetValue(ref _subTotal, value);
         }
 
         public decimal MontoEfectivo
@@ -366,7 +357,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
 
                 var tipoCambio = await _tipoCambioRepository.FindByDateNow();
                 var tipoCambioValue = One;
-                if (tipoCambio is not null) tipoCambioValue = Math.Round(tipoCambio.Tipocambio, 2);
+                if (tipoCambio is not null) tipoCambioValue = HelpersMethods.RedondeoHaciaArriba(tipoCambio.Tipocambio);
                 FnCalcularTotal();
                 if (value.Codmoneda == param.Cordobas)
                 {
@@ -432,10 +423,12 @@ namespace SistemaOro.Forms.ViewModels.Compras
         private ObservableCollection<PrecioKilate> _precioKilates = new();
         public ObservableCollection<PrecioKilate> PrecioKilates => _precioKilates;
 
+        private ObservableCollection<DetCompra> _itemsSource;
+
         public ObservableCollection<DetCompra> ItemsSource
         {
-            get => GetValue<ObservableCollection<DetCompra>>();
-            set => SetValue(value);
+            get => _itemsSource;
+            set => SetValue(ref _itemsSource, value);
         }
 
         private ObservableCollection<Moneda> _monedas = new();
@@ -459,7 +452,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
             kilates.ForEach(PrecioKilates.Add);
             ItemsSource = new ObservableCollection<DetCompra>();
             var findAll = await _tipoPrecioRepository.FindAll();
-            findAll.ForEach(TiposPrecios.Add);
+            LinqExtensions.ForEach(findAll, TiposPrecios.Add);
             //TiposPrecios.AddRange(findAll);
             if (TiposPrecios.Count > 0)
             {
@@ -824,10 +817,48 @@ namespace SistemaOro.Forms.ViewModels.Compras
             }
         }
 
-        private void FnCalcularTotal()
+        private async void FnCalcularTotal()
         {
-            SubTotal = ItemsSource.Count > 0 ? ItemsSource.Sum(compra => Math.Round(compra.Importe.Value, 2)) : Zero;
-            Total = SelectedTiposPrecios is not null ? Divide(SubTotal, SelectedTiposPrecios.Precio ?? Zero) : SubTotal;
+            if (SelectedTiposPrecios is null)
+            {
+                HelpersMessage.MensajeErroResult("Compra", "No hay tipo de precios especificados");
+                return;
+            }
+
+            try
+            {
+                var tipoCambio = await _tipoCambioRepository.FindByDateNow();
+                var tipoCambioValue = tipoCambio is null ? Zero : tipoCambio.Tipocambio;
+                var parametros = VariablesGlobalesForm.Instance.Parametros;
+                var precio = SelectedTiposPrecios.Precio ?? Zero;
+                if (ItemsSource.Count > 0)
+                {
+                    foreach (var detCompra in ItemsSource)
+                    {
+                        var findPrecio = await _preciosKilatesRepository.FindByPeso(Convert.ToDecimal(detCompra.Kilate));
+                        if (findPrecio != null)
+                        {
+                            if (parametros.Dolares.Value == SelectedMoneda.Codmoneda)
+                            {
+                                detCompra.Preciok = HelpersMethods.RedondeoHaciaArriba(findPrecio.Precio / precio);
+                                detCompra.Importe = HelpersMethods.RedondeoHaciaArriba((findPrecio.Precio * detCompra.Peso) / precio);
+                            }
+                            else
+                            {
+                                detCompra.Preciok = HelpersMethods.RedondeoHaciaArriba(findPrecio.Precio * tipoCambioValue / precio);
+                                detCompra.Importe = HelpersMethods.RedondeoHaciaArriba((findPrecio.Precio * tipoCambioValue * detCompra.Peso) / precio);
+                            }
+                        }
+                    }
+
+                    SubTotal = ItemsSource.Sum(compra => compra.Importe ?? Zero) * precio;
+                    Total = ItemsSource.Sum(compra => compra.Importe ?? Zero);
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e, "Error al calcular el total");
+            }
         }
     }
 }

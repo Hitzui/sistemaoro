@@ -170,7 +170,7 @@ public class AdelantosRepository(IParametersRepository parametersRepository, IMa
         };
         var movcaja = await context.Movcajas.FindAsync(nuevoDetaCaja.Idmov);
         var insertValueDetaCaja = await maestroCajaRepository.GuardarDatosDetaCaja(nuevoDetaCaja, movcaja!, findMcaja);
-        if (insertValueDetaCaja) return await context.SaveChangesAsync() > 0;
+        if (insertValueDetaCaja>0) return await context.SaveChangesAsync() > 0;
 
         ErrorSms = maestroCajaRepository.ErrorSms;
         return false;

@@ -10,6 +10,8 @@ public interface IPreciosKilatesRepository : ICrudRepository<PrecioKilate>
 
     Task<PrecioKilate?> FindByDescripcion(string descripcion);
 
+    Task<PrecioKilate?> FindByPeso(decimal peso);
+
     Task<List<Precio>?> FindByClientes(string codcliente);
 
     Task<CierrePrecio?> FindByCierrePrecio(int codCierre);

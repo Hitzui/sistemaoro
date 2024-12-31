@@ -89,7 +89,7 @@ public class PrecioKilateViewModel : BaseViewModel
         if (result is MessageBoxResult.Yes or MessageBoxResult.OK)
         {
             var item = (PrecioKilate)args.Items.Single();
-            await _preciosKilatesRepository.DeleteAsync(item.IdPrecioKilate);
+            await _preciosKilatesRepository.DeleteAsync(item);
         }
 
         DataSourceRefresh(new DataSourceRefreshArgs());

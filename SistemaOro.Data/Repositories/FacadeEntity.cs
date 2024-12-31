@@ -109,7 +109,15 @@ public abstract class FacadeEntity<TEntity>(DataContext context) : ICrudReposito
     public virtual async Task<List<TEntity>> FindAll()
     {
         await using var context2 = new DataContext();
-        return await context2.Set<TEntity>().AsNoTracking().ToListAsync();
+        try
+        {
+            return await context2.Set<TEntity>().AsNoTracking().ToListAsync();
+        }
+        catch (Exception e)
+        {
+            Logger.Error(e, $"Error al recuperar la lista de tipo {typeof(TEntity).Name}");
+            throw;
+        }
     }
 
     protected IQueryable<TEntity> Get(

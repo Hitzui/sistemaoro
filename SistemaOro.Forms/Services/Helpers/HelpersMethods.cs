@@ -1,4 +1,5 @@
-﻿using DevExpress.XtraReports.UI;
+﻿using System;
+using DevExpress.XtraReports.UI;
 using System.IO;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
@@ -36,4 +37,87 @@ public class HelpersMethods
         report.CreateDocument(false);
         reportPrintTool.ShowRibbonPreview();
     }
+
+    public static string ConvertirNumeroADecimalATexto(decimal numero)
+    {
+        // Separar la parte entera y la parte decimal
+        var parteEntera = (int)numero;
+        var parteDecimal = (int)((numero - parteEntera) * 100); // Multiplicamos por 100 para obtener los centavos
+
+        var textoEntero = ConvertirNumeroATexto(parteEntera);
+        var textoDecimal = ConvertirNumeroATexto(parteDecimal);
+
+        // Construir el resultado final
+        return parteDecimal > 0 ? $"{textoEntero} con {textoDecimal} centavos" : textoEntero;
+    }
+
+    private static string ConvertirNumeroATexto(int numero)
+
+    {
+        switch (numero)
+        {
+            case 0:
+                return "cero";
+            case < 0:
+                return "menos " + ConvertirNumeroATexto(-numero);
+        }
+
+
+        string[] unidades = { "", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve" };
+        string[] decenas = { "", "diez", "veinte", "treinta", "cuarenta", "cincuenta", "sesenta", "setenta", "ochenta", "noventa" };
+        string[] decenasCompuestas = { "diez", "once", "doce", "trece", "catorce", "quince", "dieciséis", "diecisiete", "dieciocho", "diecinueve" };
+        string[] centenas = { "", "Cien", "Doscientos", "Trescientos", "Cuatrocientos", "Quinientos", "Seiscientos", "Setecientos", "Ochocientos", "Novecientos" };
+
+        string resultado = "";
+        if (numero >= 1000)
+        {
+            // Manejar el caso de mil
+            if (numero / 1000 == 1)
+            {
+                resultado += "Mil ";
+            }
+            else
+            {
+                resultado += ConvertirNumeroATexto(numero / 1000) + " Mil ";
+            }
+
+            numero %= 1000;
+        }
+
+        if (numero >= 100)
+        {
+            resultado += centenas[numero / 100] + " ";
+            numero %= 100;
+        }
+
+        if (numero >= 20)
+        {
+            resultado += decenas[numero / 10] + " ";
+            numero %= 10;
+        }
+        else if (numero >= 10)
+        {
+            resultado += decenasCompuestas[numero - 10] + " ";
+            numero = 0;
+        }
+
+        if (numero > 0)
+        {
+            resultado += unidades[numero] + " ";
+        }
+
+        return resultado.Trim();
+    }
+
+    public static decimal RedondeoHaciaAbajo(decimal value)
+    {
+        if (decimal.Compare(value, decimal.Zero) == 0)
+        {
+            return value;
+        }
+
+        return value - 0.005m;
+    }
+
+    public static decimal RedondeoHaciaArriba(decimal numero) => Math.Round(numero, 2);
 }

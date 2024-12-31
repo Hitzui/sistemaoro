@@ -35,6 +35,7 @@
             this.xrPageInfo1 = new DevExpress.XtraReports.UI.XRPageInfo();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
             this.ReportHeader = new DevExpress.XtraReports.UI.ReportHeaderBand();
+            this.xrPictureBox1 = new DevExpress.XtraReports.UI.XRPictureBox();
             this.XrRichText2 = new DevExpress.XtraReports.UI.XRRichText();
             this.XrLabel5 = new DevExpress.XtraReports.UI.XRLabel();
             this.XrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
@@ -52,7 +53,6 @@
             this.XrLabel8 = new DevExpress.XtraReports.UI.XRLabel();
             this.XrRichText1 = new DevExpress.XtraReports.UI.XRRichText();
             this.DataSourceDetalleCompra = new DevExpress.DataAccess.ObjectBinding.ObjectDataSource(this.components);
-            this.xrPictureBox1 = new DevExpress.XtraReports.UI.XRPictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.XrRichText2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.XrRichText6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.XrRichText1)).BeginInit();
@@ -98,6 +98,15 @@
             this.XrLabel7});
             this.ReportHeader.HeightF = 5942.504F;
             this.ReportHeader.Name = "ReportHeader";
+            // 
+            // xrPictureBox1
+            // 
+            this.xrPictureBox1.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "ImageSource", "[Logo]")});
+            this.xrPictureBox1.LocationFloat = new DevExpress.Utils.PointFloat(14.74088F, 0F);
+            this.xrPictureBox1.Name = "xrPictureBox1";
+            this.xrPictureBox1.SizeF = new System.Drawing.SizeF(247.9167F, 100F);
+            this.xrPictureBox1.Sizing = DevExpress.XtraPrinting.ImageSizeMode.ZoomImage;
             // 
             // XrRichText2
             // 
@@ -294,15 +303,6 @@
             // 
             this.DataSourceDetalleCompra.DataSource = typeof(global::SistemaOro.Data.Entities.DetalleCompra);
             this.DataSourceDetalleCompra.Name = "DataSourceDetalleCompra";
-            // 
-            // xrPictureBox1
-            // 
-            this.xrPictureBox1.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "ImageSource", "[Logo]")});
-            this.xrPictureBox1.LocationFloat = new DevExpress.Utils.PointFloat(14.74088F, 0F);
-            this.xrPictureBox1.Name = "xrPictureBox1";
-            this.xrPictureBox1.SizeF = new System.Drawing.SizeF(247.9167F, 100F);
-            this.xrPictureBox1.Sizing = DevExpress.XtraPrinting.ImageSizeMode.ZoomImage;
             // 
             // ReporteContrantoPrestamo
             // 

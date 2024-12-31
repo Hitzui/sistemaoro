@@ -10,6 +10,8 @@ using SistemaOro.Data.Repositories;
 using SistemaOro.Forms.Services;
 using SistemaOro.Forms.Services.Helpers;
 using SistemaOro.Forms.Services.Mensajes;
+using SistemaOro.Forms.Views.Reportes.Caja;
+using SistemaOro.Forms.Views.Reportes.Compras;
 using Unity;
 
 namespace SistemaOro.Forms.ViewModels.Cajas;
@@ -92,10 +94,11 @@ public class RealizarMovimientoCajaViewModel : BaseViewModel
             Efectivo = IsEfectivo ? Monto : decimal.Zero,
             Transferencia = IsTransferencia ? Monto : decimal.Zero,
             Hora = DateTime.Now.ToShortTimeString(),
-            Codcaja = caja
+            Codcaja = caja,
+            Codoperador = VariablesGlobalesForm.Instance.Usuario.Codoperador
         };
         var save =await _maestroCajaRepository.GuardarDatosDetaCaja(detalleMovimiento,SelectedMovcaja, mcaja);
-        if (!save)
+        if (save<=0)
         {
             HelpersMessage.MensajeErroResult(MensajesGenericos.ErrorTitulo, _maestroCajaRepository.ErrorSms);
         }
@@ -103,16 +106,21 @@ public class RealizarMovimientoCajaViewModel : BaseViewModel
         {
             VariablesGlobalesForm.Instance.MaestroCaja = await _maestroCajaRepository.FindByCajaAndAgencia(caja, agencia);
             HelpersMessage.MensajeInformacionResult(MensajesGenericos.InformacionTitulo, MensajesRealizarMovimientos.MovimientoRealizadoCorrecto);
-            result = HelpersMessage.MensajeConfirmacionResult(MensajesRealizarMovimientos.MovimientoCajaTitulo, MensajesRealizarMovimientos.OtroMovimiento);
+            result = HelpersMessage.MensajeConfirmacionResult(MensajesRealizarMovimientos.MovimientoCajaTitulo, MensajesRealizarMovimientos.ImprimirComprobante);
             if (result == MessageBoxResult.Cancel)
             {
                 CloseAction!.Invoke();
             }
             else
             {
-                Referencia = string.Empty;
-                SelectedMovcaja = null;
-                Monto = decimal.Zero;
+                var sum = detalleMovimiento.Efectivo + detalleMovimiento.Cheque + detalleMovimiento.Transferencia;
+                var cantidadLetras = HelpersMethods.ConvertirNumeroADecimalATexto(sum ?? decimal.Zero);
+                var reporteMovimientoCaja = new ReporteMovimientoCaja();
+                reporteMovimientoCaja.Parameters["parIdDetaCaja"].Value = save;
+                reporteMovimientoCaja.Parameters["parCantidadLetras"].Value = cantidadLetras;
+                reporteMovimientoCaja.Parameters["parNombre"].Value = parametros.Recibe;
+                HelpersMethods.LoadReport(reporteMovimientoCaja, "Reporte de Movimiento Caja");
+                CloseAction!.Invoke();
             }
         }
     }

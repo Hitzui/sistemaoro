@@ -91,6 +91,7 @@ public class LoginViewModel : BaseViewModel
         var validatePassword = user.Clave == Password;
         if (validatePassword)
         {
+            VariablesGlobales.Instance.Usuario = user;
             VariablesGlobalesForm.Instance.Usuario = user;
             VariablesGlobalesForm.Instance.Agencia = SelectedAgencia;
             return true;

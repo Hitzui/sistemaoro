@@ -239,6 +239,17 @@ public class TipoCambioViewModel : BaseViewModel
         OnLoad();
     }
 
+    [Command]
+    public async void ActualizarPreciosCommand()
+    {
+        var tipoCambio = ItemsSource.SingleOrDefault(cambio => cambio.Fecha.Date == DateTime.Now.Date);
+        if (tipoCambio is not null)
+        {
+            await _preciosKilatesRepository.ActualizarPreciosGuardados(tipoCambio); 
+            HelpersMessage.DialogWindow(MensajesGenericos.GuardarTitulo, "Se han actualizado los precios de forma correcta", MessageBoxButton.OK);
+        }
+    }
+
     public async void OnLoad()
     {
         try

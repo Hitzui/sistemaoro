@@ -2,6 +2,7 @@
 using SistemaOro.Data.Dto;
 using SistemaOro.Data.Entities;
 using SistemaOro.Data.Exceptions;
+using SistemaOro.Data.Libraries;
 
 namespace SistemaOro.Data.Repositories;
 
@@ -113,7 +114,8 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
                 Referencia = string.Empty,
                 Codcaja = caja,
                 Tipocambio = decimal.Zero,
-                Efectivo = xestado.Fecha!.Value.Day == DateTime.Now.Day ? 0 : crearM.Sfinal
+                Efectivo = xestado.Fecha!.Value.Day == DateTime.Now.Day ? 0 : crearM.Sfinal,
+                Codoperador = VariablesGlobales.Instance.Usuario.Codoperador
             };
             //context.Detacajas.Add(dcaja);
             crearM.Detacajas.Add(dcaja);
@@ -136,11 +138,17 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
     public async Task<bool> CerrarCaja(string? caja, string? agencia)
     {
         try
-        { 
+        {
+            var usuario = VariablesGlobales.Instance.Usuario;
+            if (usuario is null)
+            {
+                throw new Exception("No hay usuario en la variable global, inicializar");
+            }
             if (context.ChangeTracker.HasChanges())
             {
                 context.ChangeTracker.Clear();
             }
+
             var prestamos = await ValidarPrestamosPuentes();
             if (prestamos != decimal.Zero)
             {
@@ -169,7 +177,8 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
                 Hora = DateTime.Now.ToLongTimeString(),
                 Idmov = parametros.SaldoAnterior!.Value,
                 Referencia = $"Cierre de caja: {caja} {DateTime.Now.ToShortDateString()}",
-                Codcaja = caja
+                Codcaja = caja,
+                Codoperador = usuario.Codoperador
             };
             context.Add(detaCaja);
             crearM.Estado = 0;
@@ -181,8 +190,9 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
             var innerMessage = "";
             if (ex.InnerException is not null)
             {
-                innerMessage=ex.InnerException.Message;
+                innerMessage = ex.InnerException.Message;
             }
+
             ErrorSms = $"Se produjo un error al intentar cerrar la caja: {ex.Message} {innerMessage}";
             return false;
         }
@@ -208,7 +218,7 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
         }
     }
 
-    public async Task<bool> GuardarDatosDetaCaja(Detacaja dcaja, Movcaja movcaja, Mcaja mocaja)
+    public async Task<int> GuardarDatosDetaCaja(Detacaja dcaja, Movcaja movcaja, Mcaja mocaja)
     {
         try
         {
@@ -216,12 +226,13 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
             {
                 context.ChangeTracker.Clear();
             }
+
             var entrada = decimal.Zero;
             var salida = decimal.Zero;
             var rubro = await context.Rubros.AsNoTracking().SingleOrDefaultAsync(rubro1 => rubro1.Codrubro == movcaja.Codrubro);
             if (rubro is null)
             {
-                return false;
+                return 0;
             }
 
             if (rubro.Naturaleza == 0)
@@ -234,7 +245,7 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
             }
 
             var actualizarMcaja = await ActualizarDatosMaestroCaja(mocaja.Codcaja, mocaja.Codagencia!, entrada, salida);
-            if (!actualizarMcaja) return false;
+            if (!actualizarMcaja) return 0;
             var tipoCambio = await context.TipoCambios.AsNoTracking().SingleOrDefaultAsync(cambio => cambio.Fecha == DateTime.Now) ?? new TipoCambio
             {
                 Fecha = DateTime.Now,
@@ -242,9 +253,9 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
                 Tipocambio = decimal.Zero
             };
             dcaja.Tipocambio = tipoCambio.Tipocambio;
-            context.Add(dcaja);
+            var result = await context.AddAsync(dcaja);
             await context.SaveChangesAsync();
-            return true;
+            return result.Entity.IdDetaCaja;
         }
         catch (Exception e)
         {
@@ -253,8 +264,9 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
             {
                 innerMessage = e.InnerException.Message;
             }
+
             ErrorSms = $"Error al realizar el movimiento en caja: {e.Message} {innerMessage}";
-            return false;
+            return 0;
         }
     }
 
@@ -328,7 +340,8 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
                     Idcaja = dc.Idmov,
                     Cheque = ru.Naturaleza == 1 ? dc.Cheque : dc.Cheque * -1,
                     Efectivo = ru.Naturaleza == 1 ? dc.Efectivo : dc.Efectivo * -1,
-                    Transferencia = ru.Naturaleza == 1 ? dc.Transferencia : dc.Transferencia * -1
+                    Transferencia = ru.Naturaleza == 1 ? dc.Transferencia : dc.Transferencia * -1,
+                    Codoperador = dc.Codoperador
                 };
             return await verDetaCaja.ToListAsync();
         }
@@ -343,8 +356,18 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
     {
         var query = from detacaja in context.Detacajas
             join movcaja in context.Movcajas on detacaja.Idmov equals movcaja.Idmov
+            join rubro in context.Rubros on movcaja.Codrubro equals rubro.Codrubro
             where detacaja.Idcaja == id
-            select new DtoMovimientosCaja(movcaja.Descripcion, detacaja.Hora, detacaja.Fecha, detacaja.Concepto, detacaja.Referencia, detacaja.Efectivo!.Value, detacaja.Cheque!.Value, detacaja.Transferencia!.Value);
+            select new DtoMovimientosCaja(
+                movcaja.Descripcion, 
+                detacaja.Hora, 
+                detacaja.Fecha, 
+                detacaja.Concepto, 
+                detacaja.Referencia, 
+                rubro.Naturaleza == 1 ? detacaja.Efectivo.Value : detacaja.Efectivo.Value * -1,
+                rubro.Naturaleza == 1 ? detacaja.Cheque.Value : detacaja.Cheque.Value * -1,
+                rubro.Naturaleza == 1 ? detacaja.Transferencia.Value : detacaja.Transferencia.Value * -1,
+                detacaja.IdDetaCaja);
         return query.AsNoTracking().ToListAsync();
     }
 
@@ -362,7 +385,8 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
                 detacaja.Referencia,
                 rubro.Naturaleza == 1 ? detacaja.Efectivo.Value : detacaja.Efectivo.Value * -1,
                 rubro.Naturaleza == 1 ? detacaja.Cheque.Value : detacaja.Cheque.Value * -1,
-                rubro.Naturaleza == 1 ? detacaja.Transferencia.Value : detacaja.Transferencia.Value * -1
+                rubro.Naturaleza == 1 ? detacaja.Transferencia.Value : detacaja.Transferencia.Value * -1,
+                detacaja.IdDetaCaja
             );
         return query.AsNoTracking().ToListAsync();
     }
@@ -373,7 +397,7 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
             join mcaja in context.Mcajas on detacaja.Idcaja equals mcaja.Idcaja
             join movcaja in context.Movcajas on detacaja.Idmov equals movcaja.Idmov
             join rubro in context.Rubros on movcaja.Codrubro equals rubro.Codrubro
-            where detacaja.Fecha.Date == fechaDesde.Date && mcaja.Estado>0
+            where detacaja.Fecha.Date == fechaDesde.Date && mcaja.Estado > 0
             select new DtoMovimientosCaja(
                 movcaja.Descripcion,
                 detacaja.Hora,
@@ -382,7 +406,8 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
                 detacaja.Referencia,
                 rubro.Naturaleza == 1 ? detacaja.Efectivo.Value : detacaja.Efectivo.Value * -1,
                 rubro.Naturaleza == 1 ? detacaja.Cheque.Value : detacaja.Cheque.Value * -1,
-                rubro.Naturaleza == 1 ? detacaja.Transferencia.Value : detacaja.Transferencia.Value * -1
+                rubro.Naturaleza == 1 ? detacaja.Transferencia.Value : detacaja.Transferencia.Value * -1,
+                detacaja.IdDetaCaja
             );
         return query.AsNoTracking().ToListAsync();
     }
@@ -401,7 +426,8 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
                 detacaja.Referencia,
                 rubro.Naturaleza == 1 ? detacaja.Efectivo.Value : detacaja.Efectivo.Value * -1,
                 rubro.Naturaleza == 1 ? detacaja.Cheque.Value : detacaja.Cheque.Value * -1,
-                rubro.Naturaleza == 1 ? detacaja.Transferencia.Value : detacaja.Transferencia.Value * -1
+                rubro.Naturaleza == 1 ? detacaja.Transferencia.Value : detacaja.Transferencia.Value * -1,
+                detacaja.IdDetaCaja
             );
         return query.AsNoTracking().ToListAsync();
     }

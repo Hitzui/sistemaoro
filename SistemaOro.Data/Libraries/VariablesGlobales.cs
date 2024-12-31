@@ -17,6 +17,7 @@ public class VariablesGlobales
 
     private VariablesGlobales()
     {
+        DataContext = new DataContext();
         ConfiguracionGeneral = new ConfiguracionGeneral();
         UnityContainer = new UnityContainer();
         UnityContainer.RegisterSingleton<IAdelantosRepository, AdelantosRepository>();
@@ -37,7 +38,8 @@ public class VariablesGlobales
         UnityContainer.RegisterSingleton<ITipoDocumentoRepository, TipoDocumentoRepository>();
         UnityContainer.RegisterSingleton<ITipoPrecioRepository, TipoPrecioRepository>();
         UnityContainer.RegisterSingleton<IUsuarioRepository, UsuarioRepository>();
-        UnityContainer.RegisterInstance(typeof(DataContext));
+        UnityContainer.RegisterSingleton<IUnitOfWork, UnitOfWork>();
+        UnityContainer.RegisterSingleton<DataContext>();
     }
 
     public static VariablesGlobales Instance
@@ -79,5 +81,5 @@ public class VariablesGlobales
 
     public ConfiguracionGeneral ConfiguracionGeneral { get; private set; }
 
-    public DataContext DataContext => UnityContainer.Resolve<DataContext>();
+    public DataContext DataContext { get; }
 }

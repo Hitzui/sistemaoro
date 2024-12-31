@@ -88,6 +88,11 @@
             VerticalAlignment="Top"
             Command="{Binding DeleteCommand}"
             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_DeleteCircled.svg}" />
+        <dx:SimpleButton Content="Actualizar precios"
+            Height="24" Margin="207,90,290,0"
+            VerticalAlignment="Top"
+            Command="{Binding ActualizarPreciosCommand}"
+            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Refresh.svg}" />
 
     </Grid>
 </Window>

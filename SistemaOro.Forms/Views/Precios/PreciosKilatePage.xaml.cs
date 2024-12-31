@@ -23,8 +23,6 @@ namespace SistemaOro.Forms.Views.Precios
     {
         public PreciosKilatePage()
         {
-            var viewModel = new PrecioKilateViewModel();
-            DataContext = viewModel;
             InitializeComponent();
         }
     }

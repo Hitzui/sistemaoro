@@ -17,7 +17,7 @@ public interface IMaestroCajaRepository
 
     Task<bool> ActualizarDatosMaestroCaja(string codcaja, string codagencia, decimal entrada, decimal salida);
 
-    Task<bool> GuardarDatosDetaCaja(Detacaja dcaja, Movcaja movcaja, Mcaja mocaja);
+    Task<int> GuardarDatosDetaCaja(Detacaja dcaja, Movcaja movcaja, Mcaja mocaja);
 
     Task<bool> ValidarMovimiento(int idmov);
 

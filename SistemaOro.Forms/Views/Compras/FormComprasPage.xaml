@@ -138,15 +138,36 @@
                         <StackPanel Orientation="Horizontal">
 
                             <dxg:LookUpEdit x:Name="CmbPrecios" ItemsSource="{Binding PrecioKilates}"
-                                            DisplayMember="DescKilate"
+                                            DisplayMember="Descripcion"
                                             SelectedItem="{Binding SelectedPrecioKilate}"
-                                            ValueMember="DescKilate"
-                                            Width="250" VerticalAlignment="Center"
-                                            PopupWidth="500"
+                                            ValueMember="IdPrecioKilate"
+                                            VerticalAlignment="Center"
+                                            AutoPopulateColumns="False"
+                                            AutoComplete="True"
+                                            IncrementalFiltering="True"
+                                            ImmediatePopup="True"
+                                            IsPopupAutoWidth="True"
                                             Margin="5,0,5,0"
                                             HorizontalAlignment="Left" EditValueChanged="CmbPrecios_EditValueChanged"
                                             NullText="Seleccionar precio" IsTextEditable="False"
-                                            Label="Seleccionar Precio" />
+                                            Label="Seleccionar Precio">
+                                <dxg:LookUpEdit.PopupContentTemplate>
+                                    <ControlTemplate TargetType="{x:Type ContentControl}">
+                                        <dxg:GridControl x:Name="PART_GridControl"
+                                                         ShowBorder="False"
+                                                         ShowLoadingPanel="{Binding LookUpSocietyMemberships.IsLoading}">
+                                            <dxg:GridControl.Columns>
+                                                <dxg:GridColumn IsSmart="True" FieldName="Descripcion" Width="*"/>
+                                                <dxg:GridColumn IsSmart="True" FieldName="Precio"  Width="*"/>
+                                            </dxg:GridControl.Columns>
+                                        </dxg:GridControl>
+                                    </ControlTemplate>
+                                </dxg:LookUpEdit.PopupContentTemplate>
+                                <dxg:LookUpEdit.StyleSettings>
+                                    <dxg:SearchLookUpEditStyleSettings AllowGrouping="False"
+                                                                       AllowColumnFiltering="True" />
+                                </dxg:LookUpEdit.StyleSettings>
+                            </dxg:LookUpEdit>
                             <dxe:TextEdit x:Name="TxtPrecio" Width="200" VerticalAlignment="Center" Margin="5,0,5,0"
                                           NullText="Precio Quilate" EditValue="{Binding Precio}"
                                           MaskType="Numeric" Mask="n2" KeyDown="TxtPrecio_KeyDown"
@@ -311,7 +332,8 @@
                                               EditValue="{Binding SubTotal}"
                                               Grid.Column="1"
                                               IsReadOnly="True" MaskUseAsDisplayFormat="True" MaskType="Numeric"
-                                              Mask="n2" RenderTransformOrigin="0.94,-1.727" NullText="0.0" MaskCulture="es-PE" />
+                                              Mask="n2" RenderTransformOrigin="0.94,-1.727" NullText="0.0"
+                                              MaskCulture="es-PE" />
                             </Grid>
                             <Grid Margin="10">
                                 <Grid.ColumnDefinitions>
@@ -326,7 +348,8 @@
                                                   ItemsSource="{Binding TiposPrecios}"
                                                   DisplayMember="Descripcion"
                                                   ValueMember="IdTipoPrecio"
-                                                  SelectedItem="{Binding SelectedTiposPrecios}" NullText="Tipo de precio" />
+                                                  SelectedItem="{Binding SelectedTiposPrecios}"
+                                                  NullText="Tipo de precio" />
                             </Grid>
                             <Grid Margin="10">
                                 <Grid.ColumnDefinitions>
@@ -340,7 +363,8 @@
                                 <dxe:TextEdit x:Name="TxtTotalCompra"
                                               EditValue="{Binding Total}"
                                               Grid.Column="1"
-                                              IsReadOnly="True" MaskType="Numeric" Mask="n2" NullText="0.0" MaskCulture="es-PE" MaskUseAsDisplayFormat="True" />
+                                              IsReadOnly="True" MaskType="Numeric" Mask="n2" NullText="0.0"
+                                              MaskCulture="es-PE" MaskUseAsDisplayFormat="True" />
                             </Grid>
                             <Grid Margin="10">
                                 <Grid.ColumnDefinitions>
@@ -353,7 +377,8 @@
                                        Margin="0,0,5,0" />
                                 <dxe:ComboBoxEdit x:Name="CmbEstadoCompra" Grid.Column="1"
                                                   ItemsSource="{Binding EstadoCompras}"
-                                                  SelectedItem="{Binding SelectedEstadoCompra}" NullText="Estado de la compra" />
+                                                  SelectedItem="{Binding SelectedEstadoCompra}"
+                                                  NullText="Estado de la compra" />
                             </Grid>
                             <Grid Margin="10">
                                 <Grid.ColumnDefinitions>

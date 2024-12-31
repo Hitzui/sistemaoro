@@ -56,7 +56,6 @@ public class MaestroCajaViewModel : BaseViewModel
         {
             return;
         }
-
         var close = await _maestroCajaRepository.CerrarCaja(_caja, _agencia);
         if (!close)
         {

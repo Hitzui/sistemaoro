@@ -147,7 +147,8 @@ public class CompraRepository(
                 Fecha = compra.Fecha,
                 Hora = compra.Fecha.ToShortTimeString(),
                 Idcaja = modCaja.Idcaja,
-                Idmov = param.Idcompras!.Value
+                Idmov = param.Idcompras!.Value,
+                Codoperador = compra.Usuario
             };
             var listTmpPrecios = await context.Tmpprecios.Where(tmpprecio => tmpprecio.Codcliente == compra.Codcliente).ToListAsync();
             if (listTmpPrecios.Count > 0)
@@ -265,6 +266,7 @@ public class CompraRepository(
         }
         catch (Exception e)
         {
+            logger.Error(e, "Error al crear la compra");
             var innerMessage = "";
             if (e.InnerException is not null)
             {
@@ -445,7 +447,8 @@ public class CompraRepository(
                 Idmov = param.AnularAdelanto!.Value,
                 Referencia = $@"Movimiento realizado por anulación de compra número: {numeroCompra}",
                 Idcaja = mcaja.Idcaja,
-                Tipocambio = tipoCambio
+                Tipocambio = tipoCambio,
+                Codoperador = usuario.Codoperador
             };
             mcaja.Entrada = decimal.Add(efectivo, mcaja.Entrada!.Value);
             mcaja.Sfinal = decimal.Add(efectivo, mcaja.Sfinal!.Value);

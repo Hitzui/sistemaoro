@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
+  <style type="text/css">
+    .Black{fill:#727272;}
+  </style>
+  <polygon class="Black" points="5,7 8,4 2,4" />
+</svg>

@@ -453,6 +453,9 @@
     <property name="Tipocambio" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="157fd742-9347-49f5-a728-4b79a3f102ee">
       <column name="" default="1" precision="12" scale="4" p1:unicode="False" />
     </property>
+    <property name="Codoperador" type="String" p1:nullable="True" p1:ValidateMaxLength="20" p1:ValidateRequired="false" p1:Guid="e85ced61-b054-4c69-a707-29fa1c7fd834">
+      <column name="codoperador" not-null="False" length="20" sql-type="nvarchar" p1:unicode="True" />
+    </property>
   </class>
   <class name="Detacierre" entity-set="Detacierres" p1:Guid="eada9ad6-e4a8-403d-9b72-249cfe9822e3">
     <composite-id>
@@ -732,7 +735,7 @@
       <column name="Peso" not-null="True" precision="18" scale="2" sql-type="decimal" p1:unicode="False" />
     </property>
     <property name="Precio" type="Decimal" p1:ValidateRequired="true" p1:Guid="4e8d300b-0b3e-4d03-8bb8-338baf6e51d0">
-      <column name="Precio" not-null="True" precision="18" scale="2" sql-type="decimal" p1:unicode="False" />
+      <column name="Precio" not-null="True" precision="18" scale="4" sql-type="decimal" p1:unicode="False" />
     </property>
   </class>
   <class name="Precio" entity-set="Precios" p1:Guid="57c570c7-7f19-44bd-a43b-c4bc3569a771">
@@ -1156,6 +1159,9 @@
     <property name="Logo" type="VarBinary" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="b6b5a864-d8fd-4ba7-adf0-c1b38949f0c4">
       <column name="Logo" not-null="False" sql-type="varbinary(max)" p1:unicode="False" />
     </property>
+    <property name="TipoPrecio" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="38d41faf-1583-4470-8653-d73e9fafebc4">
+      <column name="TipoPrecio" not-null="False" precision="18" scale="2" sql-type="decimal" p1:unicode="False" />
+    </property>
   </class>
   <associations>
     <association name="Cliente_Adelanto" cardinality="OneToMany" p1:Guid="dd3080e3-ef0f-4ff3-86ca-0abf0294e6b4">
@@ -1292,6 +1298,14 @@
       </end1>
       <end2 multiplicity="Many" name="Compras" class="TipoPrecio" relation-class="Compra" lazy="False" p1:Guid="53cfb512-9c93-48b4-a49c-cd684382eb06">
         <property name="IdTipoPrecio" />
+      </end2>
+    </association>
+    <association name="Usuario_Detacaja" cardinality="OneToMany" p1:Guid="ebd498cb-0394-4a19-b68d-2cf50e962299">
+      <end1 multiplicity="ZeroOrOne" name="Usuario" class="Detacaja" relation-class="Usuario" constrained="True" lazy="False" p1:Guid="b3c5bb24-f243-40a7-902c-64137cc9f45a">
+        <property name="Codoperador" />
+      </end1>
+      <end2 multiplicity="Many" name="Detacajas" class="Usuario" relation-class="Detacaja" lazy="False" p1:Guid="6b2304c5-b296-4df3-bfd5-7996422dcce2">
+        <property name="Codoperador" />
       </end2>
     </association>
   </associations>

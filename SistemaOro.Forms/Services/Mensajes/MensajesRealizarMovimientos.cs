@@ -11,4 +11,5 @@ public class MensajesRealizarMovimientos
     public const string MovimientoCajaTitulo = "Movimiento en caja";
     public const string RealizarMovimientoCaja = "¿Desea registrar el movimieto en caja con los datos ingresados?";
     public const string OtroMovimiento = "¿Desea realizar otro movimiento en caja?";
+    public const string ImprimirComprobante = "¿Imprimir comprobante de pago?";
 }

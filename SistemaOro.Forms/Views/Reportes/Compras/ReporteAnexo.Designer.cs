@@ -1298,7 +1298,7 @@
             this.XrLabel19.SizeF = new System.Drawing.SizeF(349.9998F, 50.00012F);
             this.XrLabel19.StylePriority.UseFont = false;
             this.XrLabel19.StylePriority.UseTextAlignment = false;
-            this.XrLabel19.Text = "LA PRESTAMISTA";
+            this.XrLabel19.Text = "EL PRESTAMISTA";
             this.XrLabel19.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopCenter;
             // 
             // XrLine1
@@ -1325,7 +1325,9 @@
             this.XrLabel20.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 5, 0, 0, 254F);
             this.XrLabel20.SizeF = new System.Drawing.SizeF(308.7599F, 50.00012F);
             this.XrLabel20.StylePriority.UseFont = false;
-            this.XrLabel20.Text = "EL PRESTATARIO";
+            this.XrLabel20.StylePriority.UseTextAlignment = false;
+            this.XrLabel20.Text = "EL CLIENTE";
+            this.XrLabel20.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
             // objectDataSource1
             // 
