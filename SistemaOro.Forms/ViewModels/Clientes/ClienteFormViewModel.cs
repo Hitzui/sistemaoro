@@ -151,14 +151,14 @@ public partial class ClienteFormViewModel : BaseViewModel
                 IsNoOtraAe = true;
                 _isNew = true;
             }
+
+            IsLoading = false;
         }
         catch (Exception ex)
         {
             Logger.Error(ex, "Ha ocurrido un error");
             HelpersMessage.MensajeErroResult("Error", ex.Message);
         }
-
-        IsLoading = false;
     }
 
     private string? _numeroCliente;
@@ -173,61 +173,68 @@ public partial class ClienteFormViewModel : BaseViewModel
 
     private async void Save()
     {
-        if (string.IsNullOrWhiteSpace(_numeroCliente))
+        try
         {
-            return;
-        }
+            if (string.IsNullOrWhiteSpace(_numeroCliente))
+            {
+                return;
+            }
 
-        var dialog = new WinUIDialogWindow(MensajesGenericos.GuardarTitulo, MessageBoxButton.YesNo)
-        {
-            Content = new TextBlock { Text = ClienteMessages.SaveClienteContent }
-        };
-        var showDialog = dialog.ShowDialog();
-        if (!showDialog!.Value)
-        {
-            return;
-        }
+            var dialog = new WinUIDialogWindow(MensajesGenericos.GuardarTitulo, MessageBoxButton.YesNo)
+            {
+                Content = new TextBlock { Text = ClienteMessages.SaveClienteContent }
+            };
+            var showDialog = dialog.ShowDialog();
+            if (!showDialog!.Value)
+            {
+                return;
+            }
 
-        var winuidialog = new WinUIDialogWindow(MensajesGenericos.InformacionTitulo, MessageBoxButton.OK);
-        if (SelectedCliente is null)
-        {
-            winuidialog.Content = new TextBlock { Text = ClienteMessages.SeleccionarCliente };
-            winuidialog.ShowDialog();
-            return;
-        }
+            var winuidialog = new WinUIDialogWindow(MensajesGenericos.InformacionTitulo, MessageBoxButton.OK);
+            if (SelectedCliente is null)
+            {
+                winuidialog.Content = new TextBlock { Text = ClienteMessages.SeleccionarCliente };
+                winuidialog.ShowDialog();
+                return;
+            }
 
-        if (Validate())
-        {
-            winuidialog.Content = new TextBlock { Text = ClienteMessages.CamposVacios };
-            winuidialog.ShowDialog();
-            return;
-        }
+            if (Validate())
+            {
+                winuidialog.Content = new TextBlock { Text = ClienteMessages.CamposVacios };
+                winuidialog.ShowDialog();
+                return;
+            }
 
-        IsLoading = true;
-        if (SelectedTipoDocumento is null)
-        {
-            winuidialog.Title = MensajesGenericos.ErrorTitulo;
-            winuidialog.Content = new TextBlock { Text = ClienteMessages.SeleccionarTipoDocumento };
+            IsLoading = true;
+            if (SelectedTipoDocumento is null)
+            {
+                winuidialog.Title = MensajesGenericos.ErrorTitulo;
+                winuidialog.Content = new TextBlock { Text = ClienteMessages.SeleccionarTipoDocumento };
+                IsLoading = false;
+                winuidialog.ShowDialog();
+                return;
+            }
+
+            _cliente = SelectedCliente.GetCliente();
+            _cliente.Idtipodocumento = SelectedTipoDocumento.Idtipodocumento;
+            var save = _isNew ? await _clienteRepository.Create(_cliente) : await _clienteRepository.UpdateAsync(_cliente);
+
+            if (save)
+            {
+                winuidialog.Content = new TextBlock { Text = ClienteMessages.DatosGuardadosSuccess };
+                winuidialog.ShowDialog();
+            }
+            else
+            {
+                HelpersMessage.MensajeErroResult(MensajesGenericos.ErrorTitulo, $"Se produjo el siguiente error: {_clienteRepository.ErrorSms}");
+            }
+
             IsLoading = false;
-            winuidialog.ShowDialog();
-            return;
         }
-
-        _cliente = SelectedCliente.GetCliente();
-        _cliente.Idtipodocumento = SelectedTipoDocumento.Idtipodocumento;
-        var save = _isNew ? await _clienteRepository.Create(_cliente) : await _clienteRepository.UpdateAsync(_cliente);
-
-        if (save)
+        catch (Exception e)
         {
-            winuidialog.Content = new TextBlock { Text = ClienteMessages.DatosGuardadosSuccess };
-            winuidialog.ShowDialog();
+            Logger.Error(e, "Save Command Cliente");
         }
-        else
-        {
-            HelpersMessage.MensajeErroResult(MensajesGenericos.ErrorTitulo, $"Se produjo el siguiente error: {_clienteRepository.ErrorSms}");
-        }
-
-        IsLoading = false;
     }
 
     private bool Validate()

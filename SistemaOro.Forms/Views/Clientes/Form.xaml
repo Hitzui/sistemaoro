@@ -148,6 +148,8 @@
                         <dxe:ComboBoxEdit x:Name="CmbTipoDocumento" HorizontalAlignment="Left" Margin="31,382,0,0"
                                           VerticalAlignment="Top" Width="122"
                                           ItemsSource="{Binding TipoDocumentos}"
+                                          DisplayMember="Simbolo"
+                                          ValueMember="Idtipodocumento"
                                           SelectedItem="{Binding SelectedTipoDocumento}" />
                     </Grid>
                 </dx:DXTabItem>

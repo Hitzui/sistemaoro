@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
-using DevExpress.Xpf.Core;
 using DevExpress.XtraEditors;
+using NLog;
 using SistemaOro.Data.Entities;
 using SistemaOro.Data.Libraries;
 using SistemaOro.Data.Repositories;
@@ -17,7 +16,6 @@ using SistemaOro.Forms.Services.Mensajes;
 using SistemaOro.Forms.ViewModels.Agencias;
 using SistemaOro.Forms.ViewModels.Clientes;
 using SistemaOro.Forms.ViewModels.Usuarios;
-using SistemaOro.Forms.Views;
 using SistemaOro.Forms.Views.Agencias;
 using SistemaOro.Forms.Views.Cajas;
 using SistemaOro.Forms.Views.Compras;
@@ -38,7 +36,7 @@ namespace SistemaOro.Forms.ViewModels
         private readonly IParametersRepository _parametersRepository;
         private readonly IMaestroCajaRepository _maestroCajaRepository;
         private readonly IUsuarioRepository _usuarioRepository;
-
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
         public MainViewModel()
         {
             _maestroCajaRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IMaestroCajaRepository>();
@@ -102,43 +100,50 @@ namespace SistemaOro.Forms.ViewModels
         [Command]
         public async void DeleteUsuarioCommand()
         {
-            var result = XtraMessageBox.Show("¿Seguro quiere elminar al usuario seleccionado? Esta acción no se puede revertir", "Eliminar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result == DialogResult.No)
+            try
             {
-                return;
-            }
-
-            if (VariablesGlobalesForm.Instance.Usuario is null)
-            {
-                return;
-            }
-
-            var selectedUsuario = VariablesGlobalesForm.Instance.SelectedUsuario;
-            if (selectedUsuario != null)
-            {
-                if (selectedUsuario.Codoperador == VariablesGlobalesForm.Instance.Usuario.Codoperador)
+                var result = XtraMessageBox.Show("¿Seguro quiere elminar al usuario seleccionado? Esta acción no se puede revertir", "Eliminar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.No)
                 {
-                    HelpersMessage.MensajeInformacionResult("Eliminar Usuario", "No se puede eliminar el usuario con el cual se ha iniciado sesión.");
                     return;
                 }
 
-                if (VariablesGlobalesForm.Instance.Usuario.Nivel == Nivel.Caja)
+                if (VariablesGlobalesForm.Instance.Usuario is null)
                 {
-                    HelpersMessage.MensajeInformacionResult("Eliminar Usuario", "No puede eliminar el usuario, no cuenta con los permisos.");
                     return;
                 }
 
-                var delete = await _usuarioRepository.DeleteAsync(selectedUsuario);
-                if (delete)
+                var selectedUsuario = VariablesGlobalesForm.Instance.SelectedUsuario;
+                if (selectedUsuario != null)
                 {
-                    HelpersMessage.MensajeInformacionResult("Eliminar", " Se ha eliminado al usuario");
-                    var frmUsuarios = new ListaUsuarios();
-                    _mainFrame.Navigate(frmUsuarios);
+                    if (selectedUsuario.Codoperador == VariablesGlobalesForm.Instance.Usuario.Codoperador)
+                    {
+                        HelpersMessage.MensajeInformacionResult("Eliminar Usuario", "No se puede eliminar el usuario con el cual se ha iniciado sesión.");
+                        return;
+                    }
+
+                    if (VariablesGlobalesForm.Instance.Usuario.Nivel == Nivel.Caja)
+                    {
+                        HelpersMessage.MensajeInformacionResult("Eliminar Usuario", "No puede eliminar el usuario, no cuenta con los permisos.");
+                        return;
+                    }
+
+                    var delete = await _usuarioRepository.DeleteAsync(selectedUsuario);
+                    if (delete)
+                    {
+                        HelpersMessage.MensajeInformacionResult("Eliminar", " Se ha eliminado al usuario");
+                        var frmUsuarios = new ListaUsuarios();
+                        _mainFrame.Navigate(frmUsuarios);
+                    }
+                    else
+                    {
+                        HelpersMessage.MensajeInformacionResult("Eliminar", $"Se produjo el siguiente error: {_usuarioRepository.ErrorSms}");
+                    }
                 }
-                else
-                {
-                    HelpersMessage.MensajeInformacionResult("Eliminar", $"Se produjo el siguiente error: {_usuarioRepository.ErrorSms}");
-                }
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e, "Error al eliminar usuario");
             }
         }
 
@@ -260,30 +265,38 @@ namespace SistemaOro.Forms.ViewModels
 
         private async void OnDeleteClienteCommand()
         {
-            if (VariablesGlobalesForm.Instance.SelectedCliente is null)
+            try
             {
-                HelpersMessage.DialogWindow(ClienteMessages.TituloEliminarCliente, ClienteMessages.SeleccionarCliente).ShowDialog();
-                return;
-            }
+                if (VariablesGlobalesForm.Instance.SelectedCliente is null)
+                {
+                    HelpersMessage.DialogWindow(ClienteMessages.TituloEliminarCliente, ClienteMessages.SeleccionarCliente).ShowDialog();
+                    return;
+                }
 
-            var messageBox = HelpersMessage.MensajeConfirmacionResult(ClienteMessages.TituloEliminarCliente, ClienteMessages.EliminarClienteContent);
-            if (messageBox == MessageBoxResult.Cancel)
-            {
-                VariablesGlobalesForm.Instance.SelectedCliente = null;
-                return;
-            }
+                var messageBox = HelpersMessage.MensajeConfirmacionResult(ClienteMessages.TituloEliminarCliente, ClienteMessages.EliminarClienteContent);
+                if (messageBox == MessageBoxResult.Cancel)
+                {
+                    VariablesGlobalesForm.Instance.SelectedCliente = null;
+                    return;
+                }
 
-            var repositoryCliente = VariablesGlobales.Instance.UnityContainer.Resolve<IClienteRepository>();
-            var result = await repositoryCliente.DeleteAsync(VariablesGlobalesForm.Instance.SelectedCliente);
-            if (result)
-            {
-                HelpersMessage.DialogWindow(ClienteMessages.TituloEliminarCliente, ClienteMessages.ClienteEliminadoSuccess).ShowDialog();
-                VariablesGlobalesForm.Instance.SelectedCliente = null;
+                var repositoryCliente = VariablesGlobales.Instance.UnityContainer.Resolve<IClienteRepository>();
+                var result = await repositoryCliente.DeleteAsync(VariablesGlobalesForm.Instance.SelectedCliente);
+                if (result)
+                {
+                    HelpersMessage.DialogWindow(ClienteMessages.TituloEliminarCliente, ClienteMessages.ClienteEliminadoSuccess).ShowDialog();
+                    VariablesGlobalesForm.Instance.SelectedCliente = null;
+                    OnListadoClientes();
+                }
+                else
+                {
+                    HelpersMessage.DialogWindow(ClienteMessages.TituloEliminarCliente, $"{ClienteMessages.ClienteEliminadoError}\n{repositoryCliente.ErrorSms}").ShowDialog();
+                    VariablesGlobalesForm.Instance.SelectedCliente = null;
+                }
             }
-            else
+            catch (Exception e)
             {
-                HelpersMessage.DialogWindow(ClienteMessages.TituloEliminarCliente, $"{ClienteMessages.ClienteEliminadoError}\n{repositoryCliente.ErrorSms}").ShowDialog();
-                VariablesGlobalesForm.Instance.SelectedCliente = null;
+                _logger.Error(e, "Error al eliminar el cliente");
             }
         }
 
