@@ -6,7 +6,7 @@ namespace DevExpress.UITemplates.Collection.Utilities {
     using DevExpress.XtraEditors;
 
     public abstract class HtmlCssAsset {
-        public static string AssetsRoot = "SistemaOro.Forms.Assets."; 
+        public static string AssetsRoot = "SistemaOro.Data.Assets."; 
         public static System.Reflection.Assembly ResourcesAssembly = typeof(HtmlCssAsset).Assembly; 
         //
         readonly string htmlName, cssName;
@@ -75,9 +75,7 @@ namespace DevExpress.UITemplates.Collection.Utilities {
         public void Apply(HtmlContentPopup popup) {
             popup.HtmlTemplate.Set(Html, Css);
         }
-        public void Apply(DirectXForm form) {
-            form.HtmlTemplate.Set(Html, Css);
-        }
+        
         #endregion Apply
     }
 }

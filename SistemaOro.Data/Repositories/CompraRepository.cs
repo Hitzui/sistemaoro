@@ -577,12 +577,42 @@ public class CompraRepository(
                 Nombre = arg.cliente.Nombres,
                 Apellido = arg.cliente.Apellidos,
                 Total = arg.compra.Total,
+                Peso = arg.compra.Peso,
                 Fecha = arg.compra.Fecha,
                 Nocontrato = arg.compra.Nocontrato
             });
         return await result.ToListAsync();
     }
 
+    public Task<List<DtoComprasClientes>> FindComprasClientesFechaAndCerrada(DateTime fecha)
+    {
+        var parameter = context.Id.AsNoTracking().SingleOrDefault();
+        if (parameter is null)
+        {
+            return new Task<List<DtoComprasClientes>>(() => []);
+        }
+        var result = context.Compras.AsNoTracking()
+            .Where(compra => compra.Codestado == EstadoCompra.Vigente 
+                             || compra.Codestado == EstadoCompra.Cerrada 
+                             && compra.Fecha.Date<= fecha.Date)
+            .Join(context.Clientes.AsNoTracking(), compra => compra.Codcliente, 
+                cliente => cliente.Codcliente, (compra, cliente) => new { compra, cliente })
+            .Join(context.TipoCambios.AsNoTracking(), arg => arg.compra.Fecha.Date, cambio => cambio.Fecha.Date,
+                (arg1, cambio) => new { arg1.compra, arg1.cliente, cambio})
+            .OrderByDescending(arg => arg.compra.Fecha)
+            .Select(arg => new DtoComprasClientes()
+            {
+                Numcompra = arg.compra.Numcompra,
+                Codcliente = arg.cliente.Codcliente,
+                Nombre = arg.cliente.Nombres,
+                Apellido = arg.cliente.Apellidos,
+                Total = arg.compra.Codmoneda==parameter.Cordobas.Value ? decimal.Divide(arg.compra.Total,arg.cambio.Tipocambio) : arg.compra.Total,
+                Peso = arg.compra.Peso,
+                Fecha = arg.compra.Fecha,
+                Nocontrato = arg.compra.Nocontrato
+            });
+        return result.ToListAsync();
+    }
     public Task<List<DetalleCompra>> DetalleCompraImprimir(string numcompra)
     {
         return context.DetalleCompras.Where(compra => compra.Numcompra == numcompra).ToListAsync();

@@ -158,6 +158,15 @@
                     </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
             </dxr:RibbonPageCategory>
+            <dxr:RibbonPageCategory>
+                <dxr:RibbonPage Caption="Descargue">
+                    <dxr:RibbonPageGroup Caption="Descargue">
+                        <dxb:BarButtonItem Content="Realizar Descargue" RibbonStyle="Large" 
+                                           Command="{Binding RealizarDescargueCommand}"
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Weather_Cloudy.svg}"/>
+                    </dxr:RibbonPageGroup>
+                </dxr:RibbonPage>
+            </dxr:RibbonPageCategory>
         </dxr:RibbonControl>
         <Frame Grid.Row="1" x:Name="MainFrame" NavigationUIVisibility="Hidden" />
     </Grid>

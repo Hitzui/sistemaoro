@@ -1,11 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.12.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
@@ -25,22 +24,29 @@
     <PackageReference Include="Unity" Version="5.11.10" />
     <PackageReference Include="Unity.RegistrationByConvention" Version="5.11.1" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Reference Include="DevExpress.Data.Desktop.v24.1">
+      <HintPath>C:\Program Files\DevExpress 24.1\Components\Offline Packages\devexpress.data.desktop\24.1.7\lib\net6.0-windows\DevExpress.Data.Desktop.v24.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v24.1">
+      <HintPath>C:\Program Files\DevExpress 24.1\Components\Offline Packages\devexpress.utils\24.1.7\lib\net6.0-windows\DevExpress.Utils.v24.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v24.1">
+      <HintPath>C:\Program Files\DevExpress 24.1\Components\Offline Packages\devexpress.win.navigation\24.1.7\lib\net6.0-windows\DevExpress.XtraEditors.v24.1.dll</HintPath>
+    </Reference>
+    <Compile Update="Utilities\HtmlCssAsset.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-
   <ItemGroup>
     <None Update="App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -49,5 +55,4 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
 </Project>

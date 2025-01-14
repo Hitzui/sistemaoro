@@ -4,8 +4,21 @@ using SistemaOro.Data.Entities;
 
 namespace SistemaOro.Data.Repositories;
 
-public class DescarguesRepository(DataContext context, ICompraRepository compraRepository) : FacadeEntity<Descargue>(context), IDescarguesRepository
+public class DescarguesRepository(DataContext context, ICompraRepository compraRepository) :
+    FacadeEntity<Descargue>(context), IDescarguesRepository
 {
+    public async Task<bool> GuardarDescargueByCompra(List<DtoComprasClientes> compras, DateTime fecha)
+    {
+        var descargue = new Descargue
+        {
+            Dgcancom = compras.Count,
+            Dgfecdes = fecha,
+            Dgfecgen = DateTime.Now,
+            
+        }
+        
+    }
+
     public async Task<bool> GuardarDescargueDetalleCompra(string numcompra)
     {
         var findCompra = await compraRepository.FindById(numcompra);
@@ -158,7 +171,7 @@ public class DescarguesRepository(DataContext context, ICompraRepository compraR
             join cliente in context.Clientes on compra.Codcliente equals cliente.Codcliente
             where descargue.Dgnumdes == dgnumdes
             orderby compra.Numcompra
-            select new DetalleDescarguePorCompra(descargue.Dgnumdes, compra.Codcliente, 
+            select new DetalleDescarguePorCompra(descargue.Dgnumdes, compra.Codcliente,
                 descargue.Dgfecdes, compra.Numcompra, compra.Fecha, cliente.Codcliente, cliente.Nombres,
                 cliente.Apellidos, compra.Peso, compra.Total, descargue.Dgcancom,
                 detcompra.Kilshowdoc, detcompra.Peso, detcompra.Importe.Value);
@@ -175,13 +188,13 @@ public class DescarguesRepository(DataContext context, ICompraRepository compraR
             into g
             select new SaldoCompra
             (
-                 g.Key,
+                g.Key,
                 g.Sum(x => x.c.Peso),
-                 g.Sum(x => x.c.Total),
-                 g.Sum(x => x.d.Dgpesntt),
-                 g.Sum(x => x.d.Dgimptcom),
-                 g.Sum(x => x.d.Dgpesntt - x.c.Peso),
-                 g.Sum(x => x.d.Dgimptcom - x.c.Total)
+                g.Sum(x => x.c.Total),
+                g.Sum(x => x.d.Dgpesntt),
+                g.Sum(x => x.d.Dgimptcom),
+                g.Sum(x => x.d.Dgpesntt - x.c.Peso),
+                g.Sum(x => x.d.Dgimptcom - x.c.Total)
             );
         return await result.ToListAsync();
     }

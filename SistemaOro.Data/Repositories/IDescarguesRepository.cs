@@ -5,6 +5,7 @@ namespace SistemaOro.Data.Repositories;
 
 public interface IDescarguesRepository : ICrudRepository<Descargue>
 {
+    Task<bool> GuardarDescargueByCompra(List<DtoComprasClientes> compras, DateTime fecha);
 
     Task<bool> GuardarDescargueDetalleCompra(string numcompra);
 

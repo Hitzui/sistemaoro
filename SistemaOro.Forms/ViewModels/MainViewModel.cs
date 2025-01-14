@@ -19,6 +19,7 @@ using SistemaOro.Forms.ViewModels.Usuarios;
 using SistemaOro.Forms.Views.Agencias;
 using SistemaOro.Forms.Views.Cajas;
 using SistemaOro.Forms.Views.Compras;
+using SistemaOro.Forms.Views.Descargue;
 using SistemaOro.Forms.Views.Monedas;
 using SistemaOro.Forms.Views.Parametros;
 using SistemaOro.Forms.Views.Precios;
@@ -64,6 +65,13 @@ namespace SistemaOro.Forms.ViewModels
             PrecioKilateCommand = new DelegateCommand(OnPrecioKilateCommand);
             _mainFrame = new Frame();
             VariablesGlobalesForm.Instance.MainFrame = _mainFrame;
+        }
+        
+        [Command]
+        public void RealizarDescargueCommand()
+        {
+            var page = new ListaDescarguesPage();
+            _mainFrame.Navigate(page);
         }
 
 

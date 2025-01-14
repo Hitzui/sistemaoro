@@ -22,4 +22,7 @@ public interface ICompraRepository
     /// </summary>
     /// <returns>Lista de compras por clientes</returns>
     Task<IList<DtoComprasClientes>> FindComprasClientes();
+
+    Task<List<DtoComprasClientes>> FindComprasClientesFechaAndCerrada(DateTime fecha);
+
 }

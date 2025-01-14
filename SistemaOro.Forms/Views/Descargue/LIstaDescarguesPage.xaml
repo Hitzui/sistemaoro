@@ -1,0 +1,63 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:SistemaOro.Forms.Views.Descargue"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:descargue="clr-namespace:SistemaOro.Forms.ViewModels.Descargue"
+    xmlns:dto="clr-namespace:SistemaOro.Data.Dto;assembly=SistemaOro.Data"
+    x:Class="SistemaOro.Forms.Views.Descargue.ListaDescarguesPage"
+    mc:Ignorable="d" Title="{Binding Title}" Background="White">
+    <Page.DataContext>
+        <descargue:ListaDescarguesViewModels />
+    </Page.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <dx:SimpleButton Margin="348,0,0,0" Content="Filtrar" Command="{Binding FilterCommand}" HorizontalAlignment="Left" Width="142" Height="24" VerticalAlignment="Center" Glyph="{dx:DXImage SvgImages/Dashboards/FilterElements.svg}" />
+            <dxe:DateEdit HorizontalAlignment="Left" DateTime="{Binding Fecha}"
+                          Margin="172,0,0,0" VerticalAlignment="Center" Width="157" />
+            <Label Content="Seleccionar fecha:" HorizontalAlignment="Left" Margin="60,0,0,0" VerticalAlignment="Center"
+                   Width="107" />
+            <dx:SimpleButton Content="Seleccionar todos" HorizontalAlignment="Left"
+                             Command="{Binding SelectAllCommand}"
+                             Height="25" Margin="495,0,0,0" 
+                             VerticalAlignment="Center" Width="152"
+                             Glyph="{dx:DXImage SvgImages/Dashboards/ItemTypeChecked.svg}"/>
+            <dx:SimpleButton Content="Quitar selección" HorizontalAlignment="Left" 
+                             Command="{Binding DeselectAllCommand}"
+                             Height="25" Margin="652,0,0,0" 
+                             VerticalAlignment="Center" Width="152" 
+                             Glyph="{dx:DXImage SvgImages/Dashboards/ClearFilter.svg}"/>
+            <dx:SimpleButton Content="Guardar" HorizontalAlignment="Left" Height="24" Margin="837,0,0,0" VerticalAlignment="Center" Width="96" Glyph="{dx:DXImage SvgImages/Save/Save.svg}"/>
+        </Grid>
+        <dxg:GridControl Grid.Row="1" EnableSmartColumnsGeneration="True"
+                         DesignTimeDataObjectType="{x:Type dto:DtoComprasClientes}"
+                         ItemsSource="{Binding DtoComprasClientes}">
+            <dxg:GridControl.View>
+                <dxg:TableView />
+            </dxg:GridControl.View>
+            <!-- Columna con CheckBox -->
+            <dxg:GridColumn FieldName="IsChecked" Header="Seleccionar" Width="110" AllowEditing="True" ShowCheckBoxInHeader="True" />
+            <dxg:GridColumn FieldName="Numcompra" Header="No Compra" Width="100" AllowEditing="False" IsSmart="True"/>
+            <dxg:GridColumn FieldName="Nocontrato" Width="100" Header="No Contrato" AllowEditing="False" IsSmart="True"/>
+            <dxg:GridColumn FieldName="Codcliente" Header="Cod. Cliente" Width="*" AllowEditing="False" IsSmart="True"/>
+            <dxg:GridColumn FieldName="Fecha" Width="150" AllowEditing="False" IsSmart="True"/>
+            <dxg:GridColumn FieldName="Nombre" Width="*" AllowEditing="False" IsSmart="True"/>
+            <dxg:GridColumn FieldName="Apellido" Width="*" AllowEditing="False" IsSmart="True"/>
+            <dxg:GridColumn FieldName="Peso" Width="100" AllowEditing="False" IsSmart="True"/>
+            <dxg:GridColumn FieldName="Total" Width="100" AllowEditing="False" IsSmart="True">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings DisplayFormat="n2"/>
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+        </dxg:GridControl>
+
+    </Grid>
+</Page>
