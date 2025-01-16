@@ -14,9 +14,9 @@ public class DescarguesRepository(DataContext context, ICompraRepository compraR
             Dgcancom = compras.Count,
             Dgfecdes = fecha,
             Dgfecgen = DateTime.Now,
-            
-        }
-        
+
+        };
+        return true;
     }
 
     public async Task<bool> GuardarDescargueDetalleCompra(string numcompra)

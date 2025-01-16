@@ -74,7 +74,9 @@ namespace SistemaOro.Forms.Views.Compras
         private void GridDetaCompra_CustomColumnDisplayText(object sender, DevExpress.Xpf.Grid.CustomColumnDisplayTextEventArgs e)
         {
             if (e.Column.FieldName is "Importe" or "Preciok" or "Peso")
-                e.DisplayText = $"{e.Value:n2}";
+            {
+                //e.DisplayText =$"{e.Value:N3}";
+            }
         }
     }
 }

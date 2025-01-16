@@ -239,13 +239,13 @@
       <column name="" length="10" p1:unicode="False" />
     </property>
     <property name="Peso" type="Decimal" p1:ValidateRequired="true" p1:Guid="e227ecb1-2a73-4776-a927-5951d030db03">
-      <column name="" precision="11" scale="2" p1:unicode="False" />
+      <column name="Peso" not-null="True" precision="18" scale="2" sql-type="decimal" p1:unicode="False" />
     </property>
     <property name="Codmoneda" type="Int32" p1:ValidateRequired="true" p1:Guid="feeaec0a-1b1e-42b2-bc8a-1a6932722147">
       <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="Total" type="Decimal" p1:ValidateRequired="true" p1:Guid="e40445c2-1a08-4bb2-8204-b20b9bb0fac6">
-      <column name="" precision="15" scale="2" p1:unicode="False" />
+      <column name="Total" not-null="True" precision="18" scale="4" sql-type="decimal" p1:unicode="False" />
     </property>
     <property name="Fecha" type="DateTime" p1:ValidateRequired="true" p1:Guid="9ffb451e-554c-4508-b3bb-809a428681ab">
       <column name="" p1:unicode="False" />
@@ -266,40 +266,40 @@
       <column name="Dgnumdes" default="0" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
     </property>
     <property name="Efectivo" type="Decimal" p1:ValidateRequired="true" p1:Guid="dc749b98-e281-48ff-8f53-5078a7120c0b">
-      <column name="" precision="18" scale="2" p1:unicode="False" />
+      <column name="Efectivo" not-null="True" precision="18" scale="4" sql-type="decimal" p1:unicode="False" />
     </property>
     <property name="Cheque" type="Decimal" p1:ValidateRequired="true" p1:Guid="bf4d7ae5-ed6d-41a0-b46d-fc725968cd16">
-      <column name="" precision="18" scale="2" p1:unicode="False" />
+      <column name="Cheque" not-null="True" precision="18" scale="4" sql-type="decimal" p1:unicode="False" />
     </property>
     <property name="Transferencia" type="Decimal" p1:ValidateRequired="true" p1:Guid="4146d094-b5b2-472e-83ce-0c6cca244255">
-      <column name="" precision="18" scale="2" p1:unicode="False" />
+      <column name="Transferencia" not-null="True" precision="18" scale="4" sql-type="decimal" p1:unicode="False" />
     </property>
     <property name="PorCobrar" type="Decimal" p1:ValidateRequired="true" p1:Guid="9da1469b-8fe1-4055-a445-5b4d2f49fa7b">
-      <column name="" precision="18" scale="2" p1:unicode="False" />
+      <column name="PorCobrar" not-null="True" precision="18" scale="4" sql-type="decimal" p1:unicode="False" />
     </property>
     <property name="PorPagar" type="Decimal" p1:ValidateRequired="true" p1:Guid="ee3e5ee9-9e43-4d17-b509-042815576526">
-      <column name="" precision="18" scale="2" p1:unicode="False" />
+      <column name="PorPagar" not-null="True" precision="18" scale="4" sql-type="decimal" p1:unicode="False" />
     </property>
     <property name="Adelantos" type="Decimal" p1:ValidateRequired="true" p1:Guid="94d6dc04-aca6-4303-adf0-b8ad8cb50e0d">
-      <column name="" precision="18" scale="2" p1:unicode="False" />
+      <column name="Adelantos" not-null="True" precision="18" scale="4" sql-type="decimal" p1:unicode="False" />
     </property>
     <property name="SaldoPorPagar" type="Decimal" p1:ValidateRequired="true" p1:Guid="e73848c8-f354-4008-85ff-881d51c87068">
-      <column name="" precision="18" scale="2" p1:unicode="False" />
+      <column name="SaldoPorPagar" not-null="True" precision="18" scale="4" sql-type="decimal" p1:unicode="False" />
     </property>
     <property name="SaldoAdelanto" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="acf9af33-04ff-4a3f-9fe7-7d18e64d6976">
-      <column name="" default="0" precision="12" scale="3" p1:unicode="False" />
+      <column name="SaldoAdelanto" default="0" not-null="False" precision="18" scale="4" sql-type="decimal" p1:unicode="False" />
     </property>
     <property name="SaldoAdelantoDolares" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="9c11ef7f-95b1-41b0-9376-88ffccb5201c">
-      <column name="" precision="12" scale="3" p1:unicode="False" />
+      <column name="SaldoAdelantoDolares" not-null="False" precision="18" scale="4" sql-type="decimal" p1:unicode="False" />
     </property>
     <property name="Nocontrato" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="d3ddfe0c-901c-461f-96e2-b1a4cf80687a">
       <column name="" precision="10" scale="0" p1:unicode="False" />
     </property>
     <property name="Subtotal" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="449ae529-2451-4e8c-821a-3effdc28c955">
-      <column name="" precision="18" scale="2" p1:unicode="False" />
+      <column name="Subtotal" not-null="False" precision="18" scale="4" sql-type="decimal" p1:unicode="False" />
     </property>
     <property name="Descuento" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="666fb4f1-a27a-496d-b332-58db6f00c810">
-      <column name="" precision="18" scale="2" p1:unicode="False" />
+      <column name="Descuento" not-null="False" precision="18" scale="4" sql-type="decimal" p1:unicode="False" />
     </property>
     <property name="IdTipoPrecio" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="c1923b33-c0db-4e23-9b7f-13dec9dc2327">
       <column name="IdTipoPrecio" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
@@ -395,13 +395,13 @@
       <column name="" length="20" p1:unicode="False" />
     </property>
     <property name="Preciok" type="Decimal" p1:ValidateRequired="true" p1:Guid="698aeeb9-30f6-466d-9a0b-0f3c8808d0ba">
-      <column name="" precision="18" scale="2" p1:unicode="False" />
+      <column name="Preciok" not-null="True" precision="18" scale="4" sql-type="decimal" p1:unicode="False" />
     </property>
     <property name="Peso" type="Decimal" p1:ValidateRequired="true" p1:Guid="042f863d-8632-4f52-9597-11a0aed028bc">
-      <column name="" precision="18" scale="2" p1:unicode="False" />
+      <column name="Peso" not-null="True" precision="18" scale="4" sql-type="decimal" p1:unicode="False" />
     </property>
     <property name="Importe" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="5b04acc5-3ec3-412d-899d-e37a7d9a9fbb">
-      <column name="" precision="18" scale="2" p1:unicode="False" />
+      <column name="Importe" not-null="False" precision="18" scale="4" sql-type="decimal" p1:unicode="False" />
     </property>
     <property name="Kilshowdoc" type="String" p1:nullable="True" p1:ValidateMaxLength="20" p1:ValidateRequired="false" p1:Guid="781522c8-460f-4dd6-be0b-739def484756">
       <column name="" length="20" p1:unicode="False" />

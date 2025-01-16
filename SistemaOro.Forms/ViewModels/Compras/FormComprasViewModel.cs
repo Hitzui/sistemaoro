@@ -81,20 +81,12 @@ namespace SistemaOro.Forms.ViewModels.Compras
 
                 var message = new DXMessageBoxService();
                 var linea = ItemsSource.Count + 1;
-                /*if (ItemsSource.Count > 0)
-                {
-                    if (ItemsSource.Any(compra => compra.Kilate.Equals(SelectedPrecioKilate.Descripcion)))
-                    {
-                        message.ShowMessage("Ya está ingresando el Quilate seleccionado", "Agregar");
-                        return;
-                    }
-                }*/
 
                 var valorTipoCambio = Zero;
                 var tipoCambio = await _tipoCambioRepository.FindByDateNow();
                 if (tipoCambio is not null)
                 {
-                    valorTipoCambio = HelpersMethods.RedondeoHaciaArriba(tipoCambio.Tipocambio);
+                    valorTipoCambio = (tipoCambio.Tipocambio);
                 }
 
                 if (SelectedMoneda is not null)
@@ -208,7 +200,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
 
         public decimal Peso
         {
-            get => HelpersMethods.RedondeoHaciaArriba(_peso);
+            get => (_peso);
             set => SetValue(ref _peso, value, changedCallback: NotifyImporteChanged());
         }
 
@@ -216,7 +208,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
 
         public decimal Precio
         {
-            get => HelpersMethods.RedondeoHaciaArriba(_precio);
+            get => (_precio);
             set => SetValue(ref _precio, value, changedCallback: NotifyImporteChanged());
         }
 
@@ -224,7 +216,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
 
         public decimal Importe
         {
-            get => HelpersMethods.RedondeoHaciaArriba(_importe);
+            get => Math.Round(_importe, 2);
             set => SetValue(ref _importe, value);
         }
 
@@ -232,7 +224,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
 
         public decimal Total
         {
-            get => HelpersMethods.RedondeoHaciaArriba(_total);
+            get => Math.Round(_total, 2);
             set => SetValue(ref _total, value);
         }
 
@@ -240,7 +232,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
 
         public decimal SubTotal
         {
-            get => HelpersMethods.RedondeoHaciaArriba(_subTotal);
+            get => Math.Round(_subTotal, 2);
             set => SetValue(ref _subTotal, value);
         }
 
@@ -308,7 +300,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
 
         private Action NotifyImporteChanged()
         {
-            return () => { Importe = Multiply(_peso, Precio); };
+            return () => { Importe = Peso * Precio; };
         }
 
         private bool _hiddeButtonAnular;
@@ -357,7 +349,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
 
                 var tipoCambio = await _tipoCambioRepository.FindByDateNow();
                 var tipoCambioValue = One;
-                if (tipoCambio is not null) tipoCambioValue = HelpersMethods.RedondeoHaciaArriba(tipoCambio.Tipocambio);
+                if (tipoCambio is not null) tipoCambioValue = (tipoCambio.Tipocambio);
                 FnCalcularTotal();
                 if (value.Codmoneda == param.Cordobas)
                 {
@@ -508,7 +500,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
         private bool ValidarTotal()
         {
             var sumaTotal = MontoEfectivo + MontoCheque + MontoAdelanto + MontoPorPagar + MontoTransferencia + MontoAdelanto;
-            return Compare(Total, sumaTotal) != 0;
+            return Compare(Math.Round(Total, 4), Math.Round(sumaTotal, 4)) != 0;
         }
 
         [Command]
@@ -819,6 +811,10 @@ namespace SistemaOro.Forms.ViewModels.Compras
 
         private async void FnCalcularTotal()
         {
+            if (SelectedMoneda is null)
+            {
+                return;
+            }
             if (SelectedTiposPrecios is null)
             {
                 HelpersMessage.MensajeErroResult("Compra", "No hay tipo de precios especificados");
@@ -828,7 +824,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
             try
             {
                 var tipoCambio = await _tipoCambioRepository.FindByDateNow();
-                var tipoCambioValue = tipoCambio is null ? Zero : tipoCambio.Tipocambio;
+                var tipoCambioValue = tipoCambio?.Tipocambio ?? Zero;
                 var parametros = VariablesGlobalesForm.Instance.Parametros;
                 var precio = SelectedTiposPrecios.Precio ?? Zero;
                 if (ItemsSource.Count > 0)
@@ -838,15 +834,17 @@ namespace SistemaOro.Forms.ViewModels.Compras
                         var findPrecio = await _preciosKilatesRepository.FindByPeso(Convert.ToDecimal(detCompra.Kilate));
                         if (findPrecio != null)
                         {
+                            var tempPrecio = findPrecio.Precio / precio;
+                            var tempImporte = (findPrecio.Precio * detCompra.Peso) / precio;
                             if (parametros.Dolares.Value == SelectedMoneda.Codmoneda)
                             {
-                                detCompra.Preciok = HelpersMethods.RedondeoHaciaArriba(findPrecio.Precio / precio);
-                                detCompra.Importe = HelpersMethods.RedondeoHaciaArriba((findPrecio.Precio * detCompra.Peso) / precio);
+                                detCompra.Preciok = tempPrecio;
+                                detCompra.Importe = tempImporte;
                             }
                             else
                             {
-                                detCompra.Preciok = HelpersMethods.RedondeoHaciaArriba(findPrecio.Precio * tipoCambioValue / precio);
-                                detCompra.Importe = HelpersMethods.RedondeoHaciaArriba((findPrecio.Precio * tipoCambioValue * detCompra.Peso) / precio);
+                                detCompra.Preciok = tempPrecio * tipoCambioValue;
+                                detCompra.Importe = tempImporte * tipoCambioValue;
                             }
                         }
                     }
