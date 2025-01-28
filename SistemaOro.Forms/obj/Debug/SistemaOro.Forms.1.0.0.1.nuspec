@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>SistemaOro.Forms</id>
+    <version>1.0.0.1</version>
+    <title>Sistema de Gestion de Compra Oro</title>
+    <authors>SistemaOro.Forms</authors>
+    <icon>4177575_sale_shop_store_icon.png</icon>
+    <description>Sistema de gestion de compra y venta de oro</description>
+    <repository type="git" />
+    <dependencies>
+      <group targetFramework="net8.0-windows10.0.17763">
+        <dependency id="SistemaOro.Data" version="1.0.0" exclude="Build,Analyzers" />
+        <dependency id="AutoMapper" version="13.0.1" exclude="Build,Analyzers" />
+        <dependency id="DevExpress.Data" version="24.1.7" exclude="Build,Analyzers" />
+        <dependency id="DevExpress.Drawing" version="24.1.7" exclude="Build,Analyzers" />
+        <dependency id="DevExpress.Pdf.Core" version="24.1.7" exclude="Build,Analyzers" />
+        <dependency id="DevExpress.Printing.Core" version="24.1.7" exclude="Build,Analyzers" />
+        <dependency id="DevExpress.Reporting.CodeCompletion" version="24.1.7" exclude="Build,Analyzers" />
+        <dependency id="DevExpress.Reporting.Core" version="24.1.7" exclude="Build,Analyzers" />
+        <dependency id="DevExpress.Utils" version="24.1.7" exclude="Build,Analyzers" />
+        <dependency id="DevExpress.Win" version="24.1.7" exclude="Build,Analyzers" />
+        <dependency id="DevExpress.Win.Design" version="24.1.7" exclude="Build,Analyzers" />
+        <dependency id="DevExpress.Wpf.Core" version="24.1.7" exclude="Build,Analyzers" />
+        <dependency id="DevExpress.Wpf.Dashboard" version="24.1.7" exclude="Build,Analyzers" />
+        <dependency id="EPPlus" version="7.4.1" exclude="Build,Analyzers" />
+        <dependency id="NLog" version="5.3.4" exclude="Build,Analyzers" />
+        <dependency id="System.Drawing.Common" version="9.0.0" exclude="Build,Analyzers" />
+        <dependency id="devexpress.wpf.accordion" version="24.1.7" exclude="Build,Analyzers" />
+        <dependency id="devexpress.wpf.controls" version="24.1.7" exclude="Build,Analyzers" />
+        <dependency id="devexpress.wpf.docking" version="24.1.7" exclude="Build,Analyzers" />
+        <dependency id="devexpress.wpf.grid.core" version="24.1.7" exclude="Build,Analyzers" />
+        <dependency id="devexpress.wpf.layoutcontrol" version="24.1.7" exclude="Build,Analyzers" />
+        <dependency id="devexpress.wpf.printing" version="24.1.7" exclude="Build,Analyzers" />
+        <dependency id="devexpress.wpf.ribbon" version="24.1.7" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkReferences>
+      <group targetFramework="net8.0-windows10.0.17763">
+        <frameworkReference name="Microsoft.WindowsDesktop.App" />
+      </group>
+    </frameworkReferences>
+    <contentFiles>
+      <files include="any/net8.0-windows10.0.17763/cash_ico.ico" buildAction="Content" />
+    </contentFiles>
+  </metadata>
+  <files>
+    <file src="E:\Repos\RiderProjects\Sistemaoro\SistemaOro.Forms\bin\Debug\net8.0-windows10.0.17763.0\SistemaOro.Forms.runtimeconfig.json" target="lib\net8.0-windows10.0.17763\SistemaOro.Forms.runtimeconfig.json" />
+    <file src="E:\Repos\RiderProjects\Sistemaoro\SistemaOro.Forms\bin\Debug\net8.0-windows10.0.17763.0\SistemaOro.Forms.dll" target="lib\net8.0-windows10.0.17763\SistemaOro.Forms.dll" />
+    <file src="E:\Repos\RiderProjects\Sistemaoro\SistemaOro.Forms\cash_ico.ico" target="content\cash_ico.ico" />
+    <file src="E:\Repos\RiderProjects\Sistemaoro\SistemaOro.Forms\cash_ico.ico" target="contentFiles\any\net8.0-windows10.0.17763\cash_ico.ico" />
+    <file src="E:\Repos\RiderProjects\Sistemaoro\SistemaOro.Forms\4177575_sale_shop_store_icon.png" target="\4177575_sale_shop_store_icon.png" />
+  </files>
+</package>

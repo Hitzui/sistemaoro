@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_LastSelectedProfileId>E:\Repos\sistemaoro\SistemaOro.Forms\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Update="Views\Agencias\AgenciasPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Agencias\FormAgencia.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Cajas\AgregarMovimientoCaja.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Cajas\CajasPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Cajas\MaestroCajaPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Cajas\MovimientosCajasPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Cajas\RealizarMovimientoCajaPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Cajas\ReportesMaestroCajaPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Clientes\FilterClientesWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Compras\ComprasPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Compras\FormComprasPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\IngresarUsuarioModal.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\LoadingWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\LoginPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Monedas\MonedasWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Parametros\ParametrosPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Precios\PreciosKilatePage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Precios\TiposPreciosWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Reportes\Caja\ReporteMovimientoCaja.cs">
+      <SubType>XtraReport</SubType>
+    </Compile>
+    <Compile Update="Views\Reportes\Caja\ReportViewerCaja.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Reportes\Caja\RptMovimientosCaja.cs">
+      <SubType>XtraReport</SubType>
+    </Compile>
+    <Compile Update="Views\Reportes\Cliente\ReporteDatosCliente.cs">
+      <SubType>XtraReport</SubType>
+    </Compile>
+    <Compile Update="Views\Reportes\Compras\ReporteAnexo.cs">
+      <SubType>XtraReport</SubType>
+    </Compile>
+    <Compile Update="Views\Reportes\Compras\ReporteCompraTicket.cs">
+      <SubType>XtraReport</SubType>
+    </Compile>
+    <Compile Update="Views\Reportes\Compras\ReporteComprobanteCompra.cs">
+      <SubType>XtraReport</SubType>
+    </Compile>
+    <Compile Update="Views\Reportes\Compras\ReporteContrantoPrestamo.cs">
+      <SubType>XtraReport</SubType>
+    </Compile>
+    <Compile Update="Views\Reportes\Compras\ReporteContratoContraVenta.cs">
+      <SubType>XtraReport</SubType>
+    </Compile>
+    <Compile Update="Views\Reportes\Report1.cs">
+      <SubType>XtraReport</SubType>
+    </Compile>
+    <Compile Update="Views\Reportes\ReportViewerWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Reportes\TestReportSyncfusion.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Rubros\RubrosPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\TipoCambio\ListadoTipoCambio.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\TipoDocumento\TipoDocumentoPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Usuarios\ListaUsuarios.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="ViewModels\Usuarios\ListaUsuariosViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Usuarios\UsuarioEditWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\Agencias\AgenciasPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Agencias\FormAgencia.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Cajas\AgregarMovimientoCaja.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Cajas\CajasPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Cajas\MaestroCajaPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Cajas\MovimientosCajasPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Cajas\RealizarMovimientoCajaPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Cajas\ReportesMaestroCajaPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Clientes\FilterClientesWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Compras\ComprasPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Compras\FormComprasPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\IngresarUsuarioModal.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\LoadingWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\LoginPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Monedas\MonedasWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Parametros\ParametrosPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Precios\PreciosKilatePage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Precios\TiposPreciosWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Reportes\Caja\ReportViewerCaja.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Reportes\ReportViewerWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Reportes\TestReportSyncfusion.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Rubros\RubrosPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\TipoCambio\ListadoTipoCambio.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\TipoDocumento\TipoDocumentoPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Usuarios\ListaUsuarios.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Usuarios\UsuarioEditWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+</Project>

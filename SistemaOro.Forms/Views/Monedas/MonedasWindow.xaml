@@ -1,0 +1,47 @@
+﻿<dx:ThemedWindow
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:monedas="clr-namespace:SistemaOro.Forms.ViewModels.Monedas"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    x:Class="SistemaOro.Forms.Views.Monedas.MonedasWindow"
+    Title="{Binding Title}" Height="800" Width="1000"
+    Icon="{dx:DXImage SvgImages/Icon Builder/Travel_CurrencyExchange.svg}"
+    ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="ThemedWindow_Loaded">
+    <dx:ThemedWindow.DataContext>
+        <monedas:MonedasViewModel />
+    </dx:ThemedWindow.DataContext>
+    <Grid>
+
+        <dxg:GridControl x:Name="grid" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True"
+                         ItemsSource="{Binding ItemsSource}" RestoreStateKeyFieldName="Codmoneda"
+                         RestoreStateOnSourceChange="True">
+            <dxg:GridControl.TotalSummary>
+                <dxg:GridSummaryItem Alignment="Right" SummaryType="Count" />
+            </dxg:GridControl.TotalSummary>
+            <dxg:GridControl.InputBindings>
+                <KeyBinding Command="{Binding View.Commands.DeleteFocusedRow, ElementName=grid}" Key="Delete" />
+            </dxg:GridControl.InputBindings>
+            <dxg:GridControl.View>
+                <dxg:TableView NewItemRowPosition="Top"
+                               EditFormShowMode="Dialog"
+                               ValidateCellCommand="{Binding ValidateCellCommand}"
+                               ValidateRowCommand="{Binding ValidateRowCommand}"
+                               ValidateRowDeletionCommand="{Binding ValidateRowDeletionCommand}"
+                               DataSourceRefreshCommand="{Binding DataSourceRefreshCommand}"
+                               ShowFixedTotalSummary="True" />
+            </dxg:GridControl.View>
+            <dxg:GridColumn FieldName="Codmoneda" IsSmart="True" ShowInColumnChooser="False" Visible="False"/>
+            <dxg:GridColumn FieldName="Descripcion" IsSmart="True" Width="*"/>
+            <dxg:GridColumn FieldName="Simbolo" IsSmart="True" Width="*"/>
+            <dxg:GridColumn FieldName="Fecha" IsSmart="True" ShowInColumnChooser="False" Visible="False"/>
+            <dxg:GridColumn FieldName="Default" IsSmart="True" Width="*">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:CheckEditSettings IsThreeState="False" />
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+        </dxg:GridControl>
+
+    </Grid>
+</dx:ThemedWindow>

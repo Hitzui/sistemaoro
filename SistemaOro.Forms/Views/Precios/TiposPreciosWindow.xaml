@@ -1,0 +1,44 @@
+﻿<dx:ThemedWindow
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:precios="clr-namespace:SistemaOro.Forms.ViewModels.Precios"
+    x:Class="SistemaOro.Forms.Views.Precios.TiposPreciosWindow"
+    Height="400" Width="502" Icon="{dx:DXImage SvgImages/Business Objects/BO_Sale.svg}" ResizeMode="NoResize"
+    Loaded="ThemedWindow_Loaded" WindowStartupLocation="CenterScreen">
+    <dx:ThemedWindow.DataContext>
+        <precios:TiposPreciosViewModel />
+    </dx:ThemedWindow.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <dxg:GridControl x:Name="GridTiposPrecios" AutoGenerateColumns="AddNew"
+                         EnableSmartColumnsGeneration="True"
+                         Grid.Row="0" ItemsSource="{Binding ItemsSource}"
+                         RestoreStateKeyFieldName="IdTipoPrecio"
+                         RestoreStateOnSourceChange="True">
+            <dxg:GridControl.TotalSummary>
+                <dxg:GridSummaryItem Alignment="Right" SummaryType="Count" />
+            </dxg:GridControl.TotalSummary>
+            <dxg:GridControl.InputBindings>
+                <KeyBinding
+                    Command="{Binding View.Commands.DeleteFocusedRow, ElementName=GridTiposPrecios}"
+                    Key="Delete" />
+            </dxg:GridControl.InputBindings>
+            <dxg:GridControl.View>
+                <dxg:TableView NewItemRowPosition="Top" ShowUpdateRowButtons="OnCellEditorOpen"
+                               ValidateRowCommand="{Binding ValidateRowCommand}"
+                               ValidateRowDeletionCommand="{Binding ValidateRowDeletionCommand}"
+                               DataSourceRefreshCommand="{Binding DataSourceRefreshCommand}"
+                               ShowFixedTotalSummary="True" />
+            </dxg:GridControl.View>
+            <dxg:GridColumn FieldName="IdTipoPrecio" Header="Id Tipo Precio" IsSmart="True" ReadOnly="True" />
+            <dxg:GridColumn FieldName="Descripcion" IsSmart="True" />
+            <dxg:GridColumn FieldName="Precio" IsSmart="True" />
+            <dxg:GridColumn FieldName="Error" IsSmart="True" Visible="False" />
+        </dxg:GridControl>
+
+    </Grid>
+</dx:ThemedWindow>

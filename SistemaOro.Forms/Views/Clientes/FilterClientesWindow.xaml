@@ -1,0 +1,37 @@
+﻿<dx:ThemedWindow xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+                 x:Class="SistemaOro.Forms.Views.Clientes.FilterClientesWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                 xmlns:clientes="clr-namespace:SistemaOro.Forms.ViewModels.Clientes"
+                 Title="{Binding Title}" Height="800" Width="1000" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="{dx:DXImage SvgImages/Business Objects/BO_MyDetails.svg}" Loaded="ThemedWindow_Loaded"
+>
+    <Window.DataContext>
+        <clientes:FilterClientesViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition  Height="70"/>
+            <RowDefinition  Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <dx:SimpleButton Command="{Binding SelectedClienteCommand}" Height="50" Margin="50,0,0,0" Content="Seleccionar" Glyph="{dx:DXImage SvgImages/Business Objects/BO_Validation.svg}" />
+        </StackPanel>
+        <dxg:GridControl Grid.Row="1" x:Name="GridControlCliente" ItemsSource="{Binding ItemsSource}" 
+                         RestoreStateKeyFieldName="Codcliente" RestoreStateOnSourceChange="True" 
+                         SelectedItem="{Binding SelectedCliente}" SelectionMode="Row">
+            <dxg:GridControl.TotalSummary>
+                <dxg:GridSummaryItem Alignment="Right" SummaryType="Count"/>
+            </dxg:GridControl.TotalSummary>
+            <dxg:GridControl.View>
+                <dxg:TableView DataSourceRefreshCommand="{Binding DataSourceRefreshCommand}" 
+                               ShowFixedTotalSummary="True" AllowEditing="False" ShowSearchPanelMode="Always"/>
+            </dxg:GridControl.View>
+            <dxg:GridColumn FieldName="Codcliente" Header="Cod. Cliente" IsSmart="True" ReadOnly="True" Width="150"/>
+            <dxg:GridColumn FieldName="Nombres" IsSmart="True" Width="*"/>
+            <dxg:GridColumn FieldName="Apellidos" IsSmart="True" Width="*"/>
+            <dxg:GridColumn FieldName="Numcedula" Header="Identificación" IsSmart="True" Width="*"/>
+            <dxg:GridColumn FieldName="Direccion" Header="Dirección" IsSmart="True" Width="*"/>
+        </dxg:GridControl>
+    </Grid>
+</dx:ThemedWindow>

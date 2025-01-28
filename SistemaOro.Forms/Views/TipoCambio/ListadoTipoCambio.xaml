@@ -1,0 +1,98 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:SistemaOro.Forms.Views.TipoCambio"
+    xmlns:tipoCambio="clr-namespace:SistemaOro.Forms.ViewModels.TipoCambio"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime"
+    x:Class="SistemaOro.Forms.Views.TipoCambio.ListadoTipoCambio"
+    mc:Ignorable="d"
+    Title="{Binding Title}" 
+    Height="654" Width="656" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
+    Loaded="Window_Loaded" Icon="{dx:DXImage SvgImages/Icon Builder/Business_DollarCircled.svg}">
+    <Window.DataContext>
+        <tipoCambio:TipoCambioViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <dxg:GridControl x:Name="GridTipoCambio" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True"
+                         Margin="0,119,0,0" SelectionMode="Row"
+                         SelectedItem="{Binding SelectedValue}"
+                         ItemsSource="{Binding ItemsSource}" RestoreStateKeyFieldName="Fecha"
+                         RestoreStateOnSourceChange="True" ShowLoadingPanel="{Binding IsLoading}">
+            <dxg:GridControl.TotalSummary>
+                <dxg:GridSummaryItem Alignment="Right" SummaryType="Count" />
+            </dxg:GridControl.TotalSummary>
+            <dxg:GridControl.InputBindings>
+                <KeyBinding Command="{Binding View.Commands.DeleteFocusedRow, ElementName=GridTipoCambio}" Key="Delete" />
+            </dxg:GridControl.InputBindings>
+            <dxg:GridControl.View>
+                <dxg:TableView ShowGroupPanel="False"
+                               ShowUpdateRowButtons="OnCellEditorOpen"
+                               ValidateRowCommand="{Binding ValidateRowCommand}"
+                               ValidateRowDeletionCommand="{Binding ValidateRowDeletionCommand}"/>
+            </dxg:GridControl.View>
+            <dxg:GridColumn FieldName="Fecha" IsSmart="True" ReadOnly="True" UnboundDataType="{x:Type system:DateTime}" />
+            <dxg:GridColumn FieldName="Tipocambio" IsSmart="True" Header="Tipo de Cambio" UnboundDataType="{x:Type system:Decimal}" />
+            <dxg:GridColumn FieldName="Hora" IsSmart="True" UnboundDataType="{x:Type system:String}" />
+            <dxg:GridColumn FieldName="PrecioOro" IsSmart="True" UnboundDataType="{x:Type system:Decimal}" />
+        </dxg:GridControl>
+
+        <dx:SimpleButton Content="Archivo Excel" 
+                         Command="{Binding OpenFileCommand}"
+                         HorizontalAlignment="Left" 
+                         Height="23" 
+                         Margin="18,19,0,0"
+                         VerticalAlignment="Top" 
+                         Width="123" Glyph="{dx:DXImage SvgImages/Spreadsheet/CircleInvalidData.svg}" />
+
+        <dxe:DateEdit EditValue="{Binding Fecha}"
+                      Margin="522,10,10,0"
+                      VerticalAlignment="Top" />
+        <Label Content="Fecha:" Margin="420,10,144,0" VerticalAlignment="Top" Width="92" />
+        <Label Content="Tipo de cambio:" HorizontalAlignment="Left" Margin="420,37,0,0" VerticalAlignment="Top"
+               Width="92" />
+        <Label Content="Valor del oro:" HorizontalAlignment="Left" Margin="420,64,0,0" VerticalAlignment="Top"
+               Width="92" />
+        <dxe:TextEdit
+                      Margin="522,37,10,0"
+                      VerticalAlignment="Top"
+                      EditValue="{Binding TipoCambioAmount}"
+                      MaskType="Numeric" Mask="n" />
+        <dxe:TextEdit
+                      EditValue="{Binding ValorOroAmount}"
+                      Margin="522,64,10,0"
+                      VerticalAlignment="Top" Mask="n"
+                      MaskType="Numeric" />
+        <dx:SimpleButton Content="Guardar"
+                         Command="{Binding SaveCommand}"
+                         Height="24" Margin="522,90,10,0"
+                         VerticalAlignment="Top"
+                         Glyph="{dx:DXImage SvgImages/XAF/Action_SaveScript.svg}" />
+        <dx:SimpleButton Content="Guardar datos" 
+            Command="{Binding OpenFileCommand}"
+            HorizontalAlignment="Left" 
+            Height="23" 
+            Margin="18,63,0,0"
+            VerticalAlignment="Top" 
+            Width="123" Glyph="{dx:DXImage SvgImages/Actions/NewTableStyle.svg}" />
+        <dx:SimpleButton Content="Eliminar"
+            Height="24" Margin="380,90,152,0"
+            VerticalAlignment="Top"
+            Command="{Binding DeleteCommand}"
+            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_DeleteCircled.svg}" />
+        <dx:SimpleButton Content="Actualizar precios"
+            Height="24" Margin="207,90,290,0"
+            VerticalAlignment="Top"
+            Command="{Binding ActualizarPreciosCommand}"
+            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Refresh.svg}" />
+
+    </Grid>
+</Window>

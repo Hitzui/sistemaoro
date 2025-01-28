@@ -1,0 +1,42 @@
+﻿<Page
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+             xmlns:ViewModels="clr-namespace:SistemaOro.Forms.ViewModels.Usuarios"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" x:Class="SistemaOro.Forms.Views.Usuarios.ListaUsuarios"
+             mc:Ignorable="d" Title="{Binding Title}">
+    <Page.DataContext>
+        <ViewModels:ListaUsuariosViewModel />
+    </Page.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <dxg:GridControl x:Name="GridControlUsuarios" Grid.Row="0"
+                         AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" 
+                         SelectedItem="{Binding SelectedUsuario}"
+                         ItemsSource="{Binding ItemsSource}"
+                         RestoreStateKeyFieldName="Codoperador" RestoreStateOnSourceChange="True" SelectionMode="Row">
+            <dxg:GridControl.TotalSummary>
+                <dxg:GridSummaryItem Alignment="Right" SummaryType="Count"/>
+            </dxg:GridControl.TotalSummary>
+            <dxg:GridControl.View>
+                <dxg:TableView DataSourceRefreshCommand="{Binding DataSourceRefreshCommand}" 
+                               ShowFixedTotalSummary="True" AllowEditing="False"
+                               ShowAutoFilterRow="True" ShowCriteriaInAutoFilterRow="True" 
+                               ShowSearchPanelMode="Always" AutoWidth="True"/>
+            </dxg:GridControl.View>
+            <dxg:GridColumn FieldName="Codoperador" IsSmart="True"/>
+            <dxg:GridColumn FieldName="Username" IsSmart="True"/>
+            <dxg:GridColumn FieldName="Clave" IsSmart="True" Visible="False"/>
+            <dxg:GridColumn FieldName="Nombre" IsSmart="True"/>
+            <dxg:GridColumn FieldName="Pregunta" IsSmart="True" Visible="False"/>
+            <dxg:GridColumn FieldName="Respuesta" IsSmart="True" Visible="False"/>
+            <dxg:GridColumn FieldName="Fcreau" IsSmart="True"/>
+            <dxg:GridColumn FieldName="Nivel" IsSmart="True"/>
+            <dxg:GridColumn FieldName="Estado" IsSmart="True"/>
+        </dxg:GridControl>
+    </Grid>
+</Page>

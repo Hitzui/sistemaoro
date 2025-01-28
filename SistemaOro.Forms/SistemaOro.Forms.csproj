@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IncludePackageReferencesDuringMarkupCompilation>true</IncludePackageReferencesDuringMarkupCompilation>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>Sistema de Gestion de Compra Oro</Title>
+    <Version>1.0.0.1</Version>
+    <Company>Jomiro</Company>
+    <Description>Sistema de gestion de compra y venta de oro
+</Description>
+    <PackageIcon>4177575_sale_shop_store_icon.png</PackageIcon>
+    <SignAssembly>False</SignAssembly>
+    <StartupObject>SistemaOro.Forms.App</StartupObject>
+    <ApplicationIcon>Resources\cash_ico.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="cash-18.svg" />
+    <None Remove="cash_ico.ico" />
+    <None Remove="Views\background_01.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="cash_ico.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="DevExpress.Data" Version="24.1.7" />
+    <PackageReference Include="DevExpress.Drawing" Version="24.1.7" />
+    <PackageReference Include="DevExpress.Pdf.Core" Version="24.1.7" />
+    <PackageReference Include="DevExpress.Printing.Core" Version="24.1.7" />
+    <PackageReference Include="DevExpress.Reporting.CodeCompletion" Version="24.1.7" />
+    <PackageReference Include="DevExpress.Reporting.Core" Version="24.1.7 " />
+    <PackageReference Include="DevExpress.Utils" Version="24.1.7" />
+    <PackageReference Include="DevExpress.Win" Version="24.1.7" />
+    <PackageReference Include="DevExpress.Win.Design" Version="24.1.7" />
+    <PackageReference Include="devexpress.wpf.accordion" Version="24.1.7" />
+    <PackageReference Include="devexpress.wpf.controls" Version="24.1.7" />
+    <PackageReference Include="DevExpress.Wpf.Core" Version="24.1.7" />
+    <PackageReference Include="DevExpress.Wpf.Dashboard" Version="24.1.7" />
+    <PackageReference Include="devexpress.wpf.docking" Version="24.1.7" />
+    <PackageReference Include="devexpress.wpf.grid.core" Version="24.1.7" />
+    <PackageReference Include="devexpress.wpf.layoutcontrol" Version="24.1.7" />
+    <PackageReference Include="devexpress.wpf.printing" Version="24.1.7" />
+    <PackageReference Include="devexpress.wpf.ribbon" Version="24.1.7" />
+    <PackageReference Include="EPPlus" Version="7.4.1" />
+    <PackageReference Include="NLog" Version="5.3.4" />
+    <PackageReference Include="System.Drawing.Common" Version="9.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SistemaOro.Data\SistemaOro.Data.csproj">
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="cash-18.svg" />
+    <Resource Include="cash_ico.ico" />
+    <Resource Include="Views\background_01.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="4177575_sale_shop_store_icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\Clientes\Listado.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <XamlRuntime>Wpf</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Clientes\Listado.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Components\Base\CheckItemBase.cs" />
+    <Compile Update="Images\UIElements.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModels\Agencias\" />
+  </ItemGroup>
+</Project>

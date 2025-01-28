@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <RestoreSuccess Condition=" '$(RestoreSuccess)' == '' ">True</RestoreSuccess>
+    <RestoreTool Condition=" '$(RestoreTool)' == '' ">NuGet</RestoreTool>
+    <ProjectAssetsFile Condition=" '$(ProjectAssetsFile)' == '' ">$(MSBuildThisFileDirectory)project.assets.json</ProjectAssetsFile>
+    <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
+    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\jmigu\.nuget\packages\;C:\Program Files\DevExpress 23.2\Components\Offline Packages;C:\Program Files\DevExpress 24.1\Components\Offline Packages;C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages;C:\Program Files (x86)\Syncfusion\Essential Studio\WPF\27.1.48\ToolboxNuGetPackages;C:\Program Files\dotnet\sdk\NuGetFallbackFolder</NuGetPackageFolders>
+    <NuGetProjectStyle Condition=" '$(NuGetProjectStyle)' == '' ">PackageReference</NuGetProjectStyle>
+    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">6.12.0</NuGetToolVersion>
+  </PropertyGroup>
+  <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <SourceRoot Include="C:\Users\jmigu\.nuget\packages\" />
+    <SourceRoot Include="C:\Program Files\DevExpress 23.2\Components\Offline Packages\" />
+    <SourceRoot Include="C:\Program Files\DevExpress 24.1\Components\Offline Packages\" />
+    <SourceRoot Include="C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\" />
+    <SourceRoot Include="C:\Program Files (x86)\Syncfusion\Essential Studio\WPF\27.1.48\ToolboxNuGetPackages\" />
+    <SourceRoot Include="C:\Program Files\dotnet\sdk\NuGetFallbackFolder\" />
+  </ItemGroup>
+  <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)microsoft.entityframeworkcore\8.0.10\buildTransitive\net8.0\Microsoft.EntityFrameworkCore.props" Condition="Exists('$(NuGetPackageRoot)microsoft.entityframeworkcore\8.0.10\buildTransitive\net8.0\Microsoft.EntityFrameworkCore.props')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.codeanalysis.analyzers\2.9.4\build\Microsoft.CodeAnalysis.Analyzers.props" Condition="Exists('$(NuGetPackageRoot)microsoft.codeanalysis.analyzers\2.9.4\build\Microsoft.CodeAnalysis.Analyzers.props')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.codeanalysis.netanalyzers\8.0.0\buildTransitive\Microsoft.CodeAnalysis.NetAnalyzers.props" Condition="Exists('$(NuGetPackageRoot)microsoft.codeanalysis.netanalyzers\8.0.0\buildTransitive\Microsoft.CodeAnalysis.NetAnalyzers.props')" />
+    <Import Project="C:\Program Files\DevExpress 24.1\Components\Offline Packages\devexpress.data.desktop\24.1.3\build\netcoreapp3.0\DevExpress.Data.Desktop.props" Condition="Exists('C:\Program Files\DevExpress 24.1\Components\Offline Packages\devexpress.data.desktop\24.1.3\build\netcoreapp3.0\DevExpress.Data.Desktop.props')" />
+  </ImportGroup>
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgMicrosoft_CodeAnalysis_Analyzers Condition=" '$(PkgMicrosoft_CodeAnalysis_Analyzers)' == '' ">C:\Users\jmigu\.nuget\packages\microsoft.codeanalysis.analyzers\2.9.4</PkgMicrosoft_CodeAnalysis_Analyzers>
+    <PkgMicrosoft_CodeAnalysis_NetAnalyzers Condition=" '$(PkgMicrosoft_CodeAnalysis_NetAnalyzers)' == '' ">C:\Users\jmigu\.nuget\packages\microsoft.codeanalysis.netanalyzers\8.0.0</PkgMicrosoft_CodeAnalysis_NetAnalyzers>
+    <PkgDevExpress_Data Condition=" '$(PkgDevExpress_Data)' == '' ">C:\Program Files\DevExpress 24.1\Components\Offline Packages\devexpress.data\24.1.3</PkgDevExpress_Data>
+    <PkgDevExpress_Xpo Condition=" '$(PkgDevExpress_Xpo)' == '' ">C:\Program Files\DevExpress 24.1\Components\Offline Packages\devexpress.xpo\24.1.3</PkgDevExpress_Xpo>
+    <PkgDevExpress_Wpf_Core Condition=" '$(PkgDevExpress_Wpf_Core)' == '' ">C:\Program Files\DevExpress 24.1\Components\Offline Packages\devexpress.wpf.core\24.1.3</PkgDevExpress_Wpf_Core>
+    <PkgDevExpress_Wpf_Ribbon Condition=" '$(PkgDevExpress_Wpf_Ribbon)' == '' ">C:\Program Files\DevExpress 24.1\Components\Offline Packages\devexpress.wpf.ribbon\24.1.3</PkgDevExpress_Wpf_Ribbon>
+    <PkgDevExpress_Wpf_LayoutControl Condition=" '$(PkgDevExpress_Wpf_LayoutControl)' == '' ">C:\Program Files\DevExpress 24.1\Components\Offline Packages\devexpress.wpf.layoutcontrol\24.1.3</PkgDevExpress_Wpf_LayoutControl>
+    <PkgDevExpress_Wpf_Grid_Core Condition=" '$(PkgDevExpress_Wpf_Grid_Core)' == '' ">C:\Program Files\DevExpress 24.1\Components\Offline Packages\devexpress.wpf.grid.core\24.1.3</PkgDevExpress_Wpf_Grid_Core>
+    <PkgDevExpress_Wpf_Controls Condition=" '$(PkgDevExpress_Wpf_Controls)' == '' ">C:\Program Files\DevExpress 24.1\Components\Offline Packages\devexpress.wpf.controls\24.1.3</PkgDevExpress_Wpf_Controls>
+    <PkgDevExpress_Wpf_DocumentViewer_Core Condition=" '$(PkgDevExpress_Wpf_DocumentViewer_Core)' == '' ">C:\Program Files\DevExpress 24.1\Components\Offline Packages\devexpress.wpf.documentviewer.core\24.1.3</PkgDevExpress_Wpf_DocumentViewer_Core>
+    <PkgDevExpress_Wpf_Docking Condition=" '$(PkgDevExpress_Wpf_Docking)' == '' ">C:\Program Files\DevExpress 24.1\Components\Offline Packages\devexpress.wpf.docking\24.1.3</PkgDevExpress_Wpf_Docking>
+    <PkgDevExpress_Wpf_Printing Condition=" '$(PkgDevExpress_Wpf_Printing)' == '' ">C:\Program Files\DevExpress 24.1\Components\Offline Packages\devexpress.wpf.printing\24.1.3</PkgDevExpress_Wpf_Printing>
+    <PkgDevExpress_Wpf_Accordion Condition=" '$(PkgDevExpress_Wpf_Accordion)' == '' ">C:\Program Files\DevExpress 24.1\Components\Offline Packages\devexpress.wpf.accordion\24.1.3</PkgDevExpress_Wpf_Accordion>
+    <PkgDevExpress_DataAccess Condition=" '$(PkgDevExpress_DataAccess)' == '' ">C:\Program Files\DevExpress 24.1\Components\Offline Packages\devexpress.dataaccess\24.1.3</PkgDevExpress_DataAccess>
+  </PropertyGroup>
+</Project>
