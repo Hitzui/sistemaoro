@@ -89,24 +89,10 @@ namespace SistemaOro.Forms.ViewModels.Compras
                     valorTipoCambio = (tipoCambio.Tipocambio);
                 }
 
-                if (SelectedMoneda is not null)
-                {
-                    var param = VariablesGlobalesForm.Instance.Parametros;
-                    if (param is null || param.Cordobas is null)
-                    {
-                        message.ShowMessage("Ya está ingresando el Quilate seleccionado", "Agregar");
-                        return;
-                    }
-
-                    if (param.Cordobas!.Value == SelectedMoneda.Codmoneda)
-                    {
-                        Precio *= valorTipoCambio;
-                    }
-                }
 
                 var detCompra = new DetCompra
                 {
-                    Importe = Importe,
+                    Importe = HelpersMethods.RedondeoHaciaArriba(Importe),
                     Codagencia = _codagencia,
                     Descripcion = string.Empty,
                     Fecha = Fecha,
@@ -116,7 +102,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
                     Numcompra = NumeroCompra!,
                     Numdescargue = 0,
                     Peso = Peso,
-                    Preciok = Precio
+                    Preciok = (Precio)
                 };
                 ItemsSource.Add(detCompra);
                 FnCalcularTotal();
@@ -201,39 +187,39 @@ namespace SistemaOro.Forms.ViewModels.Compras
         public decimal Peso
         {
             get => (_peso);
-            set => SetValue(ref _peso, value, changedCallback: NotifyImporteChanged());
+            set => SetValue(ref _peso, (value), changedCallback: NotifyImporteChanged());
         }
 
         private decimal _precio = Zero;
 
         public decimal Precio
         {
-            get => (_precio);
-            set => SetValue(ref _precio, value, changedCallback: NotifyImporteChanged());
+            get => HelpersMethods.RedondeoHaciaArriba(_precio);
+            set => SetValue(ref _precio, HelpersMethods.RedondeoHaciaArriba(value), changedCallback: NotifyImporteChanged());
         }
 
         private decimal _importe = Zero;
 
         public decimal Importe
         {
-            get => Math.Round(_importe, 2);
-            set => SetValue(ref _importe, value);
+            get => HelpersMethods.RedondeoHaciaArriba(_importe);
+            set => SetValue(ref _importe, HelpersMethods.RedondeoHaciaArriba(value));
         }
 
         private decimal _total = Zero;
 
         public decimal Total
         {
-            get => Math.Round(_total, 2);
-            set => SetValue(ref _total, value);
+            get => (_total);
+            set => SetValue(ref _total, (value));
         }
 
         private decimal _subTotal = Zero;
 
         public decimal SubTotal
         {
-            get => Math.Round(_subTotal, 2);
-            set => SetValue(ref _subTotal, value);
+            get => (_subTotal);
+            set => SetValue(ref _subTotal, (value));
         }
 
         public decimal MontoEfectivo
@@ -289,18 +275,19 @@ namespace SistemaOro.Forms.ViewModels.Compras
             get => _precioKilate;
             set
             {
-                if (value is not null)
+                if (SetValue(ref _precioKilate, value, changedCallback: NotifyImporteChanged()))
                 {
-                    Precio = value.Precio;
+                    if (value is not null)
+                    {
+                        Precio = (value.Precio);
+                    }
                 }
-
-                SetValue(ref _precioKilate, value, changedCallback: NotifyImporteChanged());
             }
         }
 
         private Action NotifyImporteChanged()
         {
-            return () => { Importe = Peso * Precio; };
+            return () => { Importe = (Peso * Precio); };
         }
 
         private bool _hiddeButtonAnular;
@@ -337,45 +324,9 @@ namespace SistemaOro.Forms.ViewModels.Compras
             }
         }
 
-        private async void FnCalcularCambioMoneda(Moneda value)
+        private void FnCalcularCambioMoneda(Moneda value)
         {
-            try
-            {
-                var param = VariablesGlobalesForm.Instance.Parametros;
-                if (param is null)
-                {
-                    return;
-                }
-
-                var tipoCambio = await _tipoCambioRepository.FindByDateNow();
-                var tipoCambioValue = One;
-                if (tipoCambio is not null) tipoCambioValue = (tipoCambio.Tipocambio);
-                FnCalcularTotal();
-                if (value.Codmoneda == param.Cordobas)
-                {
-                    SubTotal *= tipoCambioValue;
-                    Total *= tipoCambioValue;
-                    foreach (var detCompra in ItemsSource)
-                    {
-                        detCompra.Importe *= tipoCambioValue;
-                        detCompra.Preciok *= tipoCambioValue;
-                    }
-                }
-                else
-                {
-                    SubTotal /= tipoCambioValue;
-                    Total /= tipoCambioValue;
-                    foreach (var detCompra in ItemsSource)
-                    {
-                        detCompra.Importe /= tipoCambioValue;
-                        detCompra.Preciok /= tipoCambioValue;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                _logger.Error(e, "Error al calcular cambio moneda");
-            }
+            FnCalcularTotal();
         }
 
         public DtoTiposPrecios? SelectedTiposPrecios
@@ -500,7 +451,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
         private bool ValidarTotal()
         {
             var sumaTotal = MontoEfectivo + MontoCheque + MontoAdelanto + MontoPorPagar + MontoTransferencia + MontoAdelanto;
-            return Compare(Math.Round(Total, 4), Math.Round(sumaTotal, 4)) != 0;
+            return Compare(Math.Round(Total, 2), Math.Round(sumaTotal, 2)) != 0;
         }
 
         [Command]
@@ -815,6 +766,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
             {
                 return;
             }
+
             if (SelectedTiposPrecios is null)
             {
                 HelpersMessage.MensajeErroResult("Compra", "No hay tipo de precios especificados");
@@ -824,33 +776,37 @@ namespace SistemaOro.Forms.ViewModels.Compras
             try
             {
                 var tipoCambio = await _tipoCambioRepository.FindByDateNow();
-                var tipoCambioValue = tipoCambio?.Tipocambio ?? Zero;
+                var tipoCambioValue = (tipoCambio?.Tipocambio ?? Zero);
                 var parametros = VariablesGlobalesForm.Instance.Parametros;
+                if (parametros is null)
+                {
+                    HelpersMessage.MensajeErroResult("Compra", "No hay parametros configurados en el sistema");
+                    return;
+                }
+
                 var precio = SelectedTiposPrecios.Precio ?? Zero;
                 if (ItemsSource.Count > 0)
                 {
                     foreach (var detCompra in ItemsSource)
                     {
                         var findPrecio = await _preciosKilatesRepository.FindByPeso(Convert.ToDecimal(detCompra.Kilate));
-                        if (findPrecio != null)
+                        if (findPrecio == null) continue;
+                        var precioHaciaArriba = HelpersMethods.RedondeoHaciaArriba(findPrecio.Precio);
+                        var tempPrecio = precioHaciaArriba / precio;
+                        var tempImporte = tempPrecio * detCompra.Peso;
+
+                        if (parametros.Cordobas!.Value == SelectedMoneda.Codmoneda)
                         {
-                            var tempPrecio = findPrecio.Precio / precio;
-                            var tempImporte = (findPrecio.Precio * detCompra.Peso) / precio;
-                            if (parametros.Dolares.Value == SelectedMoneda.Codmoneda)
-                            {
-                                detCompra.Preciok = tempPrecio;
-                                detCompra.Importe = tempImporte;
-                            }
-                            else
-                            {
-                                detCompra.Preciok = tempPrecio * tipoCambioValue;
-                                detCompra.Importe = tempImporte * tipoCambioValue;
-                            }
+                            tempPrecio = HelpersMethods.RedondeoHaciaArriba(tempPrecio * tipoCambioValue);
+                            tempImporte = HelpersMethods.RedondeoHaciaArriba(tempPrecio * detCompra.Peso);
                         }
+
+                        detCompra.Preciok = HelpersMethods.RedondeoHaciaArriba(tempPrecio);
+                        detCompra.Importe = HelpersMethods.RedondeoHaciaArriba(tempImporte);
                     }
 
-                    SubTotal = ItemsSource.Sum(compra => compra.Importe ?? Zero) * precio;
-                    Total = ItemsSource.Sum(compra => compra.Importe ?? Zero);
+                    SubTotal = HelpersMethods.RedondeoHaciaArriba(ItemsSource.Sum(compra => compra.Importe ?? Zero) * precio);
+                    Total = HelpersMethods.RedondeoHaciaArriba(ItemsSource.Sum(compra => compra.Importe ?? Zero));
                 }
             }
             catch (Exception e)

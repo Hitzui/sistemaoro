@@ -606,10 +606,11 @@ public class CompraRepository(
                 Codcliente = arg.cliente.Codcliente,
                 Nombre = arg.cliente.Nombres,
                 Apellido = arg.cliente.Apellidos,
-                Total = arg.compra.Codmoneda==parameter.Cordobas.Value ? decimal.Divide(arg.compra.Total,arg.cambio.Tipocambio) : arg.compra.Total,
+                Total = arg.compra.Codmoneda==parameter.Dolares.Value ? decimal.Multiply(arg.compra.Total,arg.cambio.Tipocambio) : arg.compra.Total,
                 Peso = arg.compra.Peso,
                 Fecha = arg.compra.Fecha,
-                Nocontrato = arg.compra.Nocontrato
+                Nocontrato = arg.compra.Nocontrato,
+                IsChecked = false
             });
         return result.ToListAsync();
     }

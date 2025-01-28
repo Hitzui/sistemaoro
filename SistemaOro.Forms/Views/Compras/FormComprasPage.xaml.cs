@@ -75,7 +75,7 @@ namespace SistemaOro.Forms.Views.Compras
         {
             if (e.Column.FieldName is "Importe" or "Preciok" or "Peso")
             {
-                //e.DisplayText =$"{e.Value:N3}";
+                e.DisplayText =$"{e.Value:N2}";
             }
         }
     }

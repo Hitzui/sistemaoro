@@ -119,5 +119,10 @@ public class HelpersMethods
         return value - 0.005m;
     }
 
-    public static decimal RedondeoHaciaArriba(decimal numero) => Math.Round(numero, 2);
+    public static decimal RedondeoHaciaArriba(decimal valor, int decimales = 2)
+    {
+        var auxiliarDecimal = valor.ToString("F2");
+       return decimal.Parse(auxiliarDecimal);
+    }
+
 }

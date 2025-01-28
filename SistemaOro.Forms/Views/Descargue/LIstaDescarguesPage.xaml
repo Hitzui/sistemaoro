@@ -35,7 +35,11 @@
                              Height="25" Margin="652,0,0,0" 
                              VerticalAlignment="Center" Width="152" 
                              Glyph="{dx:DXImage SvgImages/Dashboards/ClearFilter.svg}"/>
-            <dx:SimpleButton Content="Guardar" HorizontalAlignment="Left" Height="24" Margin="837,0,0,0" VerticalAlignment="Center" Width="96" Glyph="{dx:DXImage SvgImages/Save/Save.svg}"/>
+            <dx:SimpleButton Content="Guardar" HorizontalAlignment="Left" 
+                             Command="{Binding SaveCommand}"
+                             Height="24" Margin="837,0,0,0" 
+                             VerticalAlignment="Center" Width="96" 
+                             Glyph="{dx:DXImage SvgImages/Save/Save.svg}"/>
         </Grid>
         <dxg:GridControl Grid.Row="1" EnableSmartColumnsGeneration="True"
                          DesignTimeDataObjectType="{x:Type dto:DtoComprasClientes}"

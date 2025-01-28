@@ -1,22 +1,84 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NLog;
+using SistemaOro.Data.Configuration;
 using SistemaOro.Data.Dto;
 using SistemaOro.Data.Entities;
+using SistemaOro.Data.Libraries;
 
 namespace SistemaOro.Data.Repositories;
 
 public class DescarguesRepository(DataContext context, ICompraRepository compraRepository) :
     FacadeEntity<Descargue>(context), IDescarguesRepository
 {
+    private readonly Logger logger = LogManager.GetCurrentClassLogger();
+    private string? _caja = ConfiguracionGeneral.Caja;
+    private string? _agencia = ConfiguracionGeneral.Agencia;
+
+
     public async Task<bool> GuardarDescargueByCompra(List<DtoComprasClientes> compras, DateTime fecha)
     {
-        var descargue = new Descargue
+        var _usuario = VariablesGlobales.Instance.Usuario;
+        if (_usuario is null)
         {
-            Dgcancom = compras.Count,
-            Dgfecdes = fecha,
-            Dgfecgen = DateTime.Now,
+            return false;
+        }
 
-        };
-        return true;
+        await using var transaction = await context.Database.BeginTransactionAsync();
+        try
+        {
+            // Obtener el último Id de la tabla Descargue
+            var ids =await context.Descargues.AsNoTracking().Select(d => d.Dgnumdes).ToListAsync();
+            int ultimoId = ids.Count > 0 ? ids.Max() : 0;
+            // Incrementar el Id
+            int nuevoId = ultimoId + 1;
+            var pesoTotal = compras.Sum(dto => dto.Peso);
+            var importeTotal = compras.Sum(dto => dto.Total) ?? decimal.Zero;
+            var descargue = new Descargue
+            {
+                Dgnumdes = nuevoId,
+                Dgcancom = compras.Count,
+                Dgfecdes = fecha,
+                Dgfecgen = DateTime.Now,
+                Dgimptcom = importeTotal,
+                Dgpesbrt = pesoTotal,
+                Dgpesntt = pesoTotal,
+                Dgcodage = _agencia,
+                Dgcodcaj = _caja,
+                Dgusuari = _usuario.Codoperador
+            };
+            var addDescargue = await context.Descargues.AddAsync(descargue);
+            foreach (var dtoCompra in compras.Where(dtoCompra => dtoCompra.IsChecked))
+            {
+                var compra = await context.Compras.SingleOrDefaultAsync(c => c.Numcompra == dtoCompra.Numcompra);
+                if (compra is null)
+                {
+                    continue;
+                }
+
+                if (compra.Codestado == EstadoCompra.Descargada)
+                {
+                    continue;
+                }
+
+                compra.Codestado = EstadoCompra.Descargada;
+                compra.Descargue = addDescargue.Entity;
+                compra.Dgnumdes = addDescargue.Entity.Dgnumdes;
+                var detalleCompra = await context.DetCompras.Where(detCompra => detCompra.Numcompra == dtoCompra.Numcompra).ToListAsync();
+                foreach (var detalle in detalleCompra)
+                {
+                    detalle.Numdescargue = compra.Dgnumdes;
+                }
+            }
+
+            var save = await context.SaveChangesAsync();
+            await transaction.CommitAsync();
+            return save > 0;
+        }
+        catch (Exception ex)
+        {
+            logger.Error(ex, "Error al generar descargue");
+            return false;
+        }
     }
 
     public async Task<bool> GuardarDescargueDetalleCompra(string numcompra)

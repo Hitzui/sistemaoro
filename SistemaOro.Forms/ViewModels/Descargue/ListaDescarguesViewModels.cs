@@ -93,17 +93,26 @@ public class ListaDescarguesViewModels : BaseViewModel
         }
     }
 
-    private void OnSaveCommand()
+    private async void OnSaveCommand()
     {
-        if (DtoComprasClientes.Count <= 0)
+        try
         {
-            HelpersMessage.MensajeInformacionResult("Guardar", "No hay datos a guardar");
-            return;
-        }
+            var selectedCompras = DtoComprasClientes.Where(c => c.IsChecked).ToList();
+            if (selectedCompras.Count <= 0)
+            {
+                HelpersMessage.MensajeInformacionResult("Guardar", "No hay datos a guardar");
+                return;
+            }
 
-        foreach (var data in DtoComprasClientes.Where(data => data.IsChecked))
+            var save = await _descarguesRepository.GuardarDescargueByCompra(selectedCompras, Fecha);
+            if (save)
+            {
+                OnFilterCommand();
+            }
+        }
+        catch (Exception e)
         {
-            _descarguesRepository.GenerarLote(DateTime.Now);
+            _logger.Error(e, "Error al generar descargue en la pantalla");
         }
     }
 }
