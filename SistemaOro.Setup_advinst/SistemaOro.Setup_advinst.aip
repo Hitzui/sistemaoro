@@ -47,7 +47,6 @@
     <ROW Directory="ko_Dir" Directory_Parent="APPDIR" DefaultDir="ko"/>
     <ROW Directory="lib_1_Dir" Directory_Parent="win_Dir" DefaultDir="lib"/>
     <ROW Directory="lib_Dir" Directory_Parent="unix_Dir" DefaultDir="lib"/>
-    <ROW Directory="logs_Dir" Directory_Parent="APPDIR" DefaultDir="logs"/>
     <ROW Directory="native_1_Dir" Directory_Parent="winarm64_Dir" DefaultDir="native"/>
     <ROW Directory="native_2_Dir" Directory_Parent="winx64_Dir" DefaultDir="native"/>
     <ROW Directory="native_3_Dir" Directory_Parent="winx86_Dir" DefaultDir="native"/>
@@ -355,7 +354,6 @@
     <ROW Component="Unity.Container.dll" ComponentId="{2429AE9E-27D6-4CB2-B8D3-9D520F536583}" Directory_="APPDIR" Attributes="0" KeyPath="Unity.Container.dll"/>
     <ROW Component="Unity.RegistrationByConvention.dll" ComponentId="{A8104042-5A3B-473C-913E-D53F0B3E22B4}" Directory_="APPDIR" Attributes="0" KeyPath="Unity.RegistrationByConvention.dll"/>
     <ROW Component="WinRT.Runtime.dll" ComponentId="{0E25C423-A6E5-4158-B697-7912AE3D3F19}" Directory_="APPDIR" Attributes="0" KeyPath="WinRT.Runtime.dll"/>
-    <ROW Component="app.log" ComponentId="{43AB03DF-1142-4D0F-9B3F-4C0B23A3414C}" Directory_="logs_Dir" Attributes="0" KeyPath="app.log" Type="0"/>
     <ROW Component="regid.199509.com.example" ComponentId="{BF833A52-8597-4827-8C67-509CEC16CFD2}" Directory_="regid.199509.com.example_Dir" Attributes="0"/>
     <ROW Component="sni.dll" ComponentId="{E182B3D1-68B7-4374-86CD-A4AAA5F95376}" Directory_="native_1_Dir" Attributes="256" KeyPath="sni.dll"/>
     <ROW Component="sni.dll_1" ComponentId="{A86BAACD-F911-4CFF-91A9-6115935C8CB8}" Directory_="native_2_Dir" Attributes="256" KeyPath="sni.dll_1"/>
@@ -654,7 +652,6 @@
     <ROW File="System.ServiceModel.NetFramingBase_12_.resources.dll" Component_="System.ServiceModel.NetFramingBase_12_.resources.dll" FileName="SYSTEM~2.DLL|System.ServiceModel.NetFramingBase.resources.dll" Attributes="0" SourcePath="..\SistemaOro.Forms\bin\Debug\net8.0-windows10.0.17763.0\zh-Hant\System.ServiceModel.NetFramingBase.resources.dll" SelfReg="false"/>
     <ROW File="System.ServiceModel.NetTcp.resourc_12_es.dll" Component_="System.ServiceModel.NetTcp.resourc_12_es.dll" FileName="SYSTEM~3.DLL|System.ServiceModel.NetTcp.resources.dll" Attributes="0" SourcePath="..\SistemaOro.Forms\bin\Debug\net8.0-windows10.0.17763.0\zh-Hant\System.ServiceModel.NetTcp.resources.dll" SelfReg="false"/>
     <ROW File="System.ServiceModel.Primitives.res_12_ources.dll" Component_="System.ServiceModel.Primitives.res_12_ources.dll" FileName="SYSTEM~4.DLL|System.ServiceModel.Primitives.resources.dll" Attributes="0" SourcePath="..\SistemaOro.Forms\bin\Debug\net8.0-windows10.0.17763.0\zh-Hant\System.ServiceModel.Primitives.resources.dll" SelfReg="false"/>
-    <ROW File="app.log" Component_="app.log" FileName="app.log" Attributes="0" SourcePath="..\SistemaOro.Forms\bin\Debug\net8.0-windows10.0.17763.0\logs\app.log" SelfReg="false"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BootstrapperUISequenceComponent">
     <ROW Action="AI_DetectSoftware" Sequence="151"/>
@@ -1030,7 +1027,6 @@
     <ROW Feature_="MainFeature" Component_="System.ServiceModel.NetFramingBase_12_.resources.dll"/>
     <ROW Feature_="MainFeature" Component_="System.ServiceModel.NetTcp.resourc_12_es.dll"/>
     <ROW Feature_="MainFeature" Component_="System.ServiceModel.Primitives.res_12_ources.dll"/>
-    <ROW Feature_="MainFeature" Component_="app.log"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiIconsComponent">
     <ROW Name="_B62F135ABF9E4D3FA81C0E5914B8DE84.exe" SourcePath="..\4177575_sale_shop_store_icon.ico" Index="0"/>

@@ -1,9 +1,11 @@
-namespace DevExpress.UITemplates.Collection.Utilities {
+using DevExpress.Utils.Html;
+using DevExpress.XtraEditors;
+
+namespace DevExpress.UITemplates.Collection.Utilities
+{
     using System;
     using System.Collections.Concurrent;
     using System.IO;
-    using DevExpress.Utils.Html;
-    using DevExpress.XtraEditors;
 
     public abstract class HtmlCssAsset {
         public static string AssetsRoot = "SistemaOro.Data.Assets."; 
@@ -12,12 +14,12 @@ namespace DevExpress.UITemplates.Collection.Utilities {
         readonly string htmlName, cssName;
         protected HtmlCssAsset(string htmlName = null, string cssName = null) {
             if(string.IsNullOrEmpty(htmlName)) {
-                var typeName = this.GetType().Name;
+                var typeName = GetType().Name;
                 this.htmlName = typeName.Substring(0, typeName.Length - nameof(HtmlCssAsset).Length);
             }
             else this.htmlName = htmlName;
             if(string.IsNullOrEmpty(cssName)) {
-                var typeName = this.GetType().Name;
+                var typeName = GetType().Name;
                 this.cssName = typeName.Substring(0, typeName.Length - nameof(HtmlCssAsset).Length);
             }
             else this.cssName = cssName;
@@ -37,7 +39,7 @@ namespace DevExpress.UITemplates.Collection.Utilities {
             string resourceName = AssetsRoot + $@"{type}.{name}.{type}";
             return texts.GetOrAdd(resourceName, x => {
                 using(var stream = GetResourceStream(x, ResourcesAssembly)) {
-                    return (stream != null) ? new StreamReader(stream).ReadToEnd() : string.Empty;
+                    return stream != null ? new StreamReader(stream).ReadToEnd() : string.Empty;
                 }
             });
         }

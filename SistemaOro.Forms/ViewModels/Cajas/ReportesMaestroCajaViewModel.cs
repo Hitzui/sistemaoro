@@ -48,7 +48,11 @@ public class ReportesMaestroCajaViewModel : BaseViewModel
             }
             report.DataSource = _findAll;
             var agencia = await _agenciaRepository.GetByIdAsync(VariablesGlobalesForm.Instance.VariablesGlobales["AGENCIA"]!);
-            report.picLogo.ImageSource = new ImageSource(HelpersMethods.LoadDxImage(agencia!.Logo));
+            if (agencia!.Logo is not null)
+            {
+                report.picLogo.ImageSource = new ImageSource(HelpersMethods.LoadDxImage(agencia!.Logo)); 
+            }
+            
             report.lblNombreAgencia.Text = agencia.Nomagencia;
             report.lblDireccion.Text = agencia.Diragencia;
             HelpersMethods.LoadReport(report);

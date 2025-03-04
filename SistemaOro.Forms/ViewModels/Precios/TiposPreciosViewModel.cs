@@ -10,7 +10,7 @@ using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Xpf;
 using SistemaOro.Data.Repositories;
 using SistemaOro.Data.Libraries;
-using SistemaOro.Forms.Models;
+using SistemaOro.Forms.Dto;
 using SistemaOro.Forms.Repository;
 using SistemaOro.Forms.Services;
 using SistemaOro.Forms.Services.Helpers;

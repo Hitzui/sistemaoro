@@ -24,6 +24,7 @@ namespace SistemaOro.Forms.ViewModels;
 
 public class LoginViewModel : BaseViewModel
 {
+    private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly IAgenciaRepository _agenciaRepository;
     private readonly IParametersRepository _parametersRepository;

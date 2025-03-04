@@ -244,8 +244,18 @@ public class MaestroCajaRepository(IParametersRepository parametersRepository, D
                 entrada = dcaja.Efectivo!.Value;
             }
 
-            var actualizarMcaja = await ActualizarDatosMaestroCaja(mocaja.Codcaja, mocaja.Codagencia!, entrada, salida);
-            if (!actualizarMcaja) return 0;
+            //var actualizarMcaja = await ActualizarDatosMaestroCaja(mocaja.Codcaja, mocaja.Codagencia!, entrada, salida);
+            var mcaja = await context.Mcajas.SingleOrDefaultAsync(mcaja1 => mcaja1.Estado == 1);
+            if (mcaja is null)
+            {
+                ErrorSms = "No hay caja abierta para realizar el movimiento";
+                return 0;
+            }
+
+            mcaja.Entrada += entrada;
+            mcaja.Salida += salida;
+            mcaja.Sfinal += entrada - salida;
+            //if (!actualizarMcaja) return 0;
             var tipoCambio = await context.TipoCambios.AsNoTracking().SingleOrDefaultAsync(cambio => cambio.Fecha == DateTime.Now) ?? new TipoCambio
             {
                 Fecha = DateTime.Now,

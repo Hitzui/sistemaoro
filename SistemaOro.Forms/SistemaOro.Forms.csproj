@@ -32,24 +32,24 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
-    <PackageReference Include="DevExpress.Data" Version="24.1.7" />
-    <PackageReference Include="DevExpress.Drawing" Version="24.1.7" />
-    <PackageReference Include="DevExpress.Pdf.Core" Version="24.1.7" />
-    <PackageReference Include="DevExpress.Printing.Core" Version="24.1.7" />
-    <PackageReference Include="DevExpress.Reporting.CodeCompletion" Version="24.1.7" />
-    <PackageReference Include="DevExpress.Reporting.Core" Version="24.1.7 " />
-    <PackageReference Include="DevExpress.Utils" Version="24.1.7" />
-    <PackageReference Include="DevExpress.Win" Version="24.1.7" />
-    <PackageReference Include="DevExpress.Win.Design" Version="24.1.7" />
-    <PackageReference Include="devexpress.wpf.accordion" Version="24.1.7" />
-    <PackageReference Include="devexpress.wpf.controls" Version="24.1.7" />
-    <PackageReference Include="DevExpress.Wpf.Core" Version="24.1.7" />
-    <PackageReference Include="DevExpress.Wpf.Dashboard" Version="24.1.7" />
-    <PackageReference Include="devexpress.wpf.docking" Version="24.1.7" />
-    <PackageReference Include="devexpress.wpf.grid.core" Version="24.1.7" />
-    <PackageReference Include="devexpress.wpf.layoutcontrol" Version="24.1.7" />
-    <PackageReference Include="devexpress.wpf.printing" Version="24.1.7" />
-    <PackageReference Include="devexpress.wpf.ribbon" Version="24.1.7" />
+    <PackageReference Include="DevExpress.Data" Version="24.2.3" />
+    <PackageReference Include="DevExpress.Drawing" Version="24.2.3" />
+    <PackageReference Include="DevExpress.Pdf.Core" Version="24.2.3" />
+    <PackageReference Include="DevExpress.Printing.Core" Version="24.2.3" />
+    <PackageReference Include="DevExpress.Reporting.CodeCompletion" Version="24.2.3" />
+    <PackageReference Include="DevExpress.Reporting.Core" Version="24.2.3" />
+    <PackageReference Include="DevExpress.Utils" Version="24.2.3" />
+    <PackageReference Include="DevExpress.Win" Version="24.2.3" />
+    <PackageReference Include="DevExpress.Win.Design" Version="24.2.3" />
+    <PackageReference Include="devexpress.wpf.accordion" Version="24.2.3" />
+    <PackageReference Include="devexpress.wpf.controls" Version="24.2.3" />
+    <PackageReference Include="DevExpress.Wpf.Core" Version="24.2.3" />
+    <PackageReference Include="DevExpress.Wpf.Dashboard" Version="24.2.3" />
+    <PackageReference Include="devexpress.wpf.docking" Version="24.2.3" />
+    <PackageReference Include="devexpress.wpf.grid.core" Version="24.2.3" />
+    <PackageReference Include="devexpress.wpf.layoutcontrol" Version="24.2.3" />
+    <PackageReference Include="devexpress.wpf.printing" Version="24.2.3" />
+    <PackageReference Include="devexpress.wpf.ribbon" Version="24.2.3" />
     <PackageReference Include="EPPlus" Version="7.4.1" />
     <PackageReference Include="NLog" Version="5.3.4" />
     <PackageReference Include="System.Drawing.Common" Version="9.0.0" />

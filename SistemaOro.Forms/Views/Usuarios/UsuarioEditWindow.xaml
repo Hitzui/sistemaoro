@@ -5,7 +5,7 @@
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:usuarios="clr-namespace:SistemaOro.Forms.ViewModels.Usuarios"
-    xmlns:models="clr-namespace:SistemaOro.Forms.Models"
+    xmlns:dto="clr-namespace:SistemaOro.Forms.Dto"
     x:Class="SistemaOro.Forms.Views.Usuarios.UsuarioEditWindow"
     Title="UsuarioEditWindow" Height="378" Width="621" Icon="{dx:DXImage SvgImages/Icon Builder/Actions_User.svg}"
     Loaded="ThemedWindow_Loaded" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
@@ -13,7 +13,7 @@
         <usuarios:UsuarioEditViewModel />
     </dx:ThemedWindow.DataContext>
     <dx:ThemedWindow.Resources>
-        <models:DtoUsuario x:Key="Data" />
+        <dto:DtoUsuario x:Key="Data" />
 
         <!--The tool tip for the TextBox to display the validation error message.-->
         <Style x:Key="TextBoxInError" TargetType="dxe:TextEdit">

@@ -10,7 +10,7 @@ using DevExpress.XtraEditors.DXErrorProvider;
 using SistemaOro.Data.Entities;
 using SistemaOro.Data.Libraries;
 using SistemaOro.Data.Repositories;
-using SistemaOro.Forms.Models;
+using SistemaOro.Forms.Dto;
 using SistemaOro.Forms.Services;
 using SistemaOro.Forms.Services.Helpers;
 using Unity;

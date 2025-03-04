@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SistemaOro.Forms.Models;
+namespace SistemaOro.Forms.Dto;
 
 public record DtoCompraReporte(
     string Numcompra,

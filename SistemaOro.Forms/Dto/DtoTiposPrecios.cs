@@ -4,7 +4,7 @@ using SistemaOro.Data.Entities;
 using SistemaOro.Forms.Services;
 using SistemaOro.Forms.Services.Mensajes;
 
-namespace SistemaOro.Forms.Models;
+namespace SistemaOro.Forms.Dto;
 
 public class DtoTiposPrecios :  ViewModelBase, IDataErrorInfo
 {

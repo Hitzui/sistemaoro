@@ -6,14 +6,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Azure.Identity" Version="1.13.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.11" />
+    <PackageReference Include="Azure.Identity" Version="1.12.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.11" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -30,11 +30,14 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Reference Include="DevExpress.Utils.v24.2">
-      <HintPath>C:\Program Files\DevExpress 24.2\Components\Offline Packages\devexpress.utils\24.2.3\lib\net8.0-windows\DevExpress.Utils.v24.2.dll</HintPath>
+    <Reference Include="DevExpress.Data.Desktop.v24.1">
+      <HintPath>C:\Program Files\DevExpress 24.1\Components\Offline Packages\devexpress.data.desktop\24.1.7\lib\net6.0-windows\DevExpress.Data.Desktop.v24.1.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraEditors.v24.2">
-      <HintPath>C:\Program Files\DevExpress 24.2\Components\Offline Packages\devexpress.win.navigation\24.2.3\lib\net8.0-windows\DevExpress.XtraEditors.v24.2.dll</HintPath>
+    <Reference Include="DevExpress.Utils.v24.1">
+      <HintPath>C:\Program Files\DevExpress 24.1\Components\Offline Packages\devexpress.utils\24.1.7\lib\net6.0-windows\DevExpress.Utils.v24.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v24.1">
+      <HintPath>C:\Program Files\DevExpress 24.1\Components\Offline Packages\devexpress.win.navigation\24.1.7\lib\net6.0-windows\DevExpress.XtraEditors.v24.1.dll</HintPath>
     </Reference>
     <Compile Update="Utilities\HtmlCssAsset.cs" />
   </ItemGroup>

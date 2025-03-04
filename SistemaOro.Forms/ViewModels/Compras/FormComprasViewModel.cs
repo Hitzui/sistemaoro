@@ -10,7 +10,6 @@ using SistemaOro.Data.Repositories;
 using Unity;
 using System.Collections.ObjectModel;
 using System.Windows;
-using SistemaOro.Forms.Models;
 using SistemaOro.Forms.Repository;
 using SistemaOro.Forms.Services;
 using SistemaOro.Forms.Services.Helpers;
@@ -26,6 +25,7 @@ using SistemaOro.Forms.Views;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.WindowsUI;
 using NLog;
+using SistemaOro.Forms.Dto;
 
 namespace SistemaOro.Forms.ViewModels.Compras
 {

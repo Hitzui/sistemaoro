@@ -19,19 +19,19 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
-    <PackageReference Include="DevExpress.Images" Version="23.2.5" />
-    <PackageReference Include="DevExpress.Reporting.CodeCompletion" Version="23.2.5" />
-    <PackageReference Include="DevExpress.Reporting.Core" Version="23.2.5" />
-    <PackageReference Include="DevExpress.Win.Design" Version="23.2.5" />
-    <PackageReference Include="devexpress.wpf.accordion" Version="23.2.5" />
-    <PackageReference Include="devexpress.wpf.controls" Version="23.2.5" />
-    <PackageReference Include="DevExpress.Wpf.Core" Version="23.2.5" />
-    <PackageReference Include="devexpress.wpf.docking" Version="23.2.5" />
-    <PackageReference Include="devexpress.wpf.grid.core" Version="23.2.5" />
-    <PackageReference Include="devexpress.wpf.layoutcontrol" Version="23.2.5" />
-    <PackageReference Include="devexpress.wpf.reporting" Version="23.2.5" />
-    <PackageReference Include="devexpress.wpf.ribbon" Version="23.2.5" />
-    <PackageReference Include="DevExpress.Wpf.ThemesLW" Version="23.2.5" />
+    <PackageReference Include="DevExpress.Images" Version="24.1.3" />
+    <PackageReference Include="DevExpress.Reporting.CodeCompletion" Version="24.1.3" />
+    <PackageReference Include="DevExpress.Reporting.Core" Version="24.1.3" />
+    <PackageReference Include="DevExpress.Win.Design" Version="24.1.3" />
+    <PackageReference Include="devexpress.wpf.accordion" Version="24.1.3" />
+    <PackageReference Include="devexpress.wpf.controls" Version="24.1.3" />
+    <PackageReference Include="DevExpress.Wpf.Core" Version="24.1.3" />
+    <PackageReference Include="devexpress.wpf.docking" Version="24.1.3" />
+    <PackageReference Include="devexpress.wpf.grid.core" Version="24.1.3" />
+    <PackageReference Include="devexpress.wpf.layoutcontrol" Version="24.1.3" />
+    <PackageReference Include="devexpress.wpf.reporting" Version="24.1.3" />
+    <PackageReference Include="devexpress.wpf.ribbon" Version="24.1.3" />
+    <PackageReference Include="DevExpress.Wpf.ThemesLW" Version="24.1.3" />
     <PackageReference Include="EPPlus" Version="7.2.1" />
     
   </ItemGroup>

@@ -6,16 +6,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6aa4e2d6-4c90-4b61-bcfc-e01364c9231a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.sistemaoro/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.sistemaoro/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.sistemaoro/.idea/sqldialects.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Repositories/CompraRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Repositories/CompraRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Repositories/DescarguesRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Repositories/DescarguesRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Services/Helpers/HelpersMethods.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Services/Helpers/HelpersMethods.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/ViewModels/Compras/FormComprasViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/ViewModels/Compras/FormComprasViewModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/ViewModels/Descargue/ListaDescarguesViewModels.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/ViewModels/Descargue/ListaDescarguesViewModels.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Views/Compras/FormComprasPage.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Views/Compras/FormComprasPage.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Views/Descargue/LIstaDescarguesPage.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Views/Descargue/LIstaDescarguesPage.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.sistemaoro/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.sistemaoro/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Properties/Licenses.licx" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Properties/Licenses.licx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Views/Clientes/Form.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Views/Clientes/Form.xaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SistemaOro.Setup_advinst/SistemaOro.Setup_advinst-cache/part3/output-info.ini" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Setup_advinst/SistemaOro.Setup_advinst-cache/part3/output-info.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SistemaOro.Setup_advinst/SistemaOro.Setup_advinst.aip" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Setup_advinst/SistemaOro.Setup_advinst.aip" afterDir="false" />
     </list>
@@ -27,26 +20,38 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 6
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Hitzui"
+  }
 }]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Hitzui/sistemaoro",
+    "accountId": "c983b7a2-3b9e-4dd4-a6d9-530958d0fd7e"
+  }
+}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 6
+}</component>
   <component name="ProjectId" id="2sGCAKikjKIyqLPOzotrbMPvz4y" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
-  <component name="RunManager">
+}</component>
+  <component name="RunManager" selected="Publish to IIS.SistemaOro.Data: FolderProfile">
     <configuration name="SistemaOro.Data: FolderProfile" type="DotNetMsBuildPublish" factoryName="Publish to IIS">
       <riderPublish publish_profile="FolderProfile.pubxml" pubxml_path="$PROJECT_DIR$/SistemaOro.Data/Properties/PublishProfiles/FolderProfile.pubxml" uuid_high="-5857427922845417321" uuid_low="-8714517741950940812" />
       <method v="2" />
@@ -65,6 +70,7 @@
       <option name="presentableId" value="Default" />
       <updated>1738072386912</updated>
       <workItem from="1738072394288" duration="120000" />
+      <workItem from="1739641172872" duration="116000" />
     </task>
     <servers />
   </component>
@@ -72,6 +78,17 @@
     <option name="version" value="3" />
   </component>
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>

@@ -23,6 +23,8 @@ namespace SistemaOro.Forms.Views
     /// </summary>
     public partial class LoginPage : ThemedWindow
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly LoginViewModel _viewModel;
         public LoginPage()
         {
@@ -41,8 +43,15 @@ namespace SistemaOro.Forms.Views
 
         private void ThemedWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            _viewModel.OnLoad();
-            TxtUsername.Focus();
+            try
+            {
+                _viewModel.OnLoad();
+                TxtUsername.Focus();
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception);
+            }
         }
 
         private void TextEdit_KeyDown(object sender, KeyEventArgs e)

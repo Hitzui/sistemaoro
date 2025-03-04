@@ -1,11 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using DevExpress.Mvvm;
-using DevExpress.XtraEditors.DXErrorProvider;
 using SistemaOro.Data.Entities;
 using SistemaOro.Forms.Services;
 
-namespace SistemaOro.Forms.Models;
+namespace SistemaOro.Forms.Dto;
 
 public class DtoCliente : ViewModelBase, IDataErrorInfo
 {

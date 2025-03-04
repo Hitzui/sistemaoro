@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using SistemaOro.Data.Repositories;
-using SistemaOro.Forms.Models;
+using SistemaOro.Forms.Dto;
 
 namespace SistemaOro.Forms.Repository;
 

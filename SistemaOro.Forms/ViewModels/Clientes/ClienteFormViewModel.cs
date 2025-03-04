@@ -10,7 +10,7 @@ using SistemaOro.Data.Repositories;
 using System.Windows.Input;
 using DevExpress.Xpf.WindowsUI;
 using NLog;
-using SistemaOro.Forms.Models;
+using SistemaOro.Forms.Dto;
 using SistemaOro.Forms.Services.Mensajes;
 using Unity;
 using SistemaOro.Forms.Services.Helpers;
