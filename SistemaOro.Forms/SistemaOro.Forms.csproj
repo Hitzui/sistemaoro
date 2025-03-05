@@ -19,6 +19,7 @@
     <SignAssembly>False</SignAssembly>
     <StartupObject>SistemaOro.Forms.App</StartupObject>
     <ApplicationIcon>cash_ico.ico</ApplicationIcon>
+    <NuGetAuditMode>all</NuGetAuditMode>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="cash-18.svg" />
@@ -31,7 +32,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="AutoMapper" Version="14.0.0" />
     <PackageReference Include="DevExpress.Data" Version="24.2.3" />
     <PackageReference Include="DevExpress.Drawing" Version="24.2.3" />
     <PackageReference Include="DevExpress.Pdf.Core" Version="24.2.3" />
@@ -50,13 +51,14 @@
     <PackageReference Include="devexpress.wpf.layoutcontrol" Version="24.2.3" />
     <PackageReference Include="devexpress.wpf.printing" Version="24.2.3" />
     <PackageReference Include="devexpress.wpf.ribbon" Version="24.2.3" />
-    <PackageReference Include="EPPlus" Version="7.4.1" />
-    <PackageReference Include="NLog" Version="5.3.4" />
-    <PackageReference Include="System.Drawing.Common" Version="9.0.0" />
+    <PackageReference Include="EPPlus" Version="7.6.1" />
+    <PackageReference Include="NLog" Version="5.4.0" />
+    <PackageReference Include="System.Drawing.Common" Version="9.0.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SistemaOro.Data\SistemaOro.Data.csproj">
       <Private>True</Private>
+      <ReferenceOutputAssembly></ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +100,12 @@
     </Compile>
     <Compile Update="Components\Base\CheckItemBase.cs" />
     <Compile Update="Images\UIElements.cs" />
+    <Compile Update="Views\Reportes\Caja\ReporteMovimientoCajaExt.cs">
+      <SubType>XtraReport</SubType>
+    </Compile>
+    <Compile Update="Views\Reportes\Caja\RptMovimientosCajaExt.cs">
+      <SubType>XtraReport</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\Agencias\" />

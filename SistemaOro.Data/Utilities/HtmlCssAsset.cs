@@ -1,12 +1,9 @@
+using System.Collections.Concurrent;
 using DevExpress.Utils.Html;
 using DevExpress.XtraEditors;
 
-namespace DevExpress.UITemplates.Collection.Utilities
+namespace SistemaOro.Data.Utilities
 {
-    using System;
-    using System.Collections.Concurrent;
-    using System.IO;
-
     public abstract class HtmlCssAsset {
         public static string AssetsRoot = "SistemaOro.Data.Assets."; 
         public static System.Reflection.Assembly ResourcesAssembly = typeof(HtmlCssAsset).Assembly; 

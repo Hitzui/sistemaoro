@@ -38,7 +38,7 @@
                          Margin="64,0,48,103"
                          VerticalAlignment="Bottom"
                          Glyph="{dx:DXImage SvgImages/XAF/Action_Exit.svg}" Grid.Column="1" TabIndex="4" />
-        <dxe:ComboBoxEdit x:Name="cmbAgencia" HorizontalAlignment="Left" Margin="64,261,0,0" VerticalAlignment="Top" Width="277"
+        <dxe:ComboBoxEdit x:Name="CmbAgencia" HorizontalAlignment="Left" Margin="64,261,0,0" VerticalAlignment="Top" Width="277"
                           Height="36" NullText="Seleccione una sucursal" Grid.Column="1"
                           DisplayMember="Nomagencia" ValueMember="Codagencia"
                           ItemsSource="{Binding Agencias}" SelectedItem="{Binding SelectedAgencia}" TabIndex="2" KeyDown="cmbAgencia_KeyDown" IsTextEditable="False" />

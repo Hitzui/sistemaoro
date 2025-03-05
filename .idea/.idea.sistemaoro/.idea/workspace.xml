@@ -4,13 +4,75 @@
     <projectFile pubXmlPath="SistemaOro.Data/Properties/PublishProfiles/FolderProfile.pubxml">SistemaOro.Data/SistemaOro.Data.csproj</projectFile>
     <projectFile pubXmlPath="SistemaOro.Forms/Properties/PublishProfiles/FolderProfile.pubxml">SistemaOro.Forms/SistemaOro.Forms.csproj</projectFile>
   </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="6aa4e2d6-4c90-4b61-bcfc-e01364c9231a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.sistemaoro/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.sistemaoro/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Properties/Licenses.licx" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Properties/Licenses.licx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Views/Clientes/Form.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Views/Clientes/Form.xaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Setup_advinst/SistemaOro.Setup_advinst-cache/part3/output-info.ini" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Setup_advinst/SistemaOro.Setup_advinst-cache/part3/output-info.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Setup_advinst/SistemaOro.Setup_advinst.aip" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Setup_advinst/SistemaOro.Setup_advinst.aip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Configuration/ConfiguracionGeneral.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Configuration/ConfiguracionGeneral.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Dto/DtoMovimientosCaja.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Dto/DtoMovimientosCaja.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Adelanto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Adelanto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Agencia.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Agencia.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Caja.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Caja.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.CierrePrecio.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.CierrePrecio.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Cliente.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Cliente.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Compra.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Compra.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.ComprasAdelanto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.ComprasAdelanto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.ComprasOperador.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.ComprasOperador.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.ComprasOperador1.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.ComprasOperador1.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.DataContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.DataContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Descargue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Descargue.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.DescargueByCompra.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.DescargueByCompra.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.DetCompra.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.DetCompra.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Detacaja.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Detacaja.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Detacierre.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Detacierre.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.DetalleCompra.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.DetalleCompra.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Diagram1.view" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Diagram1.view" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Estado.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Estado.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.EstadoCompra.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.EstadoCompra.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.EstadoUsuario.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.EstadoUsuario.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.FormaPago.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.FormaPago.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Id.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Id.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Liquidacion2015.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Liquidacion2015.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Listado.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Listado.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Mcaja.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Mcaja.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Moneda.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Moneda.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Movcaja.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Movcaja.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.MovimientosCajaSelect.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.MovimientosCajaSelect.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Nivel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Nivel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.PagosAdelantado.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.PagosAdelantado.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Pica.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Pica.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Precio.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Precio.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.PrecioKilate.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.PrecioKilate.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.ReporteCaja.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.ReporteCaja.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Rubro.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Rubro.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.RubrosCaja.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.RubrosCaja.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.TipoCambio.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.TipoCambio.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.TipoDocumento.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.TipoDocumento.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.TipoPrecio.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.TipoPrecio.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.TipoPreciosPagado.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.TipoPreciosPagado.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Tmpprecio.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Tmpprecio.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.TransaccionEfectivo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.TransaccionEfectivo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Usuario.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Usuario.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.VVariacionesCliente.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.VVariacionesCliente.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.efml" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.efml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Repositories/CompraRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Repositories/CompraRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Repositories/MaestroCajaRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Repositories/MaestroCajaRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/SistemaOro.Data.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/SistemaOro.Data.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Utilities/HtmlCssAsset.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Utilities/HtmlCssAsset.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Dto/DtoMovimientosCaja.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Dto/DtoMovimientosCaja.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/SistemaOro.Forms.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/SistemaOro.Forms.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/ViewModels/Cajas/RealizarMovimientoCajaViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/ViewModels/Cajas/RealizarMovimientoCajaViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/ViewModels/Cajas/ReportesMaestroCajaViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/ViewModels/Cajas/ReportesMaestroCajaViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Views/Cajas/MaestroCajaPage.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Views/Cajas/MaestroCajaPage.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Views/Cajas/MaestroCajaPage.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Views/Cajas/MaestroCajaPage.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Views/Cajas/RealizarMovimientoCajaPage.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Views/Cajas/RealizarMovimientoCajaPage.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Views/Cajas/RealizarMovimientoCajaPage.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Views/Cajas/RealizarMovimientoCajaPage.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Views/Descargue/LIstaDescarguesPage.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Views/Descargue/LIstaDescarguesPage.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Views/Descargue/LIstaDescarguesPage.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Views/Descargue/LIstaDescarguesPage.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Views/LoginPage.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Views/LoginPage.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Views/LoginPage.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Views/LoginPage.xaml.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,18 +82,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Hitzui"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Hitzui&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Hitzui/sistemaoro",
-    "accountId": "c983b7a2-3b9e-4dd4-a6d9-530958d0fd7e"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Hitzui/sistemaoro&quot;,
+    &quot;accountId&quot;: &quot;c983b7a2-3b9e-4dd4-a6d9-530958d0fd7e&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 6
@@ -41,17 +103,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Publish to IIS.SistemaOro.Forms: FolderProfile.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "editor.preferences.smartKeys_rider",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RunManager" selected="Publish to IIS.SistemaOro.Data: FolderProfile">
+}]]></component>
+  <component name="RunManager" selected="Publish to IIS.SistemaOro.Forms: FolderProfile">
     <configuration name="SistemaOro.Data: FolderProfile" type="DotNetMsBuildPublish" factoryName="Publish to IIS">
       <riderPublish publish_profile="FolderProfile.pubxml" pubxml_path="$PROJECT_DIR$/SistemaOro.Data/Properties/PublishProfiles/FolderProfile.pubxml" uuid_high="-5857427922845417321" uuid_low="-8714517741950940812" />
       <method v="2" />
@@ -71,6 +138,7 @@
       <updated>1738072386912</updated>
       <workItem from="1738072394288" duration="120000" />
       <workItem from="1739641172872" duration="116000" />
+      <workItem from="1741137073144" duration="1322000" />
     </task>
     <servers />
   </component>

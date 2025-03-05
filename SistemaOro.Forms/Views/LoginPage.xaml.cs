@@ -47,6 +47,7 @@ namespace SistemaOro.Forms.Views
             {
                 _viewModel.OnLoad();
                 TxtUsername.Focus();
+                CmbAgencia.SelectedIndex = 0;
             }
             catch (Exception exception)
             {
@@ -69,7 +70,7 @@ namespace SistemaOro.Forms.Views
             switch (e.Key)
             {
                 case Key.Enter:
-                    cmbAgencia.Focus();
+                    CmbAgencia.Focus();
                     break;
             }
         }

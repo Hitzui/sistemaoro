@@ -20,12 +20,13 @@ public class RealizarMovimientoCajaViewModel : BaseViewModel
 {
     private IMovimientosRepository _movimientosRepository;
     private IMaestroCajaRepository _maestroCajaRepository;
-
+    private IMonedaRepository _monedaRepository;
     public RealizarMovimientoCajaViewModel()
     {
         Title = "Realizar Movimiento Caja";
         _movimientosRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IMovimientosRepository>();
         _maestroCajaRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IMaestroCajaRepository>();
+        _monedaRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IMonedaRepository>();
         SaveCommand = new DelegateCommand(OnSaveCommand);
         IsEfectivo = true;
     }
@@ -57,6 +58,13 @@ public class RealizarMovimientoCajaViewModel : BaseViewModel
         {
             HelpersMessage.MensajeInformacionResult(MensajesGenericos.ErrorTitulo,
                 MensajesRealizarMovimientos.MovimientoVacio);
+            return;
+        }
+
+        if (SelectedMoneda is null)
+        {
+            HelpersMessage.MensajeInformacionResult(MensajesGenericos.ErrorTitulo,
+                "Seleccionar moneda");
             return;
         }
 
@@ -92,6 +100,43 @@ public class RealizarMovimientoCajaViewModel : BaseViewModel
             return;
         }
 
+        var cheque = decimal.Zero;
+        var efectivo = decimal.Zero;
+        var transferencia = decimal.Zero;
+        var chequeExt = decimal.Zero;
+        var efectivoExt = decimal.Zero;
+        var transferenciaExt = decimal.Zero;
+        if (parametros.Dolares == SelectedMoneda.Codmoneda)
+        {
+            if (IsCheque)
+            {
+                chequeExt = Monto ?? decimal.Zero;
+            }
+            else if (IsEfectivo)
+            {
+                efectivoExt = Monto ?? decimal.Zero;
+            }
+            else if (IsTransferencia)
+            {
+                transferenciaExt = Monto ?? decimal.Zero;
+            }
+        }
+        else
+        {
+            if (IsCheque)
+            {
+                cheque = Monto ?? decimal.Zero;
+            }
+            else if (IsEfectivo)
+            {
+                efectivo = Monto ?? decimal.Zero;
+            }
+            else if (IsTransferencia)
+            {
+                transferencia = Monto ?? decimal.Zero;
+            }
+        }
+
         var detalleMovimiento = new Detacaja
         {
             Referencia = Referencia,
@@ -99,11 +144,15 @@ public class RealizarMovimientoCajaViewModel : BaseViewModel
             Idcaja = mcaja.Idcaja,
             Idmov = SelectedMovcaja.Idmov,
             Fecha = DateTime.Now,
-            Cheque = IsCheque ? Monto : decimal.Zero,
-            Efectivo = IsEfectivo ? Monto : decimal.Zero,
-            Transferencia = IsTransferencia ? Monto : decimal.Zero,
+            Cheque = cheque,
+            Efectivo = efectivo,
+            Transferencia = transferencia,
+            ChequeExt = chequeExt,
+            EfectivoExt = efectivoExt,
+            TransferenciaExt = transferenciaExt,
             Hora = DateTime.Now.ToShortTimeString(),
             Codcaja = caja,
+            Idmoeda = SelectedMoneda.Codmoneda,
             Codoperador = VariablesGlobalesForm.Instance.Usuario.Codoperador
         };
         var save = await _maestroCajaRepository.GuardarDatosDetaCaja(detalleMovimiento, SelectedMovcaja, mcaja);
@@ -157,12 +206,23 @@ public class RealizarMovimientoCajaViewModel : BaseViewModel
         set => SetValue(value);
     }
 
+    public IList<Moneda> Monedas
+    {
+        get => GetValue<IList<Moneda>>();
+        set => SetValue(value);
+    }
+
     public Movcaja? SelectedMovcaja
     {
         get => GetValue<Movcaja>();
         set => SetValue(value);
     }
 
+    public Moneda? SelectedMoneda
+    {
+        get => GetValue<Moneda>();
+        set => SetValue(value);
+    }
     public bool IsCheque
     {
         get => GetValue<bool>();
@@ -190,5 +250,6 @@ public class RealizarMovimientoCajaViewModel : BaseViewModel
     public async void Load()
     {
         MovimientosCaja = await _movimientosRepository.FindAll();
+        Monedas = await _monedaRepository.FindAll();
     }
 }

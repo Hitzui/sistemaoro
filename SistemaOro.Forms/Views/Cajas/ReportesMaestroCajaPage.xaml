@@ -41,14 +41,18 @@
             <dxg:GridControl.View>
                 <dxg:TableView AllowEditing="False" TotalSummaryPosition="Bottom" />
             </dxg:GridControl.View>
-            <dxg:GridColumn FieldName="Descripcion" IsSmart="True" Width="300" />
-            <dxg:GridColumn FieldName="Hora" IsSmart="True" />
-            <dxg:GridColumn FieldName="Fecha" IsSmart="True" />
-            <dxg:GridColumn FieldName="Concepto" IsSmart="True" Width="350" />
-            <dxg:GridColumn FieldName="Referencia" IsSmart="True" Width="350" />
-            <dxg:GridColumn FieldName="Efectivo" IsSmart="True" />
-            <dxg:GridColumn FieldName="Cheque" IsSmart="True" />
-            <dxg:GridColumn FieldName="Transferencia" IsSmart="True" />
+            <dxg:GridColumn FieldName="Descripcion" IsSmart="True" Width="250" />
+            <dxg:GridColumn FieldName="Hora" IsSmart="True" Width="*" />
+            <dxg:GridColumn FieldName="Fecha" IsSmart="True" Width="*" />
+            <dxg:GridColumn FieldName="Concepto" IsSmart="True" Width="300" />
+            <dxg:GridColumn FieldName="Referencia" IsSmart="True" Width="300" />
+            <dxg:GridColumn FieldName="Efectivo" IsSmart="True" Width="*" />
+            <dxg:GridColumn FieldName="Cheque" IsSmart="True" Width="*" />
+            <dxg:GridColumn FieldName="Transferencia" IsSmart="True" Width="*" />
+            <dxg:GridColumn FieldName="EfectivoExt" IsSmart="True" Width="*" />
+            <dxg:GridColumn FieldName="ChequeExt" IsSmart="True" Width="*" />
+            <dxg:GridColumn FieldName="TransferenciaExt" IsSmart="True" Width="*" />
+            <dxg:GridColumn FieldName="Moneda" IsSmart="True" Width="*" />
         </dxg:GridControl>
 
 

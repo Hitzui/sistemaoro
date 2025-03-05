@@ -3,17 +3,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:SistemaOro.Forms.Views.Descargue"
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-    xmlns:descargue="clr-namespace:SistemaOro.Forms.ViewModels.Descargue"
-    xmlns:dto="clr-namespace:SistemaOro.Data.Dto;assembly=SistemaOro.Data"
+    xmlns:dto1="clr-namespace:SistemaOro.Data.Dto;assembly=SistemaOro.Data"
     x:Class="SistemaOro.Forms.Views.Descargue.ListaDescarguesPage"
     mc:Ignorable="d" Title="{Binding Title}" Background="White">
-    <Page.DataContext>
-        <descargue:ListaDescarguesViewModels />
-    </Page.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100" />
@@ -42,7 +37,6 @@
                              Glyph="{dx:DXImage SvgImages/Save/Save.svg}"/>
         </Grid>
         <dxg:GridControl Grid.Row="1" EnableSmartColumnsGeneration="True"
-                         DesignTimeDataObjectType="{x:Type dto:DtoComprasClientes}"
                          ItemsSource="{Binding DtoComprasClientes}">
             <dxg:GridControl.View>
                 <dxg:TableView />

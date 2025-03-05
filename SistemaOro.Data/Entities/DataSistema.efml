@@ -465,6 +465,9 @@
     <property name="TransferenciaExt" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="4ba30446-0021-496a-b9da-6cb71a7962cd">
       <column name="TransferenciaExt" not-null="False" precision="18" scale="2" sql-type="decimal" p1:unicode="False" />
     </property>
+    <property name="Idmoeda" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="041b8ecb-dc53-4163-926d-0e50a592304d">
+      <column name="idmoeda" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+    </property>
   </class>
   <class name="Detacierre" entity-set="Detacierres" p1:Guid="eada9ad6-e4a8-403d-9b72-249cfe9822e3">
     <composite-id>
@@ -1330,6 +1333,14 @@
       </end1>
       <end2 multiplicity="Many" name="Detacajas" class="Usuario" relation-class="Detacaja" lazy="False" p1:Guid="6b2304c5-b296-4df3-bfd5-7996422dcce2">
         <property name="Codoperador" />
+      </end2>
+    </association>
+    <association name="Moneda_Detacaja" cardinality="OneToMany" p1:Guid="b772524c-21b9-4ce5-8a68-502413725250">
+      <end1 multiplicity="ZeroOrOne" name="Moneda" class="Detacaja" relation-class="Moneda" constrained="True" lazy="False" p1:Guid="c5e0117b-909d-447d-9fb4-5c25810862e8">
+        <property name="Codmoneda" />
+      </end1>
+      <end2 multiplicity="Many" name="Detacajas" class="Moneda" relation-class="Detacaja" lazy="False" p1:Guid="9d7569c2-511d-47d3-a546-ea726600d448">
+        <property name="Idmoeda" />
       </end2>
     </association>
   </associations>

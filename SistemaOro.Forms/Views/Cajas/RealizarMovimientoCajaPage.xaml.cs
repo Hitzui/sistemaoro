@@ -33,6 +33,7 @@ namespace SistemaOro.Forms.Views.Cajas
         private void ThemedWindow_Loaded(object sender, RoutedEventArgs e)
         {
             ((RealizarMovimientoCajaViewModel)DataContext).Load();
+            CmbMoneda.SelectedIndex = 0;
         }
 
         private void SimpleButton_Click(object sender, RoutedEventArgs e)

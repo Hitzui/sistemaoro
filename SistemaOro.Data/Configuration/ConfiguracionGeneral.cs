@@ -66,13 +66,13 @@ public class ConfiguracionGeneral
     public static string? Caja
     {
         get=>VariablesGlobales.Instance.ConfigurationSection["CAJA"];
-        set => Utilities.UpdateAppSetting("CAJA", value);
+        set => Libraries.Utilities.UpdateAppSetting("CAJA", value);
     }
 
     public static string? Agencia
     {
         get=> VariablesGlobales.Instance.ConfigurationSection["AGENCIA"];
-        set => Utilities.UpdateAppSetting("AGENCIA", value);
+        set => Libraries.Utilities.UpdateAppSetting("AGENCIA", value);
     }
     
     #endregion

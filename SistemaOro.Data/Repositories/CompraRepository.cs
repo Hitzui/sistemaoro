@@ -29,7 +29,7 @@ public class CompraRepository(
 
     public async Task<bool> Create(Compra compra, List<DetCompra> detaCompra, List<Adelanto>? listaAdelantos = null, List<CierrePrecio>? listaPreciosaCerrar = null)
     {
-        using var transaction = await context.Database.BeginTransactionAsync();
+        await using var transaction = await context.Database.BeginTransactionAsync();
         try
         {
             if (context.ChangeTracker.HasChanges())
@@ -37,6 +37,19 @@ public class CompraRepository(
                 context.ChangeTracker.Clear();
             }
 
+            var param = await context.Id.FirstOrDefaultAsync();
+            if (param is null)
+            {
+                ErrorSms = (VariablesGlobales.Instance.ConfigurationSection["ERROR_PARAM"]);
+                return false;
+            }
+
+            var moneda = await context.Monedas.FindAsync(compra.Codmoneda);
+            if (moneda is null)
+            {
+                ErrorSms = VariablesGlobales.Instance.ConfigurationSection["ERROR_MONEDA"];
+                return false;
+            }
             if (string.IsNullOrWhiteSpace(_caja) || string.IsNullOrWhiteSpace(_agencia))
             {
                 ErrorSms = "No existen los parametros de caja o agencia, favor crearlos";
@@ -72,11 +85,23 @@ public class CompraRepository(
                 return false;
             }
 
-            if (decimal.Compare(modCaja.Sfinal!.Value, decimal.Zero) <= 0)
+            if (param.Dolares == compra.Codmoneda)
             {
-                ErrorSms = "No hay saldo disponible en caja para realizar la compra";
-                return false;
+                if (decimal.Compare(modCaja.SfinalExt!.Value, decimal.Zero) <= 0)
+                {
+                    ErrorSms = "No hay saldo disponible en moneda extranjera en caja para realizar la compra";
+                    return false;
+                }
             }
+            else
+            {
+                if (decimal.Compare(modCaja.Sfinal!.Value, decimal.Zero) <= 0)
+                {
+                    ErrorSms = "No hay saldo disponible en moneda local en caja para realizar la compra";
+                    return false;
+                }
+            }
+            
 
             var numeroCompra = await CodigoCompra();
             if (string.IsNullOrWhiteSpace(numeroCompra))
@@ -88,23 +113,11 @@ public class CompraRepository(
             var saldoDolares = decimal.Zero;
             var saldoCordobas = decimal.Zero;
             compra.Numcompra = numeroCompra;
-            var param = await context.Id.FirstOrDefaultAsync();
-            if (param is null)
-            {
-                ErrorSms = (VariablesGlobales.Instance.ConfigurationSection["ERROR_PARAM"]);
-                return false;
-            }
-
             compra.Nocontrato = param.Nocontrato;
             param.Nocontrato += 1;
             var tbTipoCambio = await tipoCambioRepository.FindByDateNow();
             var tipoCambioDia = decimal.One;
-            var moneda = await context.Monedas.FindAsync(compra.Codmoneda);
-            if (moneda is null)
-            {
-                ErrorSms = VariablesGlobales.Instance.ConfigurationSection["ERROR_MONEDA"];
-                return false;
-            }
+            
 
             if (tbTipoCambio is not null)
             {
@@ -118,17 +131,8 @@ public class CompraRepository(
                 saldoDolares = adelantosPorClientes.Where(adelanto => adelanto.Saldo > 0 && adelanto.Codmoneda == param.Dolares).Select(adelanto => adelanto.Saldo).Sum();
             }
 
-            var efectivo = compra.Efectivo;
-            var transferencia = compra.Transferencia;
-            var cheque = compra.Cheque;
-            if (compra.Codmoneda == param.Dolares)
-            {
-                efectivo = compra.Efectivo * tipoCambioDia;
-                transferencia = compra.Transferencia * tipoCambioDia;
-                cheque = compra.Cheque* tipoCambioDia;
-            }
 
-            if (decimal.Compare(modCaja.Sfinal.Value, efectivo) < 0)
+            if (decimal.Compare(modCaja.Sfinal.Value, compra.Efectivo) < 0)
             {
                 ErrorSms = $"No hay saldo disponible en caja para realizar la compra, Saldo: {modCaja.Sfinal}";
                 return false;
@@ -141,15 +145,32 @@ public class CompraRepository(
                 Concepto = $"***Compra: {numeroCompra}***",
                 Referencia = numeroCompra,
                 Codcaja = _caja,
-                Cheque = cheque,
-                Efectivo = efectivo,
-                Transferencia = transferencia,
                 Fecha = compra.Fecha,
                 Hora = compra.Fecha.ToShortTimeString(),
                 Idcaja = modCaja.Idcaja,
                 Idmov = param.Idcompras!.Value,
-                Codoperador = compra.Usuario
+                Codoperador = compra.Usuario,
+                Idmoeda = compra.Codmoneda
             };
+
+            if (compra.Codmoneda == param.Dolares)
+            {
+                detaCaja.EfectivoExt = compra.Efectivo;
+                detaCaja.TransferenciaExt = compra.Transferencia;
+                detaCaja.ChequeExt = compra.Cheque;
+                detaCaja.Efectivo = 0m;
+                detaCaja.Transferencia = 0m;
+                detaCaja.Cheque = 0m;
+            }
+            else
+            {
+                detaCaja.Efectivo = compra.Efectivo;
+                detaCaja.Transferencia = compra.Transferencia;
+                detaCaja.Cheque = compra.Cheque;
+                detaCaja.EfectivoExt = 0m;
+                detaCaja.TransferenciaExt = 0m;
+                detaCaja.ChequeExt = 0m;
+            }
             var listTmpPrecios = await context.Tmpprecios.Where(tmpprecio => tmpprecio.Codcliente == compra.Codcliente).ToListAsync();
             if (listTmpPrecios.Count > 0)
             {
@@ -252,8 +273,17 @@ public class CompraRepository(
                 compra.DetCompras.Add(detCompra);
             }
 
-            modCaja.Sfinal -= efectivo;
-            modCaja.Salida += efectivo;
+            if (param.Dolares==compra.Codmoneda)
+            {
+                modCaja.SfinalExt -= compra.Efectivo;
+                modCaja.SalidaExt += compra.Efectivo;
+            }
+            else
+            {
+                modCaja.Sfinal -= compra.Efectivo;
+                modCaja.Salida += compra.Efectivo;
+            }
+            
             existeAgencia.Numcompra += 1;
             var result = await context.SaveChangesAsync();
             if (result > 0)
@@ -508,14 +538,14 @@ public class CompraRepository(
                 {
                     adelanto.Monto = sumCordobas;
                     adelanto.Saldo = sumCordobas;
-                    adelanto.MontoLetras = Utilities.NumeroALetras(sumCordobas);
+                    adelanto.MontoLetras = Libraries.Utilities.NumeroALetras(sumCordobas);
                 }
 
                 if (decimal.Compare(sumDolares, decimal.Zero) > 0)
                 {
                     adelanto.Monto = sumDolares;
                     adelanto.Saldo = sumDolares;
-                    adelanto.MontoLetras = Utilities.NumeroALetras(sumDolares);
+                    adelanto.MontoLetras = Libraries.Utilities.NumeroALetras(sumDolares);
                 }
 
                 context.ComprasAdelantos.RemoveRange(comprasAdelantos);
