@@ -612,6 +612,7 @@
             // 
             // sqlDataSource
             // 
+            this.sqlDataSource.ConnectionOptions.IsolationLevel = DevExpress.DataAccess.Sql.SqlIsolationLevel.ReadCommitted;
             this.sqlDataSource.Name = "sqlDataSource";
             customSqlQuery1.Name = "ComprobanteCompra";
             queryParameter1.Name = "qNumcompra";

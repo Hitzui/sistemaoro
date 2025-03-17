@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using DevExpress.Data;
+using DevExpress.DataAccess.ConnectionParameters;
 using DevExpress.DataAccess.Sql;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
