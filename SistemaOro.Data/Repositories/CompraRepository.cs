@@ -22,12 +22,14 @@ public class CompraRepository(
     private string? _agencia = ConfiguracionGeneral.Agencia;
     private readonly Usuario? _usuario = VariablesGlobales.Instance.Usuario;
     private readonly Logger logger = LogManager.GetCurrentClassLogger();
+
     public void ImprimirCompra(string numeroCompra)
     {
         //imprimir la comprar con los datos implicados
     }
 
-    public async Task<bool> Create(Compra compra, List<DetCompra> detaCompra, List<Adelanto>? listaAdelantos = null, List<CierrePrecio>? listaPreciosaCerrar = null)
+    public async Task<bool> Create(Compra compra, List<DetCompra> detaCompra, FormaPago? formaPago,
+        List<Adelanto>? listaAdelantos = null, List<CierrePrecio>? listaPreciosaCerrar = null)
     {
         await using var transaction = await context.Database.BeginTransactionAsync();
         try
@@ -50,6 +52,7 @@ public class CompraRepository(
                 ErrorSms = VariablesGlobales.Instance.ConfigurationSection["ERROR_MONEDA"];
                 return false;
             }
+
             if (string.IsNullOrWhiteSpace(_caja) || string.IsNullOrWhiteSpace(_agencia))
             {
                 ErrorSms = "No existen los parametros de caja o agencia, favor crearlos";
@@ -72,7 +75,8 @@ public class CompraRepository(
 
             compra.Codcaja = _caja;
             compra.Codagencia = _agencia;
-            var modCaja = await context.Mcajas.SingleOrDefaultAsync(mcaja => mcaja.Codagencia == _agencia && mcaja.Codcaja == _caja && mcaja.Estado == 1);
+            var modCaja = await context.Mcajas.SingleOrDefaultAsync(mcaja =>
+                mcaja.Codagencia == _agencia && mcaja.Codcaja == _caja && mcaja.Estado == 1);
             if (modCaja is null)
             {
                 ErrorSms = "No hay caja activa para realizar la operación";
@@ -101,7 +105,7 @@ public class CompraRepository(
                     return false;
                 }
             }
-            
+
 
             var numeroCompra = await CodigoCompra();
             if (string.IsNullOrWhiteSpace(numeroCompra))
@@ -117,7 +121,7 @@ public class CompraRepository(
             param.Nocontrato += 1;
             var tbTipoCambio = await tipoCambioRepository.FindByDateNow();
             var tipoCambioDia = decimal.One;
-            
+
 
             if (tbTipoCambio is not null)
             {
@@ -127,8 +131,12 @@ public class CompraRepository(
             var adelantosPorClientes = await adelantoRepository.ListarAdelantosPorClientes(compra.Codcliente);
             if (adelantosPorClientes.Count > 0)
             {
-                saldoCordobas = adelantosPorClientes.Where(adelanto => adelanto.Saldo > 0 && adelanto.Codmoneda == param.Cordobas).Select(adelanto => adelanto.Saldo).Sum();
-                saldoDolares = adelantosPorClientes.Where(adelanto => adelanto.Saldo > 0 && adelanto.Codmoneda == param.Dolares).Select(adelanto => adelanto.Saldo).Sum();
+                saldoCordobas = adelantosPorClientes
+                    .Where(adelanto => adelanto.Saldo > 0 && adelanto.Codmoneda == param.Cordobas)
+                    .Select(adelanto => adelanto.Saldo).Sum();
+                saldoDolares = adelantosPorClientes
+                    .Where(adelanto => adelanto.Saldo > 0 && adelanto.Codmoneda == param.Dolares)
+                    .Select(adelanto => adelanto.Saldo).Sum();
             }
 
 
@@ -138,40 +146,8 @@ public class CompraRepository(
                 return false;
             }
 
-            //detalle de caja
-            var detaCaja = new Detacaja
-            {
-                Tipocambio = tipoCambioDia,
-                Concepto = $"***Compra: {numeroCompra}***",
-                Referencia = numeroCompra,
-                Codcaja = _caja,
-                Fecha = compra.Fecha,
-                Hora = compra.Fecha.ToShortTimeString(),
-                Idcaja = modCaja.Idcaja,
-                Idmov = param.Idcompras!.Value,
-                Codoperador = compra.Usuario,
-                Idmoeda = compra.Codmoneda
-            };
-
-            if (compra.Codmoneda == param.Dolares)
-            {
-                detaCaja.EfectivoExt = compra.Efectivo;
-                detaCaja.TransferenciaExt = compra.Transferencia;
-                detaCaja.ChequeExt = compra.Cheque;
-                detaCaja.Efectivo = 0m;
-                detaCaja.Transferencia = 0m;
-                detaCaja.Cheque = 0m;
-            }
-            else
-            {
-                detaCaja.Efectivo = compra.Efectivo;
-                detaCaja.Transferencia = compra.Transferencia;
-                detaCaja.Cheque = compra.Cheque;
-                detaCaja.EfectivoExt = 0m;
-                detaCaja.TransferenciaExt = 0m;
-                detaCaja.ChequeExt = 0m;
-            }
-            var listTmpPrecios = await context.Tmpprecios.Where(tmpprecio => tmpprecio.Codcliente == compra.Codcliente).ToListAsync();
+            var listTmpPrecios = await context.Tmpprecios.Where(tmpprecio => tmpprecio.Codcliente == compra.Codcliente)
+                .ToListAsync();
             if (listTmpPrecios.Count > 0)
             {
                 var listDetacierre = new List<Detacierre>();
@@ -208,7 +184,6 @@ public class CompraRepository(
                 }
             }
 
-            await context.Detacajas.AddAsync(detaCaja);
             if (decimal.Compare(compra.Adelantos, decimal.Zero) > 0 && listaAdelantos is not null)
             {
                 var saldoAdelanto = compra.Adelantos;
@@ -257,7 +232,9 @@ public class CompraRepository(
                         if (findAdelanto is not null)
                         {
                             findAdelanto.Saldo = auxSaldo;
-                            findAdelanto.Numcompra = findAdelanto.Numcompra.Length <= 0 ? $"{_agencia}-{compra.Numcompra}" : $"{findAdelanto.Numcompra}; {_agencia}-{compra.Numcompra}";
+                            findAdelanto.Numcompra = findAdelanto.Numcompra.Length <= 0
+                                ? $"{_agencia}-{compra.Numcompra}"
+                                : $"{findAdelanto.Numcompra}; {_agencia}-{compra.Numcompra}";
                         }
 
                         await context.ComprasAdelantos.AddAsync(comprasAdelantos);
@@ -268,22 +245,49 @@ public class CompraRepository(
             compra.SaldoAdelanto = saldoCordobas;
             compra.SaldoAdelantoDolares = saldoDolares;
             await context.Compras.AddAsync(compra);
+
+            if (formaPago is not null)
+            {
+                // Asignar valores a formaPago
+                formaPago.Tipocambio = tipoCambioDia;
+                formaPago.Numcompra = compra.Numcompra;
+                formaPago.Codagencia = compra.Codagencia;
+                formaPago.Codcaja = compra.Codcaja;
+                formaPago.Total = compra.Total;
+                formaPago.Codusuario = _usuario.Codoperador;
+                await context.FormaPagos.AddAsync(formaPago);
+
+                var detaCaja1 = CrearDetacaja(compra, modCaja, param, numeroCompra, tipoCambioDia,
+                    formaPago.Monto1 ?? decimal.Zero, 0m, codmoneda: param.Cordobas ?? 0);
+                var detaCaja2 = CrearDetacaja(compra, modCaja, param, numeroCompra, tipoCambioDia, 0m,
+                    formaPago.Monto2 ?? decimal.Zero, codmoneda: param.Dolares ?? 0);
+                // Crear detalles de caja
+                var detallesCaja = new List<Detacaja> { detaCaja1, detaCaja2 };
+
+                await context.Detacajas.AddRangeAsync(detallesCaja);
+
+                // Actualizar caja
+                ActualizarModCaja(modCaja, formaPago.Monto1 ?? decimal.Zero, formaPago.Monto2 ?? decimal.Zero);
+            }
+            else
+            {
+                var detaCaja = CrearDetacaja(compra, modCaja, param, numeroCompra, tipoCambioDia, compra.Efectivo,
+                    compra.Transferencia, compra.Cheque, codmoneda:compra.Codmoneda);
+                await context.Detacajas.AddAsync(detaCaja);
+
+                // Actualizar caja con los valores de compra
+                if (param.Dolares == compra.Codmoneda)
+                    ActualizarModCaja(modCaja, 0m, compra.Efectivo);
+                else
+                    ActualizarModCaja(modCaja, compra.Efectivo, 0m);
+            }
+
             foreach (var detCompra in detaCompra)
             {
                 compra.DetCompras.Add(detCompra);
             }
 
-            if (param.Dolares==compra.Codmoneda)
-            {
-                modCaja.SfinalExt -= compra.Efectivo;
-                modCaja.SalidaExt += compra.Efectivo;
-            }
-            else
-            {
-                modCaja.Sfinal -= compra.Efectivo;
-                modCaja.Salida += compra.Efectivo;
-            }
-            
+
             existeAgencia.Numcompra += 1;
             var result = await context.SaveChangesAsync();
             if (result > 0)
@@ -307,6 +311,40 @@ public class CompraRepository(
             await transaction.RollbackAsync();
             return false;
         }
+    }
+
+    // Método auxiliar para crear un Detacaja
+    private Detacaja CrearDetacaja(Compra compra, Mcaja modCaja, Id param, string numeroCompra, decimal tipoCambio,
+        decimal efectivo, decimal efectivoExt, decimal transferencia = 0m, decimal cheque = 0m, int codmoneda=0)
+    {
+        return new Detacaja
+        {
+            Tipocambio = tipoCambio,
+            Concepto = $"***Compra: {numeroCompra}***",
+            Referencia = numeroCompra,
+            Codcaja = _caja,
+            Fecha = compra.Fecha,
+            Hora = compra.Fecha.ToShortTimeString(),
+            Idcaja = modCaja.Idcaja,
+            Idmov = param.Idcompras!.Value,
+            Codoperador = compra.Usuario,
+            Idmoeda = codmoneda,
+            Efectivo = efectivo,
+            EfectivoExt = efectivoExt,
+            Transferencia = transferencia,
+            Cheque = cheque,
+            TransferenciaExt = 0m,
+            ChequeExt = 0m
+        };
+    }
+
+// Método auxiliar para actualizar modCaja
+    void ActualizarModCaja(Mcaja modCaja, decimal montoLocal, decimal montoExt)
+    {
+        modCaja.Sfinal -= montoLocal;
+        modCaja.Salida += montoLocal;
+        modCaja.SfinalExt -= montoExt;
+        modCaja.SalidaExt += montoExt;
     }
 
     public async Task<bool> UpdateDescargue(Compra compra)
@@ -336,7 +374,8 @@ public class CompraRepository(
 
     public async Task<string?> CodigoCompra()
     {
-        var numCompra = await context.Agencias.Where(agencia => agencia.Codagencia == _agencia).Select(agencia => agencia.Numcompra).SingleAsync();
+        var numCompra = await context.Agencias.Where(agencia => agencia.Codagencia == _agencia)
+            .Select(agencia => agencia.Numcompra).SingleAsync();
         return numCompra is null ? "" : numCompra.Value.ToString();
     }
 
@@ -344,7 +383,8 @@ public class CompraRepository(
 
     public async Task<List<DetCompra>> FindDetaCompra(string numcompra)
     {
-        return await context.DetCompras.Where(compra => compra.Numcompra == numcompra && compra.Codagencia == _agencia).OrderBy(compra => compra.Linea).ToListAsync();
+        return await context.DetCompras.Where(compra => compra.Numcompra == numcompra && compra.Codagencia == _agencia)
+            .OrderBy(compra => compra.Linea).ToListAsync();
     }
 
     public async Task<Compra?> FindById(string numerocompra)
@@ -370,14 +410,17 @@ public class CompraRepository(
                 return false;
             }
 
-            var mcaja = await context.Mcajas.SingleOrDefaultAsync(mc => mc.Codagencia == _agencia && mc.Codcaja == _caja && mc.Estado > 0 && mc.Fecha!.Value.Date == DateTime.Now.Date);
+            var mcaja = await context.Mcajas.SingleOrDefaultAsync(mc =>
+                mc.Codagencia == _agencia && mc.Codcaja == _caja && mc.Estado > 0 &&
+                mc.Fecha!.Value.Date == DateTime.Now.Date);
             if (mcaja is null)
             {
                 ErrorSms = "NO se ha aperturado caja para el día de hoy";
                 return false;
             }
 
-            var efectivoOriginal = await context.Compras.AsNoTracking().Where(c => c.Numcompra == compra.Numcompra).Select(c => c.Efectivo).SingleOrDefaultAsync();
+            var efectivoOriginal = await context.Compras.AsNoTracking().Where(c => c.Numcompra == compra.Numcompra)
+                .Select(c => c.Efectivo).SingleOrDefaultAsync();
             var efectivoEditado = compra.Efectivo;
             if (efectivoEditado < efectivoOriginal)
             {
@@ -402,7 +445,8 @@ public class CompraRepository(
             }
 
 
-            var detalleCaja = await context.Detacajas.SingleOrDefaultAsync(detacaja => detacaja.Referencia == compra.Numcompra && detacaja.Idcaja==mcaja.Idcaja);
+            var detalleCaja = await context.Detacajas.SingleOrDefaultAsync(detacaja =>
+                detacaja.Referencia == compra.Numcompra && detacaja.Idcaja == mcaja.Idcaja);
             if (detalleCaja is not null)
             {
                 detalleCaja.Efectivo = compra.Efectivo;
@@ -422,7 +466,8 @@ public class CompraRepository(
         catch (Exception e)
         {
             Debug.WriteLine(e);
-            ErrorSms = $"No se pudo actualizar los detalles de la compra con el numero de compra {compra.Numcompra}. {e.Message}";
+            ErrorSms =
+                $"No se pudo actualizar los detalles de la compra con el numero de compra {compra.Numcompra}. {e.Message}";
             return false;
         }
     }
@@ -434,7 +479,8 @@ public class CompraRepository(
             var usuario = VariablesGlobales.Instance.Usuario;
             if (usuario is null)
             {
-                throw new EntityValidationException("No existe el usuario en el sistema o no se ha iniciado adecuadamente la sesion");
+                throw new EntityValidationException(
+                    "No existe el usuario en el sistema o no se ha iniciado adecuadamente la sesion");
             }
 
 
@@ -454,7 +500,8 @@ public class CompraRepository(
                 return false;
             }
 
-            var detalleCaja = await context.Detacajas.SingleOrDefaultAsync(detacaja => detacaja.Referencia == $"{numeroCompra}");
+            var detalleCaja =
+                await context.Detacajas.SingleOrDefaultAsync(detacaja => detacaja.Referencia == $"{numeroCompra}");
             if (detalleCaja is null)
             {
                 ErrorSms = $"No existe un detalle de caja con el número de compra {numeroCompra}";
@@ -483,7 +530,8 @@ public class CompraRepository(
             mcaja.Entrada = decimal.Add(efectivo, mcaja.Entrada!.Value);
             mcaja.Sfinal = decimal.Add(efectivo, mcaja.Sfinal!.Value);
             var detalleCierres = await context.Detacierres
-                .Where(detacierre => detacierre.Numcompra == numeroCompra && detacierre.Codagencia == findCompra.Codagencia)
+                .Where(detacierre =>
+                    detacierre.Numcompra == numeroCompra && detacierre.Codagencia == findCompra.Codagencia)
                 .ToListAsync();
             if (detalleCierres.Count > 0)
             {
@@ -598,7 +646,8 @@ public class CompraRepository(
     {
         var result = context.Compras.AsNoTracking()
             .Where(compra => compra.Codestado == EstadoCompra.Vigente || compra.Codestado == EstadoCompra.Cerrada)
-            .Join(context.Clientes.AsNoTracking(), compra => compra.Codcliente, cliente => cliente.Codcliente, (compra, cliente) => new { compra, cliente })
+            .Join(context.Clientes.AsNoTracking(), compra => compra.Codcliente, cliente => cliente.Codcliente,
+                (compra, cliente) => new { compra, cliente })
             .OrderByDescending(arg => arg.compra.Fecha)
             .Select(arg => new DtoComprasClientes()
             {
@@ -621,14 +670,15 @@ public class CompraRepository(
         {
             return new Task<List<DtoComprasClientes>>(() => []);
         }
+
         var result = context.Compras.AsNoTracking()
-            .Where(compra => compra.Codestado == EstadoCompra.Vigente 
-                             || compra.Codestado == EstadoCompra.Cerrada 
-                             && compra.Fecha.Date<= fecha.Date)
-            .Join(context.Clientes.AsNoTracking(), compra => compra.Codcliente, 
+            .Where(compra => compra.Codestado == EstadoCompra.Vigente
+                             || compra.Codestado == EstadoCompra.Cerrada
+                             && compra.Fecha.Date <= fecha.Date)
+            .Join(context.Clientes.AsNoTracking(), compra => compra.Codcliente,
                 cliente => cliente.Codcliente, (compra, cliente) => new { compra, cliente })
             .Join(context.TipoCambios.AsNoTracking(), arg => arg.compra.Fecha.Date, cambio => cambio.Fecha.Date,
-                (arg1, cambio) => new { arg1.compra, arg1.cliente, cambio})
+                (arg1, cambio) => new { arg1.compra, arg1.cliente, cambio })
             .OrderByDescending(arg => arg.compra.Fecha)
             .Select(arg => new DtoComprasClientes()
             {
@@ -636,7 +686,9 @@ public class CompraRepository(
                 Codcliente = arg.cliente.Codcliente,
                 Nombre = arg.cliente.Nombres,
                 Apellido = arg.cliente.Apellidos,
-                Total = arg.compra.Codmoneda==parameter.Dolares.Value ? decimal.Multiply(arg.compra.Total,arg.cambio.Tipocambio) : arg.compra.Total,
+                Total = arg.compra.Codmoneda == parameter.Dolares.Value
+                    ? decimal.Multiply(arg.compra.Total, arg.cambio.Tipocambio)
+                    : arg.compra.Total,
                 Peso = arg.compra.Peso,
                 Fecha = arg.compra.Fecha,
                 Nocontrato = arg.compra.Nocontrato,
@@ -644,6 +696,12 @@ public class CompraRepository(
             });
         return result.ToListAsync();
     }
+
+    public Task<FormaPago?> FindFormaPago(string numcompra)
+    {
+        return context.FormaPagos.SingleOrDefaultAsync(formaPago => formaPago.Numcompra == numcompra);
+    }
+
     public Task<List<DetalleCompra>> DetalleCompraImprimir(string numcompra)
     {
         return context.DetalleCompras.Where(compra => compra.Numcompra == numcompra).ToListAsync();

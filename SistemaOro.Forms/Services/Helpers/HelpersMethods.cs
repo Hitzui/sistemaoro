@@ -109,19 +109,10 @@ public class HelpersMethods
         return resultado.Trim();
     }
 
-    public static decimal RedondeoHaciaAbajo(decimal value)
-    {
-        if (decimal.Compare(value, decimal.Zero) == 0)
-        {
-            return value;
-        }
-
-        return value - 0.005m;
-    }
-
     public static decimal RedondeoHaciaArriba(decimal valor, int decimales = 2)
     {
-        var auxiliarDecimal = valor.ToString("F2");
+        var format = $"F{decimales}";
+        var auxiliarDecimal = valor.ToString(format);
        return decimal.Parse(auxiliarDecimal);
     }
 

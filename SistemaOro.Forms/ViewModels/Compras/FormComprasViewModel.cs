@@ -18,12 +18,14 @@ using SistemaOro.Forms.ViewModels.Clientes;
 using SistemaOro.Forms.Views.Clientes;
 using static System.Decimal;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DevExpress.Mvvm.Native;
 using SistemaOro.Forms.Views.Reportes.Compras;
 using SistemaOro.Data.Dto;
 using SistemaOro.Forms.Views;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.WindowsUI;
+using DevExpress.XtraEditors;
 using NLog;
 using SistemaOro.Forms.Dto;
 
@@ -117,6 +119,80 @@ namespace SistemaOro.Forms.ViewModels.Compras
             }
         }
 
+        private bool _habilitarFormaPago;
+
+        public bool HabilitarFormaPago
+        {
+            get => _habilitarFormaPago;
+            set => SetValue(ref _habilitarFormaPago, value);
+        }
+
+        private decimal _montoLocal;
+
+        public decimal MontoLocal
+        {
+            get => _montoLocal;
+            set
+            {
+                SetValue(ref _montoLocal, value);
+                CalcularFormaPago();
+            }
+        }
+
+        private decimal _montoExtranjero;
+
+        public decimal MontoExtranjero
+        {
+            get => _montoExtranjero;
+            set
+            {
+                SetValue(ref _montoExtranjero, value);
+                CalcularFormaPago();
+            }
+        }
+
+        private async void CalcularFormaPago()
+        {
+            try
+            {
+                if (SelectedMoneda is null)
+                {
+                    return;
+                }
+
+                var param = await VariablesGlobales.Instance.UnityContainer.Resolve<IParametersRepository>()
+                    .RecuperarParametros();
+                if (param is null)
+                {
+                    return;
+                }
+
+                var valorTipoCambio = Zero;
+                var tipoCambio = await _tipoCambioRepository.FindByDateNow();
+                if (tipoCambio is not null)
+                {
+                    valorTipoCambio = (tipoCambio.Tipocambio);
+                }
+
+
+                if (Total.CompareTo(Zero) <= 0) return;
+                if (SelectedMoneda.Codmoneda == param.Cordobas)
+                {
+                    var totalX = Subtract(Total, MontoLocal);
+                    MontoExtranjero = HelpersMethods.RedondeoHaciaArriba(totalX / valorTipoCambio, 4);
+                }
+                else
+                {
+                    var totalX = Subtract(Total, MontoExtranjero);
+                    MontoLocal = HelpersMethods.RedondeoHaciaArriba(totalX * valorTipoCambio, 4);
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e);
+            }
+        }
+
         public bool IsEfectivo
         {
             get => GetValue<bool>();
@@ -195,7 +271,8 @@ namespace SistemaOro.Forms.ViewModels.Compras
         public decimal Precio
         {
             get => HelpersMethods.RedondeoHaciaArriba(_precio);
-            set => SetValue(ref _precio, HelpersMethods.RedondeoHaciaArriba(value), changedCallback: NotifyImporteChanged());
+            set => SetValue(ref _precio, HelpersMethods.RedondeoHaciaArriba(value),
+                changedCallback: NotifyImporteChanged());
         }
 
         private decimal _importe = Zero;
@@ -435,23 +512,74 @@ namespace SistemaOro.Forms.ViewModels.Compras
             MontoCheque = compra.Cheque;
             MontoTransferencia = compra.Transferencia;
             MontoAdelanto = compra.Adelantos;
-            SubTotal = compra.Subtotal ?? decimal.Zero;
+            SubTotal = compra.Subtotal ?? Zero;
             Total = compra.Total;
             Fecha = compra.Fecha;
             SelectedCliente = compra.Cliente;
             SelectedEstadoCompra = compra.Codestado;
             SelectedMoneda = findAllMonedas.FirstOrDefault(moneda => moneda.Codmoneda == compra.Codmoneda);
             SelectedTiposPrecios = findAll.FirstOrDefault(precios => precios.IdTipoPrecio == compra.IdTipoPrecio);
+            var formPago = await _compraRepository.FindFormaPago(NumeroCompra!);
+            if (formPago is not null)
+            {
+                HabilitarFormaPago = true;
+                MontoLocal = formPago.Monto1 ?? Zero;
+                MontoExtranjero = formPago.Monto2 ?? Zero;
+            }
+
             foreach (var detCompra in compra.DetCompras)
             {
                 ItemsSource.Add(detCompra);
             }
         }
 
-        private bool ValidarTotal()
+        private async Task<bool> ValidarTotal()
         {
-            var sumaTotal = MontoEfectivo + MontoCheque + MontoAdelanto + MontoPorPagar + MontoTransferencia + MontoAdelanto;
-            return Compare(Math.Round(Total, 2), Math.Round(sumaTotal, 2)) != 0;
+            var sumaTotal = MontoEfectivo + MontoCheque + MontoAdelanto + MontoPorPagar + MontoTransferencia +
+                            MontoAdelanto;
+            var tipoCambio = await _tipoCambioRepository.FindByDateNow();
+            var param = await VariablesGlobales
+                .Instance.UnityContainer
+                .Resolve<IParametersRepository>()
+                .RecuperarParametros();
+            if (param is null)
+            {
+                await XtraMessageBox.ShowAsync("No hay parametros configurados en el sistema");
+                return false;
+            }
+
+            if (tipoCambio is null)
+            {
+                await XtraMessageBox.ShowAsync("No hay tipo de cambio ingresado en el sistema");
+                return false;
+            }
+
+            if (SelectedMoneda is null)
+            {
+                await XtraMessageBox.ShowAsync("No ha seleccionado una moneda");
+                return false;
+            }
+
+            var validarMontosFomaPago = false;
+            if (HabilitarFormaPago)
+            {
+                var montoLocalX = MontoLocal;
+                var montoDolaresX = MontoExtranjero;
+                if (SelectedMoneda.Codmoneda == param.Cordobas)
+                {
+                    montoDolaresX = HelpersMethods.RedondeoHaciaArriba(MontoExtranjero * tipoCambio.Tipocambio);
+                }
+                else
+                {
+                    montoLocalX = HelpersMethods.RedondeoHaciaArriba(MontoLocal / tipoCambio.Tipocambio);
+                }
+
+                var suma = Add(montoLocalX, montoDolaresX);
+                validarMontosFomaPago = Compare(MontoEfectivo, suma) != 0;
+            }
+
+            return Compare(Total, sumaTotal) != 0 ||
+                   HabilitarFormaPago && validarMontosFomaPago;
         }
 
         [Command]
@@ -486,12 +614,13 @@ namespace SistemaOro.Forms.ViewModels.Compras
             {
                 if (ItemsSource.Any(detCompra => string.IsNullOrWhiteSpace(detCompra.Descripcion)))
                 {
-                    HelpersMessage.MensajeErroResult(MensajesGenericos.GuardarTitulo, MensajesCompras.CamposVaciosDetalleCompra);
+                    HelpersMessage.MensajeErroResult(MensajesGenericos.GuardarTitulo,
+                        MensajesCompras.CamposVaciosDetalleCompra);
                     return;
                 }
             }
 
-            if (ValidarTotal())
+            if (await ValidarTotal())
             {
                 HelpersMessage.MensajeErroResult(MensajesGenericos.GuardarTitulo, MensajesCompras.TotalNoValido);
                 return;
@@ -515,7 +644,9 @@ namespace SistemaOro.Forms.ViewModels.Compras
                 return;
             }
 
-            var result = HelpersMessage.MensajeConfirmacionResult(MensajesGenericos.GuardarTitulo, MensajesCompras.ConfirmarCompra);
+            var result =
+                HelpersMessage.MensajeConfirmacionResult(MensajesGenericos.GuardarTitulo,
+                    MensajesCompras.ConfirmarCompra);
             if (result == MessageBoxResult.Cancel)
             {
                 return;
@@ -572,7 +703,19 @@ namespace SistemaOro.Forms.ViewModels.Compras
                     Peso = ItemsSource.Sum(detCompra => detCompra.Peso),
                     IdTipoPrecio = SelectedTiposPrecios.IdTipoPrecio
                 };
-                save = await _compraRepository.Create(compra, ItemsSource.ToList());
+                FormaPago? formaPago = null;
+                if (HabilitarFormaPago)
+                {
+                    formaPago = new FormaPago
+                    {
+                        Monto1 = MontoLocal,
+                        Monto2 = MontoExtranjero,
+                        Total = compra.Total,
+                        Fecha = DateTime.Now
+                    };
+                }
+
+                save = await _compraRepository.Create(compra, ItemsSource.ToList(), formaPago);
             }
             else
             {
@@ -607,7 +750,8 @@ namespace SistemaOro.Forms.ViewModels.Compras
             if (save)
             {
                 HelpersMessage.MensajeInformacionResult("Guardar", "Se ha guardado la compra con exito");
-                result = HelpersMessage.MensajeConfirmacionResult(MensajesGenericos.GuardarTitulo, MensajesCompras.ImprimirCompra);
+                result = HelpersMessage.MensajeConfirmacionResult(MensajesGenericos.GuardarTitulo,
+                    MensajesCompras.ImprimirCompra);
                 if (result == MessageBoxResult.OK)
                 {
                     var findCompra = await _compraRepository.DetalleCompraImprimir(NumeroCompra ?? "");
@@ -649,7 +793,8 @@ namespace SistemaOro.Forms.ViewModels.Compras
         [Command]
         public async void AnularCompra()
         {
-            var result = HelpersMessage.MensajeConfirmacionResult(MensajesGenericos.GuardarTitulo, MensajesCompras.AnularCompraConfirmacion);
+            var result = HelpersMessage.MensajeConfirmacionResult(MensajesGenericos.GuardarTitulo,
+                MensajesCompras.AnularCompraConfirmacion);
             if (result == MessageBoxResult.Cancel)
             {
                 return;
@@ -681,7 +826,8 @@ namespace SistemaOro.Forms.ViewModels.Compras
             }
             else
             {
-                HelpersMessage.MensajeErroResult("Error", $"Se produjo el siguiente error: {_compraRepository.ErrorSms}");
+                HelpersMessage.MensajeErroResult("Error",
+                    $"Se produjo el siguiente error: {_compraRepository.ErrorSms}");
             }
         }
 
@@ -724,7 +870,8 @@ namespace SistemaOro.Forms.ViewModels.Compras
                 {
                     if (string.IsNullOrWhiteSpace(newValue))
                     {
-                        args.Result = new ValidationErrorInfo("Debe especificar una descripcion para continuar", ValidationErrorType.Critical);
+                        args.Result = new ValidationErrorInfo("Debe especificar una descripcion para continuar",
+                            ValidationErrorType.Critical);
                     }
 
                     break;
@@ -732,28 +879,32 @@ namespace SistemaOro.Forms.ViewModels.Compras
                 case nameof(DetCompra.Preciok):
                     if (string.IsNullOrWhiteSpace(newValue))
                     {
-                        args.Result = new ValidationErrorInfo("Debe especificar un precio para continuar", ValidationErrorType.Critical);
+                        args.Result = new ValidationErrorInfo("Debe especificar un precio para continuar",
+                            ValidationErrorType.Critical);
                         return;
                     }
 
                     var precio = Parse(newValue);
                     if (precio.CompareTo(Zero) <= 0)
                     {
-                        args.Result = new ValidationErrorInfo("No puede ser cero el precio", ValidationErrorType.Critical);
+                        args.Result =
+                            new ValidationErrorInfo("No puede ser cero el precio", ValidationErrorType.Critical);
                     }
 
                     break;
                 case nameof(DetCompra.Peso):
                     if (string.IsNullOrWhiteSpace(newValue))
                     {
-                        args.Result = new ValidationErrorInfo("Debe especificar un peso para continuar", ValidationErrorType.Critical);
+                        args.Result = new ValidationErrorInfo("Debe especificar un peso para continuar",
+                            ValidationErrorType.Critical);
                         return;
                     }
 
                     var peso = Parse(newValue);
                     if (peso.CompareTo(Zero) <= 0)
                     {
-                        args.Result = new ValidationErrorInfo("No puede ser cero el peso", ValidationErrorType.Critical);
+                        args.Result =
+                            new ValidationErrorInfo("No puede ser cero el peso", ValidationErrorType.Critical);
                     }
 
                     break;
@@ -789,7 +940,8 @@ namespace SistemaOro.Forms.ViewModels.Compras
                 {
                     foreach (var detCompra in ItemsSource)
                     {
-                        var findPrecio = await _preciosKilatesRepository.FindByPeso(Convert.ToDecimal(detCompra.Kilate));
+                        var findPrecio =
+                            await _preciosKilatesRepository.FindByPeso(Convert.ToDecimal(detCompra.Kilate));
                         if (findPrecio == null) continue;
                         var precioHaciaArriba = HelpersMethods.RedondeoHaciaArriba(findPrecio.Precio);
                         var tempPrecio = precioHaciaArriba / precio;
@@ -805,7 +957,8 @@ namespace SistemaOro.Forms.ViewModels.Compras
                         detCompra.Importe = HelpersMethods.RedondeoHaciaArriba(tempImporte);
                     }
 
-                    SubTotal = HelpersMethods.RedondeoHaciaArriba(ItemsSource.Sum(compra => compra.Importe ?? Zero) * precio);
+                    SubTotal = HelpersMethods.RedondeoHaciaArriba(ItemsSource.Sum(compra => compra.Importe ?? Zero) *
+                                                                  precio);
                     Total = HelpersMethods.RedondeoHaciaArriba(ItemsSource.Sum(compra => compra.Importe ?? Zero));
                 }
             }

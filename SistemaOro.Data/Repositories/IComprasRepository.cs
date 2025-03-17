@@ -7,7 +7,8 @@ public interface ICompraRepository
 {
     void ImprimirCompra(string numeroCompra);
     Task<List<DetalleCompra>> DetalleCompraImprimir(string numcompra);
-    Task<bool> Create(Compra compra, List<DetCompra> detaCompra, List<Adelanto>? listaAdelantos = null, List<CierrePrecio>? listaPreciosaCerrar = null);
+    Task<bool> Create(Compra compra, List<DetCompra> detaCompra, FormaPago? formaPago,
+        List<Adelanto>? listaAdelantos = null, List<CierrePrecio>? listaPreciosaCerrar = null);
     Task<bool> UpdateDescargue(Compra compra);
     Task<string?> CodigoCompra();
     string? ErrorSms { get; }
@@ -25,4 +26,5 @@ public interface ICompraRepository
 
     Task<List<DtoComprasClientes>> FindComprasClientesFechaAndCerrada(DateTime fecha);
 
+    Task<FormaPago?> FindFormaPago(string numcompra);
 }

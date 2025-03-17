@@ -446,7 +446,7 @@
             this.lblMonedaExt.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.lblMonedaExt.SizeF = new System.Drawing.SizeF(100F, 23F);
             this.lblMonedaExt.StylePriority.UseFont = false;
-            this.lblMonedaExt.Text = "lblMonedalocal";
+            this.lblMonedaExt.Text = "U$";
             // 
             // lblMonedalocal
             // 
@@ -457,7 +457,7 @@
             this.lblMonedalocal.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.lblMonedalocal.SizeF = new System.Drawing.SizeF(100F, 23F);
             this.lblMonedalocal.StylePriority.UseFont = false;
-            this.lblMonedalocal.Text = "lblMonedalocal";
+            this.lblMonedalocal.Text = "S/.";
             // 
             // xrLabel21
             // 

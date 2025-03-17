@@ -157,8 +157,8 @@
                                                          ShowBorder="False"
                                                          ShowLoadingPanel="{Binding LookUpSocietyMemberships.IsLoading}">
                                             <dxg:GridControl.Columns>
-                                                <dxg:GridColumn IsSmart="True" FieldName="Descripcion" Width="*"/>
-                                                <dxg:GridColumn IsSmart="True" FieldName="Precio"  Width="*"/>
+                                                <dxg:GridColumn IsSmart="True" FieldName="Descripcion" Width="*" />
+                                                <dxg:GridColumn IsSmart="True" FieldName="Precio" Width="*" />
                                             </dxg:GridControl.Columns>
                                         </dxg:GridControl>
                                     </ControlTemplate>
@@ -240,13 +240,12 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <dx:DXBorder
-                        Margin="0,10,0,0"
-                        Grid.Column="0"
-                        BorderBrush="Black"
-                        BorderThickness="1"
-                        CornerRadius="5"
-                        Height="300">
+                    <dx:DXBorder Grid.Column="0"
+                                 Margin="0,10,0,0"
+                                 BorderBrush="Black"
+                                 BorderThickness="1"
+                                 CornerRadius="5"
+                                 Height="300">
                         <dx:UniformStackPanel Margin="15" Orientation="Vertical" ChildSpacing="15">
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -311,7 +310,65 @@
                             </Grid>
                         </dx:UniformStackPanel>
                     </dx:DXBorder>
+                    <dx:DXBorder Grid.Column="1"
+                                 Margin="5,10,0,0"
+                                 BorderBrush="Black"
+                                 BorderThickness="1"
+                                 CornerRadius="5"
+                                 Height="300">
+                        <dx:UniformStackPanel Orientation="Vertical" Margin="10">
+                            <Grid Margin="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" 
+                                    Content="Habilitar Forma de Pago"
+                                       HorizontalContentAlignment="Right"
+                                       VerticalContentAlignment="Center"
+                                       Margin="0,0,5,0" />
+                                <dxe:CheckEdit Grid.Column="1" 
+                                               HorizontalAlignment="Left" 
+                                               Margin="23,0,0,0"
+                                               VerticalAlignment="Center"
+                                               IsChecked="{Binding HabilitarFormaPago}"
+                                               />
 
+                            </Grid>
+                            <Grid Margin="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" 
+                                       Content="Monto Local"
+                                       HorizontalContentAlignment="Right"
+                                       VerticalContentAlignment="Center"
+                                       Margin="0,0,5,0" />
+                                <dxe:TextEdit Grid.Column="1"
+                                              IsEnabled="{Binding HabilitarFormaPago}"
+                                              EditValue="{Binding MontoLocal}"
+                                              MaskType="Numeric" 
+                                              Mask="n4" />
+                            </Grid>
+                            <Grid Margin="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" 
+                                       Content="Monto Extranjero"
+                                       HorizontalContentAlignment="Right"
+                                       VerticalContentAlignment="Center"
+                                       Margin="0,0,5,0" />
+                                <dxe:TextEdit Grid.Column="1"
+                                              IsEnabled="{Binding HabilitarFormaPago}"
+                                              EditValue="{Binding MontoExtranjero}"
+                                              MaskType="Numeric" 
+                                              Mask="n4" />
+                            </Grid>
+                        </dx:UniformStackPanel>
+                    </dx:DXBorder>
                     <dx:DXBorder Grid.Column="2"
                                  Margin="5,10,0,0"
                                  BorderBrush="Black"

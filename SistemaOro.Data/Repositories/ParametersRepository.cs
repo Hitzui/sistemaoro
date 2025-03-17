@@ -9,7 +9,7 @@ public class ParametersRepository(DataContext context) : IParametersRepository
 {
     public Task<Id?> RecuperarParametros()
     {
-        return context.Id.SingleOrDefaultAsync();
+        return context.Id.AsNoTracking().SingleOrDefaultAsync();
     }
 
     public async Task<int> ActualizarParametros(Id param)
