@@ -46,8 +46,15 @@ public class CompraRepository(
                 return false;
             }
 
-            var moneda = await context.Monedas.FindAsync(compra.Codmoneda);
-            if (moneda is null)
+            var monedaLocal = await context.Monedas.FindAsync(param.Cordobas);
+            if (monedaLocal is null)
+            {
+                ErrorSms = VariablesGlobales.Instance.ConfigurationSection["ERROR_MONEDA"];
+                return false;
+            }
+
+            var monedaExt = await context.Monedas.FindAsync(param.Dolares);
+            if (monedaExt is null)
             {
                 ErrorSms = VariablesGlobales.Instance.ConfigurationSection["ERROR_MONEDA"];
                 return false;
@@ -89,23 +96,27 @@ public class CompraRepository(
                 return false;
             }
 
-            if (param.Dolares == compra.Codmoneda)
+            var validarEfectivoLocal = decimal.Zero;
+            var validarEfectivoExt = decimal.Zero;
+            if (formaPago is not null)
             {
-                if (decimal.Compare(modCaja.SfinalExt!.Value, decimal.Zero) <= 0)
-                {
-                    ErrorSms = "No hay saldo disponible en moneda extranjera en caja para realizar la compra";
-                    return false;
-                }
+                validarEfectivoExt += formaPago.Monto2 ?? decimal.Zero;
+                validarEfectivoLocal += formaPago.Monto1 ?? decimal.Zero;
+            }
+
+            if (compra.Codmoneda == param.Cordobas)
+            {
+                validarEfectivoLocal += compra.Efectivo;
             }
             else
             {
-                if (decimal.Compare(modCaja.Sfinal!.Value, decimal.Zero) <= 0)
-                {
-                    ErrorSms = "No hay saldo disponible en moneda local en caja para realizar la compra";
-                    return false;
-                }
+                validarEfectivoExt += compra.Efectivo;
             }
-
+            if (decimal.Compare(validarEfectivoLocal, modCaja.Sfinal!.Value) > 0 || decimal.Compare(validarEfectivoExt, modCaja.SfinalExt!.Value) > 0)
+            { 
+                ErrorSms =  "No hay saldo disponible en caja para realizar la compra";
+                return false;
+            }
 
             var numeroCompra = await CodigoCompra();
             if (string.IsNullOrWhiteSpace(numeroCompra))
@@ -139,12 +150,6 @@ public class CompraRepository(
                     .Select(adelanto => adelanto.Saldo).Sum();
             }
 
-
-            if (decimal.Compare(modCaja.Sfinal.Value, compra.Efectivo) < 0)
-            {
-                ErrorSms = $"No hay saldo disponible en caja para realizar la compra, Saldo: {modCaja.Sfinal}";
-                return false;
-            }
 
             var listTmpPrecios = await context.Tmpprecios.Where(tmpprecio => tmpprecio.Codcliente == compra.Codcliente)
                 .ToListAsync();
@@ -257,10 +262,45 @@ public class CompraRepository(
                 formaPago.Codusuario = _usuario.Codoperador;
                 await context.FormaPagos.AddAsync(formaPago);
 
-                var detaCaja1 = CrearDetacaja(compra, modCaja, param, numeroCompra, tipoCambioDia,
-                    formaPago.Monto1 ?? decimal.Zero, 0m, codmoneda: param.Cordobas ?? 0);
-                var detaCaja2 = CrearDetacaja(compra, modCaja, param, numeroCompra, tipoCambioDia, 0m,
-                    formaPago.Monto2 ?? decimal.Zero, codmoneda: param.Dolares ?? 0);
+                var detaCaja1 = new Detacaja
+                {
+                    Tipocambio = tipoCambioDia,
+                    Concepto = $"INGRESO FORMA PAGO LOCAL {numeroCompra}",
+                    Referencia = numeroCompra,
+                    Codcaja = _caja,
+                    Fecha = compra.Fecha,
+                    Hora = compra.Fecha.ToShortTimeString(),
+                    Idcaja = modCaja.Idcaja,
+                    Idmov = param.Idcompras!.Value,
+                    Codoperador = compra.Usuario,
+                    Idmoeda = param.Cordobas!.Value,
+                    Efectivo = formaPago.Monto1,
+                    Transferencia = compra.Codmoneda == param.Cordobas ? compra.Transferencia : 0m,
+                    Cheque = compra.Codmoneda == param.Cordobas ? compra.Cheque : 0m,
+                    EfectivoExt = 0m,
+                    TransferenciaExt = 0m,
+                    ChequeExt = 0m
+                };
+                var detaCaja2 =  new Detacaja
+                {
+                    Tipocambio = tipoCambioDia,
+                    Concepto = $"INGRESO FORMA PAGO EXT {numeroCompra}",
+                    Referencia = numeroCompra,
+                    Codcaja = _caja,
+                    Fecha = compra.Fecha,
+                    Hora = compra.Fecha.ToShortTimeString(),
+                    Idcaja = modCaja.Idcaja,
+                    Idmov = param.Idcompras!.Value,
+                    Codoperador = compra.Usuario,
+                    Idmoeda = param.Dolares!.Value,
+                    Efectivo = 0m,
+                    Transferencia =0m,
+                    Cheque = 0m,
+                    EfectivoExt = formaPago.Monto2,
+                    TransferenciaExt =  compra.Codmoneda == param.Dolares ? compra.Transferencia : 0m,
+                    ChequeExt =  compra.Codmoneda == param.Dolares ? compra.Cheque : 0m
+                };
+
                 // Crear detalles de caja
                 var detallesCaja = new List<Detacaja> { detaCaja1, detaCaja2 };
 
@@ -271,8 +311,28 @@ public class CompraRepository(
             }
             else
             {
-                var detaCaja = CrearDetacaja(compra, modCaja, param, numeroCompra, tipoCambioDia, compra.Efectivo,
-                    compra.Transferencia, compra.Cheque, codmoneda:compra.Codmoneda);
+                var detaCaja = new Detacaja
+                {
+                    Tipocambio = tipoCambioDia,
+                    Concepto = $"INGRESO COMPRA {numeroCompra}",
+                    Referencia = numeroCompra,
+                    Codcaja = _caja,
+                    Fecha = compra.Fecha,
+                    Hora = compra.Fecha.ToShortTimeString(),
+                    Idcaja = modCaja.Idcaja,
+                    Idmov = param.Idcompras!.Value,
+                    Codoperador = compra.Usuario,
+                    Idmoeda = compra.Codmoneda,
+                    //moneda local
+                    Efectivo = compra.Codmoneda == param.Cordobas ? compra.Efectivo : 0m,
+                    Transferencia = compra.Codmoneda == param.Cordobas ? compra.Transferencia : 0m,
+                    Cheque = compra.Codmoneda == param.Cordobas ? compra.Cheque : 0m,
+                    //moneda extranjera
+                    EfectivoExt = compra.Codmoneda == param.Cordobas ? compra.Efectivo : 0m,
+                    TransferenciaExt = compra.Codmoneda == param.Cordobas ? compra.Transferencia : 0m,
+                    ChequeExt = compra.Codmoneda == param.Cordobas ? compra.Cheque : 0m
+                };
+
                 await context.Detacajas.AddAsync(detaCaja);
 
                 // Actualizar caja con los valores de compra
@@ -315,7 +375,7 @@ public class CompraRepository(
 
     // Método auxiliar para crear un Detacaja
     private Detacaja CrearDetacaja(Compra compra, Mcaja modCaja, Id param, string numeroCompra, decimal tipoCambio,
-        decimal efectivo, decimal efectivoExt, decimal transferencia = 0m, decimal cheque = 0m, int codmoneda=0)
+        decimal efectivo, decimal efectivoExt, int codmoneda = 0)
     {
         return new Detacaja
         {
@@ -331,8 +391,8 @@ public class CompraRepository(
             Idmoeda = codmoneda,
             Efectivo = efectivo,
             EfectivoExt = efectivoExt,
-            Transferencia = transferencia,
-            Cheque = cheque,
+            Transferencia = 0m,
+            Cheque = 0m,
             TransferenciaExt = 0m,
             ChequeExt = 0m
         };
@@ -399,7 +459,7 @@ public class CompraRepository(
         return null;
     }
 
-    public async Task<bool> UpdateByDetaCompra(Compra compra, List<DetCompra> detaCompra)
+    public async Task<bool> UpdateByDetaCompra(Compra compra, List<DetCompra> detaCompra, FormaPago? formaPago1)
     {
         try
         {
@@ -411,7 +471,7 @@ public class CompraRepository(
             }
 
             var mcaja = await context.Mcajas.SingleOrDefaultAsync(mc =>
-                mc.Codagencia == _agencia && mc.Codcaja == _caja && mc.Estado > 0 &&
+                mc.Codagencia == _agencia && mc.Codcaja == _caja && mc.Estado == 1 &&
                 mc.Fecha!.Value.Date == DateTime.Now.Date);
             if (mcaja is null)
             {
@@ -419,39 +479,218 @@ public class CompraRepository(
                 return false;
             }
 
-            var efectivoOriginal = await context.Compras.AsNoTracking().Where(c => c.Numcompra == compra.Numcompra)
-                .Select(c => c.Efectivo).SingleOrDefaultAsync();
-            var efectivoEditado = compra.Efectivo;
-            if (efectivoEditado < efectivoOriginal)
+            var esCordobas = compra.Codmoneda == param.Cordobas;
+            var esDolares = compra.Codmoneda == param.Dolares;
+            var detalleCajas = new List<Detacaja>();
+            var formaPago = await context.FormaPagos.SingleOrDefaultAsync(pago => pago.Numcompra == compra.Numcompra);
+            var compraAnterior = await context.Compras.AsNoTracking()
+                .SingleOrDefaultAsync(c => c.Numcompra == compra.Numcompra);
+            if (compraAnterior is null)
             {
-                // Entrada de efectivo (menos efectivo fue usado en la compra)
-                var entrada = efectivoOriginal - efectivoEditado;
-                mcaja.Entrada = decimal.Add(entrada, mcaja.Entrada!.Value);
-                mcaja.Sfinal = decimal.Add(mcaja.Sfinal!.Value, entrada);
-            }
-            else if (efectivoEditado > efectivoOriginal)
-            {
-                // Salida de efectivo (más efectivo fue usado en la compra)
-                var salida = efectivoEditado - efectivoOriginal;
-                mcaja.Salida = decimal.Add(mcaja.Salida!.Value, salida);
-                mcaja.Sfinal = decimal.Subtract(mcaja.Sfinal!.Value, salida);
+                ErrorSms = $"NO EXISTE LA COMPRA {compra.Numcompra} A ACTUALIZAR, FAVOR INTENTAR NUEVAMENTE";
+                return false;
             }
 
-            compra.DetCompras.Clear();
+            if (formaPago is not null)
+            {
+                var detaCaja1 = new Detacaja
+                {
+                    Tipocambio = mcaja.Tipocambio,
+                    Concepto = $"REVERSION DE FORMA PAGO LOCAL {compra.Numcompra}",
+                    Referencia = compra.Numcompra,
+                    Codcaja = _caja,
+                    Fecha = compra.Fecha,
+                    Hora = compra.Fecha.ToShortTimeString(),
+                    Idcaja = mcaja.Idcaja,
+                    Idmov = param.AnularCompra!.Value,
+                    Codoperador = compra.Usuario,
+                    Idmoeda = param.Cordobas,
+                    Efectivo = formaPago.Monto1,
+                    EfectivoExt = 0m,
+                    Transferencia = compraAnterior.Codmoneda == param.Cordobas ? compraAnterior.Transferencia : 0m,
+                    Cheque = compraAnterior.Codmoneda == param.Cordobas ? compraAnterior.Cheque : 0m,
+                    TransferenciaExt = 0m,
+                    ChequeExt = 0m
+                };
+                var detaCaja2 = new Detacaja
+                {
+                    Tipocambio = mcaja.Tipocambio,
+                    Concepto = $"REVERSION DE FORMA PAGO EXT {compra.Numcompra}",
+                    Referencia = compra.Numcompra,
+                    Codcaja = _caja,
+                    Fecha = compra.Fecha,
+                    Hora = compra.Fecha.ToShortTimeString(),
+                    Idcaja = mcaja.Idcaja,
+                    Idmov = param.AnularCompra!.Value,
+                    Codoperador = compra.Usuario,
+                    Idmoeda = param.Dolares,
+                    Efectivo = 0m,
+                    EfectivoExt = formaPago.Monto2,
+                    Transferencia = 0m,
+                    Cheque = 0m,
+                    TransferenciaExt = compraAnterior.Codmoneda == param.Dolares ? compraAnterior.Transferencia : 0m,
+                    ChequeExt = compraAnterior.Codmoneda == param.Dolares ? compraAnterior.Cheque : 0m
+                };
+                detalleCajas.Add(detaCaja1);
+                detalleCajas.Add(detaCaja2);
+
+                mcaja.Entrada += formaPago.Monto1;
+                mcaja.Sfinal += formaPago.Monto1;
+
+                mcaja.EntradaExt += formaPago.Monto2;
+                mcaja.SfinalExt += formaPago.Monto2;
+
+                if (formaPago1 is null)
+                {
+                    context.Remove(formaPago);
+                }
+            }
+            else
+            {
+                if (compraAnterior.Codmoneda==param.Cordobas)
+                {
+                    mcaja.Entrada += compraAnterior.Efectivo;
+                    mcaja.Sfinal += compraAnterior.Efectivo;
+                }
+
+                if (compraAnterior.Codmoneda==param.Dolares)
+                {
+                    mcaja.EntradaExt += compraAnterior.Efectivo;
+                    mcaja.SfinalExt += compraAnterior.Efectivo;
+                }
+
+                var detaCajaPrincipal = new Detacaja
+                {
+                    Tipocambio = mcaja.Tipocambio,
+                    Concepto = $"REVERSION DE COMPRA {compra.Numcompra} POR ACTUALIZACION",
+                    Referencia = compra.Numcompra,
+                    Codcaja = _caja,
+                    Fecha = compra.Fecha,
+                    Hora = compra.Fecha.ToShortTimeString(),
+                    Idcaja = mcaja.Idcaja,
+                    Idmov = param.AnularCompra!.Value,
+                    Codoperador = compra.Usuario,
+                    Idmoeda = compraAnterior.Codmoneda,
+
+                    // Cordobas
+                    Efectivo = compraAnterior.Codmoneda==param.Cordobas ? compraAnterior.Efectivo : 0m,
+                    Transferencia = compraAnterior.Codmoneda==param.Cordobas ? compraAnterior.Transferencia : 0m,
+                    Cheque = compraAnterior.Codmoneda==param.Cordobas ? compraAnterior.Cheque : 0m,
+
+                    // Dólares
+                    EfectivoExt = compraAnterior.Codmoneda==param.Dolares ? compraAnterior.Efectivo : 0m,
+                    TransferenciaExt = compraAnterior.Codmoneda==param.Dolares ? compraAnterior.Transferencia : 0m,
+                    ChequeExt = compraAnterior.Codmoneda==param.Dolares ? compraAnterior.Cheque : 0m
+                };
+
+                detalleCajas.Add(detaCajaPrincipal);
+            }
+
+            if (formaPago1 is not null)
+            {
+                var detaCaja3 = new Detacaja
+                {
+                    Tipocambio = mcaja.Tipocambio,
+                    Concepto = $"INGRESO FORMA PAGO LOCAL {compra.Numcompra}",
+                    Referencia = compra.Numcompra,
+                    Codcaja = _caja,
+                    Fecha = compra.Fecha,
+                    Hora = compra.Fecha.ToShortTimeString(),
+                    Idcaja = mcaja.Idcaja,
+                    Idmov = param.Idcompras!.Value,
+                    Codoperador = compra.Usuario,
+                    Idmoeda = param.Cordobas,
+                    // Cordobas
+                    Efectivo = formaPago1.Monto1,
+                    Transferencia = esCordobas ? compra.Transferencia : 0m,
+                    Cheque = esCordobas ? compra.Cheque : 0m,
+
+                    // Dólares
+                    EfectivoExt = 0m,
+                    TransferenciaExt = 0m,
+                    ChequeExt = 0m
+                };
+                var detaCaja4 = new Detacaja
+                {
+                    Tipocambio = mcaja.Tipocambio,
+                    Concepto = $"INGRESO FORMA PAGO EXT {compra.Numcompra}",
+                    Referencia = compra.Numcompra,
+                    Codcaja = _caja,
+                    Fecha = compra.Fecha,
+                    Hora = compra.Fecha.ToShortTimeString(),
+                    Idcaja = mcaja.Idcaja,
+                    Idmov = param.Idcompras!.Value,
+                    Codoperador = compra.Usuario,
+                    Idmoeda = param.Dolares,
+                    // Cordobas
+                    Efectivo = 0m,
+                    Transferencia =  0m,
+                    Cheque = 0m,
+
+                    // Dólares
+                    EfectivoExt = formaPago1.Monto2,
+                    TransferenciaExt = esDolares ? compra.Transferencia : 0m,
+                    ChequeExt = esDolares ? compra.Cheque : 0m
+                };
+                mcaja.Salida += formaPago1.Monto1;
+                mcaja.Sfinal -= formaPago1.Monto1;
+
+                mcaja.SalidaExt += formaPago1.Monto2;
+                mcaja.SfinalExt -= formaPago1.Monto2;
+
+                detalleCajas.Add(detaCaja3);
+                detalleCajas.Add(detaCaja4);
+                await context.FormaPagos.AddAsync(formaPago1);
+            }
+            else
+            {
+                //ingresamos el nuevo detalle de caja
+                if (esCordobas)
+                {
+                    mcaja.Salida += compra.Efectivo;
+                    mcaja.Sfinal -= compra.Efectivo;
+                }
+
+                if (esDolares)
+                {
+                    mcaja.SalidaExt += compra.Efectivo;
+                    mcaja.SfinalExt -= compra.Efectivo;
+                }
+
+                var detaCajaPrincipal = new Detacaja
+                {
+                    Tipocambio = mcaja.Tipocambio,
+                    Concepto = $"INGRESO DE COMPRA {compra.Numcompra} POR ACTUALIZACION",
+                    Referencia = compra.Numcompra,
+                    Codcaja = _caja,
+                    Fecha = compra.Fecha,
+                    Hora = compra.Fecha.ToShortTimeString(),
+                    Idcaja = mcaja.Idcaja,
+                    Idmov = param.Idcompras!.Value,
+                    Codoperador = compra.Usuario,
+                    Idmoeda = compra.Codmoneda,
+
+                    // Cordobas
+                    Efectivo = esCordobas ? compra.Efectivo : 0m,
+                    Transferencia = esCordobas ? compra.Transferencia : 0m,
+                    Cheque = esCordobas ? compra.Cheque : 0m,
+
+                    // Dólares
+                    EfectivoExt = esDolares ? compra.Efectivo : 0m,
+                    TransferenciaExt = esDolares ? compra.Transferencia : 0m,
+                    ChequeExt = esDolares ? compra.Cheque : 0m
+                };
+
+                detalleCajas.Add(detaCajaPrincipal);
+            }
+
+            var detCompras = context.DetCompras.Where(c => c.Numcompra == compra.Numcompra);
+            await context.Detacajas.AddRangeAsync(detalleCajas);
+            context.RemoveRange(detCompras);
             context.Compras.Update(compra);
             foreach (var detCompra in detaCompra)
             {
                 compra.DetCompras.Add(detCompra);
-            }
-
-
-            var detalleCaja = await context.Detacajas.SingleOrDefaultAsync(detacaja =>
-                detacaja.Referencia == compra.Numcompra && detacaja.Idcaja == mcaja.Idcaja);
-            if (detalleCaja is not null)
-            {
-                detalleCaja.Efectivo = compra.Efectivo;
-                detalleCaja.Cheque = compra.Cheque;
-                detalleCaja.Transferencia = compra.Transferencia;
             }
 
             var result = await context.SaveChangesAsync() > 0;
@@ -494,6 +733,12 @@ public class CompraRepository(
             findCompra.Codestado = EstadoCompra.Anulada;
             var mcaja = await maestroCajaRepository.FindByCajaAndAgencia(_caja, _agencia);
             var param = await parametersRepository.RecuperarParametros();
+            if (param is null)
+            {
+                ErrorSms = "No hay parametros en la base de datos";
+                return false;
+            }
+
             if (mcaja is null)
             {
                 ErrorSms = "No existe el maestro de caja o este no esta aperturado";
@@ -508,27 +753,89 @@ public class CompraRepository(
                 return false;
             }
 
-            var efectivo = decimal.Zero;
-            var tipoCambio = detalleCaja.Tipocambio ?? decimal.One;
-            efectivo = param.Cordobas == findCompra.Codmoneda ? findCompra.Efectivo : findCompra.Efectivo * tipoCambio;
-
-            var nuevoDetaCaja = new Detacaja
+            var formaPago =
+                await context.FormaPagos.SingleOrDefaultAsync(formaPago => formaPago.Numcompra == numeroCompra);
+            if (formaPago is not null)
             {
-                Cheque = findCompra.Cheque,
-                Efectivo = efectivo,
-                Transferencia = findCompra.Transferencia,
-                Codcaja = detalleCaja.Codcaja,
-                Concepto = $@"***REVERTIR COMPRA: {numeroCompra}***",
-                Fecha = DateTime.Now,
-                Hora = DateTime.Now.ToLongTimeString(),
-                Idmov = param.AnularAdelanto!.Value,
-                Referencia = $@"Movimiento realizado por anulación de compra número: {numeroCompra}",
-                Idcaja = mcaja.Idcaja,
-                Tipocambio = tipoCambio,
-                Codoperador = usuario.Codoperador
-            };
-            mcaja.Entrada = decimal.Add(efectivo, mcaja.Entrada!.Value);
-            mcaja.Sfinal = decimal.Add(efectivo, mcaja.Sfinal!.Value);
+                if (formaPago.Monto1 is not null && formaPago.Monto1.Value.CompareTo(decimal.Zero) > 0)
+                {
+                    var detaCajaLocal = new Detacaja
+                    {
+                        Cheque = decimal.Zero,
+                        Efectivo = formaPago.Monto1,
+                        Transferencia = decimal.Zero,
+                        ChequeExt = decimal.Zero,
+                        EfectivoExt = decimal.Zero,
+                        TransferenciaExt = decimal.Zero,
+                        Codcaja = formaPago.Codcaja,
+                        Concepto = $@"***REVERTIR COMPRA: {numeroCompra}***",
+                        Fecha = DateTime.Now,
+                        Hora = DateTime.Now.ToLongTimeString(),
+                        Idmov = param.AnularAdelanto ?? 0,
+                        Referencia = $@"Movimiento realizado por anulación de compra número: {numeroCompra}",
+                        Idcaja = mcaja.Idcaja,
+                        Tipocambio = formaPago.Tipocambio,
+                        Codoperador = usuario.Codoperador
+                    };
+                    await context.Detacajas.AddAsync(detaCajaLocal);
+                    mcaja.Sfinal += formaPago.Monto1;
+                    mcaja.Entrada += formaPago.Monto1;
+                }
+
+                if (formaPago.Monto2 is not null && formaPago.Monto2.Value.CompareTo(decimal.Zero) > 0)
+                {
+                    var detaCajaEXt = new Detacaja
+                    {
+                        Cheque = decimal.Zero,
+                        Efectivo = decimal.Zero,
+                        Transferencia = decimal.Zero,
+                        ChequeExt = decimal.Zero,
+                        EfectivoExt = formaPago.Monto2,
+                        TransferenciaExt = decimal.Zero,
+                        Codcaja = formaPago.Codcaja,
+                        Concepto = $@"***REVERTIR COMPRA: {numeroCompra}***",
+                        Fecha = DateTime.Now,
+                        Hora = DateTime.Now.ToLongTimeString(),
+                        Idmov = param.AnularAdelanto ?? 0,
+                        Referencia = $@"Movimiento realizado por anulación de compra número: {numeroCompra}",
+                        Idcaja = mcaja.Idcaja,
+                        Tipocambio = formaPago.Tipocambio,
+                        Codoperador = usuario.Codoperador
+                    };
+                    mcaja.SfinalExt += formaPago.Monto2;
+                    mcaja.EntradaExt += formaPago.Monto2;
+                    await context.Detacajas.AddAsync(detaCajaEXt);
+                }
+            }
+            else
+            {
+                var efectivo = decimal.Zero;
+                var tipoCambio = detalleCaja.Tipocambio ?? decimal.One;
+                efectivo = param.Cordobas == findCompra.Codmoneda
+                    ? findCompra.Efectivo
+                    : findCompra.Efectivo * tipoCambio;
+
+                var nuevoDetaCaja = new Detacaja
+                {
+                    Cheque = findCompra.Cheque,
+                    Efectivo = efectivo,
+                    Transferencia = findCompra.Transferencia,
+                    Codcaja = detalleCaja.Codcaja,
+                    Concepto = $@"***REVERTIR COMPRA: {numeroCompra}***",
+                    Fecha = DateTime.Now,
+                    Hora = DateTime.Now.ToLongTimeString(),
+                    Idmov = param.AnularAdelanto!.Value,
+                    Referencia = $@"Movimiento realizado por anulación de compra número: {numeroCompra}",
+                    Idcaja = mcaja.Idcaja,
+                    Tipocambio = tipoCambio,
+                    Codoperador = usuario.Codoperador
+                };
+                mcaja.Entrada = decimal.Add(efectivo, mcaja.Entrada!.Value);
+                mcaja.Sfinal = decimal.Add(efectivo, mcaja.Sfinal!.Value);
+                await context.Detacajas.AddAsync(nuevoDetaCaja);
+            }
+
+
             var detalleCierres = await context.Detacierres
                 .Where(detacierre =>
                     detacierre.Numcompra == numeroCompra && detacierre.Codagencia == findCompra.Codagencia)
@@ -600,8 +907,6 @@ public class CompraRepository(
                 await adelantoRepository.Add(adelanto);
             }
 
-            var movcaja = await context.Movcajas.FindAsync(nuevoDetaCaja.Idmov);
-            await maestroCajaRepository.GuardarDatosDetaCaja(nuevoDetaCaja, movcaja!, mcaja);
             var result = await context.SaveChangesAsync() > 0;
             if (result)
             {
@@ -658,7 +963,8 @@ public class CompraRepository(
                 Total = arg.compra.Total,
                 Peso = arg.compra.Peso,
                 Fecha = arg.compra.Fecha,
-                Nocontrato = arg.compra.Nocontrato
+                Nocontrato = arg.compra.Nocontrato,
+                Firma = arg.compra.Firma
             });
         return await result.ToListAsync();
     }

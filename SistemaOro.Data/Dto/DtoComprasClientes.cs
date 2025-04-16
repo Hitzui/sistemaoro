@@ -14,6 +14,7 @@ public class DtoComprasClientes : INotifyPropertyChanged
     private string? _apellido;
     private int? _nocontrato;
     private decimal _peso;
+    private string? _firma;
 
     public bool IsChecked
     {
@@ -67,6 +68,12 @@ public class DtoComprasClientes : INotifyPropertyChanged
     {
         get => _peso;
         set => SetField(ref _peso, value);
+    }
+
+    public string? Firma
+    {
+        get => _firma;
+        set => SetField(ref _firma, value);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

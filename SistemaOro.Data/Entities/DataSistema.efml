@@ -304,6 +304,9 @@
     <property name="IdTipoPrecio" type="Int32" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="c1923b33-c0db-4e23-9b7f-13dec9dc2327">
       <column name="IdTipoPrecio" not-null="False" precision="10" scale="0" sql-type="int" p1:unicode="False" />
     </property>
+    <property name="Firma" type="String" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="f18b574e-cb79-40f1-98d7-59d2801b5130">
+      <column name="firma" not-null="False" sql-type="nvarchar(max)" p1:unicode="True" />
+    </property>
   </class>
   <class name="ComprasAdelanto" entity-set="ComprasAdelantos" p1:Guid="2eb6efd2-ee01-4a17-a94b-ba1790e0549c">
     <id name="IdcomprasAdelantos" type="Int32" value-generated="OnAdd" p1:ValidateRequired="true" p1:Guid="0c1ab106-8158-4483-ba5c-218d56746ae3">
@@ -1209,6 +1212,15 @@
     </property>
     <property name="TipoPrecio" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="38d41faf-1583-4470-8653-d73e9fafebc4">
       <column name="TipoPrecio" not-null="False" precision="18" scale="2" sql-type="decimal" p1:unicode="False" />
+    </property>
+    <property name="Subtotal" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="2ff8a312-1f7c-45f4-8e33-9111df027d62">
+      <column name="Subtotal" not-null="False" precision="18" scale="4" sql-type="decimal" p1:unicode="False" />
+    </property>
+    <property name="Descuento" type="Decimal" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="1e8e7577-a673-4cf6-82a0-083b576888ff">
+      <column name="Descuento" not-null="False" precision="18" scale="4" sql-type="decimal" p1:unicode="False" />
+    </property>
+    <property name="Codoperador" type="String" p1:ValidateMaxLength="20" p1:ValidateRequired="true" p1:Guid="48956fec-63b6-4e3f-86d4-3b558ff052be">
+      <column name="Codoperador" not-null="True" length="20" sql-type="nvarchar" p1:unicode="True" />
     </property>
   </class>
   <associations>

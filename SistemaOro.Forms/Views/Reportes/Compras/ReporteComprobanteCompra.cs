@@ -6,7 +6,7 @@ using DevExpress.XtraReports.UI;
 
 namespace SistemaOro.Forms.Views.Reportes.Compras
 {
-	public partial class ReporteComprobanteCompra : DevExpress.XtraReports.UI.XtraReport
+	public partial class ReporteComprobanteCompra : XtraReport
 	{	
 		public ReporteComprobanteCompra()
 		{

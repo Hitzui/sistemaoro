@@ -53,7 +53,7 @@
     <PackageReference Include="devexpress.wpf.ribbon" Version="24.2.3" />
     <PackageReference Include="EPPlus" Version="7.6.1" />
     <PackageReference Include="NLog" Version="5.4.0" />
-    <PackageReference Include="System.Drawing.Common" Version="9.0.2" />
+    <PackageReference Include="System.IO.Ports" Version="9.0.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SistemaOro.Data\SistemaOro.Data.csproj">
@@ -109,5 +109,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\Agencias\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="SigPlusNET">
+      <HintPath>C:\Program Files (x86)\Topaz Systems\SigPlusNET\SigPlusNET.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

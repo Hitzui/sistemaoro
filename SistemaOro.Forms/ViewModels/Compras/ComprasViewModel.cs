@@ -1,22 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Input;
+﻿using System.Collections.Generic;
 using System.Windows.Navigation;
-using DevExpress.Data;
-using DevExpress.DataAccess.ConnectionParameters;
-using DevExpress.DataAccess.Sql;
-using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
+using DevExpress.XtraPrinting.Drawing;
 using NLog;
 using SistemaOro.Data.Dto;
-using SistemaOro.Data.Entities;
 using SistemaOro.Data.Libraries;
 using SistemaOro.Data.Repositories;
 using SistemaOro.Forms.Services.Helpers;
 using SistemaOro.Forms.Views.Compras;
 using SistemaOro.Forms.Views.Reportes.Compras;
 using Unity;
+using System.Drawing;
+using System.IO;
 
 namespace SistemaOro.Forms.ViewModels.Compras;
 
@@ -80,6 +75,11 @@ public class ComprasViewModel : BaseViewModel
         //Reporte Anexo
         var reporteAnexo = new ReporteAnexo();
         reporteAnexo.DataSource = findCompra;
+        if (!string.IsNullOrWhiteSpace(SelectedCompra.Firma))
+        {
+            var image = HelpersMethods.LoadSigImage(SelectedCompra.Firma, SelectedCompra.Numcompra ?? "");
+            reporteAnexo.imgFirma.ImageSource = new ImageSource(image);
+        }
         HelpersMethods.LoadReport(reporteAnexo,"Reporte de Anexo");
         //Reporte Contrato Contra Venta
         var reporteContrantoContraVenta = new ReporteContratoContraVenta();
@@ -91,7 +91,8 @@ public class ComprasViewModel : BaseViewModel
         HelpersMethods.LoadReport(reporteContrantoPrestamo, "Reporte de Contrato de Prestamo");
         //Reporte Comprobante de compra
         var reporteComprobanteCompra = new ReporteComprobanteCompra();
-        reporteComprobanteCompra.Parameters["parNumcompra"].Value = SelectedCompra.Numcompra;
+        reporteComprobanteCompra.DataSource = findCompra;
+        //reporteComprobanteCompra.Parameters["parNumCompra"].Value = SelectedCompra.Numcompra;
         HelpersMethods.LoadReport(reporteComprobanteCompra);
     }
 

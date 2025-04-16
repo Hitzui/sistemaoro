@@ -26,6 +26,7 @@ using SistemaOro.Forms.Views;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.WindowsUI;
 using DevExpress.XtraEditors;
+using DevExpress.XtraPrinting.Drawing;
 using NLog;
 using SistemaOro.Forms.Dto;
 
@@ -40,6 +41,7 @@ namespace SistemaOro.Forms.ViewModels.Compras
         private readonly IMonedaRepository _monedaRepository;
         private readonly ITipoCambioRepository _tipoCambioRepository;
         private string _codagencia;
+        private string _firma = string.Empty;
         private List<string> _mediosDePago = new();
 
         public FormComprasViewModel()
@@ -175,15 +177,20 @@ namespace SistemaOro.Forms.ViewModels.Compras
                 }
 
 
-                if (Total.CompareTo(Zero) <= 0) return;
+                if (MontoEfectivo.CompareTo(Zero) <= 0)
+                {
+                    MontoExtranjero = 0;
+                    MontoLocal = 0;
+                    return;
+                }
                 if (SelectedMoneda.Codmoneda == param.Cordobas)
                 {
-                    var totalX = Subtract(Total, MontoLocal);
+                    var totalX = Subtract(MontoEfectivo, MontoLocal);
                     MontoExtranjero = HelpersMethods.RedondeoHaciaArriba(totalX / valorTipoCambio, 4);
                 }
                 else
                 {
-                    var totalX = Subtract(Total, MontoExtranjero);
+                    var totalX = Subtract(MontoEfectivo, MontoExtranjero);
                     MontoLocal = HelpersMethods.RedondeoHaciaArriba(totalX * valorTipoCambio, 4);
                 }
             }
@@ -677,10 +684,23 @@ namespace SistemaOro.Forms.ViewModels.Compras
                 _mediosDePago.Add("Adelanto");
             }
 
+            FormaPago? formaPago = null;
+            if (HabilitarFormaPago)
+            {
+                formaPago = new FormaPago
+                {
+                    Monto1 = MontoLocal,
+                    Monto2 = MontoExtranjero,
+                    Total = Total,
+                    Fecha = DateTime.Now
+                };
+            }
+
             bool save;
+            Compra? compra;
             if (SelectedCompra is null)
             {
-                var compra = new Compra
+                compra = new Compra
                 {
                     Numcompra = NumeroCompra ?? "",
                     Adelantos = MontoAdelanto,
@@ -701,49 +721,42 @@ namespace SistemaOro.Forms.ViewModels.Compras
                     Total = Total,
                     Fecha = Fecha,
                     Peso = ItemsSource.Sum(detCompra => detCompra.Peso),
-                    IdTipoPrecio = SelectedTiposPrecios.IdTipoPrecio
+                    IdTipoPrecio = SelectedTiposPrecios.IdTipoPrecio,
+                    Firma = _firma
                 };
-                FormaPago? formaPago = null;
-                if (HabilitarFormaPago)
-                {
-                    formaPago = new FormaPago
-                    {
-                        Monto1 = MontoLocal,
-                        Monto2 = MontoExtranjero,
-                        Total = compra.Total,
-                        Fecha = DateTime.Now
-                    };
-                }
-
                 save = await _compraRepository.Create(compra, ItemsSource.ToList(), formaPago);
             }
             else
             {
-                var findCompra = await _compraRepository.FindById(SelectedCompra.Numcompra!);
-                if (findCompra is null)
+                compra = await _compraRepository.FindById(SelectedCompra.Numcompra!);
+                if (compra is null)
                 {
                     HelpersMessage.MensajeErroResult(MensajesGenericos.GuardarTitulo, MensajesCompras.NoExisteCompra);
                     return;
                 }
 
-                findCompra.Adelantos = MontoAdelanto;
-                findCompra.Subtotal = SubTotal;
-                findCompra.Cheque = MontoCheque;
-                findCompra.Transferencia = MontoTransferencia;
-                findCompra.PorCobrar = 0;
-                findCompra.PorPagar = MontoPorPagar;
-                findCompra.Codcliente = SelectedCliente.Codcliente;
-                findCompra.Codestado = EstadoCompra.Vigente;
-                findCompra.Usuario = VariablesGlobalesForm.Instance.Usuario.Codoperador;
-                findCompra.Hora = Fecha.ToShortTimeString();
-                findCompra.FormaPago = string.Join(", ", _mediosDePago);
-                findCompra.Codmoneda = SelectedMoneda.Codmoneda;
-                findCompra.Descuento = SelectedTiposPrecios.Precio;
-                findCompra.Efectivo = MontoEfectivo;
-                findCompra.Total = Total;
-                findCompra.Peso = ItemsSource.Sum(detCompra => detCompra.Peso);
-                findCompra.IdTipoPrecio = SelectedTiposPrecios.IdTipoPrecio;
-                save = await _compraRepository.UpdateByDetaCompra(findCompra, ItemsSource.ToList());
+                if (!string.IsNullOrWhiteSpace(_firma))
+                {
+                    compra.Firma = _firma;
+                }
+                compra.Adelantos = MontoAdelanto;
+                compra.Subtotal = SubTotal;
+                compra.Cheque = MontoCheque;
+                compra.Transferencia = MontoTransferencia;
+                compra.PorCobrar = 0;
+                compra.PorPagar = MontoPorPagar;
+                compra.Codcliente = SelectedCliente.Codcliente;
+                compra.Codestado = EstadoCompra.Vigente;
+                compra.Usuario = VariablesGlobalesForm.Instance.Usuario.Codoperador;
+                compra.Hora = Fecha.ToShortTimeString();
+                compra.FormaPago = string.Join(", ", _mediosDePago);
+                compra.Codmoneda = SelectedMoneda.Codmoneda;
+                compra.Descuento = SelectedTiposPrecios.Precio;
+                compra.Efectivo = MontoEfectivo;
+                compra.Total = Total;
+                compra.Peso = ItemsSource.Sum(detCompra => detCompra.Peso);
+                compra.IdTipoPrecio = SelectedTiposPrecios.IdTipoPrecio;
+                save = await _compraRepository.UpdateByDetaCompra(compra, ItemsSource.ToList(), formaPago);
                 NumeroCompra = SelectedCompra.Numcompra;
             }
 
@@ -767,6 +780,12 @@ namespace SistemaOro.Forms.ViewModels.Compras
                     //Reporte Anexo
                     var reporteAnexo = new ReporteAnexo();
                     reporteAnexo.DataSource = findCompra;
+                    if (!string.IsNullOrWhiteSpace(compra.Firma))
+                    {
+                        var image = HelpersMethods.LoadSigImage(compra.Firma, NumeroCompra ?? "");
+                        //reporteAnexo.imgFirma.ImageSource = new ImageSource(image);
+                    }
+                    
                     HelpersMethods.LoadReport(reporteAnexo);
                     //Reporte Contrato Contra Venta
                     var reporteContrantoContraVenta = new ReporteContratoContraVenta();
@@ -828,6 +847,17 @@ namespace SistemaOro.Forms.ViewModels.Compras
             {
                 HelpersMessage.MensajeErroResult("Error",
                     $"Se produjo el siguiente error: {_compraRepository.ErrorSms}");
+            }
+        }
+
+        [Command]
+        public void CapturarFirma()
+        {
+            var frmCapturarFirma = new FormCapturarFirma();
+            var resultDialog = frmCapturarFirma.ShowDialog() ?? false;
+            if (resultDialog)
+            {
+                _firma= frmCapturarFirma.SigString ?? string.Empty;
             }
         }
 

@@ -10,8 +10,7 @@
   <component name="ChangeListManager">
     <list default="true" id="6aa4e2d6-4c90-4b61-bcfc-e01364c9231a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.sistemaoro/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.sistemaoro/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Configuration/ConfiguracionGeneral.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Configuration/ConfiguracionGeneral.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Dto/DtoMovimientosCaja.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Dto/DtoMovimientosCaja.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Dto/DtoComprasClientes.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Dto/DtoComprasClientes.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Adelanto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Adelanto.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Agencia.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Agencia.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Caja.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.Caja.cs" afterDir="false" />
@@ -58,26 +57,24 @@
       <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.VVariacionesCliente.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.VVariacionesCliente.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.efml" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Entities/DataSistema.efml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Repositories/CompraRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Repositories/CompraRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Repositories/MaestroCajaRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Repositories/MaestroCajaRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/SistemaOro.Data.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/SistemaOro.Data.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Utilities/HtmlCssAsset.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Utilities/HtmlCssAsset.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Dto/DtoMovimientosCaja.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Dto/DtoMovimientosCaja.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Data/Repositories/IComprasRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Data/Repositories/IComprasRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Services/Helpers/HelpersMethods.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Services/Helpers/HelpersMethods.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/SistemaOro.Forms.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/SistemaOro.Forms.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/ViewModels/Cajas/RealizarMovimientoCajaViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/ViewModels/Cajas/RealizarMovimientoCajaViewModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/ViewModels/Cajas/ReportesMaestroCajaViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/ViewModels/Cajas/ReportesMaestroCajaViewModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Views/Cajas/MaestroCajaPage.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Views/Cajas/MaestroCajaPage.xaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Views/Cajas/MaestroCajaPage.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Views/Cajas/MaestroCajaPage.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Views/Cajas/RealizarMovimientoCajaPage.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Views/Cajas/RealizarMovimientoCajaPage.xaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Views/Cajas/RealizarMovimientoCajaPage.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Views/Cajas/RealizarMovimientoCajaPage.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Views/Descargue/LIstaDescarguesPage.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Views/Descargue/LIstaDescarguesPage.xaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Views/Descargue/LIstaDescarguesPage.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Views/Descargue/LIstaDescarguesPage.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Views/LoginPage.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Views/LoginPage.xaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Views/LoginPage.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Views/LoginPage.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/ViewModels/Compras/ComprasViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/ViewModels/Compras/ComprasViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/ViewModels/Compras/FormComprasViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/ViewModels/Compras/FormComprasViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Views/Compras/FormComprasPage.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Views/Compras/FormComprasPage.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Views/Reportes/Compras/ReporteAnexo.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Views/Reportes/Compras/ReporteAnexo.Designer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Views/Reportes/Compras/ReporteComprobanteCompra.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Views/Reportes/Compras/ReporteComprobanteCompra.Designer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Views/Reportes/Compras/ReporteComprobanteCompra.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Views/Reportes/Compras/ReporteComprobanteCompra.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaOro.Forms/Views/Reportes/Compras/ReporteComprobanteCompra.resx" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaOro.Forms/Views/Reportes/Compras/ReporteComprobanteCompra.resx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DpaMonitoringSettings">
+    <option name="firstShow" value="false" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -94,6 +91,11 @@
     &quot;accountId&quot;: &quot;c983b7a2-3b9e-4dd4-a6d9-530958d0fd7e&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7f84a7ce008b442482bcfe03e1410bd8468268/22/90fa984c/ImageSource.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2c8e7ca976f350cba9836d5565dac56b11e0b56656fa786460eb1395857a6fa/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c8e03614d261f91ee36c5379b2121d98f8d535fdee7177c847d3f2eaf8b67/Image.cs" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 6
@@ -105,6 +107,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    ".NET Project.Run.executor": "Debug",
     "Publish to IIS.SistemaOro.Forms: FolderProfile.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -118,14 +121,24 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Publish to IIS.SistemaOro.Forms: FolderProfile">
-    <configuration name="SistemaOro.Data: FolderProfile" type="DotNetMsBuildPublish" factoryName="Publish to IIS">
-      <riderPublish publish_profile="FolderProfile.pubxml" pubxml_path="$PROJECT_DIR$/SistemaOro.Data/Properties/PublishProfiles/FolderProfile.pubxml" uuid_high="-5857427922845417321" uuid_low="-8714517741950940812" />
-      <method v="2" />
-    </configuration>
-    <configuration name="SistemaOro.Forms: FolderProfile" type="DotNetMsBuildPublish" factoryName="Publish to IIS">
-      <riderPublish publish_profile="FolderProfile.pubxml" pubxml_path="$PROJECT_DIR$/SistemaOro.Forms/Properties/PublishProfiles/FolderProfile.pubxml" uuid_high="1460979147979769996" uuid_low="-6382394503747690888" />
-      <method v="2" />
+  <component name="RunManager">
+    <configuration name="Run" type="DotNetProject" factoryName=".NET Project">
+      <option name="EXE_PATH" value="$PROJECT_DIR$/SistemaOro.Forms/bin/Debug/net8.0-windows10.0.17763.0/SistemaOro.Forms.exe" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/SistemaOro.Forms/bin/Debug/net8.0-windows10.0.17763.0" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="PROJECT_PATH" value="$PROJECT_DIR$/SistemaOro.Forms/SistemaOro.Forms.csproj" />
+      <option name="PROJECT_EXE_PATH_TRACKING" value="1" />
+      <option name="PROJECT_ARGUMENTS_TRACKING" value="1" />
+      <option name="PROJECT_WORKING_DIRECTORY_TRACKING" value="1" />
+      <option name="PROJECT_KIND" value="DotNetCore" />
+      <option name="PROJECT_TFM" value="net8.0-windows10.0.17763.0" />
+      <method v="2">
+        <option name="Build" />
+      </method>
     </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -139,6 +152,8 @@
       <workItem from="1738072394288" duration="120000" />
       <workItem from="1739641172872" duration="116000" />
       <workItem from="1741137073144" duration="1322000" />
+      <workItem from="1743006224940" duration="7000" />
+      <workItem from="1744773163998" duration="4466000" />
     </task>
     <servers />
   </component>

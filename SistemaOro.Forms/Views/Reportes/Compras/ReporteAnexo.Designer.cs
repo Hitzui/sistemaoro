@@ -118,6 +118,7 @@
             this.XrLine2 = new DevExpress.XtraReports.UI.XRLine();
             this.XrLabel20 = new DevExpress.XtraReports.UI.XRLabel();
             this.objectDataSource1 = new DevExpress.DataAccess.ObjectBinding.ObjectDataSource(this.components);
+            this.imgFirma = new DevExpress.XtraReports.UI.XRPictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.table1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.XrTable2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.XrTable1)).BeginInit();
@@ -1239,6 +1240,7 @@
             // ReportFooter
             // 
             this.ReportFooter.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.imgFirma,
             this.XrRichText1,
             this.XrLabel17,
             this.XrLabel18,
@@ -1334,6 +1336,14 @@
             this.objectDataSource1.DataSource = typeof(global::SistemaOro.Data.Entities.DetalleCompra);
             this.objectDataSource1.Name = "objectDataSource1";
             // 
+            // imgFirma
+            // 
+            this.imgFirma.Dpi = 254F;
+            this.imgFirma.LocationFloat = new DevExpress.Utils.PointFloat(1075F, 825F);
+            this.imgFirma.Name = "imgFirma";
+            this.imgFirma.SizeF = new System.Drawing.SizeF(524.9999F, 200.0001F);
+            this.imgFirma.Sizing = DevExpress.XtraPrinting.ImageSizeMode.ZoomImage;
+            // 
             // ReporteAnexo
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -1359,7 +1369,7 @@
             this.DetailData1,
             this.DetailData3_Odd,
             this.PageInfo});
-            this.Version = "24.1";
+            this.Version = "24.2";
             ((System.ComponentModel.ISupportInitialize)(this.table1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.XrTable2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.XrTable1)).EndInit();
@@ -1460,5 +1470,6 @@
         private DevExpress.XtraReports.UI.XRLabel xrLabel4;
         private DevExpress.XtraReports.UI.XRLabel xrLabel1;
         private DevExpress.DataAccess.ObjectBinding.ObjectDataSource objectDataSource1;
+        public DevExpress.XtraReports.UI.XRPictureBox imgFirma;
     }
 }

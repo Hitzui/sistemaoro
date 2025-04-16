@@ -126,6 +126,9 @@
                                              Height="35" Width="80" Margin="5"
                                              Command="{Binding RemoveClienteCommand}"
                                              Glyph="{dx:DXImage SvgImages/Dashboards/ClearFilter.svg}" />
+                            <dx:SimpleButton HorizontalAlignment="Center" VerticalAlignment="Center"
+                                             Height="35" Width="80" Margin="5"
+                                             Command="{Binding CapturarFirmaCommand}" Glyph="{dx:DXImage SvgImages/RichEdit/PenColor.svg}" />
                         </StackPanel>
                     </dx:DXBorder>
                 </Grid>

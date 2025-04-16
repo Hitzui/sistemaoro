@@ -14,7 +14,7 @@ public interface ICompraRepository
     string? ErrorSms { get; }
     Task<List<DetCompra>> FindDetaCompra(string numcompra);
     Task<Compra?> FindById(string numerocompra);
-    Task<bool> UpdateByDetaCompra(Compra compra, List<DetCompra> detaCompra);
+    Task<bool> UpdateByDetaCompra(Compra compra, List<DetCompra> detaCompra, FormaPago? formaPago);
     Task<bool> AnularCompra(string numeroCompra);
     Task<List<Compra>> FindByCodigoCliente(string codCliente);
     Task<bool> UpdateValues(Compra compra);
