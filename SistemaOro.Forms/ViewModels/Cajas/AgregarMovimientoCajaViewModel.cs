@@ -20,8 +20,9 @@ public class AgregarMovimientoCajaViewModel : BaseViewModel
     public AgregarMovimientoCajaViewModel()
     {
         Title = "Agregar Movimiento Caja";
-        _rubroRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IRubroRepository>();
-        _movimientosRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IMovimientosRepository>();
+        var unitOfWork = VariablesGlobales.Instance.UnityContainer.Resolve<IUnitOfWork>();
+        _rubroRepository = unitOfWork.RubroRepository;
+        _movimientosRepository = unitOfWork.MovimientosRepository;
         SaveCommand = new DelegateCommand(OnSaveCommand);
         Movcaja = new Movcaja();
     }
@@ -40,7 +41,7 @@ public class AgregarMovimientoCajaViewModel : BaseViewModel
 
 
         Movcaja.Codrubro = SelectedRubro.Codrubro;
-        var returnTask = isNew ? _movimientosRepository.AddAsync(Movcaja).WaitAsync(CancellationToken.None) : _movimientosRepository.UpdateAsync(Movcaja).WaitAsync(CancellationToken.None);
+        var returnTask = isNew ? _movimientosRepository.AddAsync(Movcaja) : _movimientosRepository.UpdateAsync(Movcaja);
         var task = await returnTask;
         if (task)
         {

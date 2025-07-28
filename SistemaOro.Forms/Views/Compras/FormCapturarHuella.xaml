@@ -1,0 +1,62 @@
+﻿<Window xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SistemaOro.Forms.Views.Compras"
+        xmlns:compras="clr-namespace:SistemaOro.Forms.ViewModels.Compras"
+        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+        x:Class="SistemaOro.Forms.Views.Compras.FormCapturarHuella"
+        mc:Ignorable="d"
+        Title="Capturar Huella" Height="450" Width="525"
+        Icon="{dx:DXImage SvgImages/Icon Builder/Security_Fingerprint.svg}" WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize" Loaded="Window_Loaded">
+    <Window.DataContext>
+        <compras:CapturarHuellaViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        <StackPanel Margin="10,10,10,10" Orientation="Horizontal">
+            <Label Content="Dispositivo:" VerticalAlignment="Center" Margin="10 0" />
+            <dxe:ComboBoxEdit Height="20"
+                              Width="150"
+                              Margin="10 0"
+                              ItemsSource="{Binding ListaDispositivos}"
+                              SelectedIndex="{Binding SelectedDispositivo}" VerticalAlignment="Center" />
+            <dx:SimpleButton Content="Inicializar" 
+                             Height="25" 
+                             VerticalAlignment="Center"
+                             Command="{Binding AbrirDispositivoCommand}" Glyph="{dx:DXImage SvgImages/Outlook Inspired/GettingStarted.svg}"/>
+            <dx:SimpleButton Content="Cerrar Dispositivo" 
+                             Height="25"
+                             Command="{Binding CerrarDispositivoCommand}" VerticalAlignment="Center" Margin="10,0,0,0" Glyph="{dx:DXImage SvgImages/Outlook Inspired/Close.svg}"/>
+        </StackPanel>
+        <Grid Grid.Row="1" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <dxe:ImageEdit x:Name="ImgHuella" Source="{Binding ImageSource}" ShowMenu="False" HorizontalContentAlignment="Center" />
+            <StackPanel Grid.Column="1">
+                <dx:SimpleButton Content="Caputrar Huella"
+                                 Height="25" 
+                                 Margin="10 10"
+                                 Command="{Binding CapturarHuellaCommand}"
+                                 Glyph="{dx:DXImage SvgImages/Icon Builder/Security_Fingerprint.svg}" />
+                <dx:SimpleButton Content="Guardar Huella"
+                                 Height="25" 
+                                 Margin="10 10"
+                                 Click="GuardarHuella_Click" Glyph="{dx:DXImage SvgImages/XAF/Action_SaveScript.svg}" />
+            </StackPanel>
+        </Grid>
+        <dxb:StatusBarControl Grid.Row="2" VerticalAlignment="Stretch">
+            <dxb:BarButtonItem Content="{Binding StatusBar}" />
+
+        </dxb:StatusBarControl>
+    </Grid>
+</Window>

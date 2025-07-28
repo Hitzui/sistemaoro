@@ -1,1 +1,10 @@
 DevExpress.Xpf.Editors.CheckEdit, DevExpress.Xpf.Core.v24.2, Version=24.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.Xpf.Editors.ImageEdit, DevExpress.Xpf.Core.v24.2, Version=24.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.Xpf.Bars.StatusBarControl, DevExpress.Xpf.Core.v24.2, Version=24.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.Xpf.Core.SimpleButton, DevExpress.Xpf.Core.v24.2, Version=24.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.Xpf.Core.DXTabControl, DevExpress.Xpf.Core.v24.2, Version=24.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.Xpf.LayoutControl.LayoutGroup, DevExpress.Xpf.LayoutControl.v24.2, Version=24.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.Xpf.LayoutControl.GroupBox, DevExpress.Xpf.LayoutControl.v24.2, Version=24.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.Xpf.Editors.DateEdit, DevExpress.Xpf.Core.v24.2, Version=24.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.Xpf.Editors.ListBoxEdit, DevExpress.Xpf.Core.v24.2, Version=24.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.DashboardWpf.DashboardControl, DevExpress.Dashboard.v24.2.Wpf, Version=24.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a

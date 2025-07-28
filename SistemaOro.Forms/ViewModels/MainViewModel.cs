@@ -15,10 +15,12 @@ using SistemaOro.Forms.Services.Helpers;
 using SistemaOro.Forms.Services.Mensajes;
 using SistemaOro.Forms.ViewModels.Agencias;
 using SistemaOro.Forms.ViewModels.Clientes;
+using SistemaOro.Forms.ViewModels.Compras;
 using SistemaOro.Forms.ViewModels.Usuarios;
 using SistemaOro.Forms.Views.Agencias;
 using SistemaOro.Forms.Views.Cajas;
 using SistemaOro.Forms.Views.Compras;
+using SistemaOro.Forms.Views.Dashboard;
 using SistemaOro.Forms.Views.Descargue;
 using SistemaOro.Forms.Views.Monedas;
 using SistemaOro.Forms.Views.Parametros;
@@ -33,16 +35,16 @@ namespace SistemaOro.Forms.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-        private Frame _mainFrame;
-        private readonly IParametersRepository _parametersRepository;
-        private readonly IMaestroCajaRepository _maestroCajaRepository;
-        private readonly IUsuarioRepository _usuarioRepository;
-        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private Frame mainFrame;
+        private readonly IParametersRepository parametersRepository;
+        private readonly IMaestroCajaRepository maestroCajaRepository;
+        private readonly IUsuarioRepository usuarioRepository;
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
         public MainViewModel()
         {
-            _maestroCajaRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IMaestroCajaRepository>();
-            _parametersRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IParametersRepository>();
-            _usuarioRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IUsuarioRepository>();
+            maestroCajaRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IMaestroCajaRepository>();
+            parametersRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IParametersRepository>();
+            usuarioRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IUsuarioRepository>();
             ListadoMovimientosCajasCommand = new DelegateCommand(ListadoMovimientosCajas);
             ListaClientesCommand = new DelegateCommand(OnListadoClientes);
             TiposDocumentosCommand = new DelegateCommand(OnTiposDocumentosCommand);
@@ -63,15 +65,22 @@ namespace SistemaOro.Forms.ViewModels
             RealizarCompraCommand = new DelegateCommand(OnRealizarCompraCommand);
             TiposPreciosCommand = new DelegateCommand(OnTiposPreciosCommand);
             PrecioKilateCommand = new DelegateCommand(OnPrecioKilateCommand);
-            _mainFrame = new Frame();
-            VariablesGlobalesForm.Instance.MainFrame = _mainFrame;
+            mainFrame = new Frame();
+            VariablesGlobalesForm.Instance.MainFrame = mainFrame;
+            VariablesGlobalesForm.Instance.MainViewModel = this;
         }
-        
+
+        [Command]
+        public void ReportesComprasCommand()
+        {
+            var page = new FormReportesCompras();
+            mainFrame.Navigate(page);
+        }
         [Command]
         public void RealizarDescargueCommand()
         {
             var page = new ListaDescarguesPage();
-            _mainFrame.Navigate(page);
+            mainFrame.Navigate(page);
         }
 
 
@@ -79,7 +88,7 @@ namespace SistemaOro.Forms.ViewModels
         public void ParametrosCommand()
         {
             var param = new ParametrosPage();
-            _mainFrame.Navigate(param);
+            mainFrame.Navigate(param);
         }
 
         [Command]
@@ -91,7 +100,7 @@ namespace SistemaOro.Forms.ViewModels
             if (frmUsuario.DataContext is not UsuarioEditViewModel model) return;
             if (!model.ResultOk) return;
             var frmUsuarios = new ListaUsuarios();
-            _mainFrame.Navigate(frmUsuarios);
+            mainFrame.Navigate(frmUsuarios);
         }
 
         [Command]
@@ -102,7 +111,7 @@ namespace SistemaOro.Forms.ViewModels
             if (frmUsuario.DataContext is not UsuarioEditViewModel model) return;
             if (!model.ResultOk) return;
             var frmUsuarios = new ListaUsuarios();
-            _mainFrame.Navigate(frmUsuarios);
+            mainFrame.Navigate(frmUsuarios);
         }
 
         [Command]
@@ -136,22 +145,22 @@ namespace SistemaOro.Forms.ViewModels
                         return;
                     }
 
-                    var delete = await _usuarioRepository.DeleteAsync(selectedUsuario);
+                    var delete = await usuarioRepository.DeleteAsync(selectedUsuario);
                     if (delete)
                     {
                         HelpersMessage.MensajeInformacionResult("Eliminar", " Se ha eliminado al usuario");
                         var frmUsuarios = new ListaUsuarios();
-                        _mainFrame.Navigate(frmUsuarios);
+                        mainFrame.Navigate(frmUsuarios);
                     }
                     else
                     {
-                        HelpersMessage.MensajeInformacionResult("Eliminar", $"Se produjo el siguiente error: {_usuarioRepository.ErrorSms}");
+                        HelpersMessage.MensajeInformacionResult("Eliminar", $"Se produjo el siguiente error: {usuarioRepository.ErrorSms}");
                     }
                 }
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Error al eliminar usuario");
+                logger.Error(e, "Error al eliminar usuario");
             }
         }
 
@@ -159,7 +168,7 @@ namespace SistemaOro.Forms.ViewModels
         public void UsuariosListaCommand()
         {
             var frmusuarios = new ListaUsuarios();
-            _mainFrame.Navigate(frmusuarios);
+            mainFrame.Navigate(frmusuarios);
         }
 
         [Command]
@@ -171,12 +180,13 @@ namespace SistemaOro.Forms.ViewModels
 
         private void OnPrecioKilateCommand()
         {
-            _mainFrame.Navigate(new PreciosKilatePage());
+            mainFrame.Navigate(new PreciosKilatePage());
         }
 
         private void OnListasCompraCommand()
         {
-            _mainFrame.Navigate(new ComprasPage());
+            var comprPage = new ComprasPage();
+            mainFrame.Navigate(new ComprasPage());
         }
 
         private void OnTiposPreciosCommand()
@@ -185,14 +195,53 @@ namespace SistemaOro.Forms.ViewModels
             frm.ShowDialog();
         }
 
+        public FormComprasPage formComprasPage = new ();
         private void OnRealizarCompraCommand()
         {
-            _mainFrame.Navigate(new FormComprasPage());
+            RbnEditarCompraVisible = true;
+            mainFrame.Navigate(formComprasPage);
+        }
+
+        [Command]
+        public void SaveCompra()
+        {
+            var viewModel = (FormComprasViewModel)formComprasPage.DataContext;
+            viewModel.SaveCompra();
+        }
+
+        [Command]
+        public void AnularCompra()
+        {
+            var viewModel = (FormComprasViewModel)formComprasPage.DataContext;
+            viewModel.AnularCompra();
+        }
+
+        [Command]
+        public void DevolucionCompra()
+        {
+            var viewModel = (FormComprasViewModel)formComprasPage.DataContext;
+            viewModel.DevolucionCompra();
+        }
+        
+        [Command]
+        public void NuevaCompra()
+        {
+            var viewModel = (FormComprasViewModel)formComprasPage.DataContext;
+            if (viewModel.NuevaCompra())
+            {
+                return;
+            }
+            var result = HelpersMessage.DialogWindow("Nueva compra",
+                "Hay datos en la tabla, se limpiarán al crear una nueva y compra y no se guardarán, ¿desea continuar?",
+                MessageBoxButton.OKCancel);
+            if (result.ShowDialog() != true) return;
+            formComprasPage = new();
+            mainFrame.Navigate(formComprasPage);
         }
 
         private void OnReportesMaestroCajaCommand()
         {
-            _mainFrame.Navigate(new ReportesMaestroCajaPage());
+            mainFrame.Navigate(new ReportesMaestroCajaPage());
         }
 
         private void OnRealizarMovimientoCajaCommand()
@@ -203,12 +252,12 @@ namespace SistemaOro.Forms.ViewModels
 
         private void OnMaestroCajaCommand()
         {
-            _mainFrame.Navigate(new MaestroCajaPage());
+            mainFrame.Navigate(new MaestroCajaPage());
         }
 
         private void OnRubroCommand()
         {
-            _mainFrame.Navigate(new RubrosPage());
+            mainFrame.Navigate(new RubrosPage());
         }
 
         private void OnEditarMovimientoCajaCommand()
@@ -255,7 +304,7 @@ namespace SistemaOro.Forms.ViewModels
 
         private void OnAgenciasCommand()
         {
-            _mainFrame.Navigate(new AgenciasPage());
+            mainFrame.Navigate(new AgenciasPage());
         }
 
         private void OnListadoCajasCommand()
@@ -304,7 +353,7 @@ namespace SistemaOro.Forms.ViewModels
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Error al eliminar el cliente");
+                logger.Error(e, "Error al eliminar el cliente");
             }
         }
 
@@ -335,7 +384,7 @@ namespace SistemaOro.Forms.ViewModels
 
         private void OnListadoClientes()
         {
-            _mainFrame.Navigate(new Listado());
+            mainFrame.Navigate(new Listado());
         }
 
 
@@ -373,18 +422,34 @@ namespace SistemaOro.Forms.ViewModels
         public ICommand RealizarCompraCommand { get; set; }
         public ICommand TiposPreciosCommand { get; set; }
 
+        private bool _rbnEditarCompraVisible;
+
+        public bool RbnEditarCompraVisible
+        {
+            get=>_rbnEditarCompraVisible; 
+            set=>SetValue(ref _rbnEditarCompraVisible, value);
+        }
         public async void SetMainFrame(Frame mainFrame)
         {
-            _mainFrame = mainFrame;
+            RbnEditarCompraVisible = false;
+            this.mainFrame = mainFrame;
             var caja = VariablesGlobalesForm.Instance.VariablesGlobales["CAJA"];
             var agencia = VariablesGlobalesForm.Instance.VariablesGlobales["AGENCIA"];
-            VariablesGlobalesForm.Instance.Parametros = await _parametersRepository.RecuperarParametros();
-            VariablesGlobalesForm.Instance.MaestroCaja = await _maestroCajaRepository.FindByCajaAndAgencia(caja, agencia);
+            VariablesGlobalesForm.Instance.Parametros = await parametersRepository.RecuperarParametros();
+            VariablesGlobalesForm.Instance.MaestroCaja = await maestroCajaRepository.FindByCajaAndAgencia(caja, agencia);
+            this.mainFrame.Navigate(new DashboardView());
+            VariablesGlobalesForm.Instance.MainFrame = mainFrame;
         }
 
         private void ListadoMovimientosCajas()
         {
-            _mainFrame.Navigate(new MovimientosCajasPage());
+            mainFrame.Navigate(new MovimientosCajasPage());
+        }
+
+        [Command]
+        public void GoDashboard()
+        {
+            mainFrame.Navigate(new DashboardView());
         }
     }
 }

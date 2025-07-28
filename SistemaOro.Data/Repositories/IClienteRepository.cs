@@ -7,7 +7,6 @@ public interface IClienteRepository : ICrudRepository<Cliente>
 {
     Task<string> CodCliente();
     Task<bool> Create(Cliente cliente);
-    Task<List<Cliente>> FindAll();
     Task<Cliente?> FindByNombre(string nombre);
     Task<Cliente?> FindByApellido(string apellido);
     Task<Cliente?> FindByCedula(string cedula);

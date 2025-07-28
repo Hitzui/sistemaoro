@@ -12,11 +12,13 @@ namespace SistemaOro.Forms.ViewModels.Parametros;
 
 public class ParametrosViewModel : BaseViewModel
 {
-    private readonly IParametersRepository _parametersRepository=VariablesGlobales.Instance.UnityContainer.Resolve<IParametersRepository>();
+    private readonly IParametersRepository _parametersRepository;
     public ParametrosViewModel()
     {
         Title = "Parametros Sistema";
-        SaveCommandTask=  new AsyncCommand(SaveCommand);
+        var unitOfWork = VariablesGlobales.Instance.UnityContainer.Resolve<IUnitOfWork>();
+        _parametersRepository = unitOfWork.ParametersRepository;
+        SaveCommandTask =  new AsyncCommand(SaveCommand);
     }
 
     public IAsyncCommand SaveCommandTask { get; }

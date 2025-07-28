@@ -23,7 +23,8 @@ public class MonedasViewModel : BaseViewModel
     public MonedasViewModel()
     {
         Title = "Monedas";
-        _monedaRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IMonedaRepository>();
+        var unitOfWork = VariablesGlobales.Instance.UnityContainer.Resolve<IUnitOfWork>();
+        _monedaRepository = unitOfWork.MonedaRepository;
         _itemsSource = new ObservableCollection<Moneda>();
     }
 

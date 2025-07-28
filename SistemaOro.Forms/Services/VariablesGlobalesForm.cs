@@ -5,7 +5,10 @@ using DevExpress.Mvvm.Native;
 using Microsoft.Extensions.Configuration;
 using SistemaOro.Data.Dto;
 using SistemaOro.Data.Entities;
+using SistemaOro.Data.Repositories;
 using SistemaOro.Forms.Repository;
+using SistemaOro.Forms.ViewModels;
+using Unity;
 
 namespace SistemaOro.Forms.Services
 {
@@ -143,6 +146,12 @@ namespace SistemaOro.Forms.Services
         public bool PermitirEdicionCompra
         {
             get=>GetValue<bool>(); 
+            set=>SetValue(value);
+        }
+
+        public MainViewModel MainViewModel
+        {
+            get=>GetValue<MainViewModel>(); 
             set=>SetValue(value);
         }
     }

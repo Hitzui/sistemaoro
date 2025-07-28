@@ -21,14 +21,17 @@ namespace SistemaOro.Forms
     /// </summary>
     public partial class MainWindow : ThemedWindow
     {
+        private MainViewModel viewModel;
         public MainWindow()
         {
+            viewModel = new MainViewModel();
+            DataContext = viewModel;
             InitializeComponent();
         }
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            ((MainViewModel)DataContext).SetMainFrame(MainFrame);
+            viewModel.SetMainFrame(MainFrame);
         }
 
         private void ThemedWindow_Closed(object sender, EventArgs e)

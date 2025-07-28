@@ -15,6 +15,9 @@ public class DtoComprasClientes : INotifyPropertyChanged
     private int? _nocontrato;
     private decimal _peso;
     private string? _firma;
+    private byte[]? _huella;
+    private decimal _tipoCambio;
+    private int _codmoneda;
 
     public bool IsChecked
     {
@@ -76,6 +79,21 @@ public class DtoComprasClientes : INotifyPropertyChanged
         set => SetField(ref _firma, value);
     }
 
+    public byte[]? Huella
+    {
+        get => _huella;
+        set => SetField(ref _huella, value);
+    }
+    public decimal TipoCambio
+    {
+        get => _tipoCambio;
+        set => SetField(ref _tipoCambio, value);
+    }
+    public int Codmoneda
+    {
+        get => _codmoneda;
+        set => SetField(ref _codmoneda, value);
+    }
     public event PropertyChangedEventHandler? PropertyChanged;
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)

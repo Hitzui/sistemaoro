@@ -12,7 +12,7 @@ public class ReadExcelTipoCambio
     public List<TipoCambio> ReadExcelFile(string filePath)
     {
         var tipoCambioList = new List<TipoCambio>();
-
+        ExcelPackage.License.SetNonCommercialPersonal("SunMetals");
         using var package = new ExcelPackage(new FileInfo(filePath));
         var worksheet = package.Workbook.Worksheets[0];
         if (worksheet == null)

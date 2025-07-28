@@ -1,4 +1,5 @@
-﻿using SistemaOro.Data.Entities;
+﻿using System;
+using SistemaOro.Data.Entities;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Xpf;
 using SistemaOro.Data.Libraries;
@@ -6,17 +7,20 @@ using SistemaOro.Data.Repositories;
 using Unity;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using NLog;
+using SistemaOro.Forms.Services.Helpers;
 
 namespace SistemaOro.Forms.ViewModels.Clientes;
 
 public class FilterClientesViewModel : BaseViewModel
 {
-    private readonly IClienteRepository _clienteRepository;
-
+    private readonly IClienteRepository clienteRepository;
+    private readonly Logger logger = LogManager.GetCurrentClassLogger();
     public FilterClientesViewModel()
     {
         Title = "Seleccionar Cliente";
-        _clienteRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IClienteRepository>();
+        var unitOfWork = VariablesGlobales.Instance.UnityContainer.Resolve<IUnitOfWork>();
+        clienteRepository = unitOfWork.ClienteRepository;
     }
 
     public Cliente? SelectedCliente
@@ -32,6 +36,11 @@ public class FilterClientesViewModel : BaseViewModel
     [Command]
     public void SelectedClienteCommand()
     {
+        if (SelectedCliente is null)
+        {
+            HelpersMessage.MensajeInformacionResult("Seleccionar", "Debe seleccionar un cliente");
+            return;
+        }
         Debug.WriteLine(SelectedCliente.Codcliente);
         CloseAction?.Invoke();
     }
@@ -45,11 +54,18 @@ public class FilterClientesViewModel : BaseViewModel
 
     public async void Load()
     {
-        _itemsSource.Clear();
-        var itemsSource = await _clienteRepository.FindAll();
-        foreach (var cliente in itemsSource)
+        try
         {
-            _itemsSource.Add(cliente);
+            _itemsSource.Clear();
+            var itemsSource = await clienteRepository.FindAll();
+            foreach (var cliente in itemsSource)
+            {
+                _itemsSource.Add(cliente);
+            }
+        }
+        catch (Exception e)
+        {
+            logger.Error(e, "Error al cargar los datos");
         }
     }
 }

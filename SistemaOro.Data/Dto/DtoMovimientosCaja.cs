@@ -1,6 +1,7 @@
 ﻿namespace SistemaOro.Data.Dto;
 
 public record DtoMovimientosCaja(
+    string Caja,
     string Descripcion,
     string Hora,
     DateTime Fecha,

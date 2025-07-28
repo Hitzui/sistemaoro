@@ -44,6 +44,8 @@
             this.XrLine1 = new DevExpress.XtraReports.UI.XRLine();
             this.XrLabel7 = new DevExpress.XtraReports.UI.XRLabel();
             this.ReportFooter = new DevExpress.XtraReports.UI.ReportFooterBand();
+            this.imgFirmaPrincipal = new DevExpress.XtraReports.UI.XRPictureBox();
+            this.imgFirma = new DevExpress.XtraReports.UI.XRPictureBox();
             this.xrLabel10 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel4 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel2 = new DevExpress.XtraReports.UI.XRLabel();
@@ -96,7 +98,7 @@
             this.XrLine2,
             this.XrLine1,
             this.XrLabel7});
-            this.ReportHeader.HeightF = 5942.504F;
+            this.ReportHeader.HeightF = 5810.212F;
             this.ReportHeader.Name = "ReportHeader";
             // 
             // xrPictureBox1
@@ -113,11 +115,11 @@
             this.XrRichText2.CanShrink = true;
             this.XrRichText2.Font = new DevExpress.Drawing.DXFont("Arial", 10F);
             this.XrRichText2.KeepTogether = true;
-            this.XrRichText2.LocationFloat = new DevExpress.Utils.PointFloat(0F, 141.9764F);
+            this.XrRichText2.LocationFloat = new DevExpress.Utils.PointFloat(0F, 110.7264F);
             this.XrRichText2.Name = "XrRichText2";
             this.XrRichText2.Padding = new DevExpress.XtraPrinting.PaddingInfo(10, 10, 10, 10, 100F);
             this.XrRichText2.SerializableRtfString = resources.GetString("XrRichText2.SerializableRtfString");
-            this.XrRichText2.SizeF = new System.Drawing.SizeF(698F, 5795.736F);
+            this.XrRichText2.SizeF = new System.Drawing.SizeF(713.9999F, 5687.401F);
             this.XrRichText2.StylePriority.UseFont = false;
             this.XrRichText2.StylePriority.UsePadding = false;
             // 
@@ -189,6 +191,8 @@
             // ReportFooter
             // 
             this.ReportFooter.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.imgFirmaPrincipal,
+            this.imgFirma,
             this.xrLabel10,
             this.xrLabel4,
             this.xrLabel2,
@@ -198,7 +202,22 @@
             this.XrLabel8,
             this.XrRichText1});
             this.ReportFooter.HeightF = 236.2207F;
+            this.ReportFooter.KeepTogether = true;
             this.ReportFooter.Name = "ReportFooter";
+            // 
+            // imgFirmaPrincipal
+            // 
+            this.imgFirmaPrincipal.LocationFloat = new DevExpress.Utils.PointFloat(491.9583F, 135.1791F);
+            this.imgFirmaPrincipal.Name = "imgFirmaPrincipal";
+            this.imgFirmaPrincipal.SizeF = new System.Drawing.SizeF(185.4167F, 73.95833F);
+            this.imgFirmaPrincipal.Sizing = DevExpress.XtraPrinting.ImageSizeMode.Cover;
+            // 
+            // imgFirma
+            // 
+            this.imgFirma.LocationFloat = new DevExpress.Utils.PointFloat(491.9583F, 10.0001F);
+            this.imgFirma.Name = "imgFirma";
+            this.imgFirma.SizeF = new System.Drawing.SizeF(178.2082F, 73.95834F);
+            this.imgFirma.Sizing = DevExpress.XtraPrinting.ImageSizeMode.Cover;
             // 
             // xrLabel10
             // 
@@ -295,7 +314,7 @@
             this.XrRichText1.Name = "XrRichText1";
             this.XrRichText1.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 5, 5, 5, 100F);
             this.XrRichText1.SerializableRtfString = resources.GetString("XrRichText1.SerializableRtfString");
-            this.XrRichText1.SizeF = new System.Drawing.SizeF(697.9998F, 123.5971F);
+            this.XrRichText1.SizeF = new System.Drawing.SizeF(698.0001F, 123.5971F);
             this.XrRichText1.StylePriority.UseFont = false;
             this.XrRichText1.StylePriority.UsePadding = false;
             // 
@@ -315,8 +334,8 @@
             this.ComponentStorage.AddRange(new System.ComponentModel.IComponent[] {
             this.DataSourceDetalleCompra});
             this.Font = new DevExpress.Drawing.DXFont(resources.GetString("$this.Font"), 8.25F);
-            this.Margins = new DevExpress.Drawing.DXMargins(82F, 70F, 41.66667F, 53.567F);
-            this.Version = "24.1";
+            this.Margins = new DevExpress.Drawing.DXMargins(66F, 70F, 41.66667F, 53.567F);
+            this.Version = "24.2";
             ((System.ComponentModel.ISupportInitialize)(this.XrRichText2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.XrRichText6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.XrRichText1)).EndInit();
@@ -350,5 +369,7 @@
         private DevExpress.XtraReports.UI.XRLabel xrLabel4;
         private DevExpress.DataAccess.ObjectBinding.ObjectDataSource DataSourceDetalleCompra;
         private DevExpress.XtraReports.UI.XRPictureBox xrPictureBox1;
+        public DevExpress.XtraReports.UI.XRPictureBox imgFirma;
+        public DevExpress.XtraReports.UI.XRPictureBox imgFirmaPrincipal;
     }
 }

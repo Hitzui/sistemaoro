@@ -20,13 +20,12 @@ namespace SistemaOro.Forms.ViewModels.Precios
 {
     internal class TiposPreciosViewModel : BaseViewModel
     {
+        private readonly IDtoTipoPrecioRepository _dtoTipoPrecioRepository = VariablesGlobalesForm.Instance.DtoTipoPrecioRepository;
+
         public TiposPreciosViewModel()
         {
             Title = "Tipos de precios";
         }
-
-        private readonly IDtoTipoPrecioRepository _dtoTipoPrecioRepository = VariablesGlobalesForm.Instance.DtoTipoPrecioRepository;
-
 
         public IList<DtoTiposPrecios>? ItemsSource
         {

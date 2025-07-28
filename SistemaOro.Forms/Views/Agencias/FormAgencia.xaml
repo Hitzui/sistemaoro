@@ -44,6 +44,9 @@
                 <dx:SimpleButton Content="Buscar imagen" Height="25" Margin="411,302,85,0" VerticalAlignment="Top"
                                  Glyph="{dx:DXImage SvgImages/DiagramIcons/LoadImage.svg}"
                                  Command="{Binding FindImageCommand}" />
+                <dx:SimpleButton Height="25" Margin="411,351,85,0" VerticalAlignment="Top"
+                                 Command="{Binding FirmaPrincipalCommand}" 
+                                 Content="Firma Principal" Glyph="{dx:DXImage SvgImages/RichEdit/PenColor.svg}" />
                 <dx:SimpleButton Content="Guardar" HorizontalAlignment="Left" Margin="184,0,0,28" Width="112"
                                  Glyph="{dx:DXImage SvgImages/DiagramIcons/save.svg}" Height="33"
                                  VerticalAlignment="Bottom" Command="{Binding SaveCommand}" />

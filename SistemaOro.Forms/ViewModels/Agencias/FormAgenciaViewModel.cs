@@ -13,6 +13,7 @@ using SistemaOro.Data.Repositories;
 using SistemaOro.Forms.Services;
 using SistemaOro.Forms.Services.Helpers;
 using SistemaOro.Forms.Services.Mensajes;
+using SistemaOro.Forms.ViewModels.Compras;
 using Unity;
 
 namespace SistemaOro.Forms.ViewModels.Agencias;
@@ -26,9 +27,23 @@ public class FormAgenciaViewModel : BaseViewModel
         Title = "Datos Agencia";
         SaveCommand = new DelegateCommand(OnSaveCommand);
         FindImageCommand = new DelegateCommand(OnFindImageCommand);
+        FirmaPrincipalCommand = new DelegateCommand(OnFirmaPrincipalCommand);
         _agencia = new Agencia();
         _agenciaRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IAgenciaRepository>();
         _imageData = [];
+    }
+
+    private void OnFirmaPrincipalCommand()
+    {
+        var frmFirma = new FormCapturarFirma();
+        var result = frmFirma.ShowDialog();
+        if (result.HasValue && result.Value)
+        {
+            if (!string.IsNullOrWhiteSpace(frmFirma.SigString))
+            {
+                _agencia.Firma = frmFirma.SigString;
+            }
+        }
     }
 
     private async void OnFindImageCommand()
@@ -124,6 +139,8 @@ public class FormAgenciaViewModel : BaseViewModel
     public ICommand SaveCommand { get; }
 
     public ICommand FindImageCommand { get; }
+
+    public ICommand FirmaPrincipalCommand { get; }
 
     private ImageSource? _logoImageSource;
 

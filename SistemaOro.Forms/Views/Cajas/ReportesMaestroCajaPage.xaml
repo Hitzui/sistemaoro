@@ -10,49 +10,100 @@
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
     x:Class="SistemaOro.Forms.Views.Cajas.ReportesMaestroCajaPage"
     mc:Ignorable="d"
-    d:DesignHeight="450" d:DesignWidth="800"
+    d:DesignHeight="800" d:DesignWidth="900"
     Title="{Binding Title}" Loaded="Page_Loaded" Background="White">
     <Page.DataContext>
         <cajas:ReportesMaestroCajaViewModel />
     </Page.DataContext>
     <Grid>
-        <Label Content="Fecha inicio:" HorizontalAlignment="Left" Margin="41,42,0,0" VerticalAlignment="Top" />
-        <Label Content="Fecha final:" HorizontalAlignment="Left" Margin="47,97,0,0" VerticalAlignment="Top" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Content="Fecha inicio:"
+                   Grid.Column="0"
+                   Grid.Row="0"
+                   VerticalAlignment="Center" HorizontalAlignment="Right" Height="22" />
+            <dxe:DateEdit EditValue="{Binding FechaDesde}"
+                          Grid.Row="0"
+                          Grid.Column="1" VerticalAlignment="Center" Margin="5,0,5,0" />
+            <Label Content="Fecha final:"
+                   Grid.Column="0"
+                   Grid.Row="1"
+                   VerticalAlignment="Center" HorizontalAlignment="Right" Height="22" />
+            <dxe:DateEdit EditValue="{Binding FechaHasta}"
+                          Grid.Row="1"
+                          Grid.Column="1"
+                          VerticalAlignment="Center" Margin="5,0,5,0" />
+        </Grid>
+        <GroupBox Header="Seleccionar Opción:"
+                  Grid.Row="0"
+                  Margin="20"
+                  Grid.Column="1">
+            <StackPanel>
+                <RadioButton Content="Movimientos de cajas" IsChecked="{Binding MovimientosCajaRad}"
+                             HorizontalAlignment="Left" Margin="0,0,0,5" />
+                <RadioButton Content="Movimientos de cajas Fechas" IsChecked="{Binding MovimientosCajaFechaRad}"
+                             HorizontalAlignment="Left" Margin="0,0,0,5" />
+                <RadioButton Content="Consolidado de la caja" IsChecked="{Binding ConsolidadoCajaRad}"
+                             HorizontalAlignment="Left" Margin="0,0,0,5" />
+                <RadioButton Content="Comprobante de movimiento" Width="186"
+                             IsChecked="{Binding ComprobanteMovimientoRad}" HorizontalAlignment="Left" />
+            </StackPanel>
+        </GroupBox>
+        <Grid Grid.Row="0" Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <dx:SimpleButton Command="{Binding ReportCommand}"
+                             Content="Generar Reporte"
+                             HorizontalAlignment="Left"
+                             Height="30"
+                             Margin="10,10,0,0"
+                             VerticalAlignment="Top"
+                             Width="150"
+                             Glyph="{dx:DXImage SvgImages/Print/Print.svg}" />
+        </Grid>
 
-        <dxe:DateEdit EditValue="{Binding FechaDesde}" HorizontalAlignment="Left" Margin="117,42,0,0"
-                      VerticalAlignment="Top" Width="160" />
-        <dxe:DateEdit EditValue="{Binding FechaHasta}" HorizontalAlignment="Left" Margin="117,97,0,0"
-                      VerticalAlignment="Top" Width="160" />
-        <RadioButton Content="Movimientos de cajas" HorizontalAlignment="Left" Margin="353,26,0,0"
-                     VerticalAlignment="Top" IsChecked="{Binding MovimientosCajaRad}" />
-        <RadioButton Content="Consolidado de la caja" HorizontalAlignment="Left" Margin="353,61,0,0"
-                     VerticalAlignment="Top" IsChecked="{Binding ConsolidadoCajaRad}" />
-        <RadioButton Content="Comprobante de movimiento" HorizontalAlignment="Left" Margin="353,97,0,0"
-                     VerticalAlignment="Top" Width="186" IsChecked="{Binding ComprobanteMovimientoRad}" />
-        <dxe:CheckEdit IsChecked="{Binding CajaActiva}" HorizontalAlignment="Left" Margin="555,97,0,0"
-                       VerticalAlignment="Top" Content="Caja Activa" />
-
-        <dx:SimpleButton Command="{Binding ReportCommand}" Content="Generar Reporte" HorizontalAlignment="Left"
-                         Height="30" Margin="555,46,0,0" VerticalAlignment="Top" Width="150"
-                         Glyph="{dx:DXImage SvgImages/Print/Print.svg}" />
-
-        <dxg:GridControl ItemsSource="{Binding MovimientosCajas}" AutoGenerateColumns="None"
-                         EnableSmartColumnsGeneration="True" Margin="0,148,0,0" SelectionMode="Row" CurrentItem="{Binding SelectedMovimiento}">
+        <dxg:GridControl
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            ItemsSource="{Binding MovimientosCajas}" AutoGenerateColumns="None"
+            EnableSmartColumnsGeneration="True" SelectionMode="Row"
+            CurrentItem="{Binding SelectedMovimiento}">
             <dxg:GridControl.View>
                 <dxg:TableView AllowEditing="False" TotalSummaryPosition="Bottom" />
             </dxg:GridControl.View>
             <dxg:GridColumn FieldName="Descripcion" IsSmart="True" Width="250" />
             <dxg:GridColumn FieldName="Hora" IsSmart="True" Width="*" />
-            <dxg:GridColumn FieldName="Fecha" IsSmart="True" Width="*" />
-            <dxg:GridColumn FieldName="Concepto" IsSmart="True" Width="300" />
+            <dxg:GridColumn FieldName="Fecha1" IsSmart="True" Width="*" />
+            <dxg:GridColumn FieldName="Concepto1" IsSmart="True" Width="300" />
             <dxg:GridColumn FieldName="Referencia" IsSmart="True" Width="300" />
-            <dxg:GridColumn FieldName="Efectivo" IsSmart="True" Width="*" />
+            <dxg:GridColumn FieldName="Efectivo1" IsSmart="True" Width="*" />
             <dxg:GridColumn FieldName="Cheque" IsSmart="True" Width="*" />
-            <dxg:GridColumn FieldName="Transferencia" IsSmart="True" Width="*" />
+            <dxg:GridColumn FieldName="Transferencia1" IsSmart="True" Width="*" />
             <dxg:GridColumn FieldName="EfectivoExt" IsSmart="True" Width="*" />
             <dxg:GridColumn FieldName="ChequeExt" IsSmart="True" Width="*" />
             <dxg:GridColumn FieldName="TransferenciaExt" IsSmart="True" Width="*" />
-            <dxg:GridColumn FieldName="Moneda" IsSmart="True" Width="*" />
+            <dxg:GridColumn FieldName="Simbolo" IsSmart="True" Width="*" />
         </dxg:GridControl>
 
 

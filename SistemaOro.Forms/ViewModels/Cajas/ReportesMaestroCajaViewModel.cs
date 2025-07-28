@@ -5,73 +5,99 @@ using SistemaOro.Data.Repositories;
 using SistemaOro.Forms.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Input;
 using DevExpress.Mvvm;
 using DevExpress.XtraEditors;
 using DevExpress.XtraPrinting.Drawing;
+using SistemaOro.Data.Entities;
 using Unity;
 using SistemaOro.Forms.Views.Reportes.Caja;
 using SistemaOro.Forms.Services.Helpers;
+using RptMovimientosCaja = SistemaOro.Forms.Views.Reportes.Caja.RptMovimientosCaja;
 
 namespace SistemaOro.Forms.ViewModels.Cajas;
 
 public class ReportesMaestroCajaViewModel : BaseViewModel
 {
     private readonly IMaestroCajaRepository _maestroCajaRepository;
-    private List<DtoMovimientosCaja> _findAll;
+    private List<MovimientosCajaSelect> _findAll;
     private readonly IParametersRepository _parametersRepository;
     private readonly IAgenciaRepository _agenciaRepository;
     private readonly IMonedaRepository _monedaRepository;
 
     public ReportesMaestroCajaViewModel()
     {
-        _maestroCajaRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IMaestroCajaRepository>();
-        _parametersRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IParametersRepository>();
-        _agenciaRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IAgenciaRepository>();
-        _monedaRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IMonedaRepository>();
+        var unitOfWork = VariablesGlobales.Instance.UnityContainer.Resolve<IUnitOfWork>();
+        _maestroCajaRepository = unitOfWork.MaestroCajaRepository;
+        _parametersRepository = unitOfWork.ParametersRepository;
+        _agenciaRepository = unitOfWork.AgenciaRepository;
+        _monedaRepository = unitOfWork.MonedaRepository;
         Title = @"Reportes de movimientos en caja";
         MovimientosCajas = [];
         ReportCommand = new DelegateCommand(OnReportCommand);
-        _findAll = new List<DtoMovimientosCaja>();
+        _findAll = new List<MovimientosCajaSelect>();
     }
 
     private async void OnReportCommand()
     {
         try
         {
-            var report = new RptMovimientosCaja();
+            var codAgencia = VariablesGlobalesForm.Instance.VariablesGlobales["AGENCIA"] ?? "";
             var monedas = await _monedaRepository.FindAll();
             var param = await _parametersRepository.RecuperarParametros();
             if (param is null)
             {
                 return;
             }
+
             if (MovimientosCajaRad)
             {
-                if (CajaActiva)
-                {
-                    _findAll = await _maestroCajaRepository.FindAllByFechaDesdeActiva(FechaDesde);
-                }
-                else
-                {
-                    _findAll = await _maestroCajaRepository.FindAllByFechaDesde(FechaDesde);
-                }
+                var report = new RptMovimientosCaja();
+                _findAll = await _maestroCajaRepository.FindAllByFechaDesde(FechaDesde);
+                var sumEfectivoLocal = _findAll.Where(select => select.Efectivo1.Value > 0).Sum(select => select.Efectivo1);
                 report.DataSource = _findAll;
-                var agencia = await _agenciaRepository.GetByIdAsync(VariablesGlobalesForm.Instance.VariablesGlobales["AGENCIA"]!);
+                var agencia =
+                    await _agenciaRepository.GetByIdAsync(codAgencia);
                 if (agencia!.Logo is not null)
                 {
-                    report.picLogo.ImageSource = new ImageSource(HelpersMethods.LoadDxImage(agencia!.Logo)); 
+                    report.picLogo.ImageSource = new ImageSource(HelpersMethods.LoadDxImage(agencia!.Logo));
                 }
 
-                var monedaLocal =await _monedaRepository.GetByIdAsync(param.Cordobas ?? 0);
+                var monedaLocal = await _monedaRepository.GetByIdAsync(param.Cordobas ?? 0);
                 var monedaExt = await _monedaRepository.GetByIdAsync(param.Dolares ?? 0);
                 report.lblNombreAgencia.Text = agencia.Nomagencia;
                 report.lblDireccion.Text = agencia.Diragencia;
-                report.lblRuc.Text=agencia.Ruc;
                 report.lblMonedalocal.Text = monedaLocal is not null ? monedaLocal.Simbolo : "";
                 report.lblMonedaExt.Text = monedaExt is not null ? monedaExt.Simbolo : "";
+                //report.Parameters["parEntradaEfectivoLocal"].Value = sumEfectivoLocal;
                 HelpersMethods.LoadReport(report);
+            }
+
+            if (MovimientosCajaFechaRad)
+            {
+                var findFechaCaja =
+                    await _maestroCajaRepository.FindAllByFechaDesdeAndFechaHasta(FechaDesde, FechaHasta);
+                var reportMovimientosCajaFechas = new ReporteMovimientosCajaFechas();
+                reportMovimientosCajaFechas.DataSource = findFechaCaja;
+                var agencia =
+                    await _agenciaRepository.GetByIdAsync(VariablesGlobalesForm.Instance.VariablesGlobales["AGENCIA"]!);
+                if (agencia!.Logo is not null)
+                {
+                    reportMovimientosCajaFechas.picLogo.ImageSource =
+                        new ImageSource(HelpersMethods.LoadDxImage(agencia.Logo));
+                }
+
+                var monedaLocal = await _monedaRepository.GetByIdAsync(param.Cordobas ?? 0);
+                var monedaExt = await _monedaRepository.GetByIdAsync(param.Dolares ?? 0);
+                reportMovimientosCajaFechas.lblNombreAgencia.Text = agencia.Nomagencia;
+                reportMovimientosCajaFechas.lblDireccion.Text = agencia.Diragencia;
+                reportMovimientosCajaFechas.Parameters["parMonedaLocal"].Value = monedaLocal is not null ? monedaLocal.Simbolo : "";
+                reportMovimientosCajaFechas.Parameters["parMonedaExt"].Value = monedaExt is not null ? monedaExt.Simbolo : "";
+                reportMovimientosCajaFechas.lblFechaDesde.Text = FechaDesde.ToShortDateString();
+                reportMovimientosCajaFechas.lblFechaHasta.Text = FechaHasta.ToShortDateString();
+                HelpersMethods.LoadReport(reportMovimientosCajaFechas);
             }
 
             if (ConsolidadoCajaRad)
@@ -97,7 +123,7 @@ public class ReportesMaestroCajaViewModel : BaseViewModel
         }
     }
 
-    private bool _cajaActiva;
+    private bool _cajaActiva = true;
 
     public bool CajaActiva
     {
@@ -106,36 +132,43 @@ public class ReportesMaestroCajaViewModel : BaseViewModel
     }
 
     private bool _movimientosCajaRad;
+    private bool _movimientosCajaFechasRad;
     private bool _consolidadoCajaRad;
     private bool _comprobanteMovimientoRad;
 
     public bool MovimientosCajaRad
     {
         get => _movimientosCajaRad;
-        set => SetProperty(ref _movimientosCajaRad, value, "MovimientosCajaRad");
+        set => SetValue(ref _movimientosCajaRad, value);
+    }
+
+    public bool MovimientosCajaFechaRad
+    {
+        get => _movimientosCajaFechasRad;
+        set => SetValue(ref _movimientosCajaFechasRad, value);
     }
 
     public bool ConsolidadoCajaRad
     {
         get => _consolidadoCajaRad;
-        set => SetProperty(ref _consolidadoCajaRad, value, "ConsolidadoCajaRad");
+        set => SetValue(ref _consolidadoCajaRad, value);
     }
 
     public bool ComprobanteMovimientoRad
     {
         get => _comprobanteMovimientoRad;
-        set => SetProperty(ref _comprobanteMovimientoRad, value, "ComprobanteMovimientoRad");
+        set => SetValue(ref _comprobanteMovimientoRad, value);
     }
 
-    public DXObservableCollection<DtoMovimientosCaja> MovimientosCajas
+    public DXObservableCollection<MovimientosCajaSelect> MovimientosCajas
     {
-        get => GetValue<DXObservableCollection<DtoMovimientosCaja>>();
+        get => GetValue<DXObservableCollection<MovimientosCajaSelect>>();
         set => SetValue(value);
     }
 
-    private DtoMovimientosCaja _selectedMovimiento;
+    private DtoMovimientosCaja? _selectedMovimiento;
 
-    public DtoMovimientosCaja SelectedMovimiento
+    public DtoMovimientosCaja? SelectedMovimiento
     {
         get => _selectedMovimiento;
         set => SetProperty(ref _selectedMovimiento, value, "SelectedMovimiento");
@@ -144,10 +177,11 @@ public class ReportesMaestroCajaViewModel : BaseViewModel
     public ICommand ReportCommand { get; }
 
     private DateTime _fechaDesde;
+
     public DateTime FechaDesde
     {
         get => _fechaDesde;
-        set => SetValue(ref _fechaDesde, value,  ChangeDateMovimientosCaja);
+        set => SetValue(ref _fechaDesde, value, ChangeDateMovimientosCaja);
     }
 
     private async void ChangeDateMovimientosCaja()
@@ -160,7 +194,7 @@ public class ReportesMaestroCajaViewModel : BaseViewModel
         }
         catch (Exception e)
         {
-            XtraMessageBox.Show(e.Message,"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            XtraMessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -174,7 +208,8 @@ public class ReportesMaestroCajaViewModel : BaseViewModel
     {
         if (VariablesGlobalesForm.Instance.MaestroCaja is not null)
         {
-            _findAll = await _maestroCajaRepository.FindAllByIdMaestroCaja(VariablesGlobalesForm.Instance.MaestroCaja.Idcaja);
+            _findAll = await _maestroCajaRepository.FindAllByIdMaestroCaja(VariablesGlobalesForm.Instance.MaestroCaja
+                .Idcaja);
             MovimientosCajas.AddRange(_findAll);
             FechaDesde = DateTime.Now;
             FechaHasta = DateTime.Now;

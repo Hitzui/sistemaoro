@@ -21,8 +21,13 @@ namespace SistemaOro.Forms.ViewModels.Clientes;
 
 public class ClientesViewModels : BaseViewModel
 {
-    private readonly IClienteRepository _clienteRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IClienteRepository>();
+    private readonly IClienteRepository _clienteRepository;
 
+    public ClientesViewModels()
+    {
+        var unitOfWork = VariablesGlobales.Instance.UnityContainer.Resolve<IUnitOfWork>();
+        _clienteRepository = unitOfWork.ClienteRepository;
+    }
 
     private Cliente _selectedItem = new();
 

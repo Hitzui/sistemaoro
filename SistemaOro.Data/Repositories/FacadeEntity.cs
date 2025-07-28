@@ -108,10 +108,9 @@ public abstract class FacadeEntity<TEntity>(DataContext context) : ICrudReposito
 
     public virtual async Task<List<TEntity>> FindAll()
     {
-        await using var context2 = new DataContext();
         try
         {
-            return await context2.Set<TEntity>().AsNoTracking().ToListAsync();
+            return await context.Set<TEntity>().AsNoTracking().ToListAsync();
         }
         catch (Exception e)
         {

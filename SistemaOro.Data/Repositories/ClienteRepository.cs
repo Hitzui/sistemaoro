@@ -113,16 +113,11 @@ public class ClienteRepository(DataContext context) : FacadeEntity<Cliente>(cont
     }
 
 
-    public Task<Cliente?> FindById(string codcliente)
+    private Task<Cliente?> FindById(string codcliente)
     {
         return context.Clientes
             .Include(cliente => cliente.TipoDocumento)
             .SingleOrDefaultAsync(cliente => cliente.Codcliente == codcliente);
-    }
-
-    public Task<List<Cliente>> FindAll()
-    {
-        return Get(orderBy: query => query.OrderBy(cliente => cliente.Nombres)).ToListAsync();
     }
 
     public Task<Cliente?> FindByNombre(string nombre)

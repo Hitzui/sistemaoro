@@ -2,6 +2,7 @@
 using System.Windows.Documents;
 using DevExpress.Mvvm.Native;
 using SistemaOro.Data.Dto;
+using SistemaOro.Data.Entities;
 using SistemaOro.Data.Libraries;
 using SistemaOro.Data.Repositories;
 using SistemaOro.Forms.Services;
@@ -11,10 +12,12 @@ namespace SistemaOro.Forms.ViewModels.Cajas;
 
 public class MovCajasViewModels :BaseViewModel
 {
-    private IMovimientosRepository MovimientosRepository => VariablesGlobales.Instance.UnityContainer.Resolve<IMovimientosRepository>();
+    private readonly IMovimientosRepository _movimientosRepository;
 
     public MovCajasViewModels()
     {
+        var unitOfWork = VariablesGlobales.Instance.UnityContainer.Resolve<IUnitOfWork>();
+        _movimientosRepository = unitOfWork.MovimientosRepository;
         Title = "Movimientos de Caja";
         _itemSource = new DXObservableCollection<MovCajasDto>();
     }
@@ -40,7 +43,7 @@ public class MovCajasViewModels :BaseViewModel
     public async void OnLoad()
     {
         IsLoading=true;
-        var findAll = await MovimientosRepository.GetMovcajasAndRubro();
+        var findAll = await _movimientosRepository.GetMovcajasAndRubro();
         VariablesGlobalesForm.Instance.MovimientosCajaCollection = new DXObservableCollection<MovCajasDto>(findAll);
         ItemSource = VariablesGlobalesForm.Instance.MovimientosCajaCollection;
         IsLoading=false;

@@ -14,6 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DevExpress.Mvvm;
 using DevExpress.Xpf.Bars;
+using DevExpress.Xpf.Data;
+using SistemaOro.Forms.ViewModels;
 using SistemaOro.Forms.ViewModels.Compras;
 
 namespace SistemaOro.Forms.Views.Compras
@@ -23,29 +25,31 @@ namespace SistemaOro.Forms.Views.Compras
     /// </summary>
     public partial class ComprasPage : Page
     {
+        private ComprasViewModel viewModel;
         public ComprasPage()
         {
             InitializeComponent();
+            viewModel = ((ComprasViewModel)DataContext);
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            ((ComprasViewModel)DataContext).Load();
+            viewModel.Load();
         }
 
         private void BarItem_OnItemClick(object sender, ItemClickEventArgs e)
         {
-            ((ComprasViewModel)DataContext).ImprimirCompra();
+            viewModel.ImprimirCompra();
         }
 
         private void EditarCompraItem_OnItemClick(object sender, ItemClickEventArgs e)
         {
-            ((ComprasViewModel)DataContext).EditarCompraCommand(NavigationService);
+            viewModel.EditarCompraCommand(NavigationService);
         }
 
         private void ImprimirTicket_ItemClick(object sender, ItemClickEventArgs e)
         {
-            ((ComprasViewModel)DataContext).ImprimirTicketCompra();
+            viewModel.ImprimirTicketCompra();
         }
     }
 }

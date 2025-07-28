@@ -1,21 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SistemaOro.Data.Dto;
+using SistemaOro.Data.Entities;
+using SistemaOro.Forms.Services.Helpers;
+using SistemaOro.Forms.ViewModels.Compras;
+using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using SistemaOro.Data.Dto;
-using SistemaOro.Data.Entities;
-using SistemaOro.Forms.ViewModels.Compras;
 
 namespace SistemaOro.Forms.Views.Compras
 {
@@ -24,22 +15,24 @@ namespace SistemaOro.Forms.Views.Compras
     /// </summary>
     public partial class FormComprasPage : Page
     {
+        private readonly FormComprasViewModel viewModel;
         public FormComprasPage()
         {
             InitializeComponent();
-            ((FormComprasViewModel)DataContext).CloseAction += () =>
+            viewModel = (FormComprasViewModel)DataContext;
+            viewModel.CloseAction += () =>
             {
-                NavigationService.Navigate(new ComprasPage());
+                NavigationService?.Navigate(new ComprasPage());
             };
         }
 
-        public void SetSelectedCompra(DtoComprasClientes compra)
+        public void SetSelectedCompra(ComprasCliente compra)
         {
-            ((FormComprasViewModel)DataContext).SelectedCompra = compra;
+            viewModel.SelectedCompra = compra;
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            ((FormComprasViewModel)DataContext).LoadValues();
+            viewModel.LoadValues();
         }
 
         private void CmbPrecios_EditValueChanged(object sender, DevExpress.Xpf.Editors.EditValueChangedEventArgs e)
@@ -67,6 +60,14 @@ namespace SistemaOro.Forms.Views.Compras
         {
             if (e.Key == Key.Enter)
             {
+                TxtLectura.Focus();
+            }
+        }
+
+        private void TxtLectura_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
                 BtnAgregar.Focus();
             }
         }
@@ -77,6 +78,23 @@ namespace SistemaOro.Forms.Views.Compras
             {
                 e.DisplayText =$"{e.Value:N2}";
             }
+        }
+
+        private async void CmbPrecios_OnPopupOpened(object sender, RoutedEventArgs re)
+        {
+            try
+            {
+                await viewModel.LoadPrecios();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            viewModel.Unloaded();
         }
     }
 }

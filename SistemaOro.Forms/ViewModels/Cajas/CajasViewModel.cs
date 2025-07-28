@@ -18,10 +18,11 @@ public class CajasViewModel : BaseViewModel
     private IAgenciaRepository _agenciaRepository;
     public CajasViewModel()
     {
+        var unitOfWork = VariablesGlobales.Instance.UnityContainer.Resolve<IUnitOfWork>();
         Title = "Cajas";
         _itemsSource = new List<Caja>();
-        _cajaRepository = VariablesGlobales.Instance.UnityContainer.Resolve<ICajaRepository>();
-        _agenciaRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IAgenciaRepository>();
+        _cajaRepository = unitOfWork.CajaRepository;
+        _agenciaRepository = unitOfWork.AgenciaRepository;
         _agencias = new List<Agencia>();
     }
 

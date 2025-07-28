@@ -42,27 +42,28 @@ public class PreciosKilatesRepository(DataContext context) : FacadeEntity<Precio
 
     public  Task<PrecioKilate?> FindByDescripcion(string descripcion)
     {
-        return  _context.PrecioKilates.AsNoTracking().SingleOrDefaultAsync(kilate => kilate.Descripcion == descripcion);
+        using var context = new DataContext();
+        return  context.PrecioKilates.AsNoTracking().SingleOrDefaultAsync(kilate => kilate.Descripcion == descripcion);
     }
 
-    public Task<PrecioKilate?> FindByPeso(decimal peso)
+    public PrecioKilate? FindByPeso(decimal peso)
     {
-        return _context.PrecioKilates.AsNoTracking().SingleOrDefaultAsync(kilate => kilate.Peso == peso);
+        return context.PrecioKilates.AsNoTracking().SingleOrDefault(kilate => kilate.Peso == peso);
     }
 
     public async Task<List<Precio>?> FindByClientes(string codcliente)
     {
-        return await _context.Precios.Where(precio => precio.Codcliente == codcliente).ToListAsync();
+        return await context.Precios.Where(precio => precio.Codcliente == codcliente).ToListAsync();
     }
 
     public async Task<CierrePrecio?> FindByCierrePrecio(int codCierre)
     {
-        return await _context.CierrePrecios.SingleOrDefaultAsync(precio => precio.Codcierre == codCierre);
+        return await context.CierrePrecios.SingleOrDefaultAsync(precio => precio.Codcierre == codCierre);
     }
 
     public async Task<List<CierrePrecio>> FindByClienteList(string codCliente)
     {
-        return await _context.CierrePrecios
+        return await context.CierrePrecios
             .Where(precio => precio.Codcliente == codCliente
                              && precio.SaldoOnzas > decimal.Zero && precio.Status)
             .ToListAsync();

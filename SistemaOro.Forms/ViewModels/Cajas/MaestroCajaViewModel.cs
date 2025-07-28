@@ -19,7 +19,8 @@ public class MaestroCajaViewModel : BaseViewModel
 
     public MaestroCajaViewModel()
     {
-        _maestroCajaRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IMaestroCajaRepository>();
+        var unitOfWork = VariablesGlobales.Instance.UnityContainer.Resolve<IUnitOfWork>();
+        _maestroCajaRepository = unitOfWork.MaestroCajaRepository;
         _caja = VariablesGlobalesForm.Instance.VariablesGlobales["CAJA"];
         _agencia = VariablesGlobalesForm.Instance.VariablesGlobales["AGENCIA"];
         Title = "Maestro de caja";

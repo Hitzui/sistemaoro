@@ -11,9 +11,7 @@
     Loaded="MainWindow_OnLoaded"
     Title="Sistema de Gestión de Oro" Height="800" Width="1000" Icon="/cash_ico.ico" WindowState="Maximized"
     WindowStartupLocation="CenterScreen" Closed="ThemedWindow_Closed">
-    <dx:ThemedWindow.DataContext>
-        <local:MainViewModel />
-    </dx:ThemedWindow.DataContext>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -24,6 +22,11 @@
                 <dxr:RibbonPage
                     Caption="Herramientas"
                     Language="es-es">
+                    <dxr:RibbonPageGroup Caption="Inicio">
+                        <dxb:BarButtonItem Content="Dashboard" 
+                                           Command="{Binding GoDashboardCommand}"
+                                           LargeGlyph="{dx:DXImage SvgImages/Dashboards/ShowGaugeCaptions.svg}"/>
+                    </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup
                         Caption="Clientes">
                         <dxb:BarButtonItem
@@ -134,6 +137,29 @@
                         <dxb:BarButtonItem Command="{Binding MonedasWindowCommand}" Content="Monedas"
                                            RibbonStyle="Large"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Travel_CurrencyExchange.svg}" />
+                    </dxr:RibbonPageGroup>
+                    <dxr:RibbonPageGroup Caption="Reportes">
+                        <dxb:BarButtonItem Content="Reportes" 
+                                           Command="{Binding ReportesComprasCommand}"
+                                           Glyph="{dx:DXImage SvgImages/XAF/Action_Report_ShowDesigner.svg}" 
+                                           RibbonStyle="Large"/>
+                    </dxr:RibbonPageGroup>
+                    <dxr:RibbonPageGroup x:Name="RbnEditarCompra" 
+                                         Caption="Edtiar"
+                                         IsVisible="{Binding RbnEditarCompraVisible}">
+                        <dxb:BarButtonItem Content="Guardar" 
+                                           Glyph="{dx:DXImage SvgImages/Save/Save.svg}" 
+                                           Command="{Binding SaveCompraCommand}"
+                                           RibbonStyle="Large"/>
+                        <dxb:BarButtonItem Content="Anular" 
+                                           Command="{Binding AnularCompraCommand}"
+                                           RibbonStyle="Large" Glyph="{dx:DXImage SvgImages/Snap/RemoveGroupFooter.svg}"/>
+                        <dxb:BarButtonItem Content="Devolucion" 
+                                           Command="{Binding DevolucionCompraCommand}"
+                                           RibbonStyle="Large" Glyph="{dx:DXImage SvgImages/Business Objects/BO_Opportunity.svg}"/>
+                        <dxb:BarButtonItem Content="Nueva" 
+                                           Command="{Binding NuevaCompraCommand}"
+                                           RibbonStyle="Large" Glyph="{dx:DXImage SvgImages/Outlook Inspired/AddFile.svg}"/>
                     </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
             </dxr:RibbonPageCategory>

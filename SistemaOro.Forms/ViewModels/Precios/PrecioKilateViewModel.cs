@@ -13,11 +13,13 @@ namespace SistemaOro.Forms.ViewModels.Precios;
 
 public class PrecioKilateViewModel : BaseViewModel
 {
-    private readonly IPreciosKilatesRepository _preciosKilatesRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IPreciosKilatesRepository>();
+    private readonly IPreciosKilatesRepository _preciosKilatesRepository;
 
     public PrecioKilateViewModel()
     {
         Title = "Precio Kilate";
+        var unitOfWork = VariablesGlobales.Instance.UnityContainer.Resolve<IUnitOfWork>();
+        _preciosKilatesRepository = unitOfWork.PreciosKilatesRepository;
     }
 
     IList<PrecioKilate>? _itemsSource;

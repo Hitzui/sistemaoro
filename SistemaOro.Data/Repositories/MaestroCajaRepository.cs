@@ -8,7 +8,6 @@ namespace SistemaOro.Data.Repositories;
 
 public class MaestroCajaRepository : IMaestroCajaRepository
 {
-
     private readonly string _caja;
     private readonly string _agencia;
     private readonly IParametersRepository _parametersRepository;
@@ -19,7 +18,7 @@ public class MaestroCajaRepository : IMaestroCajaRepository
         _parametersRepository = parametersRepository;
         _context = context;
         _caja = Configuration.ConfiguracionGeneral.Caja ?? string.Empty;
-        _agencia= Configuration.ConfiguracionGeneral.Agencia ?? string.Empty;
+        _agencia = Configuration.ConfiguracionGeneral.Agencia ?? string.Empty;
     }
 
     public async Task<bool> ValidarCajaAbierta(string caja, string codagencia)
@@ -205,7 +204,8 @@ public class MaestroCajaRepository : IMaestroCajaRepository
 
             var parametros = await _parametersRepository.RecuperarParametros();
             var query = Find(caja, agencia);
-            var crearM = await query.FirstOrDefaultAsync(mcaja => mcaja.Estado == 1 && mcaja.Codagencia== _agencia && mcaja.Codcaja == _caja);
+            var crearM = await query.FirstOrDefaultAsync(mcaja =>
+                mcaja.Estado == 1 && mcaja.Codagencia == _agencia && mcaja.Codcaja == _caja);
             if (crearM is null || parametros is null)
             {
                 ErrorSms = $"No hay caja aperturada para {caja} {agencia}, intente nuevamente o parametros nulos";
@@ -307,7 +307,7 @@ public class MaestroCajaRepository : IMaestroCajaRepository
                 mcaja1.Estado == 1 &&
                 mcaja1.Codcaja == _caja &&
                 mcaja1.Codagencia == _agencia
-             );
+            );
 
             if (mcaja is null)
             {
@@ -330,7 +330,8 @@ public class MaestroCajaRepository : IMaestroCajaRepository
 
             //if (!actualizarMcaja) return 0;
             var tipoCambio =
-                await _context.TipoCambios.AsNoTracking().SingleOrDefaultAsync(cambio => cambio.Fecha == DateTime.Now) ??
+                await _context.TipoCambios.AsNoTracking()
+                    .SingleOrDefaultAsync(cambio => cambio.Fecha == DateTime.Now) ??
                 new TipoCambio
                 {
                     Fecha = DateTime.Now,
@@ -437,104 +438,34 @@ public class MaestroCajaRepository : IMaestroCajaRepository
         }
     }
 
-    public Task<List<DtoMovimientosCaja>> FindAllByIdMaestroCaja(int id)
+    public Task<List<MovimientosCajaSelect>> FindAllByIdMaestroCaja(int id)
     {
-        var query = from detacaja in _context.Detacajas
-            join movcaja in _context.Movcajas on detacaja.Idmov equals movcaja.Idmov
-            join rubro in _context.Rubros on movcaja.Codrubro equals rubro.Codrubro
-            join mon in _context.Monedas on detacaja.Idmoeda equals mon.Codmoneda
-            where detacaja.Idcaja == id && detacaja.Codcaja==_caja
-            select new DtoMovimientosCaja(
-                movcaja.Descripcion,
-                detacaja.Hora,
-                detacaja.Fecha,
-                detacaja.Concepto,
-                detacaja.Referencia,
-                rubro.Naturaleza == 1 ? detacaja.Efectivo.Value : detacaja.Efectivo.Value * -1,
-                rubro.Naturaleza == 1 ? detacaja.Cheque.Value : detacaja.Cheque.Value * -1,
-                rubro.Naturaleza == 1 ? detacaja.Transferencia.Value : detacaja.Transferencia.Value * -1,
-                rubro.Naturaleza == 1 ? detacaja.EfectivoExt.Value : detacaja.EfectivoExt.Value * -1,
-                rubro.Naturaleza == 1 ? detacaja.ChequeExt.Value : detacaja.ChequeExt.Value * -1,
-                rubro.Naturaleza == 1 ? detacaja.TransferenciaExt.Value : detacaja.TransferenciaExt.Value * -1,
-                detacaja.IdDetaCaja,
-                mon.Simbolo);
-        return query.AsNoTracking().ToListAsync();
+        return _context.MovimientosCajaSelects.Where(c=>c.IdDetaCaja==id).ToListAsync();
+
     }
 
-    public Task<List<DtoMovimientosCaja>> FindAllByFechaDesde(DateTime fechaDesde)
+    public Task<List<MovimientosCajaSelect>> FindAllByFechaDesde(DateTime fechaDesde)
     {
-        var query = from detacaja in _context.Detacajas
-            join movcaja in _context.Movcajas on detacaja.Idmov equals movcaja.Idmov
-            join rubro in _context.Rubros on movcaja.Codrubro equals rubro.Codrubro
-            join mon in _context.Monedas on detacaja.Idmoeda equals mon.Codmoneda
-            where detacaja.Fecha.Date == fechaDesde.Date && detacaja.Codcaja == _caja
-            select new DtoMovimientosCaja(
-                movcaja.Descripcion,
-                detacaja.Hora,
-                detacaja.Fecha,
-                detacaja.Concepto,
-                detacaja.Referencia,
-                rubro.Naturaleza == 1 ? detacaja.Efectivo.Value : detacaja.Efectivo.Value * -1,
-                rubro.Naturaleza == 1 ? detacaja.Cheque.Value : detacaja.Cheque.Value * -1,
-                rubro.Naturaleza == 1 ? detacaja.Transferencia.Value : detacaja.Transferencia.Value * -1,
-                rubro.Naturaleza == 1 ? detacaja.EfectivoExt.Value : detacaja.EfectivoExt.Value * -1,
-                rubro.Naturaleza == 1 ? detacaja.ChequeExt.Value : detacaja.ChequeExt.Value * -1,
-                rubro.Naturaleza == 1 ? detacaja.TransferenciaExt.Value : detacaja.TransferenciaExt.Value * -1,
-                detacaja.IdDetaCaja,
-                mon.Simbolo
-            );
-        return query.AsNoTracking().ToListAsync();
+        return _context.MovimientosCajaSelects.Where(c=>c.Fecha1.Date==fechaDesde.Date && c.Caja == _caja).ToListAsync();
+
     }
 
-    public Task<List<DtoMovimientosCaja>> FindAllByFechaDesdeActiva(DateTime fechaDesde)
+    public Task<List<MovimientosCajaSelect>> FindAllByFechaDesdeActiva(DateTime fechaDesde)
     {
-        var query = from detacaja in _context.Detacajas
-            join mcaja in _context.Mcajas on detacaja.Idcaja equals mcaja.Idcaja
-            join movcaja in _context.Movcajas on detacaja.Idmov equals movcaja.Idmov
-            join rubro in _context.Rubros on movcaja.Codrubro equals rubro.Codrubro
-            join mon in _context.Monedas on detacaja.Idmoeda equals mon.Codmoneda
-            where detacaja.Fecha.Date == fechaDesde.Date && mcaja.Estado > 0 && mcaja.Codagencia== _agencia && mcaja.Codcaja == _caja
-                    select new DtoMovimientosCaja(
-                movcaja.Descripcion,
-                detacaja.Hora,
-                detacaja.Fecha,
-                detacaja.Concepto,
-                detacaja.Referencia,
-                rubro.Naturaleza == 1 ? detacaja.Efectivo.Value : detacaja.Efectivo.Value * -1,
-                rubro.Naturaleza == 1 ? detacaja.Cheque.Value : detacaja.Cheque.Value * -1,
-                rubro.Naturaleza == 1 ? detacaja.Transferencia.Value : detacaja.Transferencia.Value * -1,
-                rubro.Naturaleza == 1 ? detacaja.EfectivoExt.Value : detacaja.EfectivoExt.Value * -1,
-                rubro.Naturaleza == 1 ? detacaja.ChequeExt.Value : detacaja.ChequeExt.Value * -1,
-                rubro.Naturaleza == 1 ? detacaja.TransferenciaExt.Value : detacaja.TransferenciaExt.Value * -1,
-                detacaja.IdDetaCaja,
-                mon.Simbolo
-            );
-        return query.AsNoTracking().ToListAsync();
+        return _context.MovimientosCajaSelects
+            .Where(c=>c.Fecha1.Date==fechaDesde.Date
+            && c.Caja == _caja)
+            .ToListAsync();
+
     }
 
-    public Task<List<DtoMovimientosCaja>> FindAllByFechaDesdeAndFechaHasta(DateTime fechaDesde, DateTime fechaHasta)
+    public Task<List<MovimientosCajaSelect>> FindAllByFechaDesdeAndFechaHasta(DateTime fechaDesde, DateTime fechaHasta)
     {
-        var query = from detacaja in _context.Detacajas
-            join movcaja in _context.Movcajas on detacaja.Idmov equals movcaja.Idmov
-            join rubro in _context.Rubros on movcaja.Codrubro equals rubro.Codrubro
-            join mon in _context.Monedas on detacaja.Idmoeda equals mon.Codmoneda
-            where detacaja.Fecha.Date >= fechaDesde.Date && detacaja.Fecha.Date <= fechaHasta.Date && detacaja.Codcaja == _caja
-            select new DtoMovimientosCaja(
-                movcaja.Descripcion,
-                detacaja.Hora,
-                detacaja.Fecha,
-                detacaja.Concepto,
-                detacaja.Referencia,
-                rubro.Naturaleza == 1 ? detacaja.Efectivo.Value : detacaja.Efectivo.Value * -1,
-                rubro.Naturaleza == 1 ? detacaja.Cheque.Value : detacaja.Cheque.Value * -1,
-                rubro.Naturaleza == 1 ? detacaja.Transferencia.Value : detacaja.Transferencia.Value * -1,
-                rubro.Naturaleza == 1 ? detacaja.EfectivoExt.Value : detacaja.EfectivoExt.Value * -1,
-                rubro.Naturaleza == 1 ? detacaja.ChequeExt.Value : detacaja.ChequeExt.Value * -1,
-                rubro.Naturaleza == 1 ? detacaja.TransferenciaExt.Value : detacaja.TransferenciaExt.Value * -1,
-                detacaja.IdDetaCaja,
-                mon.Simbolo
-            );
-        return query.AsNoTracking().ToListAsync();
+        return _context.MovimientosCajaSelects
+            .Where(c=>c.Fecha1.Date>=fechaDesde.Date 
+                      && c.Fecha1<=fechaHasta.Date
+                      && c.Caja == _caja)
+            .ToListAsync();
     }
 
     public string ErrorSms { get; private set; } = "";

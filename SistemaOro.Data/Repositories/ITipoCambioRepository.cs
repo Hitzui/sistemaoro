@@ -4,7 +4,7 @@ namespace SistemaOro.Data.Repositories;
 
 public interface ITipoCambioRepository : ICrudRepository<TipoCambio>
 {
-    Task<TipoCambio?> FindByDateNow();
+    TipoCambio? FindByDateNow();
 
     Task<List<TipoCambio>> FindAllByMonth(DateTime date);
 

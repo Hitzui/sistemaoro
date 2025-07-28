@@ -12,4 +12,5 @@ public class MensajesCompras
     public const string CamposVaciosDetalleCompra = "Hay descripciones con campos datos vacíos, favor rellenar todos los campos para continuar";
     public const string NoExisteCompra = "No existe la compra con el número de compra indicaco";
     public const string AnularCompraConfirmacion = "¿Seguro desea eliminar la compra seleccionada? Esta acción no se puede revertir.";
+    public const string CamposVacios = "NO puede ingresar campos vacios";
 }

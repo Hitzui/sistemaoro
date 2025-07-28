@@ -28,8 +28,9 @@ public partial class ClienteFormViewModel : BaseViewModel
     public ClienteFormViewModel()
     {
         Title = "Detalle de Cliente";
-        _clienteRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IClienteRepository>();
-        _tipoDocumentoRepository = VariablesGlobales.Instance.UnityContainer.Resolve<ITipoDocumentoRepository>();
+        var unitOfWork = VariablesGlobales.Instance.UnityContainer.Resolve<IUnitOfWork>();
+        _clienteRepository = unitOfWork.ClienteRepository;
+        _tipoDocumentoRepository = unitOfWork.TipoDocumentoRepository;
         SaveCommand = new DelegateCommand(Save);
     }
 

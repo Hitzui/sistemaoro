@@ -8,6 +8,7 @@ using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using NLog;
 using SistemaOro.Data.Dto;
+using SistemaOro.Data.Entities;
 using SistemaOro.Data.Libraries;
 using SistemaOro.Data.Repositories;
 using SistemaOro.Forms.Services.Helpers;
@@ -24,8 +25,9 @@ public class ListaDescarguesViewModels : BaseViewModel
     public ListaDescarguesViewModels()
     {
         Title = "Lista de compras a descarga";
-        _compraRepository = VariablesGlobales.Instance.UnityContainer.Resolve<ICompraRepository>();
-        _descarguesRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IDescarguesRepository>();
+        var unitOfWork = VariablesGlobales.Instance.UnityContainer.Resolve<IUnitOfWork>();
+        _compraRepository = unitOfWork.CompraRepository;
+        _descarguesRepository = unitOfWork.DescarguesRepository;
         _fecha = DateTime.Now;
         _dtoComprasClientes = new();
         FilterCommand = new DelegateCommand(OnFilterCommand);

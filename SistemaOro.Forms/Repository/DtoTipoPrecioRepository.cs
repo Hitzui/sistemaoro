@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using SistemaOro.Data.Entities;
 using SistemaOro.Data.Libraries;
 using SistemaOro.Data.Repositories;
 using SistemaOro.Forms.Dto;
@@ -9,7 +10,14 @@ namespace SistemaOro.Forms.Repository;
 
 public class DtoTipoPrecioRepository : IDtoTipoPrecioRepository
 {
-    private readonly ITipoPrecioRepository _tipoPrecioRepotistory = VariablesGlobales.Instance.UnityContainer.Resolve<ITipoPrecioRepository>();
+    private readonly ITipoPrecioRepository _tipoPrecioRepotistory;
+
+    public DtoTipoPrecioRepository()
+    {
+        var unitOfWork = VariablesGlobales.Instance.UnityContainer.Resolve<IUnitOfWork>();
+        _tipoPrecioRepotistory = unitOfWork.TipoPrecioRepository;
+        Error = string.Empty;
+    }
 
     public string Error { get; private set; }
 

@@ -1,40 +1,73 @@
-﻿<Page
+﻿<Page xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+      xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+      xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
       xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
       xmlns:compras="clr-namespace:SistemaOro.Forms.ViewModels.Compras"
+      xmlns:Entities="clr-namespace:SistemaOro.Data.Entities;assembly=SistemaOro.Data"
+      xmlns:dto="clr-namespace:SistemaOro.Data.Dto;assembly=SistemaOro.Data"
       x:Class="SistemaOro.Forms.Views.Compras.ComprasPage"
-      mc:Ignorable="d" 
+      mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="{Binding Title}" Loaded="Page_Loaded">
     <Page.DataContext>
-        <compras:ComprasViewModel/>
+        <compras:ComprasViewModel />
     </Page.DataContext>
-    <Grid>
-
-        <dxg:GridControl ItemsSource="{Binding ComprasClientesList}" 
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+            <dxe:TextEdit Width="200" Height="30"
+                          Text="{Binding SearchText}" 
+                          NullText="Filtrar compra..." Margin="25,0,0,0" />
+            <dx:SimpleButton Content="Filtrar" 
+                             Command="{Binding SearchCompraCommand}"
+                             Glyph="{dx:DXImage SvgImages/Dashboards/MasterFilter.svg}"
+                             GlyphHeight="20" GlyphWidth="20" />
+        </StackPanel>
+        <dxg:GridControl x:Name="grid" Grid.Row="1"
+                         ItemsSource="{Binding PagedAsyncSource}"
                          SelectedItem="{Binding SelectedCompra}"
                          SelectionMode="Row">
+            <dxg:GridControl.TotalSummary>
+                <dxg:GridSummaryItem Alignment="Right" SummaryType="Count" />
+            </dxg:GridControl.TotalSummary>
+           
             <dxg:GridControl.View>
-                <dxg:TableView AllowEditing="False" ShowFixedTotalSummary="True" TotalSummaryPosition="Bottom">
-                    <dxg:TableView.RowCellMenuCustomizations>  
-                        <dxb:BarButtonItem x:Name="EditarCompraItem" Content="Editar" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Edit.svg}" ItemClick="EditarCompraItem_OnItemClick"/>  
-                        <dxb:BarButtonItem ItemClick="BarItem_OnItemClick"  Content="Imprimir" Glyph="{dx:DXImage SvgImages/Dashboards/Print.svg}"/>  
-                        <dxb:BarButtonItem x:Name="ImprimirTicket" Content="Imprimir Ticket" Glyph="{dx:DXImage SvgImages/Dashboards/Print.svg}" ItemClick="ImprimirTicket_ItemClick"/>  
-                        <dxb:BarButtonItem x:Name="DeleteCompraItem" Content="Delete" Glyph="{dx:DXImage SvgImages/HybridDemoIcons/BottomPanel/HybridDemo_Delete.svg}"/>  
-                    </dxg:TableView.RowCellMenuCustomizations>  
+                <dxg:TableView AllowEditing="False"
+                               ShowFixedTotalSummary="True"
+                               TotalSummaryPosition="Bottom"
+                               ShowUpdateRowButtons="OnCellEditorOpen"
+                               ValidateRowCommand="{Binding ValidateRowCommand}">
+                    <dxg:TableView.RowCellMenuCustomizations>
+                        <dxb:BarButtonItem x:Name="EditarCompraItem" Content="Editar"
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Edit.svg}"
+                                           ItemClick="EditarCompraItem_OnItemClick" />
+                        <dxb:BarButtonItem ItemClick="BarItem_OnItemClick" Content="Imprimir"
+                                           Glyph="{dx:DXImage SvgImages/Dashboards/Print.svg}" />
+                        <dxb:BarButtonItem x:Name="ImprimirTicket" Content="Imprimir Ticket"
+                                           Glyph="{dx:DXImage SvgImages/Dashboards/Print.svg}"
+                                           ItemClick="ImprimirTicket_ItemClick" />
+                        <dxb:BarButtonItem x:Name="DeleteCompraItem" Content="Delete"
+                                           Glyph="{dx:DXImage SvgImages/HybridDemoIcons/BottomPanel/HybridDemo_Delete.svg}" />
+                    </dxg:TableView.RowCellMenuCustomizations>
                 </dxg:TableView>
-                
+
             </dxg:GridControl.View>
-            <dxg:GridColumn FieldName="Numcompra" Header="No Compra"/>
-            <dxg:GridColumn FieldName="Codcliente" Header="Cod. Cliente"/>
-            <dxg:GridColumn FieldName="Nombre" Width="300" />
-            <dxg:GridColumn FieldName="Apellido" Width="300" />
-            <dxg:GridColumn FieldName="Total"/>
-            <dxg:GridColumn FieldName="Fecha"/>
+            <dxg:GridColumn FieldName="Numcompra" Header="N° Compra" IsSmart="True" ReadOnly="True" Width="*" AllowAutoFilter="True"/>
+            <dxg:GridColumn FieldName="Codcliente" Header="N° Cliente" IsSmart="True" ReadOnly="True" Width="*" />
+            <dxg:GridColumn FieldName="NombreCliente" IsSmart="True" ReadOnly="True" Width="2*" />
+            <dxg:GridColumn FieldName="Total" IsSmart="True" ReadOnly="True" Width="0.5*" />
+            <dxg:GridColumn FieldName="Peso" IsSmart="True" ReadOnly="True" Width="0.5*" />
+            <dxg:GridColumn FieldName="Fecha" IsSmart="True" ReadOnly="True" Width="0.5*" />
+            <dxg:GridColumn FieldName="Nocontrato" Header="N° Contrato" IsSmart="True" ReadOnly="True" Width="0.5*" />
+            <dxg:GridColumn FieldName="NombreUsuario" IsSmart="True" ReadOnly="True" Width="*" />
+
         </dxg:GridControl>
 
     </Grid>

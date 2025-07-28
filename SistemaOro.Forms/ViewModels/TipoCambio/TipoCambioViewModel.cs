@@ -15,6 +15,7 @@ using SistemaOro.Forms.Services.Helpers;
 using SistemaOro.Forms.Services.Mensajes;
 using Unity;
 using NLog;
+using SistemaOro.Data.Entities;
 
 namespace SistemaOro.Forms.ViewModels.TipoCambio;
 
@@ -27,12 +28,13 @@ public class TipoCambioViewModel : BaseViewModel
     public TipoCambioViewModel()
     {
         Title = "Tipo de Cambio";
-        _tipoCambioRepository = VariablesGlobales.Instance.UnityContainer.Resolve<ITipoCambioRepository>();
+        var unitOfWork = VariablesGlobales.Instance.UnityContainer.Resolve<IUnitOfWork>();
+        _tipoCambioRepository = unitOfWork.TipoCambioRepository;
         _itemSource = new List<Data.Entities.TipoCambio>();
         SaveCommand = new DelegateCommand(OnSaveCommand);
         DeleteCommand = new DelegateCommand(OnDeleteCommand);
         OpenFileCommand = new DelegateCommand(OnOpenFileCommand);
-        _preciosKilatesRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IPreciosKilatesRepository>();
+        _preciosKilatesRepository = unitOfWork.PreciosKilatesRepository;
     }
 
     private async void OnDeleteCommand()

@@ -44,6 +44,8 @@
         <File Name="DataSistema.DescargueByCompra.cs" />
         <File Name="DataSistema.VVariacionesCliente.cs" />
         <File Name="DataSistema.DetalleCompra.cs" />
+        <File Name="DataSistema.ViewComprasOnza.cs" />
+        <File Name="DataSistema.ComprasCliente.cs" />
         <File Name="DataSistema.EstadoCompra.cs" />
         <File Name="DataSistema.Nivel.cs" />
         <File Name="DataSistema.EstadoUsuario.cs" />

@@ -9,17 +9,20 @@
       xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
       mc:Ignorable="d"
       d:DesignHeight="1000" d:DesignWidth="1250"
-      Title="FormComprasPage" Loaded="Page_Loaded">
+      Title="FormComprasPage" Loaded="Page_Loaded" Unloaded="Page_Unloaded">
 
     <Page.DataContext>
         <compras:FormComprasViewModel />
     </Page.DataContext>
-
     <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <ScrollViewer>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ScrollViewer Grid.Row="1">
             <Grid Margin="10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -33,7 +36,6 @@
                 </Grid.RowDefinitions>
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.6*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
@@ -71,28 +73,6 @@
                                 Grid.Row="1" Grid.ColumnSpan="2" IsReadOnly="True" />
                         </Grid>
                     </dx:DXBorder>
-                    <dx:DXBorder
-                        Grid.Column="1"
-                        BorderBrush="Black"
-                        BorderThickness="1"
-                        CornerRadius="5">
-                        <Grid HorizontalAlignment="Left" Margin="10,10,0,10" ToolTip="Anular Compra">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <dx:SimpleButton
-                                HorizontalAlignment="Left"
-                                Command="{Binding SaveCompraCommand}"
-                                Glyph="{dx:DXImage SvgImages/XAF/Action_Save.svg}"
-                                GlyphHeight="32" GlyphWidth="32" Width="55" ToolTip="Guardar Compra" />
-                            <dx:SimpleButton Grid.Column="1" Width="50" Margin="15,0,0,0"
-                                             IsEnabled="{Binding HiddeButtonAnular}"
-                                             Command="{Binding AnularCompraCommand}"
-                                             Glyph="{dx:DXImage SvgImages/Dashboards/RemoveDataItems.svg}"
-                                             GlyphAlignment="Top" />
-                        </Grid>
-                    </dx:DXBorder>
                 </Grid>
 
                 <Grid Grid.Row="1" Margin="0,10,0,0">
@@ -128,7 +108,12 @@
                                              Glyph="{dx:DXImage SvgImages/Dashboards/ClearFilter.svg}" />
                             <dx:SimpleButton HorizontalAlignment="Center" VerticalAlignment="Center"
                                              Height="35" Width="80" Margin="5"
-                                             Command="{Binding CapturarFirmaCommand}" Glyph="{dx:DXImage SvgImages/RichEdit/PenColor.svg}" />
+                                             Command="{Binding CapturarFirmaCommand}"
+                                             Glyph="{dx:DXImage SvgImages/RichEdit/PenColor.svg}" />
+                            <dx:SimpleButton HorizontalAlignment="Center" VerticalAlignment="Center"
+                                             Height="35" Width="80" Margin="5"
+                                             Command="{Binding CapturarHuellaCommand}"
+                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Security_Fingerprint.svg}" />
                         </StackPanel>
                     </dx:DXBorder>
                 </Grid>
@@ -151,8 +136,10 @@
                                             ImmediatePopup="True"
                                             IsPopupAutoWidth="True"
                                             Margin="5,0,5,0"
-                                            HorizontalAlignment="Left" EditValueChanged="CmbPrecios_EditValueChanged"
+                                            HorizontalAlignment="Left"
+                                            EditValueChanged="CmbPrecios_EditValueChanged"
                                             NullText="Seleccionar precio" IsTextEditable="False"
+                                            PopupOpened="CmbPrecios_OnPopupOpened"
                                             Label="Seleccionar Precio">
                                 <dxg:LookUpEdit.PopupContentTemplate>
                                     <ControlTemplate TargetType="{x:Type ContentControl}">
@@ -186,6 +173,16 @@
                                           EditValue="{Binding Importe}"
                                           Margin="5,0,5,0" NullText="Importe" KeyDown="TxtImporte_KeyDown"
                                           Label="Importe" Mask="n2" MaskUseAsDisplayFormat="True" />
+                            <dxe:TextEdit x:Name="TxtLectura" Width="200"
+                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="Left"
+                                          EditValue="{Binding Lectura}"
+                                          Margin="5,0,5,0" NullText="Lectura"
+                                          KeyDown="TxtLectura_KeyDown"
+                                          Label="Lectura"
+                                          Mask="n0"
+                                          MaskUseAsDisplayFormat="True"
+                                          MaskType="Numeric" />
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
                                 <dx:SimpleButton x:Name="BtnAgregar" Height="60" Width="60"
                                                  VerticalAlignment="Center"
@@ -218,6 +215,9 @@
                                          RestoreStateKeyFieldName="Linea"
                                          RestoreStateOnSourceChange="True"
                                          CustomColumnDisplayText="GridDetaCompra_CustomColumnDisplayText">
+                            <dxg:GridControl.TotalSummary>
+                                <dxg:GridSummaryItem FieldName="Peso" DisplayFormat="Total Peso: {0}" SummaryType="Sum" />
+                            </dxg:GridControl.TotalSummary>
                             <dxg:GridControl.View>
                                 <dxg:TableView x:Name="TableViewDetalleCompra"
                                                EditFormShowMode="Dialog"
@@ -225,9 +225,11 @@
                                                ValidateCellCommand="{Binding ValidateCellDetaCompraCommand}"
                                                ShowSearchPanelMode="Never"
                                                BestFitModeOnSourceChange="AllRows"
-                                               ShowBandsPanel="False" ShowGroupPanel="False" />
+                                               ShowBandsPanel="False" ShowGroupPanel="False"
+                                               TotalSummaryPosition="Bottom" ShowFixedTotalSummary="True" />
                             </dxg:GridControl.View>
                             <dxg:GridColumn FieldName="Linea" IsSmart="True" ReadOnly="True" Width="150" />
+                            <dxg:GridColumn FieldName="Lectura" IsSmart="True" Width="180" />
                             <dxg:GridColumn FieldName="Descripcion" IsSmart="True" Width="3*" />
                             <dxg:GridColumn FieldName="Kilate" IsSmart="True" ReadOnly="True" Width="*" />
                             <dxg:GridColumn FieldName="Preciok" IsSmart="True" Header="Precio" Width="*" />
@@ -325,17 +327,16 @@
                                     <ColumnDefinition Width="150" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0" 
-                                    Content="Habilitar Forma de Pago"
+                                <Label Grid.Column="0"
+                                       Content="Habilitar Forma de Pago"
                                        HorizontalContentAlignment="Right"
                                        VerticalContentAlignment="Center"
                                        Margin="0,0,5,0" />
-                                <dxe:CheckEdit Grid.Column="1" 
-                                               HorizontalAlignment="Left" 
+                                <dxe:CheckEdit Grid.Column="1"
+                                               HorizontalAlignment="Left"
                                                Margin="23,0,0,0"
                                                VerticalAlignment="Center"
-                                               IsChecked="{Binding HabilitarFormaPago}"
-                                               />
+                                               IsChecked="{Binding HabilitarFormaPago}" />
 
                             </Grid>
                             <Grid Margin="10">
@@ -343,7 +344,7 @@
                                     <ColumnDefinition Width="150" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0" 
+                                <Label Grid.Column="0"
                                        Content="Monto Local"
                                        HorizontalContentAlignment="Right"
                                        VerticalContentAlignment="Center"
@@ -351,7 +352,7 @@
                                 <dxe:TextEdit Grid.Column="1"
                                               IsEnabled="{Binding HabilitarFormaPago}"
                                               EditValue="{Binding MontoLocal}"
-                                              MaskType="Numeric" 
+                                              MaskType="Numeric"
                                               Mask="n4" />
                             </Grid>
                             <Grid Margin="10">
@@ -359,7 +360,7 @@
                                     <ColumnDefinition Width="150" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0" 
+                                <Label Grid.Column="0"
                                        Content="Monto Extranjero"
                                        HorizontalContentAlignment="Right"
                                        VerticalContentAlignment="Center"
@@ -367,7 +368,7 @@
                                 <dxe:TextEdit Grid.Column="1"
                                               IsEnabled="{Binding HabilitarFormaPago}"
                                               EditValue="{Binding MontoExtranjero}"
-                                              MaskType="Numeric" 
+                                              MaskType="Numeric"
                                               Mask="n4" />
                             </Grid>
                         </dx:UniformStackPanel>

@@ -12,11 +12,18 @@ public class HelpersMessage
         button ??= MessageBoxButton.OK;
         var dialog = new WinUIDialogWindow(title, button.Value)
         {
-            Content = new TextBlock { Text = message}
+            Content = new TextBlock { Text = message},
+            WindowStartupLocation = WindowStartupLocation.CenterScreen
         };
         return dialog;
     }
 
+    /// <summary>
+    /// Mensaje de confirmación con titulo y mensaje, los botones son OK y Cancel
+    /// </summary>
+    /// <param name="title">Titulo</param>
+    /// <param name="message">Cuerpo</param>
+    /// <returns>MessageBoxResult</returns>
     public static MessageBoxResult MensajeConfirmacionResult(string title, string message)
     {
         return ThemedMessageBox.Show(
@@ -27,9 +34,9 @@ public class HelpersMessage
             icon: MessageBoxImage.Question
         );
     }
-    public static MessageBoxResult MensajeInformacionResult(string title, string message)
+    public static void MensajeInformacionResult(string title, string message)
     {
-        return ThemedMessageBox.Show(
+        ThemedMessageBox.Show(
             title: title,
             text: message,
             messageBoxButtons: MessageBoxButton.OK,
@@ -37,9 +44,9 @@ public class HelpersMessage
             icon: MessageBoxImage.Information
         );
     }
-    public static MessageBoxResult MensajeErroResult(string title, string message)
+    public static void MensajeErroResult(string title, string message)
     {
-        return ThemedMessageBox.Show(
+        ThemedMessageBox.Show(
             title: title,
             text: message,
             messageBoxButtons: MessageBoxButton.OK,

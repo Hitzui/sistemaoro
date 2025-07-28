@@ -3,13 +3,13 @@ using SistemaOro.Data.Entities;
 
 namespace SistemaOro.Data.Repositories;
 
-public class AgenciaRepository(IParametersRepository parametersRepository,DataContext context) : FacadeEntity<Agencia>(context),IAgenciaRepository
+public class AgenciaRepository(DataContext context) : FacadeEntity<Agencia>(context),IAgenciaRepository
 {
     private readonly DataContext _context = context;
 
     public async Task<string> CodigoAgencia()
     {
-        var find = await parametersRepository.RecuperarParametros();
+        var find = await _context.Id.SingleOrDefaultAsync();
         if (find is not null)
         {
             return $"A{find.Codagencia.ToString()!.PadLeft(3, '0')}";

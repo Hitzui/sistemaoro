@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 using DevExpress.Mvvm;
 using SistemaOro.Data.Entities;
 using SistemaOro.Data.Libraries;
@@ -11,7 +10,6 @@ using SistemaOro.Forms.Services;
 using SistemaOro.Forms.Services.Helpers;
 using SistemaOro.Forms.Services.Mensajes;
 using SistemaOro.Forms.Views.Reportes.Caja;
-using SistemaOro.Forms.Views.Reportes.Compras;
 using Unity;
 
 namespace SistemaOro.Forms.ViewModels.Cajas;
@@ -24,9 +22,10 @@ public class RealizarMovimientoCajaViewModel : BaseViewModel
     public RealizarMovimientoCajaViewModel()
     {
         Title = "Realizar Movimiento Caja";
-        _movimientosRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IMovimientosRepository>();
-        _maestroCajaRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IMaestroCajaRepository>();
-        _monedaRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IMonedaRepository>();
+        var unitOfWork = VariablesGlobales.Instance.UnityContainer.Resolve<IUnitOfWork>();
+        _movimientosRepository = unitOfWork.MovimientosRepository;
+        _maestroCajaRepository = unitOfWork.MaestroCajaRepository;
+        _monedaRepository = unitOfWork.MonedaRepository;
         SaveCommand = new DelegateCommand(OnSaveCommand);
         IsEfectivo = true;
     }
@@ -153,7 +152,7 @@ public class RealizarMovimientoCajaViewModel : BaseViewModel
             Hora = DateTime.Now.ToShortTimeString(),
             Codcaja = caja,
             Idmoeda = SelectedMoneda.Codmoneda,
-            Codoperador = VariablesGlobalesForm.Instance.Usuario.Codoperador
+            Codoperador = VariablesGlobalesForm.Instance.Usuario?.Codoperador
         };
         var save = await _maestroCajaRepository.GuardarDatosDetaCaja(detalleMovimiento, SelectedMovcaja, mcaja);
         if (save <= 0)

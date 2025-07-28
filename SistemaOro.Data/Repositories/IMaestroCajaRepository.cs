@@ -27,13 +27,13 @@ public interface IMaestroCajaRepository
 
     Task<List<Detacaja>?> RecuperarDetaCajaValores(Mcaja mcaja);
 
-    Task<List<DtoMovimientosCaja>> FindAllByIdMaestroCaja(int id);
+    Task<List<MovimientosCajaSelect>> FindAllByIdMaestroCaja(int id);
 
-    Task<List<DtoMovimientosCaja>> FindAllByFechaDesde(DateTime fechaDesde);
+    Task<List<MovimientosCajaSelect>> FindAllByFechaDesde(DateTime fechaDesde);
 
-    Task<List<DtoMovimientosCaja>> FindAllByFechaDesdeActiva(DateTime fechaDesde);
+    Task<List<MovimientosCajaSelect>> FindAllByFechaDesdeActiva(DateTime fechaDesde);
 
-    Task<List<DtoMovimientosCaja>> FindAllByFechaDesdeAndFechaHasta(DateTime fechaDesde,DateTime fechaHasta);
+    Task<List<MovimientosCajaSelect>> FindAllByFechaDesdeAndFechaHasta(DateTime fechaDesde, DateTime fechaHasta);
 
     string ErrorSms { get; }
 }

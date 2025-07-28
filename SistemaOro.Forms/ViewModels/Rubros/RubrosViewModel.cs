@@ -18,7 +18,8 @@ public class RubrosViewModel : BaseViewModel
 
     public RubrosViewModel()
     {
-        _rubroRepository = VariablesGlobales.Instance.UnityContainer.Resolve<IRubroRepository>();
+        var unitOfWork = VariablesGlobales.Instance.UnityContainer.Resolve<IUnitOfWork>();
+        _rubroRepository = unitOfWork.RubroRepository;
         Title = "Rubros";
         _itemsSource = new List<Rubro>();
     }
