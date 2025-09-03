@@ -5,22 +5,28 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Azure.Identity" Version="1.12.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
+    <PackageReference Include="Azure.Identity" Version="1.14.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.6" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="NLog" Version="5.3.4" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
-    <PackageReference Include="System.Formats.Asn1" Version="8.0.1" />
-    <PackageReference Include="System.Text.Json" Version="8.0.5" />
+    <PackageReference Include="NLog" Version="5.5.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
+    <PackageReference Include="System.Formats.Asn1" Version="9.0.6" />
+    <PackageReference Include="System.Text.Json" Version="9.0.6" />
     <PackageReference Include="Unity" Version="5.11.10" />
     <PackageReference Include="Unity.RegistrationByConvention" Version="5.11.1" />
   </ItemGroup>
@@ -30,14 +36,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Reference Include="DevExpress.Data.Desktop.v24.1">
-      <HintPath>C:\Program Files\DevExpress 24.1\Components\Offline Packages\devexpress.data.desktop\24.1.7\lib\net6.0-windows\DevExpress.Data.Desktop.v24.1.dll</HintPath>
+    <Reference Include="DevExpress.Utils.v24.2">
+      <HintPath>C:\Program Files\DevExpress 24.2\Components\Offline Packages\devexpress.utils\24.2.3\lib\net8.0-windows\DevExpress.Utils.v24.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Utils.v24.1">
-      <HintPath>C:\Program Files\DevExpress 24.1\Components\Offline Packages\devexpress.utils\24.1.7\lib\net6.0-windows\DevExpress.Utils.v24.1.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraEditors.v24.1">
-      <HintPath>C:\Program Files\DevExpress 24.1\Components\Offline Packages\devexpress.win.navigation\24.1.7\lib\net6.0-windows\DevExpress.XtraEditors.v24.1.dll</HintPath>
+    <Reference Include="DevExpress.XtraEditors.v24.2">
+      <HintPath>C:\Program Files\DevExpress 24.2\Components\Offline Packages\devexpress.win.navigation\24.2.3\lib\net8.0-windows\DevExpress.XtraEditors.v24.2.dll</HintPath>
     </Reference>
     <Compile Update="Utilities\HtmlCssAsset.cs" />
   </ItemGroup>
@@ -51,8 +54,8 @@
     <None Update="App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 </Project>

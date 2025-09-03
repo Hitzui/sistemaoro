@@ -23,109 +23,110 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <ScrollViewer Grid.Row="1">
-            <Grid Margin="10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="70" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid>
+            <dx:LoadingDecorator OwnerLock="Full" IsSplashScreenShown="{Binding IsLoading}" >
+                <Grid Margin="10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="70" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
-                    <dx:DXBorder
+                        <dx:DXBorder
                         Margin="0,0,10,0"
                         BorderBrush="Black"
                         BorderThickness="1"
                         CornerRadius="5">
-                        <Grid Height="70">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="190" />
-                                <ColumnDefinition Width="223" />
-                                <ColumnDefinition Width="14" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Label Grid.Column="0"
+                            <Grid Height="70">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="190" />
+                                    <ColumnDefinition Width="223" />
+                                    <ColumnDefinition Width="14" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Label Grid.Column="0"
                                    Grid.Row="0"
                                    Margin="5,5,5,5"
                                    Content="Número de compra:" />
-                            <dxe:TextEdit Grid.Column="1"
+                                <dxe:TextEdit Grid.Column="1"
                                           EditValue="{Binding NumeroCompra}"
                                           Margin="5,5,5,5"
                                           Grid.Row="0" Grid.ColumnSpan="2" IsReadOnly="True" />
-                            <Label Grid.Column="0"
+                                <Label Grid.Column="0"
                                    Grid.Row="1"
                                    Margin="5,5,5,5"
                                    Content="Fecha de la compra:" />
-                            <dxe:DateEdit
+                                <dxe:DateEdit
                                 EditValue="{Binding Fecha}"
                                 Margin="5,5,5,5"
                                 Grid.Column="1"
                                 Grid.Row="1" Grid.ColumnSpan="2" IsReadOnly="True" />
-                        </Grid>
-                    </dx:DXBorder>
-                </Grid>
+                            </Grid>
+                        </dx:DXBorder>
+                    </Grid>
 
-                <Grid Grid.Row="1" Margin="0,10,0,0">
-                    <dx:DXBorder
+                    <Grid Grid.Row="1" Margin="0,10,0,0">
+                        <dx:DXBorder
                         BorderBrush="Black"
                         BorderThickness="1"
                         CornerRadius="5"
                         Height="72">
-                        <StackPanel Orientation="Horizontal" CanHorizontallyScroll="True"
+                            <StackPanel Orientation="Horizontal" CanHorizontallyScroll="True"
                                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                     ScrollViewer.CanContentScroll="True">
-                            <Label Content="Datos del cliente:" VerticalAlignment="Center"
+                                <Label Content="Datos del cliente:" VerticalAlignment="Center"
                                    HorizontalContentAlignment="Right"
                                    HorizontalAlignment="Center" Margin="5,0,5,0" />
-                            <dxe:TextEdit Height="30" VerticalAlignment="Center" Width="180" Label=""
+                                <dxe:TextEdit Height="30" VerticalAlignment="Center" Width="180" Label=""
                                           HorizontalAlignment="Left" Margin="0,0,5,0" IsReadOnly="True"
                                           EditValue="{Binding SelectedCliente.Codcliente}"
                                           NullText="Código del cliente" />
-                            <dxe:TextEdit Height="30" VerticalAlignment="Center" Width="180"
+                                <dxe:TextEdit Height="30" VerticalAlignment="Center" Width="180"
                                           Margin="0,0,5,0" IsReadOnly="True"
                                           EditValue="{Binding SelectedCliente.Nombres}" NullText="Nombres" />
-                            <dxe:TextEdit Height="30" VerticalAlignment="Center" Width="180"
+                                <dxe:TextEdit Height="30" VerticalAlignment="Center" Width="180"
                                           Margin="0,0,5,0" IsReadOnly="True"
                                           EditValue="{Binding SelectedCliente.Apellidos}" NullText="Apellidos" />
-                            <dx:SimpleButton HorizontalAlignment="Center" VerticalAlignment="Center" Height="35"
+                                <dx:SimpleButton HorizontalAlignment="Center" VerticalAlignment="Center" Height="35"
                                              Width="80"
                                              Glyph="{dx:DXImage SvgImages/XAF/Action_Search.svg}"
                                              Margin="5"
                                              Command="{Binding SelectClienteCommand}" />
-                            <dx:SimpleButton HorizontalAlignment="Center" VerticalAlignment="Center"
+                                <dx:SimpleButton HorizontalAlignment="Center" VerticalAlignment="Center"
                                              Height="35" Width="80" Margin="5"
                                              Command="{Binding RemoveClienteCommand}"
                                              Glyph="{dx:DXImage SvgImages/Dashboards/ClearFilter.svg}" />
-                            <dx:SimpleButton HorizontalAlignment="Center" VerticalAlignment="Center"
+                                <dx:SimpleButton HorizontalAlignment="Center" VerticalAlignment="Center"
                                              Height="35" Width="80" Margin="5"
                                              Command="{Binding CapturarFirmaCommand}"
                                              Glyph="{dx:DXImage SvgImages/RichEdit/PenColor.svg}" />
-                            <dx:SimpleButton HorizontalAlignment="Center" VerticalAlignment="Center"
+                                <dx:SimpleButton HorizontalAlignment="Center" VerticalAlignment="Center"
                                              Height="35" Width="80" Margin="5"
                                              Command="{Binding CapturarHuellaCommand}"
                                              Glyph="{dx:DXImage SvgImages/Icon Builder/Security_Fingerprint.svg}" />
-                        </StackPanel>
-                    </dx:DXBorder>
-                </Grid>
-                <Grid Grid.Row="2" Margin="0,10,0,0">
-                    <dx:DXBorder
+                            </StackPanel>
+                        </dx:DXBorder>
+                    </Grid>
+                    <Grid Grid.Row="2" Margin="0,10,0,0">
+                        <dx:DXBorder
                         BorderBrush="Black"
                         BorderThickness="1"
                         CornerRadius="5"
                         Height="80">
-                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal">
 
-                            <dxg:LookUpEdit x:Name="CmbPrecios" ItemsSource="{Binding PrecioKilates}"
+                                <dxg:LookUpEdit x:Name="CmbPrecios" ItemsSource="{Binding PrecioKilates}"
                                             DisplayMember="Descripcion"
                                             SelectedItem="{Binding SelectedPrecioKilate}"
                                             ValueMember="IdPrecioKilate"
@@ -141,39 +142,39 @@
                                             NullText="Seleccionar precio" IsTextEditable="False"
                                             PopupOpened="CmbPrecios_OnPopupOpened"
                                             Label="Seleccionar Precio">
-                                <dxg:LookUpEdit.PopupContentTemplate>
-                                    <ControlTemplate TargetType="{x:Type ContentControl}">
-                                        <dxg:GridControl x:Name="PART_GridControl"
+                                    <dxg:LookUpEdit.PopupContentTemplate>
+                                        <ControlTemplate TargetType="{x:Type ContentControl}">
+                                            <dxg:GridControl x:Name="PART_GridControl"
                                                          ShowBorder="False"
                                                          ShowLoadingPanel="{Binding LookUpSocietyMemberships.IsLoading}">
-                                            <dxg:GridControl.Columns>
-                                                <dxg:GridColumn IsSmart="True" FieldName="Descripcion" Width="*" />
-                                                <dxg:GridColumn IsSmart="True" FieldName="Precio" Width="*" />
-                                            </dxg:GridControl.Columns>
-                                        </dxg:GridControl>
-                                    </ControlTemplate>
-                                </dxg:LookUpEdit.PopupContentTemplate>
-                                <dxg:LookUpEdit.StyleSettings>
-                                    <dxg:SearchLookUpEditStyleSettings AllowGrouping="False"
+                                                <dxg:GridControl.Columns>
+                                                    <dxg:GridColumn IsSmart="True" FieldName="Descripcion" Width="*" />
+                                                    <dxg:GridColumn IsSmart="True" FieldName="Precio" Width="*" />
+                                                </dxg:GridControl.Columns>
+                                            </dxg:GridControl>
+                                        </ControlTemplate>
+                                    </dxg:LookUpEdit.PopupContentTemplate>
+                                    <dxg:LookUpEdit.StyleSettings>
+                                        <dxg:SearchLookUpEditStyleSettings AllowGrouping="False"
                                                                        AllowColumnFiltering="True" />
-                                </dxg:LookUpEdit.StyleSettings>
-                            </dxg:LookUpEdit>
-                            <dxe:TextEdit x:Name="TxtPrecio" Width="200" VerticalAlignment="Center" Margin="5,0,5,0"
+                                    </dxg:LookUpEdit.StyleSettings>
+                                </dxg:LookUpEdit>
+                                <dxe:TextEdit x:Name="TxtPrecio" Width="200" VerticalAlignment="Center" Margin="5,0,5,0"
                                           NullText="Precio Quilate" EditValue="{Binding Precio}"
                                           MaskType="Numeric" Mask="n2" KeyDown="TxtPrecio_KeyDown"
                                           Label="Precio Quilate" MaskUseAsDisplayFormat="True" />
-                            <dxe:TextEdit x:Name="TxtPeso" Width="200" VerticalAlignment="Center"
+                                <dxe:TextEdit x:Name="TxtPeso" Width="200" VerticalAlignment="Center"
                                           HorizontalAlignment="Left"
                                           EditValue="{Binding Peso}"
                                           Margin="5,0,5,0" NullText="Peso Quilate" KeyDown="TxtPeso_KeyDown"
                                           Label="Peso Quilate" Mask="n2" MaskUseAsDisplayFormat="True"
                                           MaskType="Numeric" />
-                            <dxe:TextEdit x:Name="TxtImporte" Width="200" VerticalAlignment="Center" IsReadOnly="True"
+                                <dxe:TextEdit x:Name="TxtImporte" Width="200" VerticalAlignment="Center" IsReadOnly="True"
                                           HorizontalAlignment="Left"
                                           EditValue="{Binding Importe}"
                                           Margin="5,0,5,0" NullText="Importe" KeyDown="TxtImporte_KeyDown"
                                           Label="Importe" Mask="n2" MaskUseAsDisplayFormat="True" />
-                            <dxe:TextEdit x:Name="TxtLectura" Width="200"
+                                <dxe:TextEdit x:Name="TxtLectura" Width="200"
                                           VerticalAlignment="Center"
                                           HorizontalAlignment="Left"
                                           EditValue="{Binding Lectura}"
@@ -183,43 +184,43 @@
                                           Mask="n0"
                                           MaskUseAsDisplayFormat="True"
                                           MaskType="Numeric" />
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                <dx:SimpleButton x:Name="BtnAgregar" Height="60" Width="60"
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                    <dx:SimpleButton x:Name="BtnAgregar" Height="60" Width="60"
                                                  VerticalAlignment="Center"
                                                  Command="{Binding AddRowCommand}"
                                                  Glyph="{dx:DXImage SvgImages/Dashboards/NewDataSource.svg}"
                                                  Margin="5,0,0,0"
                                                  HorizontalAlignment="Left" />
-                                <dx:SimpleButton x:Name="BtnEliminar"
+                                    <dx:SimpleButton x:Name="BtnEliminar"
                                                  Command="{Binding RemoveRowCommand}"
                                                  Width="60" Height="60"
                                                  VerticalAlignment="Center"
                                                  Glyph="{dx:DXImage SvgImages/Dashboards/DeleteDataSource.svg}"
                                                  Margin="5,0,5,0"
                                                  HorizontalAlignment="Left" />
+                                </StackPanel>
+
                             </StackPanel>
+                        </dx:DXBorder>
+                    </Grid>
 
-                        </StackPanel>
-                    </dx:DXBorder>
-                </Grid>
-
-                <Grid Grid.Row="3" Margin="0,10,0,0">
-                    <dx:DXBorder
+                    <Grid Grid.Row="3" Margin="0,10,0,0">
+                        <dx:DXBorder
                         BorderBrush="Black"
                         BorderThickness="1"
                         CornerRadius="5"
                         Height="300">
-                        <dxg:GridControl x:Name="GridDetaCompra" SelectionMode="Row"
+                            <dxg:GridControl x:Name="GridDetaCompra" SelectionMode="Row"
                                          ItemsSource="{Binding ItemsSource}"
                                          SelectedItem="{Binding SelectedDetCompra}"
                                          RestoreStateKeyFieldName="Linea"
                                          RestoreStateOnSourceChange="True"
                                          CustomColumnDisplayText="GridDetaCompra_CustomColumnDisplayText">
-                            <dxg:GridControl.TotalSummary>
-                                <dxg:GridSummaryItem FieldName="Peso" DisplayFormat="Total Peso: {0}" SummaryType="Sum" />
-                            </dxg:GridControl.TotalSummary>
-                            <dxg:GridControl.View>
-                                <dxg:TableView x:Name="TableViewDetalleCompra"
+                                <dxg:GridControl.TotalSummary>
+                                    <dxg:GridSummaryItem FieldName="Peso" DisplayFormat="Total Peso: {0}" SummaryType="Sum" />
+                                </dxg:GridControl.TotalSummary>
+                                <dxg:GridControl.View>
+                                    <dxg:TableView x:Name="TableViewDetalleCompra"
                                                EditFormShowMode="Dialog"
                                                CellValueChangedCommand="{Binding CellValueChangedDetaCompraCommand}"
                                                ValidateCellCommand="{Binding ValidateCellDetaCompraCommand}"
@@ -227,240 +228,241 @@
                                                BestFitModeOnSourceChange="AllRows"
                                                ShowBandsPanel="False" ShowGroupPanel="False"
                                                TotalSummaryPosition="Bottom" ShowFixedTotalSummary="True" />
-                            </dxg:GridControl.View>
-                            <dxg:GridColumn FieldName="Linea" IsSmart="True" ReadOnly="True" Width="150" />
-                            <dxg:GridColumn FieldName="Lectura" IsSmart="True" Width="180" />
-                            <dxg:GridColumn FieldName="Descripcion" IsSmart="True" Width="3*" />
-                            <dxg:GridColumn FieldName="Kilate" IsSmart="True" ReadOnly="True" Width="*" />
-                            <dxg:GridColumn FieldName="Preciok" IsSmart="True" Header="Precio" Width="*" />
-                            <dxg:GridColumn FieldName="Peso" IsSmart="True" Width="*" />
-                            <dxg:GridColumn FieldName="Importe" IsSmart="True" ReadOnly="True" Width="*" />
-                        </dxg:GridControl>
-                    </dx:DXBorder>
-                </Grid>
+                                </dxg:GridControl.View>
+                                <dxg:GridColumn FieldName="Linea" IsSmart="True" ReadOnly="True" Width="150" />
+                                <dxg:GridColumn FieldName="Lectura" IsSmart="True" Width="180" />
+                                <dxg:GridColumn FieldName="Descripcion" IsSmart="True" Width="3*" />
+                                <dxg:GridColumn FieldName="Kilate" IsSmart="True" ReadOnly="True" Width="*" />
+                                <dxg:GridColumn FieldName="Preciok" IsSmart="True" Header="Precio" Width="*" />
+                                <dxg:GridColumn FieldName="Peso" IsSmart="True" Width="*" />
+                                <dxg:GridColumn FieldName="Importe" IsSmart="True" ReadOnly="True" Width="*" />
+                            </dxg:GridControl>
+                        </dx:DXBorder>
+                    </Grid>
 
-                <Grid Grid.Row="4">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <dx:DXBorder Grid.Column="0"
+                    <Grid Grid.Row="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <dx:DXBorder Grid.Column="0"
                                  Margin="0,10,0,0"
                                  BorderBrush="Black"
                                  BorderThickness="1"
                                  CornerRadius="5"
                                  Height="300">
-                        <dx:UniformStackPanel Margin="15" Orientation="Vertical" ChildSpacing="15">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="100" />
-                                    <ColumnDefinition Width="463*" />
-                                    <ColumnDefinition Width="5*" />
-                                </Grid.ColumnDefinitions>
-                                <dxe:CheckEdit x:Name="ChkEfectivo" Content="Efectivo" IsChecked="{Binding IsEfectivo}" />
-                                <dxe:TextEdit x:Name="TxtEfectivo" Grid.Column="1"
+                            <dx:UniformStackPanel Margin="15" Orientation="Vertical" ChildSpacing="15">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100" />
+                                        <ColumnDefinition Width="463*" />
+                                        <ColumnDefinition Width="5*" />
+                                    </Grid.ColumnDefinitions>
+                                    <dxe:CheckEdit x:Name="ChkEfectivo" Content="Efectivo" IsChecked="{Binding IsEfectivo}" />
+                                    <dxe:TextEdit x:Name="TxtEfectivo" Grid.Column="1"
                                               IsEnabled="{Binding IsEfectivo}"
                                               EditValue="{Binding MontoEfectivo}"
                                               MaskType="Numeric" Grid.ColumnSpan="2" Mask="n2" />
-                            </Grid>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="100" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <dxe:CheckEdit x:Name="ChkCheque" Content="Cheque" IsChecked="{Binding IsCheque}" />
-                                <dxe:TextEdit x:Name="TxtCheque" Grid.Column="1"
+                                </Grid>
+                                <!--<Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <dxe:CheckEdit x:Name="ChkCheque" Content="Cheque" IsChecked="{Binding IsCheque}" />
+                                    <dxe:TextEdit x:Name="TxtCheque" Grid.Column="1"
                                               IsEnabled="{Binding IsCheque}"
                                               EditValue="{Binding MontoCheque}"
                                               MaskType="Numeric" Mask="n2" />
-                            </Grid>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="100" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <dxe:CheckEdit x:Name="ChkTransferencia" Content="Transferencia"
+                                </Grid>-->
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <dxe:CheckEdit x:Name="ChkTransferencia" Content="Transferencia"
                                                IsChecked="{Binding IsTransferencia}" />
-                                <dxe:TextEdit x:Name="TxtTransferencia" Grid.Column="1"
+                                    <dxe:TextEdit x:Name="TxtTransferencia" Grid.Column="1"
                                               IsEnabled="{Binding IsTransferencia}"
                                               EditValue="{Binding MontoTransferencia}"
                                               MaskType="Numeric" Mask="n2" />
-                            </Grid>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="100" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <dxe:CheckEdit x:Name="ChkPorPagar" Content="PorPagar" IsChecked="{Binding IsPorPagar}" />
-                                <dxe:TextEdit x:Name="TxtPorPagar" Grid.Column="1"
+                                </Grid>
+                                <!--<Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <dxe:CheckEdit x:Name="ChkPorPagar" Content="PorPagar" IsChecked="{Binding IsPorPagar}" />
+                                    <dxe:TextEdit x:Name="TxtPorPagar" Grid.Column="1"
                                               IsEnabled="{Binding IsPorPagar}"
                                               EditValue="{Binding MontoPorPagar}"
                                               MaskType="Numeric" Mask="n2" />
-                            </Grid>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="100" />
-                                    <ColumnDefinition Width="2*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <dxe:CheckEdit x:Name="ChkAdelanto" Content="Adelanto" IsChecked="{Binding IsAdelanto}" />
-                                <dxe:TextEdit x:Name="TxtAdelanto" Grid.Column="1"
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100" />
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <dxe:CheckEdit x:Name="ChkAdelanto" Content="Adelanto" IsChecked="{Binding IsAdelanto}" />
+                                    <dxe:TextEdit x:Name="TxtAdelanto" Grid.Column="1"
                                               IsEnabled="{Binding IsAdelanto}"
                                               EditValue="{Binding MontoAdelanto}"
                                               MaskType="Numeric" Mask="n2" />
-                                <dx:SimpleButton Grid.Column="2"
+                                    <dx:SimpleButton Grid.Column="2"
                                                  IsEnabled="{Binding IsAdelanto}"
                                                  Glyph="{dx:DXImage SvgImages/Icon Builder/Business_Cash.svg}" />
-                            </Grid>
-                        </dx:UniformStackPanel>
-                    </dx:DXBorder>
-                    <dx:DXBorder Grid.Column="1"
+                                </Grid>-->
+                            </dx:UniformStackPanel>
+                        </dx:DXBorder>
+                        <dx:DXBorder Grid.Column="1"
                                  Margin="5,10,0,0"
                                  BorderBrush="Black"
                                  BorderThickness="1"
                                  CornerRadius="5"
                                  Height="300">
-                        <dx:UniformStackPanel Orientation="Vertical" Margin="10">
-                            <Grid Margin="10">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="150" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0"
+                            <dx:UniformStackPanel Orientation="Vertical" Margin="10">
+                                <Grid Margin="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="150" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0"
                                        Content="Habilitar Forma de Pago"
                                        HorizontalContentAlignment="Right"
                                        VerticalContentAlignment="Center"
                                        Margin="0,0,5,0" />
-                                <dxe:CheckEdit Grid.Column="1"
+                                    <dxe:CheckEdit Grid.Column="1"
                                                HorizontalAlignment="Left"
                                                Margin="23,0,0,0"
                                                VerticalAlignment="Center"
                                                IsChecked="{Binding HabilitarFormaPago}" />
 
-                            </Grid>
-                            <Grid Margin="10">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="150" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0"
+                                </Grid>
+                                <Grid Margin="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="150" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0"
                                        Content="Monto Local"
                                        HorizontalContentAlignment="Right"
                                        VerticalContentAlignment="Center"
                                        Margin="0,0,5,0" />
-                                <dxe:TextEdit Grid.Column="1"
+                                    <dxe:TextEdit Grid.Column="1"
                                               IsEnabled="{Binding HabilitarFormaPago}"
                                               EditValue="{Binding MontoLocal}"
                                               MaskType="Numeric"
                                               Mask="n4" />
-                            </Grid>
-                            <Grid Margin="10">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="150" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0"
+                                </Grid>
+                                <Grid Margin="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="150" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0"
                                        Content="Monto Extranjero"
                                        HorizontalContentAlignment="Right"
                                        VerticalContentAlignment="Center"
                                        Margin="0,0,5,0" />
-                                <dxe:TextEdit Grid.Column="1"
+                                    <dxe:TextEdit Grid.Column="1"
                                               IsEnabled="{Binding HabilitarFormaPago}"
                                               EditValue="{Binding MontoExtranjero}"
                                               MaskType="Numeric"
                                               Mask="n4" />
-                            </Grid>
-                        </dx:UniformStackPanel>
-                    </dx:DXBorder>
-                    <dx:DXBorder Grid.Column="2"
+                                </Grid>
+                            </dx:UniformStackPanel>
+                        </dx:DXBorder>
+                        <dx:DXBorder Grid.Column="2"
                                  Margin="5,10,0,0"
                                  BorderBrush="Black"
                                  BorderThickness="1"
                                  CornerRadius="5"
                                  Height="300">
-                        <dx:UniformStackPanel Orientation="Vertical" Margin="10">
-                            <Grid Margin="10">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="150" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Label Content="Sub-Total Compra:"
+                            <dx:UniformStackPanel Orientation="Vertical" Margin="10">
+                                <Grid Margin="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="150" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="Sub-Total Compra:"
                                        HorizontalContentAlignment="Right"
                                        VerticalContentAlignment="Center"
                                        Margin="0,0,5,0" />
-                                <dxe:TextEdit x:Name="TxtSubTotalCompra"
+                                    <dxe:TextEdit x:Name="TxtSubTotalCompra"
                                               EditValue="{Binding SubTotal}"
                                               Grid.Column="1"
                                               IsReadOnly="True" MaskUseAsDisplayFormat="True" MaskType="Numeric"
                                               Mask="n2" RenderTransformOrigin="0.94,-1.727" NullText="0.0"
                                               MaskCulture="es-PE" />
-                            </Grid>
-                            <Grid Margin="10">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="150" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Label Content="Aplicar Descuento:"
+                                </Grid>
+                                <Grid Margin="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="150" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="Aplicar Descuento:"
                                        HorizontalContentAlignment="Right"
                                        VerticalContentAlignment="Center"
                                        Margin="0,0,5,0" />
-                                <dxe:ComboBoxEdit x:Name="CmbDescuento" Grid.Column="1"
+                                    <dxe:ComboBoxEdit x:Name="CmbDescuento" Grid.Column="1"
                                                   ItemsSource="{Binding TiposPrecios}"
                                                   DisplayMember="Descripcion"
                                                   ValueMember="IdTipoPrecio"
                                                   SelectedItem="{Binding SelectedTiposPrecios}"
                                                   NullText="Tipo de precio" />
-                            </Grid>
-                            <Grid Margin="10">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="150" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Label Content="Total Compra:"
+                                </Grid>
+                                <Grid Margin="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="150" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="Total Compra:"
                                        HorizontalContentAlignment="Right"
                                        VerticalContentAlignment="Center"
                                        Margin="0,0,5,0" />
-                                <dxe:TextEdit x:Name="TxtTotalCompra"
+                                    <dxe:TextEdit x:Name="TxtTotalCompra"
                                               EditValue="{Binding Total}"
                                               Grid.Column="1"
                                               IsReadOnly="True" MaskType="Numeric" Mask="n2" NullText="0.0"
                                               MaskCulture="es-PE" MaskUseAsDisplayFormat="True" />
-                            </Grid>
-                            <Grid Margin="10">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="150" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Label Content="Estado de la Compra:"
+                                </Grid>
+                                <Grid Margin="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="150" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="Estado de la Compra:"
                                        HorizontalContentAlignment="Right"
                                        VerticalContentAlignment="Center"
                                        Margin="0,0,5,0" />
-                                <dxe:ComboBoxEdit x:Name="CmbEstadoCompra" Grid.Column="1"
+                                    <dxe:ComboBoxEdit x:Name="CmbEstadoCompra" Grid.Column="1"
                                                   ItemsSource="{Binding EstadoCompras}"
                                                   SelectedItem="{Binding SelectedEstadoCompra}"
                                                   NullText="Estado de la compra" />
-                            </Grid>
-                            <Grid Margin="10">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="150" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Label Content="Tipo de Moneda:"
+                                </Grid>
+                                <Grid Margin="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="150" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="Tipo de Moneda:"
                                        HorizontalContentAlignment="Right"
                                        VerticalContentAlignment="Center"
                                        Margin="0,0,5,0" />
-                                <dxe:ComboBoxEdit SelectedItem="{Binding SelectedMoneda}"
+                                    <dxe:ComboBoxEdit SelectedItem="{Binding SelectedMoneda}"
                                                   ItemsSource="{Binding Monedas}"
                                                   DisplayMember="Descripcion"
                                                   ValueMember="Codmoneda"
                                                   x:Name="CmbTipoMoneda" Grid.Column="1" NullText="Tipo de moneda" />
-                            </Grid>
-                        </dx:UniformStackPanel>
-                    </dx:DXBorder>
-                </Grid>
+                                </Grid>
+                            </dx:UniformStackPanel>
+                        </dx:DXBorder>
+                    </Grid>
 
-            </Grid>
+                </Grid>
+            </dx:LoadingDecorator>
         </ScrollViewer>
     </Grid>
 

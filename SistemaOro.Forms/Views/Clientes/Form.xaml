@@ -7,7 +7,7 @@
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-    xmlns:xtraEditors="clr-namespace:DevExpress.XtraEditors;assembly=DevExpress.XtraEditors.v24.2"
+    xmlns:xtraEditors="clr-namespace:DevExpress.XtraEditors;assembly=DevExpress.XtraEditors.v25.1"
     xmlns:dxre="http://schemas.devexpress.com/winfx/2008/xaml/richedit"
     x:Class="SistemaOro.Forms.Views.Clientes.Form"
     mc:Ignorable="d"

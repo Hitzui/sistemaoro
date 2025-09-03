@@ -21,29 +21,29 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-            <dxe:TextEdit Width="200" Height="30"
-                          Text="{Binding SearchText}" 
-                          NullText="Filtrar compra..." Margin="25,0,0,0" />
-            <dx:SimpleButton Content="Filtrar" 
-                             Command="{Binding SearchCompraCommand}"
-                             Glyph="{dx:DXImage SvgImages/Dashboards/MasterFilter.svg}"
-                             GlyphHeight="20" GlyphWidth="20" />
-        </StackPanel>
         <dxg:GridControl x:Name="grid" Grid.Row="1"
-                         ItemsSource="{Binding PagedAsyncSource}"
                          SelectedItem="{Binding SelectedCompra}"
                          SelectionMode="Row">
             <dxg:GridControl.TotalSummary>
                 <dxg:GridSummaryItem Alignment="Right" SummaryType="Count" />
             </dxg:GridControl.TotalSummary>
-           
+            <dxg:GridControl.InputBindings>
+                <KeyBinding Command="{Binding View.Commands.DeleteFocusedRow, ElementName=grid}" Key="Delete" />
+            </dxg:GridControl.InputBindings>
+            <dxg:GridControl.ItemsSource>
+                <dx:InfiniteAsyncSource Name="Source"
+                                        ElementType="{x:Type Entities:ComprasCliente}"
+                                        KeyProperty="Numcompra"
+                                        FetchRowsCommand="{Binding FetchRowsCommand}"
+                                        GetTotalSummariesCommand="{Binding GetTotalSummaries1Command}" />
+            </dxg:GridControl.ItemsSource>
+
             <dxg:GridControl.View>
                 <dxg:TableView AllowEditing="False"
                                ShowFixedTotalSummary="True"
                                TotalSummaryPosition="Bottom"
-                               ShowUpdateRowButtons="OnCellEditorOpen"
-                               ValidateRowCommand="{Binding ValidateRowCommand}">
+                               SearchStringToFilterCriteria="OnSearchStringToFilterCriteria"
+                               ShowSearchPanelMode="Always">
                     <dxg:TableView.RowCellMenuCustomizations>
                         <dxb:BarButtonItem x:Name="EditarCompraItem" Content="Editar"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Edit.svg}"
@@ -59,15 +59,13 @@
                 </dxg:TableView>
 
             </dxg:GridControl.View>
-            <dxg:GridColumn FieldName="Numcompra" Header="N° Compra" IsSmart="True" ReadOnly="True" Width="*" AllowAutoFilter="True"/>
-            <dxg:GridColumn FieldName="Codcliente" Header="N° Cliente" IsSmart="True" ReadOnly="True" Width="*" />
-            <dxg:GridColumn FieldName="NombreCliente" IsSmart="True" ReadOnly="True" Width="2*" />
-            <dxg:GridColumn FieldName="Total" IsSmart="True" ReadOnly="True" Width="0.5*" />
-            <dxg:GridColumn FieldName="Peso" IsSmart="True" ReadOnly="True" Width="0.5*" />
-            <dxg:GridColumn FieldName="Fecha" IsSmart="True" ReadOnly="True" Width="0.5*" />
-            <dxg:GridColumn FieldName="Nocontrato" Header="N° Contrato" IsSmart="True" ReadOnly="True" Width="0.5*" />
-            <dxg:GridColumn FieldName="NombreUsuario" IsSmart="True" ReadOnly="True" Width="*" />
-
+            <dxg:GridColumn FieldName="Numcompra" IsSmart="True" ReadOnly="True" Width="*" AllowSorting="True" />
+            <dxg:GridColumn FieldName="Codcliente" IsSmart="True" ReadOnly="True" Width="*" AllowSorting="True" />
+            <dxg:GridColumn FieldName="NombreCliente" IsSmart="True" ReadOnly="True" Width="*" />
+            <dxg:GridColumn FieldName="Total" IsSmart="True" ReadOnly="True" Width="*" />
+            <dxg:GridColumn FieldName="Peso" IsSmart="True" ReadOnly="True" Width="*" />
+            <dxg:GridColumn FieldName="Fecha" IsSmart="True" ReadOnly="True" Width="*" />
+            <dxg:GridColumn FieldName="Nocontrato" IsSmart="True" ReadOnly="True" Width="*" />
         </dxg:GridControl>
 
     </Grid>

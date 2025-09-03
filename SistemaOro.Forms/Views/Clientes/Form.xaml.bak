@@ -1,5 +1,4 @@
-﻿<Window
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,7 +7,7 @@
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-    xmlns:xtraEditors="clr-namespace:DevExpress.XtraEditors;assembly=DevExpress.XtraEditors.v24.1"
+    xmlns:xtraEditors="clr-namespace:DevExpress.XtraEditors;assembly=DevExpress.XtraEditors.v24.2"
     xmlns:dxre="http://schemas.devexpress.com/winfx/2008/xaml/richedit"
     x:Class="SistemaOro.Forms.Views.Clientes.Form"
     mc:Ignorable="d"
@@ -39,15 +38,12 @@
                     <ColumnDefinition Width="169" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Label
-                    Grid.Row="0"
+                <Label Grid.Row="0"
                     Content="Número de Cliente:" VerticalAlignment="Center" />
-                <Label
-                    Grid.Row="0"
+                <Label Grid.Row="0"
                     Grid.Column="1"
                     Content="{Binding NumeroCliente}" Margin="0,14,0,14" />
-                <StackPanel
-                    Grid.Column="2"
+                <StackPanel Grid.Column="2"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center" Height="0" Width="0" />
                 <dx:SimpleButton x:Name="BtnSave"
@@ -62,27 +58,39 @@
             <dx:DXTabControl dxlc:DockLayoutControl.Dock="Client">
                 <dx:DXTabItem Header="Datos del Cliente">
                     <Grid>
-                        <Label Content="Nombres" HorizontalAlignment="Left" Margin="71,48,0,0"
+                        <Label Content="Nombres" HorizontalAlignment="Left"
+                               Margin="71,48,0,0"
                                VerticalAlignment="Top"
                                Width="70" />
-                        <dxe:TextEdit x:Name="TxtNombres" HorizontalAlignment="Left" Margin="71,70,0,0"
+                        <dxe:TextEdit x:Name="TxtNombres" HorizontalAlignment="Left"
+                                      Margin="71,70,0,0"
                                       Style="{StaticResource ValidationStyle}"
-                                      VerticalAlignment="Top" Width="150" Height="24"
+                                      VerticalAlignment="Top"
+                                      Width="150"
+                                      Height="24"
                                       EditValue="{Binding SelectedCliente.Nombres, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-                        <Label Content="Apellidos" HorizontalAlignment="Left" Margin="249,48,0,0"
+                        <Label Content="Apellidos" HorizontalAlignment="Left"
+                               Margin="249,48,0,0"
                                VerticalAlignment="Top"
                                Width="70" />
-                        <dxe:TextEdit x:Name="TxtApellidos" HorizontalAlignment="Left" Margin="249,70,0,0"
-                                      VerticalAlignment="Top" Width="150" Height="24"
+                        <dxe:TextEdit x:Name="TxtApellidos" HorizontalAlignment="Left"
+                                      Margin="249,70,0,0"
+                                      VerticalAlignment="Top"
+                                      Width="150"
+                                      Height="24"
                                       Text="{Binding SelectedCliente.Apellidos, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                       EditValue="{Binding SelectedCliente.Apellidos}" />
-                        <Label Content="Fecha Nacimiento" HorizontalAlignment="Left" Margin="449,48,0,0"
-                               VerticalAlignment="Top" Width="110" />
+                        <Label Content="Fecha Nacimiento" HorizontalAlignment="Left"
+                               Margin="449,48,0,0"
+                               VerticalAlignment="Top"
+                               Width="110" />
                         <dxe:DateEdit x:Name="TxtFechaNacimiento" HorizontalAlignment="Left" Margin="449,72,0,0"
-                                      VerticalAlignment="Top" Width="141" AllowDefaultButton="True"
+                                      VerticalAlignment="Top"
+                                      Width="141" AllowDefaultButton="True"
                                       Text="{Binding SelectedCliente.FNacimiento}"
                                       EditValue="{Binding SelectedCliente.FNacimiento}" />
-                        <Label Content="Dirección" HorizontalAlignment="Left" Margin="71,115,0,0"
+                        <Label Content="Dirección" HorizontalAlignment="Left"
+                               Margin="71,115,0,0"
                                VerticalAlignment="Top"
                                Width="70" />
                         <dxe:TextEdit x:Name="TxtDireccion"
@@ -95,60 +103,77 @@
                                       Height="100"
                                       Width="300"
                                       HorizontalScrollBarVisibility="Disabled"
-                                      VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top"/>
-                        <Label Content="Ciudad" HorizontalAlignment="Left" Margin="449,133,0,0"
+                                      VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top" />
+                        <Label Content="Ciudad" HorizontalAlignment="Left"
+                               Margin="449,133,0,0"
                                VerticalAlignment="Top"
                                Width="70" />
-                        <dxe:TextEdit x:Name="TxtCiudad" HorizontalAlignment="Left" Margin="449,160,0,0"
-                                      VerticalAlignment="Top" Width="141" Height="24"
+                        <dxe:TextEdit x:Name="TxtCiudad" HorizontalAlignment="Left"
+                                      Margin="449,160,0,0"
+                                      VerticalAlignment="Top"
+                                      Width="141" Height="24"
                                       Text="{Binding SelectedCliente.Ciudad}" />
-                        <Label Content="Estado Civil" HorizontalAlignment="Left" Margin="449,194,0,0"
+                        <Label Content="Estado Civil" HorizontalAlignment="Left"
+                               Margin="449,194,0,0"
                                VerticalAlignment="Top"
                                Width="70" />
-                        <dxe:TextEdit x:Name="TxtEstadocivil" HorizontalAlignment="Left" Margin="449,221,0,0"
-                                      VerticalAlignment="Top" Width="141" Height="24"
+                        <dxe:TextEdit x:Name="TxtEstadocivil" HorizontalAlignment="Left"
+                                      Margin="449,221,0,0"
+                                      VerticalAlignment="Top"
+                                      Width="141" Height="24"
                                       Text="{Binding SelectedCliente.Estadocivil}" />
-                        <Label Content="Teléfono fijo" HorizontalAlignment="Left" Margin="71,284,0,0"
+                        <Label Content="Teléfono fijo" HorizontalAlignment="Left"
+                               Margin="71,284,0,0"
                                VerticalAlignment="Top"
                                Width="75" />
-                        <dxe:TextEdit HorizontalAlignment="Left" Margin="71,311,0,0" VerticalAlignment="Top"
+                        <dxe:TextEdit HorizontalAlignment="Left"
+                                      Margin="71,311,0,0" VerticalAlignment="Top"
                                       Width="150"
                                       Text="{Binding SelectedCliente.Telefono}"
                                       EditValue="{Binding SelectedCliente.Telefono}" />
-                        <Label Content="Número Celular" HorizontalAlignment="Left" Margin="249,284,0,0"
+                        <Label Content="Número Celular" HorizontalAlignment="Left"
+                               Margin="249,284,0,0"
                                VerticalAlignment="Top"
                                Width="103" />
-                        <dxe:TextEdit HorizontalAlignment="Left" Margin="249,311,0,0" VerticalAlignment="Top"
+                        <dxe:TextEdit HorizontalAlignment="Left"
+                                      Margin="249,311,0,0" VerticalAlignment="Top"
                                       Width="150"
                                       EditValue="{Binding SelectedCliente.Celular, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-                        <Label Content="Correo Eléctronico" HorizontalAlignment="Left" Margin="449,284,0,0"
+                        <Label Content="Correo Eléctronico" HorizontalAlignment="Left"
+                               Margin="449,284,0,0"
                                VerticalAlignment="Top"
                                Width="103" />
-                        <dxe:TextEdit HorizontalAlignment="Left" Margin="449,311,0,0" VerticalAlignment="Top"
+                        <dxe:TextEdit HorizontalAlignment="Left"
+                                      Margin="449,311,0,0" VerticalAlignment="Top"
                                       Width="150"
                                       EditValue="{Binding SelectedCliente.Email, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                         <Label Content="Documento de identificación" HorizontalAlignment="Left"
                                Margin="188,355,0,0"
                                VerticalAlignment="Top"
                                Width="164" />
-                        <dxe:TextEdit HorizontalAlignment="Left" Margin="188,382,0,0" VerticalAlignment="Top"
+                        <dxe:TextEdit HorizontalAlignment="Left"
+                                      Margin="188,382,0,0" VerticalAlignment="Top"
                                       Width="164"
                                       EditValue="{Binding SelectedCliente.Numcedula, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-                        <Label Content="Fecha de emisión" HorizontalAlignment="Left" Margin="366,355,0,0"
+                        <Label Content="Fecha de emisión" HorizontalAlignment="Left"
+                               Margin="366,355,0,0"
                                VerticalAlignment="Top"
                                Width="150" />
                         <dxe:DateEdit HorizontalAlignment="Left" Margin="366,382,0,0" VerticalAlignment="Top"
                                       Width="150"
                                       Text="{Binding SelectedCliente.FEmision}"
                                       EditValue="{Binding SelectedCliente.FEmision}" />
-                        <Label Content="Fecha de vencimiento" HorizontalAlignment="Left" Margin="535,355,0,0"
+                        <Label Content="Fecha de vencimiento" HorizontalAlignment="Left"
+                               Margin="535,355,0,0"
                                VerticalAlignment="Top"
                                Width="150" />
                         <dxe:DateEdit HorizontalAlignment="Left" Margin="535,382,0,0" VerticalAlignment="Top"
                                       Width="150"
                                       EditValue="{Binding SelectedCliente.FVencimiento}" />
-                        <Label Content="Tipo de Documento" HorizontalAlignment="Left" Margin="31,355,0,0"
-                               VerticalAlignment="Top" Width="115" />
+                        <Label Content="Tipo de Documento" HorizontalAlignment="Left"
+                               Margin="31,355,0,0"
+                               VerticalAlignment="Top"
+                               Width="115" />
                         <dxe:ComboBoxEdit x:Name="CmbTipoDocumento" HorizontalAlignment="Left" Margin="31,382,0,0"
                                           VerticalAlignment="Top" Width="122"
                                           ItemsSource="{Binding TipoDocumentos}"
@@ -195,12 +220,9 @@
                             </Grid.ColumnDefinitions>
                             <dxlc:GroupBox MinimizeElementVisibility="Hidden" MaximizeElementVisibility="Hidden"
                                            Header="Favor Inidcar si Actua por:" Margin="0,0,5,0">
-                                <StackPanel
-                                    Orientation="Horizontal">
-                                    <RadioButton
-                                        Content="Cuenta propia" Margin="0,0,20,0" IsChecked="{Binding IsCuentaPropia}" />
-                                    <RadioButton
-                                        Content="De un Tercero" IsChecked="{Binding IsTercero}" />
+                                <StackPanel Orientation="Horizontal">
+                                    <RadioButton Content="Cuenta propia" Margin="0,0,20,0" IsChecked="{Binding IsCuentaPropia}" />
+                                    <RadioButton Content="De un Tercero" IsChecked="{Binding IsTercero}" />
                                 </StackPanel>
                             </dxlc:GroupBox>
                             <dxlc:GroupBox Header="Si actua por tercero, favor indicar Nombre y diccion"
@@ -234,12 +256,10 @@
                                     <ColumnDefinition Width="1*" />
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
-                                <dxe:TextEdit
-                                    VerticalAlignment="Center" Label="Número total de operaciones al mes"
+                                <dxe:TextEdit VerticalAlignment="Center" Label="Número total de operaciones al mes"
                                     EditValue="{Binding SelectedCliente.TotalOperaciones}" Grid.Column="0"
                                     Margin="0,0,5,0" />
-                                <dxe:TextEdit
-                                    VerticalAlignment="Center" Label="Monto mensual estimado a realizar"
+                                <dxe:TextEdit VerticalAlignment="Center" Label="Monto mensual estimado a realizar"
                                     EditValue="{Binding SelectedCliente.MontoMensual}" Grid.Column="1" Margin="5,0,0,0" />
                             </Grid>
                         </dxlc:GroupBox>
@@ -251,14 +271,11 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <dxe:TextEdit
-                                    VerticalAlignment="Center" Margin="5,5,5,5" Label="Nombre Cuenta"
+                                <dxe:TextEdit VerticalAlignment="Center" Margin="5,5,5,5" Label="Nombre Cuenta"
                                     EditValue="{Binding SelectedCliente.NomCuenta}" />
-                                <dxe:TextEdit
-                                    VerticalAlignment="Center" Margin="5,0,5,0" Label="Número de cuenta"
+                                <dxe:TextEdit VerticalAlignment="Center" Margin="5,0,5,0" Label="Número de cuenta"
                                     EditValue="{Binding SelectedCliente.NumCuenta}" Grid.Column="1" />
-                                <dxe:TextEdit
-                                    VerticalAlignment="Center" Margin="5,0,5,0" Label="Banco"
+                                <dxe:TextEdit VerticalAlignment="Center" Margin="5,0,5,0" Label="Banco"
                                     EditValue="{Binding SelectedCliente.NomBanco}" Grid.Column="2" />
                             </Grid>
                         </dxlc:GroupBox>

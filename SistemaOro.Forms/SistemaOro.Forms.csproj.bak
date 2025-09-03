@@ -19,6 +19,7 @@
     <SignAssembly>False</SignAssembly>
     <StartupObject>SistemaOro.Forms.App</StartupObject>
     <ApplicationIcon>cash_ico.ico</ApplicationIcon>
+    <NuGetAuditMode>all</NuGetAuditMode>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="cash-18.svg" />
@@ -31,32 +32,34 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="13.0.1" />
-    <PackageReference Include="DevExpress.Data" Version="24.1.7" />
-    <PackageReference Include="DevExpress.Drawing" Version="24.1.7" />
-    <PackageReference Include="DevExpress.Pdf.Core" Version="24.1.7" />
-    <PackageReference Include="DevExpress.Printing.Core" Version="24.1.7" />
-    <PackageReference Include="DevExpress.Reporting.CodeCompletion" Version="24.1.7" />
-    <PackageReference Include="DevExpress.Reporting.Core" Version="24.1.7 " />
-    <PackageReference Include="DevExpress.Utils" Version="24.1.7" />
-    <PackageReference Include="DevExpress.Win" Version="24.1.7" />
-    <PackageReference Include="DevExpress.Win.Design" Version="24.1.7" />
-    <PackageReference Include="devexpress.wpf.accordion" Version="24.1.7" />
-    <PackageReference Include="devexpress.wpf.controls" Version="24.1.7" />
-    <PackageReference Include="DevExpress.Wpf.Core" Version="24.1.7" />
-    <PackageReference Include="DevExpress.Wpf.Dashboard" Version="24.1.7" />
-    <PackageReference Include="devexpress.wpf.docking" Version="24.1.7" />
-    <PackageReference Include="devexpress.wpf.grid.core" Version="24.1.7" />
-    <PackageReference Include="devexpress.wpf.layoutcontrol" Version="24.1.7" />
-    <PackageReference Include="devexpress.wpf.printing" Version="24.1.7" />
-    <PackageReference Include="devexpress.wpf.ribbon" Version="24.1.7" />
-    <PackageReference Include="EPPlus" Version="7.4.1" />
-    <PackageReference Include="NLog" Version="5.3.4" />
-    <PackageReference Include="System.Drawing.Common" Version="9.0.0" />
+    <PackageReference Include="AutoMapper" Version="14.0.0" />
+    <PackageReference Include="DevExpress.Data" Version="24.2.3" />
+    <PackageReference Include="DevExpress.Drawing" Version="24.2.3" />
+    <PackageReference Include="DevExpress.Pdf.Core" Version="24.2.3" />
+    <PackageReference Include="DevExpress.Printing.Core" Version="24.2.3" />
+    <PackageReference Include="DevExpress.Reporting.CodeCompletion" Version="24.2.3" />
+    <PackageReference Include="DevExpress.Reporting.Core" Version="24.2.3" />
+    <PackageReference Include="DevExpress.Utils" Version="24.2.3" />
+    <PackageReference Include="DevExpress.Win" Version="24.2.3" />
+    <PackageReference Include="DevExpress.Win.Design" Version="24.2.3" />
+    <PackageReference Include="devexpress.wpf.accordion" Version="24.2.3" />
+    <PackageReference Include="devexpress.wpf.controls" Version="24.2.3" />
+    <PackageReference Include="DevExpress.Wpf.Core" Version="24.2.3" />
+    <PackageReference Include="DevExpress.Wpf.Dashboard" Version="24.2.3" />
+    <PackageReference Include="devexpress.wpf.docking" Version="24.2.3" />
+    <PackageReference Include="devexpress.wpf.grid.core" Version="24.2.3" />
+    <PackageReference Include="devexpress.wpf.layoutcontrol" Version="24.2.3" />
+    <PackageReference Include="devexpress.wpf.printing" Version="24.2.3" />
+    <PackageReference Include="devexpress.wpf.ribbon" Version="24.2.3" />
+    <PackageReference Include="DevExpress.Wpf.Spreadsheet" Version="24.2.3" />
+    <PackageReference Include="EPPlus" Version="8.0.5" />
+    <PackageReference Include="NLog" Version="5.5.0" />
+    <PackageReference Include="System.IO.Ports" Version="9.0.6" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SistemaOro.Data\SistemaOro.Data.csproj">
       <Private>True</Private>
+      <ReferenceOutputAssembly></ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -70,7 +73,13 @@
       <PackagePath>\</PackagePath>
     </None>
     <None Update="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Lib\SecuGen.FDxSDKPro.DotNet.Windows.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Lib\SigPlusNET.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -98,8 +107,22 @@
     </Compile>
     <Compile Update="Components\Base\CheckItemBase.cs" />
     <Compile Update="Images\UIElements.cs" />
+    <Compile Update="Views\Reportes\Caja\ReporteMovimientoCajaExt.cs">
+      <SubType>XtraReport</SubType>
+    </Compile>
+    <Compile Update="Views\Reportes\Caja\RptMovimientosCajaExt.cs">
+      <SubType>XtraReport</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\Agencias\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="SecuGen.FDxSDKPro.DotNet.Windows">
+      <HintPath>Lib\SecuGen.FDxSDKPro.DotNet.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="SigPlusNET">
+      <HintPath>Lib\SigPlusNET.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

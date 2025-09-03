@@ -468,5 +468,10 @@ public class MaestroCajaRepository : IMaestroCajaRepository
             .ToListAsync();
     }
 
+    public Task<Detacaja?> FindDetaCajaById(int id)
+    {
+        return  _context.Detacajas.AsNoTracking().SingleOrDefaultAsync(detacaja => detacaja.IdDetaCaja == id);
+    }
+
     public string ErrorSms { get; private set; } = "";
 }

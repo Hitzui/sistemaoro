@@ -36,7 +36,20 @@ namespace SistemaOro.Forms
 
         private void ThemedWindow_Closed(object sender, EventArgs e)
         {
+            // Cerrar todas las ventanas abiertas primero
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window != this)
+                {
+                    window.Close();
+                }
+            }
+    
+            // Forzar el shutdown
             Application.Current.Shutdown();
+    
+            // Forzar terminación del proceso si es necesario
+            Environment.Exit(0);
         }
     }
 }

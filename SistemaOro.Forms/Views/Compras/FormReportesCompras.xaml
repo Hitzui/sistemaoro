@@ -11,7 +11,7 @@
     x:Class="SistemaOro.Forms.Views.Compras.FormReportesCompras"
     mc:Ignorable="d"
     d:DesignHeight="450" d:DesignWidth="800"
-    Title="FormReportesCompras">
+    Title="FormReportesCompras" Background="White">
     <Page.DataContext>
         <compras:ReporteComprasViewModel />
     </Page.DataContext>
@@ -63,6 +63,10 @@
                                                  Command="{Binding VerReporteCommand}"
                                                  GlyphHeight="24" 
                                                  Margin="0,0,0,10" />
+                                <dx:SimpleButton Content="Generar Excel Onzas"
+                                                 Command="{Binding GenerarExcelOnzaCommand}"
+                                                 GlyphHeight="24" 
+                                                 Margin="0,0,0,10" Glyph="{dx:DXImage SvgImages/Export/ExportToXLSX.svg}" />
                             </StackPanel>
                         </Grid>
                     </dxlc:GroupBox>

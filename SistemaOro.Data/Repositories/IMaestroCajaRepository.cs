@@ -34,6 +34,6 @@ public interface IMaestroCajaRepository
     Task<List<MovimientosCajaSelect>> FindAllByFechaDesdeActiva(DateTime fechaDesde);
 
     Task<List<MovimientosCajaSelect>> FindAllByFechaDesdeAndFechaHasta(DateTime fechaDesde, DateTime fechaHasta);
-
+    Task<Detacaja?> FindDetaCajaById(int id);
     string ErrorSms { get; }
 }

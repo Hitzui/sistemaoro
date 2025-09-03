@@ -30,7 +30,14 @@ public class CapturarHuellaViewModel : BaseViewModel
 
     public CapturarHuellaViewModel()
     {
-        MFpm = new SGFingerPrintManager();
+        try
+        {
+            MFpm = new SGFingerPrintManager();
+        }catch (Exception e)
+        {
+            Logger.Error(e, "Error al inicializar el SGFingerPrintManager");
+            HelpersMessage.MensajeErroResult("Error", "No se pudo inicializar el dispositivo de huellas dactilares por falta de las librerias, agregarlas al directorio de la aplicacion.");
+        }
         _listaDispositivos = new();
     }
 

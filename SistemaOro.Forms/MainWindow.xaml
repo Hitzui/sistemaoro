@@ -8,9 +8,9 @@
     xmlns:av="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av"
     x:Class="SistemaOro.Forms.MainWindow"
-    Loaded="MainWindow_OnLoaded"
+    Loaded="MainWindow_OnLoaded" 
     Title="Sistema de Gestión de Oro" Height="800" Width="1000" Icon="/cash_ico.ico" WindowState="Maximized"
-    WindowStartupLocation="CenterScreen" Closed="ThemedWindow_Closed">
+    WindowStartupLocation="CenterScreen" Closing="ThemedWindow_Closed">
     
     <Grid>
         <Grid.RowDefinitions>

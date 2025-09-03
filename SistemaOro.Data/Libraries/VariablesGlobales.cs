@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Reflection;
+using Microsoft.Extensions.Configuration;
 using SistemaOro.Data.Configuration;
 using SistemaOro.Data.Entities;
 using SistemaOro.Data.Repositories;
@@ -10,9 +11,9 @@ namespace SistemaOro.Data.Libraries;
 
 public class VariablesGlobales
 {
+    private static IConfigurationBuilder? _configurationBuilder;
     private static VariablesGlobales? _instance;
     private static readonly object Bloqueo = new();
-    private static string? _appSettingsPath;
 
     private VariablesGlobales()
     {
@@ -39,7 +40,12 @@ public class VariablesGlobales
         UnityContainer.RegisterType<IUsuarioRepository, UsuarioRepository>();
         UnityContainer.RegisterType<DataContext>(new PerResolveLifetimeManager());
         UnityContainer.RegisterType<IUnitOfWork, UnitOfWork>(new InjectionConstructor(DataContext));
-        
+
+        var exePath = AppContext.BaseDirectory; // Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        var appSettingsPath = Path.Combine(exePath, "appsettings.json");
+        _configurationBuilder = new ConfigurationBuilder()
+            .SetBasePath(exePath) // base = carpeta del exe
+            .AddJsonFile(appSettingsPath, optional: false, reloadOnChange: true);
     }
 
     public static VariablesGlobales Instance
@@ -56,30 +62,17 @@ public class VariablesGlobales
         }
     }
 
-    public static string? ConnectionString => ConfigurationBuilder.GetConnectionString("ConnectionString");
-    public static string? ConnectionStringReport => ConfigurationBuilder.GetConnectionString("ConnectionStringReport");
+    public static string? ConnectionString => _configurationBuilder?.Build()?.GetConnectionString("ConnectionString");
+    public static string? ConnectionStringReport => _configurationBuilder?.Build()?.GetConnectionString("ConnectionStringReport");
 
-    public IConfigurationSection ConfigurationSection => ConfigurationBuilder.GetSection("globals");
-
-    private static IConfigurationRoot ConfigurationBuilder
-    {
-        get
-        {
-            //var configurationBuilder = new ConfigurationBuilder();
-            _appSettingsPath = "appsettings.json";
-            var configurationBuilder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(_appSettingsPath, optional: false, reloadOnChange: true);
-
-            return configurationBuilder.Build();
-        }
-    }
+    public IConfigurationSection? ConfigurationSection => _configurationBuilder?.Build().GetSection("globals");
 
     public Usuario? Usuario { get; set; }
 
     public UnityContainer UnityContainer { get; }
 
     public ConfiguracionGeneral ConfiguracionGeneral { get; private set; }
+
     public DataContext DataContext { get; set; }
 
 }

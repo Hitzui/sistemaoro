@@ -76,8 +76,7 @@ public class CompraRepository(
             var existeAgencia = await context.Agencias.SingleOrDefaultAsync(agencia => agencia.Codagencia == _agencia);
             if (existeAgencia is null)
             {
-                ErrorSms = "No existe la agencia, favor crearla";
-                return false;
+                throw new Exception("No existe la agencia, favor crearla");
             }
 
             compra.Codcaja = _caja;
@@ -135,6 +134,7 @@ public class CompraRepository(
             compra.Numcompra = numeroCompra;
             compra.Nocontrato = param.Nocontrato;
             param.Nocontrato += 1;
+            existeAgencia.Numcompra += 1;
             var tbTipoCambio = tipoCambioRepository.FindByDateNow();
             var tipoCambioDia = decimal.One;
 
@@ -353,21 +353,12 @@ public class CompraRepository(
                 compra.DetCompras.Add(detCompra);
             }
 
-
-            existeAgencia.Numcompra += 1;
             var preciosDelete = context.Precios.Where(precio => precio.Codcliente == compra.Codcliente);
             if (preciosDelete.Any())
             { 
                 context.Precios.RemoveRange(preciosDelete);
             }
-            //var result = await context.SaveChangesAsync();
-            //if (result > 0)
-            //{
-            //    await context.Precios.Where(precio => precio.Codcliente == compra.Codcliente).ExecuteDeleteAsync();
-            //}
 
-            //await transaction.CommitAsync();
-            //return result > 0;
             return true;
         }
         catch (Exception e)

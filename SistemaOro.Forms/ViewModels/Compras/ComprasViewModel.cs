@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Navigation;
 using DevExpress.Mvvm.DataAnnotations;
@@ -26,6 +27,8 @@ using System.Linq;
 using System.Windows.Input;
 using DevExpress.Mvvm;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
+using SistemaOro.Forms.Services.Enum;
 
 namespace SistemaOro.Forms.ViewModels.Compras;
 
@@ -34,20 +37,14 @@ public class ComprasViewModel : BaseViewModel
     private readonly ICompraRepository _compraRepository;
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
+    private IList<ComprasCliente> _source;
+    public InfiniteAsyncSource Source { get; set; }
+    
     public ComprasViewModel()
     {
         var unitOfWork = VariablesGlobales.Instance.UnityContainer.Resolve<IUnitOfWork>();
         _compraRepository = unitOfWork.CompraRepository;
         Title = "Compras";
-        FetchPageCommand  = new DelegateCommand<FetchPageAsyncArgs>(FetchPage);
-        GetTotalSummariesCommand = new DelegateCommand<GetSummariesAsyncArgs>(GetTotalSummaries);
-        PagedAsyncSource = new PagedAsyncSource
-        {
-            ElementType = typeof(ComprasCliente),
-            FetchPageCommand = FetchPageCommand,
-            GetTotalSummariesCommand = GetTotalSummariesCommand,
-            PageNavigationMode = PageNavigationMode.ArbitraryWithTotalPageCount
-        };
     }
 
     public PagedAsyncSource PagedAsyncSource { get;}
@@ -80,7 +77,7 @@ public class ComprasViewModel : BaseViewModel
 
         VariablesGlobalesForm.Instance.MainViewModel.RbnEditarCompraVisible = true;
         var frmCompra = new FormComprasPage();
-        VariablesGlobalesForm.Instance.MainViewModel.formComprasPage = frmCompra;
+        VariablesGlobalesForm.Instance.MainViewModel.FormComprasPage = frmCompra;
         frmCompra.SetSelectedCompra(SelectedCompra);
         navigationService.Navigate(frmCompra);
     }
@@ -156,40 +153,114 @@ public class ComprasViewModel : BaseViewModel
         return Expression.Lambda<Func<ComprasCliente, bool>>(combinedBody, parameter);
     }
 
-    private ICommand<FetchPageAsyncArgs> FetchPageCommand { get; }
-
-    private ICommand<GetSummariesAsyncArgs> GetTotalSummariesCommand { get; }
-
-    private void FetchPage(FetchPageAsyncArgs args)
+    Expression<Func<ComprasCliente, bool>> MakeFilterExpression(CriteriaOperator filter)
     {
-        const int pageTakeCount = 10;
+        var converter = new GridFilterCriteriaToExpressionConverter<ComprasCliente>();
+        return converter.Convert(filter);
+    }
+    
+    [Command]
+    public void FetchRowsBak(FetchRowsAsyncArgs args)
+    {
         args.Result = Task.Run<FetchRowsResult>(() =>
         {
             var context = new DataContext();
             var queryable = context.ComprasClientes.AsNoTracking()
                 .SortBy(args.SortOrder, defaultUniqueSortPropertyName: nameof(ComprasCliente.Numcompra))
-                .Where(cliente => cliente.Codestado == EstadoCompra.Vigente || cliente.Codestado == EstadoCompra.Cerrada)
-                .Where(MakeFullFilterExpression((CriteriaOperator)args.Filter, SearchText))
-                .OrderByDescending(c=> c.Fecha);
-            return queryable.Skip(args.Skip).Take(args.Take * pageTakeCount).ToArray();
+                .OrderByDescending(c=> c.Fecha)
+                .Where(c=>c.Codestado == EstadoCompra.Vigente || c.Codestado == EstadoCompra.Cerrada)
+                .Where(MakeFilterExpression((CriteriaOperator)args.Filter));
+            return queryable.Skip(args.Skip).Take(args.Take ?? 100).ToArray();
         });
     }
-
-    private void GetTotalSummaries(GetSummariesAsyncArgs args)
+    
+    [Command]
+    public void GetTotalSummaries1(GetSummariesAsyncArgs args)
     {
         args.Result = Task.Run(() =>
         {
             var context = new DataContext();
-            var queryable = context.ComprasClientes.Where(MakeFullFilterExpression((CriteriaOperator)args.Filter, SearchText))
-                .Where(cliente => cliente.Codestado == EstadoCompra.Vigente 
-                                  || cliente.Codestado == EstadoCompra.Cerrada);
+            var queryable = context.ComprasClientes.Where(MakeFilterExpression((CriteriaOperator)args.Filter));
             return queryable.GetSummaries(args.Summaries);
         });
     }
 
     [Command]
-    public void SearchCompra()
+    public void FetchRows(FetchRowsAsyncArgs args)
     {
-        PagedAsyncSource.RefreshRows();
+        args.Result = Task.Run<FetchRowsResult>(() =>
+        {
+            using var context = new DataContext();
+            
+            // Construir la consulta base
+            var query = context.ComprasClientes.AsNoTracking()
+                .Where(c => c.Codestado == EstadoCompra.Vigente || 
+                           c.Codestado == EstadoCompra.Cerrada);
+
+            // Aplicar filtro si existe
+            if (args.Filter != null)
+            {
+                var filterExpression = CriteriaToExpressionConverter.Convert((CriteriaOperator)args.Filter);
+                query = query.Where(filterExpression);
+            }
+
+            // Aplicar ordenamiento
+            query = ApplySorting(query, args.SortOrder);
+
+            // Obtener el total de registros (para paginación)
+            var totalCount = query.Count();
+
+            // Aplicar paginación
+            var items = query
+                .Skip(args.Skip)
+                .Take(args.Take ?? 100)
+                .ToList();
+
+            return new FetchRowsResult(items.ToArray(), hasMoreRows: items.Count >= (args.Take ?? 100));
+        });
+    }
+
+    private IQueryable<ComprasCliente> ApplySorting(IQueryable<ComprasCliente> query, SortDefinition[] sortOrder)
+    {
+        if (sortOrder.Length == 0)
+        {
+            // Ordenamiento por defecto
+            return query.OrderByDescending(x => x.Fecha)
+                       .ThenByDescending(x => x.Numcompra);
+        }
+
+        IOrderedQueryable<ComprasCliente>? orderedQuery = null;
+        var isFirstOrder = true;
+
+        foreach (var sort in sortOrder)
+        {
+            if (isFirstOrder)
+            {
+                orderedQuery = sort.Direction == ListSortDirection.Ascending
+                    ? query.OrderBy(GetSortExpression(sort.PropertyName))
+                    : query.OrderByDescending(GetSortExpression(sort.PropertyName));
+                isFirstOrder = false;
+            }
+            else
+            {
+                orderedQuery = sort.Direction == ListSortDirection.Ascending
+                    ? orderedQuery!.ThenBy(GetSortExpression(sort.PropertyName))
+                    : orderedQuery!.ThenByDescending(GetSortExpression(sort.PropertyName));
+            }
+        }
+
+        return orderedQuery ?? query;
+    }
+
+    private Expression<Func<ComprasCliente, object>> GetSortExpression(string propertyName)
+    {
+        return propertyName switch
+        {
+            "Numcompra" => x => x.Numcompra,
+            "Codcliente" => x => x.Codcliente,
+            "Fecha" => x => x.Fecha,
+            "Total" => x => x.Total,
+            _ => x => x.Numcompra // Por defecto
+        };
     }
 }

@@ -107,11 +107,34 @@ public class ReportesMaestroCajaViewModel : BaseViewModel
 
             if (ComprobanteMovimientoRad)
             {
+                if (SelectedMovimiento is null)
+                {
+                    HelpersMessage.MensajeErroResult("Error", "NO se ha seleccionado un movimiento a re-imprimir");
+                    return;
+                }
                 var parametros = VariablesGlobalesForm.Instance.Parametros;
-                var sum = SelectedMovimiento.Efectivo + SelectedMovimiento.Cheque + SelectedMovimiento.Transferencia;
+                var sum = 0m;
+                var detaMovimiento = await _maestroCajaRepository.FindDetaCajaById(SelectedMovimiento.IdDetaCaja);
+                if (detaMovimiento is null)
+                {
+                    HelpersMessage.MensajeErroResult("Error", "NO se ha seleccionado un movimiento a re-imprimir");
+                    return;
+                }
+
+                if (param.Dolares.Value == detaMovimiento.Idmoeda.Value)
+                {
+                    sum += SelectedMovimiento.EfectivoExt ?? 0;
+                    sum += SelectedMovimiento.TransferenciaExt ?? 0;
+                }
+                else
+                {
+                    sum += SelectedMovimiento.Efectivo1 ?? 0;
+                    sum += SelectedMovimiento.Transferencia1 ?? 0;
+                }
+
                 var cantidadLetras = HelpersMethods.ConvertirNumeroADecimalATexto(sum);
                 var reporteMovimientoCaja = new ReporteMovimientoCaja();
-                reporteMovimientoCaja.Parameters["parIdDetaCaja"].Value = SelectedMovimiento.IdDetacaja;
+                reporteMovimientoCaja.Parameters["parIdDetaCaja"].Value = SelectedMovimiento.IdDetaCaja;
                 reporteMovimientoCaja.Parameters["parCantidadLetras"].Value = cantidadLetras;
                 reporteMovimientoCaja.Parameters["parNombre"].Value = parametros.Recibe;
                 HelpersMethods.LoadReport(reporteMovimientoCaja, "Reporte de Movimiento Caja");
@@ -166,12 +189,12 @@ public class ReportesMaestroCajaViewModel : BaseViewModel
         set => SetValue(value);
     }
 
-    private DtoMovimientosCaja? _selectedMovimiento;
+    private MovimientosCajaSelect? _selectedMovimiento;
 
-    public DtoMovimientosCaja? SelectedMovimiento
+    public MovimientosCajaSelect? SelectedMovimiento
     {
         get => _selectedMovimiento;
-        set => SetProperty(ref _selectedMovimiento, value, "SelectedMovimiento");
+        set => SetValue(ref _selectedMovimiento, value);
     }
 
     public ICommand ReportCommand { get; }

@@ -195,38 +195,40 @@ namespace SistemaOro.Forms.ViewModels
             frm.ShowDialog();
         }
 
-        public FormComprasPage formComprasPage = new ();
+        public FormComprasPage FormComprasPage = new ();
+        
         private void OnRealizarCompraCommand()
         {
+            VariablesGlobalesForm.Instance.MainViewModel.FormComprasPage = FormComprasPage;
             RbnEditarCompraVisible = true;
-            mainFrame.Navigate(formComprasPage);
+            mainFrame.Navigate(FormComprasPage);
         }
 
         [Command]
         public void SaveCompra()
         {
-            var viewModel = (FormComprasViewModel)formComprasPage.DataContext;
+            var viewModel = (FormComprasViewModel)FormComprasPage.DataContext;
             viewModel.SaveCompra();
         }
 
         [Command]
         public void AnularCompra()
         {
-            var viewModel = (FormComprasViewModel)formComprasPage.DataContext;
+            var viewModel = (FormComprasViewModel)FormComprasPage.DataContext;
             viewModel.AnularCompra();
         }
 
         [Command]
         public void DevolucionCompra()
         {
-            var viewModel = (FormComprasViewModel)formComprasPage.DataContext;
+            var viewModel = (FormComprasViewModel)FormComprasPage.DataContext;
             viewModel.DevolucionCompra();
         }
         
         [Command]
         public void NuevaCompra()
         {
-            var viewModel = (FormComprasViewModel)formComprasPage.DataContext;
+            var viewModel = (FormComprasViewModel)FormComprasPage.DataContext;
             if (viewModel.NuevaCompra())
             {
                 return;
@@ -235,8 +237,9 @@ namespace SistemaOro.Forms.ViewModels
                 "Hay datos en la tabla, se limpiarán al crear una nueva y compra y no se guardarán, ¿desea continuar?",
                 MessageBoxButton.OKCancel);
             if (result.ShowDialog() != true) return;
-            formComprasPage = new();
-            mainFrame.Navigate(formComprasPage);
+            FormComprasPage = new();
+            VariablesGlobalesForm.Instance.MainViewModel.FormComprasPage = FormComprasPage;
+            mainFrame.Navigate(FormComprasPage);
         }
 
         private void OnReportesMaestroCajaCommand()

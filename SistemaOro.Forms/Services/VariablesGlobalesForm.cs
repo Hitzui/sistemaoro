@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Windows.Controls;
-using DevExpress.Mvvm;
+﻿using DevExpress.Mvvm;
 using DevExpress.Mvvm.Native;
 using Microsoft.Extensions.Configuration;
 using SistemaOro.Data.Dto;
@@ -8,6 +6,9 @@ using SistemaOro.Data.Entities;
 using SistemaOro.Data.Repositories;
 using SistemaOro.Forms.Repository;
 using SistemaOro.Forms.ViewModels;
+using System;
+using System.IO;
+using System.Windows.Controls;
 using Unity;
 
 namespace SistemaOro.Forms.Services
@@ -49,7 +50,7 @@ namespace SistemaOro.Forms.Services
                 //var configurationBuilder = new ConfigurationBuilder();
                 _appSettingsPath = "appsettings.json";
                 var configurationBuilder = new ConfigurationBuilder()
-                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .SetBasePath(AppContext.BaseDirectory)
                     .AddJsonFile(_appSettingsPath, optional: false, reloadOnChange: true);
 
                 return configurationBuilder.Build();
